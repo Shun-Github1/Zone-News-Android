@@ -1,0 +1,42 @@
+package com.anssy.znewspro.model;
+
+import dagger.internal.DaggerGenerated;
+import dagger.internal.Factory;
+import dagger.internal.QualifierMetadata;
+import dagger.internal.ScopeMetadata;
+import javax.annotation.processing.Generated;
+
+@ScopeMetadata
+@QualifierMetadata
+@DaggerGenerated
+@Generated(
+    value = "dagger.internal.codegen.ComponentProcessor",
+    comments = "https://dagger.dev"
+)
+@SuppressWarnings({
+    "unchecked",
+    "rawtypes",
+    "KotlinInternal",
+    "KotlinInternalInJava",
+    "cast",
+    "deprecation",
+    "nullness:initialization.field.uninitialized"
+})
+public final class HomeModel_Factory implements Factory<HomeModel> {
+  @Override
+  public HomeModel get() {
+    return newInstance();
+  }
+
+  public static HomeModel_Factory create() {
+    return InstanceHolder.INSTANCE;
+  }
+
+  public static HomeModel newInstance() {
+    return new HomeModel();
+  }
+
+  private static final class InstanceHolder {
+    static final HomeModel_Factory INSTANCE = new HomeModel_Factory();
+  }
+}

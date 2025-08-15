@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material 3 Dark Theme Color System -->
+    <color name="colorPrimary">#80CDC4</color>
+    <color name="colorOnPrimary">#000000</color>
+    <color name="colorPrimaryContainer">#1A7A77</color>
+    <color name="colorOnPrimaryContainer">#FFFFFF</color>
+    
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorSecondaryContainer">#018786</color>
+    <color name="colorOnSecondaryContainer">#FFFFFF</color>
+    
+    <color name="colorTertiary">#CF6679</color>
+    <color name="colorOnTertiary">#000000</color>
+    <color name="colorTertiaryContainer">#3E2723</color>
+    <color name="colorOnTertiaryContainer">#FFFFFF</color>
+    
+    <color name="colorSurface">#121212</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorSurfaceVariant">#2C2C2C</color>
+    <color name="colorOnSurfaceVariant">#CCCCCC</color>
+    
+    <color name="colorBackground">#121212</color>
+    <color name="colorOnBackground">#FFFFFF</color>
+
+    <!-- Explicit system bar colors (dark mode) -->
+    <color name="status_bar_color">#121212</color>
+    <color name="navigation_bar_color">#121212</color>
+    
+    <color name="colorError">#CF6679</color>
+    <color name="colorOnError">#000000</color>
+    <color name="colorErrorContainer">#601410</color>
+    <color name="colorOnErrorContainer">#FFFFFF</color>
+    
+    <!-- Legacy colors for backward compatibility -->
+    <color name="colorPrimaryDark">#1A7A77</color>
+    <color name="colorAccent">#03DAC6</color>
+    
+    <!-- App specific dark colors -->
+    <color name="white">#121212</color>
+    <color name="black">#FFFFFF</color>
+    <color name="light_gray">#2C2C2C</color>
+    <color name="gray_normal">#CCCCCC</color>
+    <color name="main_color">#80CDC4</color>
+    <color name="main_blue">#80CDC4</color>
+    <color name="main_blue_alpha">#cc80CDC4</color>
+    
+    <!-- Text colors for dark mode -->
+    <color name="colorTextDeep">#FFFFFF</color>
+    <color name="colorTextHint">#757575</color>
+    <color name="colorTextMiddle">#CCCCCC</color>
+    <color name="colorTextSmall">#AAAAAA</color>
+    
+    <!-- Background colors -->
+    <color name="back_color">#1E1E1E</color>
+    <color name="act_background">#121212</color>
+    
+    <!-- Card and surface colors -->
+    <color name="lightgrey">#2C2C2C</color>
+    <color name="lightlightgrey">#1E1E1E</color>
+    <color name="line_color">#3C3C3C</color>
+    <color name="divider_color">#3C3C3C</color>
+    
+    <!-- Interactive element colors -->
+    <color name="btn_gray_normal">#4C4C4C</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_half">#99FFFFFF</color>
+    <color name="transparent_one">#66FFFFFF</color>
+    
+    <!-- Dark theme green variations -->
+    <color name="pure_color">#6B9A8D</color>
+    <color name="private_bg">#2A3F3B</color>
+    <color name="selectable_cursor">#80CDC4</color>
+    <color name="selectable_select_text_bg">#80CDC4</color>
+</resources>

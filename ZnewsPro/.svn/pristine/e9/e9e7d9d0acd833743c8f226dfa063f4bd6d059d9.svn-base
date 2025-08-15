@@ -1,0 +1,522 @@
+[
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xhdpi_pg_logo.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xhdpi/pg_logo.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_actionsheet_dialog_out.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/actionsheet_dialog_out.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_topic_modify.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_topic_modify.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_frag_child_home.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/frag_child_home.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_login_face.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_login_face.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_tag_tv.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/tag_tv.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_arrow_regular_up.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_arrow_regular_up.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-hdpi_pg_logo.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-hdpi/pg_logo.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_detail_ask.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_detail_ask.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_search_selector.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/search_selector.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_temp_avatar.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_temp_avatar.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_progress_bar_states.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/progress_bar_states.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_ease_default_image.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/ease_default_image.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_my_his.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_my_his.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_brown_his.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_brown_his.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_hold.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/hold.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_fade_in.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/fade_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_head_in.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/head_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_back_sting_white.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/back_sting_white.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_robot.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_robot.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_arrow_fill_down.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_arrow_fill_down.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_bottom_click_shape.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/bottom_click_shape.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_push_top_out2.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/push_top_out2.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_meida_iv.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_meida_iv.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/xml_data_extraction_rules.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_report_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_report_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_special_normal.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_special_normal.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_fade_out.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/fade_out.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_add_new_in.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/add_new_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_detail_collect.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_detail_collect.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_arrow_regular_right.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_arrow_regular_right.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_frag_home.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/frag_home.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xxhdpi_pg_logo.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xxhdpi/pg_logo.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_push_bottom_in.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/push_bottom_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_search_normal.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_search_normal.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_my_collect.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_my_collect.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_frag_my.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/frag_my.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_web.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_web.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_banner.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_banner.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_login_top.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_login_top.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_frag_advice.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/frag_advice.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_ad.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_ad.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_wode_normal.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_wode_normal.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_slide_out_to_right.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/slide_out_to_right.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_more.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_more.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_home_selector.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/home_selector.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_temp_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_temp_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_home_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_home_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/xml_network_security_config.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_detail_back.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_detail_back.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_all_report.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_all_report.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_my_version.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_my_version.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_media_focus.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_media_focus.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_login_email.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_login_email.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_bottom_line.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/bottom_line.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_edit_pen.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_edit_pen.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_ease_common_tab_bg.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/ease_common_tab_bg.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_nodata_search.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_nodata_search.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_all_topic.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_all_topic.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_search_click.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_search_click.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_ques_pop.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/ques_pop.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_related_topic.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_related_topic.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_popup_close_default.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_popup_close_default.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_actionsheet_dialog_in.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/actionsheet_dialog_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_push_top_out.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/push_top_out.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_related_news.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_related_news.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_detail_share.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_detail_share.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_home_normal.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_home_normal.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_advice_setting.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_advice_setting.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_rate_popu.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/rate_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-mdpi_pg_logo.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-mdpi/pg_logo.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_pro_dot.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/pro_dot.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_home_more.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_home_more.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_related_news_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_related_news_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_news_detail.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_news_detail.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/xml_backup_rules.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_push_top_in.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/push_top_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_selecter_text.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/selecter_text.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_bounce.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/bounce.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_login_google.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_login_google.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_slide_in_from_left.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/slide_in_from_left.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_con_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_con_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_common_toolbar_layout.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/common_toolbar_layout.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_push_bottom_out.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/push_bottom_out.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_head_out.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/head_out.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/xml_file_paths.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/xml/file_paths.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xxxhdpi_pg_logo.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xxxhdpi/pg_logo.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_frag_search.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/frag_search.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_search.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_search.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_my_selector.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/my_selector.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_back_black.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_back_black.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_add_new_out.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/add_new_out.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_no_data.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_no_data.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_ease_slidetab_bg_press.9.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/ease_slidetab_bg_press.9.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_register.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_register.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_my_about_us.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_my_about_us.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_main.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_slide_out_to_left.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/slide_out_to_left.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_c_dot.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/c_dot.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_icon_arrow_regular_down.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/icon_arrow_regular_down.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_login.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_wode_click.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_wode_click.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_topic_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_topic_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_home_click.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_home_click.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_home_notice.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_home_notice.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable-xxhdpi_pg_tab_special_click.png.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable-xxhdpi/pg_tab_special_click.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_fliter_popu.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/fliter_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_setting_popu.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/setting_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_activity_login_email.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/activity_login_email.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_child_media_focus_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_child_media_focus_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_item_brown_his.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/item_brown_his.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_special_selector.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/special_selector.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_feedback_popu.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/feedback_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.anssy.znewspro.app-main-72:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/anim_slide_in_from_right.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/anim/slide_in_from_right.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/drawable_common_selector.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/drawable/common_selector.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-70:/layout_layout_score.xml.flat",
+        "source": "com.anssy.znewspro.app-main-72:/layout/layout_score.xml"
+    }
+]

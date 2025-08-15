@@ -1,0 +1,9 @@
+package dagger.hilt.internal.processedrootsentinel.codegen;
+
+import dagger.hilt.internal.processedrootsentinel.ProcessedRootSentinel;
+
+@ProcessedRootSentinel(
+    roots = "com.anssy.znewspro.base.BaseApplication"
+)
+public final class _com_anssy_znewspro_base_BaseApplication {
+}

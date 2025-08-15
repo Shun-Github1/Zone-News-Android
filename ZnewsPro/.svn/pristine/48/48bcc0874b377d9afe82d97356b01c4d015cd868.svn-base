@@ -1,0 +1,16 @@
+package com.anssy.znewspro.ui.newsdetail
+
+import android.os.Bundle
+import com.anssy.znewspro.base.BaseActivity
+
+/**
+ * @Description 新闻详情
+ * @Author yulu
+ * @CreateTime 2025年07月01日 16:58:28
+ */
+
+class NewsDetailActivity : BaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+}

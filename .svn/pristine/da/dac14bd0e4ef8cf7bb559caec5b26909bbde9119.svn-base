@@ -1,0 +1,598 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.anssy.znewspro"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:4:5-66
+11-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:4:22-64
+12
+13    <queries>
+13-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:15:5-17:15
+14        <package android:name="com.facebook.katana" />
+14-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:16:9-55
+14-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:16:18-52
+15    </queries>
+16
+17    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+17-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:26:5-79
+17-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:26:22-76
+18    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+18-->[com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8abb397f6cd858f5c992c078e471c607\transformed\jetified-recaptcha-18.6.1\AndroidManifest.xml:9:5-98
+18-->[com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8abb397f6cd858f5c992c078e471c607\transformed\jetified-recaptcha-18.6.1\AndroidManifest.xml:9:22-95
+19    <uses-permission android:name="com.google.android.gms.permission.AD_ID" /> <!-- Support for Google Privacy Sandbox adservices API -->
+19-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:14:5-79
+19-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:14:22-76
+20    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+20-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:16:5-88
+20-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:16:22-85
+21    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+21-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:17:5-82
+21-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:17:22-79
+22    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_CUSTOM_AUDIENCE" />
+22-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:18:5-92
+22-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:18:22-89
+23    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS" />
+23-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:19:5-83
+23-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:19:22-80
+24
+25    <permission
+25-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa0d643fe651f0ea4b3af6c05cf5ec1d\transformed\core-1.13.0\AndroidManifest.xml:22:5-24:47
+26        android:name="com.anssy.znewspro.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa0d643fe651f0ea4b3af6c05cf5ec1d\transformed\core-1.13.0\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa0d643fe651f0ea4b3af6c05cf5ec1d\transformed\core-1.13.0\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.anssy.znewspro.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa0d643fe651f0ea4b3af6c05cf5ec1d\transformed\core-1.13.0\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa0d643fe651f0ea4b3af6c05cf5ec1d\transformed\core-1.13.0\AndroidManifest.xml:26:22-94
+30    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+30-->[com.android.installreferrer:installreferrer:1.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\7342cdd5cc238f4c35bf4f12e6f11a3f\transformed\jetified-installreferrer-1.0\AndroidManifest.xml:9:5-110
+30-->[com.android.installreferrer:installreferrer:1.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\7342cdd5cc238f4c35bf4f12e6f11a3f\transformed\jetified-installreferrer-1.0\AndroidManifest.xml:9:22-107
+31
+32    <application
+32-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:5:5-96:19
+33        android:name="com.anssy.znewspro.base.BaseApplication"
+33-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:11:9-45
+34        android:allowBackup="true"
+34-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:6:9-35
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa0d643fe651f0ea4b3af6c05cf5ec1d\transformed\core-1.13.0\AndroidManifest.xml:28:18-86
+36        android:dataExtractionRules="@xml/data_extraction_rules"
+36-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:7:9-65
+37        android:debuggable="true"
+38        android:extractNativeLibs="false"
+39        android:fullBackupContent="@xml/backup_rules"
+39-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:8:9-54
+40        android:icon="@mipmap/pg_logo"
+40-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:9:9-39
+41        android:label="@string/app_name"
+41-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:10:9-41
+42        android:networkSecurityConfig="@xml/network_security_config"
+42-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:17:9-69
+43        android:preserveLegacyExternalStorage="true"
+43-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:15:9-53
+44        android:requestLegacyExternalStorage="true"
+44-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:16:9-52
+45        android:roundIcon="@mipmap/pg_logo"
+45-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:12:9-44
+46        android:supportsRtl="true"
+46-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:13:9-35
+47        android:theme="@style/AppTheme" >
+47-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:14:9-40
+48        <meta-data
+48-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:19:9-21:35
+49            android:name="design_width_in_dp"
+49-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:20:13-46
+50            android:value="375" />
+50-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:21:13-32
+51        <meta-data
+51-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:22:9-24:35
+52            android:name="design_height_in_dp"
+52-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:23:13-47
+53            android:value="812" />
+53-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:24:13-32
+54        <meta-data
+54-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:25:9-107
+55            android:name="com.facebook.sdk.ApplicationId"
+55-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:25:20-65
+56            android:value="@string/facebook_app_id" />
+56-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:25:66-105
+57        <meta-data
+57-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:26:9-111
+58            android:name="com.facebook.sdk.ClientToken"
+58-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:26:20-63
+59            android:value="@string/facebook_client_token" />
+59-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:26:64-109
+60
+61        <activity
+61-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:27:9-32:20
+62            android:name="com.anssy.znewspro.ui.MainActivity"
+62-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:28:13-44
+63            android:exported="false"
+63-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:29:13-37
+64            android:theme="@style/horizontal_slide" >
+64-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:30:13-52
+65        </activity>
+66        <activity
+66-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:34:9-37:48
+67            android:name="com.facebook.FacebookActivity"
+67-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:34:19-63
+68            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+68-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:35:13-114
+69            android:label="@string/app_name"
+69-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:37:13-45
+70            android:theme="@style/com_facebook_activity_theme" />
+70-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:23:13-63
+71        <activity
+71-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:38:9-47:20
+72            android:name="com.facebook.CustomTabActivity"
+72-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:39:13-58
+73            android:exported="true" >
+73-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:40:13-36
+74            <intent-filter>
+74-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:41:13-46:29
+75                <action android:name="android.intent.action.VIEW" />
+75-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:17-69
+75-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:25-66
+76
+77                <category android:name="android.intent.category.DEFAULT" />
+77-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:17-76
+77-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:27-73
+78                <category android:name="android.intent.category.BROWSABLE" />
+78-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:17-78
+78-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:27-75
+79
+80                <data android:scheme="@string/fb_login_protocol_scheme" />
+80-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:17-75
+80-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:23-72
+81            </intent-filter>
+82            <intent-filter>
+82-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:29:13-38:29
+83                <action android:name="android.intent.action.VIEW" />
+83-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:17-69
+83-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:25-66
+84
+85                <category android:name="android.intent.category.DEFAULT" />
+85-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:17-76
+85-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:27-73
+86                <category android:name="android.intent.category.BROWSABLE" />
+86-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:17-78
+86-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:27-75
+87
+88                <data
+88-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:17-75
+89                    android:host="cct.com.anssy.znewspro"
+90                    android:scheme="fbconnect" />
+90-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:23-72
+91            </intent-filter>
+92        </activity>
+93        <activity
+93-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:49:9-52:15
+94            android:name="com.anssy.znewspro.ui.topicmodify.TopicModifyActivity"
+94-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:49:19-87
+95            android:exported="false"
+95-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:50:13-37
+96            android:theme="@style/horizontal_slide" />
+96-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:51:13-52
+97        <activity
+97-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:53:9-57:15
+98            android:name="com.anssy.znewspro.ui.newsdetail.NewsDetailActivity"
+98-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:53:19-85
+99            android:exported="false"
+99-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:54:13-37
+100            android:theme="@style/horizontal_slide"
+100-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:55:13-52
+101            android:windowSoftInputMode="adjustPan|stateHidden" />
+101-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:56:13-64
+102        <activity
+102-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:58:9-67:20
+103            android:name="com.anssy.znewspro.ui.login.LoginActivity"
+103-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:58:19-75
+104            android:exported="true"
+104-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:59:13-36
+105            android:theme="@style/horizontal_slide" >
+105-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:60:13-52
+106            <intent-filter>
+106-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:62:13-66:29
+107                <action android:name="android.intent.action.MAIN" />
+107-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:63:17-69
+107-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:63:25-66
+108
+109                <category android:name="android.intent.category.LAUNCHER" />
+109-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:65:17-77
+109-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:65:27-74
+110            </intent-filter>
+111        </activity>
+112        <activity
+112-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:68:9-71:15
+113            android:name="com.anssy.znewspro.ui.login.LoginEmailActivity"
+113-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:68:19-80
+114            android:exported="false"
+114-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:69:13-37
+115            android:theme="@style/horizontal_slide" />
+115-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:70:13-52
+116        <activity
+116-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:72:9-75:15
+117            android:name="com.anssy.znewspro.ui.login.RegisterActivity"
+117-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:72:19-78
+118            android:exported="false"
+118-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:73:13-37
+119            android:theme="@style/horizontal_slide" />
+119-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:74:13-52
+120        <activity
+120-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:76:9-79:15
+121            android:name="com.anssy.znewspro.ui.his.BrownHisActivity"
+121-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:76:19-76
+122            android:exported="false"
+122-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:77:13-37
+123            android:theme="@style/horizontal_slide" />
+123-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:78:13-52
+124        <activity
+124-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:80:9-83:15
+125            android:name="com.anssy.znewspro.ui.collect.MyCollectListActivity"
+125-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:80:19-85
+126            android:exported="false"
+126-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:81:13-37
+127            android:theme="@style/horizontal_slide" />
+127-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:82:13-52
+128        <activity
+128-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:84:9-87:15
+129            android:name="com.anssy.znewspro.ui.notice.NoticeListActivity"
+129-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:84:19-81
+130            android:exported="false"
+130-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:85:13-37
+131            android:theme="@style/horizontal_slide" />
+131-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:86:13-52
+132        <activity
+132-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:88:9-91:15
+133            android:name="com.anssy.znewspro.ui.topicmodify.TopicAllActivity"
+133-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:88:19-84
+134            android:exported="false"
+134-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:89:13-37
+135            android:theme="@style/horizontal_slide" />
+135-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:90:13-52
+136        <activity
+136-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:92:9-95:15
+137            android:name="com.anssy.znewspro.ui.web.WebActivity"
+137-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:92:19-71
+138            android:exported="false"
+138-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:93:13-37
+139            android:theme="@style/horizontal_slide" />
+139-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:94:13-52
+140        <activity android:name="com.facebook.CustomTabMainActivity" />
+140-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:24:9-71
+140-->[com.facebook.android:facebook-common:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f2fb0e8e59034c5ac8c8aee1e913dd79\transformed\jetified-facebook-common-18.1.3\AndroidManifest.xml:24:19-68
+141        <activity
+141-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:29:9-46:20
+142            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+142-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:30:13-80
+143            android:excludeFromRecents="true"
+143-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:31:13-46
+144            android:exported="true"
+144-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:32:13-36
+145            android:launchMode="singleTask"
+145-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:33:13-44
+146            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+146-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:34:13-72
+147            <intent-filter>
+147-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:35:13-45:29
+148                <action android:name="android.intent.action.VIEW" />
+148-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:17-69
+148-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:25-66
+149
+150                <category android:name="android.intent.category.DEFAULT" />
+150-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:17-76
+150-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:27-73
+151                <category android:name="android.intent.category.BROWSABLE" />
+151-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:17-78
+151-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:27-75
+152
+153                <data
+153-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:17-75
+154                    android:host="firebase.auth"
+155                    android:path="/"
+156                    android:scheme="genericidp" />
+156-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:23-72
+157            </intent-filter>
+158        </activity>
+159        <activity
+159-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:47:9-64:20
+160            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+160-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:48:13-79
+161            android:excludeFromRecents="true"
+161-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:49:13-46
+162            android:exported="true"
+162-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:50:13-36
+163            android:launchMode="singleTask"
+163-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:51:13-44
+164            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+164-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:52:13-72
+165            <intent-filter>
+165-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:53:13-63:29
+166                <action android:name="android.intent.action.VIEW" />
+166-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:17-69
+166-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:42:25-66
+167
+168                <category android:name="android.intent.category.DEFAULT" />
+168-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:17-76
+168-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:27-73
+169                <category android:name="android.intent.category.BROWSABLE" />
+169-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:17-78
+169-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:27-75
+170
+171                <data
+171-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:17-75
+172                    android:host="firebase.auth"
+173                    android:path="/"
+174                    android:scheme="recaptcha" />
+174-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:45:23-72
+175            </intent-filter>
+176        </activity>
+177
+178        <service
+178-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:66:9-72:19
+179            android:name="com.google.firebase.components.ComponentDiscoveryService"
+179-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:67:13-84
+180            android:directBootAware="true"
+180-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:32:13-43
+181            android:exported="false" >
+181-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:68:13-37
+182            <meta-data
+182-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:69:13-71:85
+183                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+183-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:70:17-109
+184                android:value="com.google.firebase.components.ComponentRegistrar" />
+184-->[com.google.firebase:firebase-auth:24.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\d296534e12d4edbc5dfeb1f75fe42c78\transformed\jetified-firebase-auth-24.0.0\AndroidManifest.xml:71:17-82
+185            <meta-data
+185-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:35:13-37:85
+186                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+186-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:36:17-109
+187                android:value="com.google.firebase.components.ComponentRegistrar" />
+187-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:37:17-82
+188        </service>
+189        <service
+189-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:24:9-32:19
+190            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
+190-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:25:13-94
+191            android:enabled="true"
+191-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:26:13-35
+192            android:exported="false" >
+192-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:27:13-37
+193            <meta-data
+193-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:29:13-31:104
+194                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+194-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:30:17-76
+195                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
+195-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:31:17-101
+196        </service>
+197
+198        <activity
+198-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:34:9-41:20
+199            android:name="androidx.credentials.playservices.HiddenActivity"
+199-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:35:13-76
+200            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+200-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:36:13-87
+201            android:enabled="true"
+201-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:37:13-35
+202            android:exported="false"
+202-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:38:13-37
+203            android:fitsSystemWindows="true"
+203-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:39:13-45
+204            android:theme="@style/Theme.Hidden" >
+204-->[androidx.credentials:credentials-play-services-auth:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9ff516fe6b007e8edfd5e4e19ff3cce7\transformed\jetified-credentials-play-services-auth-1.3.0\AndroidManifest.xml:40:13-48
+205        </activity>
+206        <activity
+206-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:23:9-27:75
+207            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+207-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:24:13-93
+208            android:excludeFromRecents="true"
+208-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:25:13-46
+209            android:exported="false"
+209-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:26:13-37
+210            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+210-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:27:13-72
+211        <!--
+212            Service handling Google Sign-In user revocation. For apps that do not integrate with
+213            Google Sign-In, this service will never be started.
+214        -->
+215        <service
+215-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:33:9-37:51
+216            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+216-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:34:13-89
+217            android:exported="true"
+217-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:35:13-36
+218            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+218-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:36:13-107
+219            android:visibleToInstantApps="true" />
+219-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8d40ce215b4a465af9e6724ce1ce9ad0\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:37:13-48
+220
+221        <provider
+221-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:23:9-28:39
+222            android:name="com.google.firebase.provider.FirebaseInitProvider"
+222-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:24:13-77
+223            android:authorities="com.anssy.znewspro.firebaseinitprovider"
+223-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:25:13-72
+224            android:directBootAware="true"
+224-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:26:13-43
+225            android:exported="false"
+225-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:27:13-37
+226            android:initOrder="100" />
+226-->[com.google.firebase:firebase-common:22.0.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9b0ddfa9a16695ec31cd7f2e2b9489a0\transformed\jetified-firebase-common-22.0.0\AndroidManifest.xml:28:13-36
+227
+228        <activity
+228-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\adc25d5e615e5b485305f909bf1f5d63\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:9-22:45
+229            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+229-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\adc25d5e615e5b485305f909bf1f5d63\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:19-85
+230            android:exported="false"
+230-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\adc25d5e615e5b485305f909bf1f5d63\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:22:19-43
+231            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+231-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\adc25d5e615e5b485305f909bf1f5d63\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:21:19-78
+232        <activity
+232-->[androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\36f487b9893dac7be6dafa198e2ff848\transformed\jetified-ui-tooling-release\AndroidManifest.xml:23:9-25:39
+233            android:name="androidx.compose.ui.tooling.PreviewActivity"
+233-->[androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\36f487b9893dac7be6dafa198e2ff848\transformed\jetified-ui-tooling-release\AndroidManifest.xml:24:13-71
+234            android:exported="true" />
+234-->[androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\36f487b9893dac7be6dafa198e2ff848\transformed\jetified-ui-tooling-release\AndroidManifest.xml:25:13-36
+235        <activity
+235-->[androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f614db5ede8c8862073a4394a4743529\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:23:9-25:39
+236            android:name="androidx.activity.ComponentActivity"
+236-->[androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f614db5ede8c8862073a4394a4743529\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:24:13-63
+237            android:exported="true" />
+237-->[androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\f614db5ede8c8862073a4394a4743529\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:25:13-36
+238        <!--
+239         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
+240         with the application context. This config is merged in with the host app's manifest,
+241         but there can only be one provider with the same authority activated at any given
+242         point; so if the end user has two or more different apps that use Facebook SDK, only the
+243         first one will be able to use the provider. To work around this problem, we use the
+244         following placeholder in the authority to identify each host application as if it was
+245         a completely different provider.
+246        -->
+247        <provider
+247-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:32:9-35:40
+248            android:name="com.facebook.internal.FacebookInitProvider"
+248-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:33:13-70
+249            android:authorities="com.anssy.znewspro.FacebookInitProvider"
+249-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:34:13-72
+250            android:exported="false" />
+250-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:35:13-37
+251
+252        <receiver
+252-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:37:9-43:20
+253            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
+253-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:38:13-86
+254            android:exported="false" >
+254-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:39:13-37
+255            <intent-filter>
+255-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:40:13-42:29
+256                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
+256-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:41:17-95
+256-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:41:25-92
+257            </intent-filter>
+258        </receiver>
+259        <receiver
+259-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:44:9-50:20
+260            android:name="com.facebook.AuthenticationTokenManager$CurrentAuthenticationTokenChangedBroadcastReceiver"
+260-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:45:13-118
+261            android:exported="false" >
+261-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:46:13-37
+262            <intent-filter>
+262-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:47:13-49:29
+263                <action android:name="com.facebook.sdk.ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED" />
+263-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:48:17-103
+263-->[com.facebook.android:facebook-core:18.1.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\fa6657e9f1f5f948f69948cd743c440a\transformed\jetified-facebook-core-18.1.3\AndroidManifest.xml:48:25-100
+264            </intent-filter>
+265        </receiver>
+266
+267        <provider
+267-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+268            android:name="androidx.startup.InitializationProvider"
+268-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+269            android:authorities="com.anssy.znewspro.androidx-startup"
+269-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+270            android:exported="false" >
+270-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+271            <meta-data
+271-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+272                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+272-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+273                android:value="androidx.startup" />
+273-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3c2bfd9aa16cb584f6588a7d9a0195dd\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+274            <meta-data
+274-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9e7993921dc75e240c44e82519c6ae55\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+275                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+275-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9e7993921dc75e240c44e82519c6ae55\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+276                android:value="androidx.startup" />
+276-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\9e7993921dc75e240c44e82519c6ae55\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+277            <meta-data
+277-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+278                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+278-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+279                android:value="androidx.startup" />
+279-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+280        </provider>
+281
+282        <meta-data
+282-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\7eed54d927998dcd22aaf89c7c5ac737\transformed\jetified-play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+283            android:name="com.google.android.gms.version"
+283-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\7eed54d927998dcd22aaf89c7c5ac737\transformed\jetified-play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
+284            android:value="@integer/google_play_services_version" />
+284-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\7eed54d927998dcd22aaf89c7c5ac737\transformed\jetified-play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+285
+286        <receiver
+286-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+287            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+287-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+288            android:directBootAware="false"
+288-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+289            android:enabled="true"
+289-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+290            android:exported="true"
+290-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+291            android:permission="android.permission.DUMP" >
+291-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+292            <intent-filter>
+292-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+293                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+293-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+293-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+294            </intent-filter>
+295            <intent-filter>
+295-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+296                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+296-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+296-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+297            </intent-filter>
+298            <intent-filter>
+298-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+299                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+299-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+299-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+300            </intent-filter>
+301            <intent-filter>
+301-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+302                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+302-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+302-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\8094b72f99d79b72d7f7a7395311bf86\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+303            </intent-filter>
+304        </receiver>
+305
+306        <provider
+306-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bd6150dfe3af7785576c75025a546a20\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:12:9-16:43
+307            android:name="me.jessyan.autosize.InitProvider"
+307-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bd6150dfe3af7785576c75025a546a20\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:13:13-60
+308            android:authorities="com.anssy.znewspro.autosize-init-provider"
+308-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bd6150dfe3af7785576c75025a546a20\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:14:13-74
+309            android:exported="false"
+309-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bd6150dfe3af7785576c75025a546a20\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:15:13-37
+310            android:multiprocess="true" />
+310-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bd6150dfe3af7785576c75025a546a20\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:16:13-40
+311        <provider
+311-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bad70d51704e0b6f8fe100b242cebe32\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:10:9-14:43
+312            android:name="razerdp.basepopup.BasePopupInitializer"
+312-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bad70d51704e0b6f8fe100b242cebe32\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:11:13-66
+313            android:authorities="com.github.razerdp.com.anssy.znewspro.BasePopupInitializer"
+313-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bad70d51704e0b6f8fe100b242cebe32\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:12:13-91
+314            android:exported="false"
+314-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bad70d51704e0b6f8fe100b242cebe32\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:13:13-37
+315            android:multiprocess="true" /> <!-- The activities will be merged into the manifest of the hosting app. -->
+315-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\bad70d51704e0b6f8fe100b242cebe32\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:14:13-40
+316        <activity
+316-->[com.google.android.play:core-common:2.0.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\90349baeed9ecca0ac624fd728b5a993\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:14:9-18:65
+317            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+317-->[com.google.android.play:core-common:2.0.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\90349baeed9ecca0ac624fd728b5a993\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:15:13-93
+318            android:exported="false"
+318-->[com.google.android.play:core-common:2.0.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\90349baeed9ecca0ac624fd728b5a993\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:16:13-37
+319            android:stateNotNeeded="true"
+319-->[com.google.android.play:core-common:2.0.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\90349baeed9ecca0ac624fd728b5a993\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:17:13-42
+320            android:theme="@style/Theme.PlayCore.Transparent" />
+320-->[com.google.android.play:core-common:2.0.3] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\90349baeed9ecca0ac624fd728b5a993\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:18:13-62
+321    </application>
+322
+323</manifest>

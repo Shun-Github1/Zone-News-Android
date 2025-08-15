@@ -1,0 +1,67 @@
+package com.anssy.znewspro.ui.mainfrag;
+
+/**
+ * @Description 主界面
+ * @Author yulu
+ * @CreateTime 2025年06月30日 08:50:12
+ */
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000H\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\b\u0007\u0018\u0000 \u00162\u00020\u0001:\u0002\u0016\u0017B\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\f\u001a\u00020\rH\u0016J$\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00020\u00112\b\u0010\u0012\u001a\u0004\u0018\u00010\u00132\b\u0010\u0014\u001a\u0004\u0018\u00010\u0015H\u0016R\u0014\u0010\u0003\u001a\b\u0012\u0004\u0012\u00020\u00050\u0004X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0007X\u0082.\u00a2\u0006\u0002\n\u0000R\u0016\u0010\b\u001a\b\u0012\u0004\u0012\u00020\n0\tX\u0082\u0004\u00a2\u0006\u0004\n\u0002\u0010\u000b\u00a8\u0006\u0018"}, d2 = {"Lcom/anssy/znewspro/ui/mainfrag/HomeFrag;", "Lcom/anssy/znewspro/base/BaseFragment;", "()V", "fragmentList", "Ljava/util/ArrayList;", "Landroidx/fragment/app/Fragment;", "mViewBinding", "Lcom/anssy/znewspro/databinding/FragHomeBinding;", "titleGroup", "", "", "[Ljava/lang/String;", "initData", "", "onCreateView", "Landroid/view/View;", "inflater", "Landroid/view/LayoutInflater;", "container", "Landroid/view/ViewGroup;", "savedInstanceState", "Landroid/os/Bundle;", "Companion", "MyAdapter", "app_debug"})
+public final class HomeFrag extends com.anssy.znewspro.base.BaseFragment {
+    private com.anssy.znewspro.databinding.FragHomeBinding mViewBinding;
+    @org.jetbrains.annotations.NotNull()
+    private java.util.ArrayList<androidx.fragment.app.Fragment> fragmentList;
+    @org.jetbrains.annotations.NotNull()
+    private final java.lang.String[] titleGroup = {"\u4eca\u5929", "\u9999\u6e2f", "\u4e2d\u56fd"};
+    @org.jetbrains.annotations.NotNull()
+    public static final com.anssy.znewspro.ui.mainfrag.HomeFrag.Companion Companion = null;
+    
+    public HomeFrag() {
+        super();
+    }
+    
+    @java.lang.Override()
+    @org.jetbrains.annotations.NotNull()
+    public android.view.View onCreateView(@org.jetbrains.annotations.NotNull()
+    android.view.LayoutInflater inflater, @org.jetbrains.annotations.Nullable()
+    android.view.ViewGroup container, @org.jetbrains.annotations.Nullable()
+    android.os.Bundle savedInstanceState) {
+        return null;
+    }
+    
+    @java.lang.Override()
+    public void initData() {
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u0006\u0010\u0003\u001a\u00020\u0004\u00a8\u0006\u0005"}, d2 = {"Lcom/anssy/znewspro/ui/mainfrag/HomeFrag$Companion;", "", "()V", "getInstance", "Lcom/anssy/znewspro/ui/mainfrag/HomeFrag;", "app_debug"})
+    public static final class Companion {
+        
+        private Companion() {
+            super();
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.anssy.znewspro.ui.mainfrag.HomeFrag getInstance() {
+            return null;
+        }
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\b\n\u0002\b\u0002\b\u0082\u0004\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\u0002\u0010\u0004J\u0010\u0010\u0005\u001a\u00020\u00032\u0006\u0010\u0006\u001a\u00020\u0007H\u0016J\b\u0010\b\u001a\u00020\u0007H\u0016\u00a8\u0006\t"}, d2 = {"Lcom/anssy/znewspro/ui/mainfrag/HomeFrag$MyAdapter;", "Landroidx/viewpager2/adapter/FragmentStateAdapter;", "fragment", "Landroidx/fragment/app/Fragment;", "(Lcom/anssy/znewspro/ui/mainfrag/HomeFrag;Landroidx/fragment/app/Fragment;)V", "createFragment", "position", "", "getItemCount", "app_debug"})
+    final class MyAdapter extends androidx.viewpager2.adapter.FragmentStateAdapter {
+        
+        public MyAdapter(@org.jetbrains.annotations.NotNull()
+        androidx.fragment.app.Fragment fragment) {
+            super(null);
+        }
+        
+        @java.lang.Override()
+        public int getItemCount() {
+            return 0;
+        }
+        
+        @java.lang.Override()
+        @org.jetbrains.annotations.NotNull()
+        public androidx.fragment.app.Fragment createFragment(int position) {
+            return null;
+        }
+    }
+}

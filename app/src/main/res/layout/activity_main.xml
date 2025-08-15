@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="?attr/colorSurface"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/main_bottom_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        style="@style/Widget.Material3.CardView.Elevated"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <RadioGroup
+            android:id="@+id/main_rg"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:padding="4dp"
+            android:background="?attr/colorSurface"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/home_rb"
+                style="@style/tabStyle"
+                android:checked="true"
+                android:drawableTop="@drawable/home_selector"
+                android:text="@string/main_page" />
+
+            <RadioButton
+                android:id="@+id/special_rb"
+                style="@style/tabStyle"
+                android:drawableTop="@drawable/special_selector"
+                android:text="@string/person_recommend" />
+
+            <RadioButton
+                android:id="@+id/my_rb"
+                style="@style/tabStyle"
+                android:drawableTop="@drawable/my_selector"
+                android:text="@string/my" />
+
+            <RadioButton
+                android:id="@+id/search_rb"
+                style="@style/tabStyle"
+                android:drawableTop="@drawable/search_selector"
+                android:text="@string/discover" />
+        </RadioGroup>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

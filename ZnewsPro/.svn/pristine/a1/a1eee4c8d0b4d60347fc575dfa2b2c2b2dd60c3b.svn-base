@@ -1,0 +1,39 @@
+package com.anssy.znewspro.ui.login
+
+import android.content.Intent
+import android.os.Bundle
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityLoginBinding
+import com.anssy.znewspro.ui.MainActivity
+import com.anssy.znewspro.utils.SharedPreferenceUtils
+import com.jaeger.library.StatusBarUtil
+
+/**
+ * @Description 登录界面
+ * @Author yulu
+ * @CreateTime 2025年07月03日 15:32:28
+ */
+
+class LoginActivity :BaseActivity() {
+    private lateinit var mViewBinding:ActivityLoginBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(mViewBinding.root)
+        if (SharedPreferenceUtils.getBoolean(mContext,"isLogin")){
+            val intent = Intent(mContext,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }else{
+            initView()
+            StatusBarUtil.setTranslucentForImageView(this,0,null)
+        }
+    }
+
+    private fun initView() {
+        mViewBinding.emailLoginLayout.setOnClickListener {
+            val intent = Intent(mContext,LoginEmailActivity::class.java)
+            startActivity(intent)
+        }
+    }
+}

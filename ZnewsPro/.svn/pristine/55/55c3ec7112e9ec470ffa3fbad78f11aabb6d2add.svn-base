@@ -1,0 +1,314 @@
+[
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_frag_search.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\frag_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\xml_file_paths.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\xml\\file_paths.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\xml_network_security_config.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\xml\\network_security_config.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_slide_in_from_left.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\slide_in_from_left.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_head_in.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\head_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_head_out.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\head_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_bounce.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\bounce.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_push_top_in2.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\push_top_in2.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_push_top_out.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\push_top_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_push_bottom_in.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\push_bottom_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_fade_in.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\fade_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_search_click.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_search_click.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_icon_search.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\icon_search.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_add_new_out.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\add_new_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_item_banner.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\item_banner.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_my_his.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_my_his.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_temp_avatar.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_temp_avatar.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_home_click.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_home_click.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_frag_child_home.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\frag_child_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_frag_advice.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\frag_advice.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_frag_my.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\frag_my.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_slide_out_to_left.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\slide_out_to_left.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_special_selector.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\special_selector.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_wode_click.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_wode_click.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_home_selector.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\home_selector.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_home_notice.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_home_notice.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_push_top_in.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\push_top_in.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-65:/layout_item_topic_recycler.xml.flat",
+        "source": "com.anssy.znewspro.app-main-67:/layout/item_topic_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_activity_topic_modify.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\activity_topic_modify.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_wode_normal.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_wode_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_icon_popup_close_default.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\icon_popup_close_default.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_my_collect.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_my_collect.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_home_more.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_home_more.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_my_selector.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\my_selector.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_home_normal.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_home_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_hold.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\hold.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_special_normal.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_special_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_search_normal.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_search_normal.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_search_selector.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\search_selector.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_selecter_text.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\selecter_text.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_item_home_recycler.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\item_home_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_frag_home.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\frag_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_my_version.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_my_version.png"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-debug-65:/layout_activity_topic_modify.xml.flat",
+        "source": "com.anssy.znewspro.app-main-67:/layout/activity_topic_modify.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_item_topic_recycler.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\item_topic_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_icon_arrow_regular_right.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\icon_arrow_regular_right.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_fade_out.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\fade_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_back_sting_white.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\back_sting_white.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_more.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_more.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_push_top_out2.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\push_top_out2.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_advice_setting.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_advice_setting.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_add_new_in.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\add_new_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_push_bottom_out.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\push_bottom_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_my_about_us.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_my_about_us.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable_bottom_line.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable\\bottom_line.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\layout_setting_popu.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\layout\\setting_popu.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_actionsheet_dialog_out.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\actionsheet_dialog_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_slide_in_from_right.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\slide_in_from_right.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\drawable-xxhdpi_pg_tab_special_click.png.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\drawable-xxhdpi\\pg_tab_special_click.png"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_actionsheet_dialog_in.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\actionsheet_dialog_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-debug-65:\\anim_slide_out_to_right.xml.flat",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-67:\\anim\\slide_out_to_right.xml"
+    }
+]

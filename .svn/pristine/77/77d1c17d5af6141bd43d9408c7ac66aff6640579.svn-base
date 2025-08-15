@@ -1,0 +1,39 @@
+package com.anssy.znewspro.repository
+
+import com.anssy.znewspro.entry.ArticleDetailEntry
+import com.anssy.znewspro.entry.CommonResponseEntry
+import com.anssy.znewspro.net.AppHttpService
+import com.anssy.znewspro.utils.Utils
+import com.anssy.znewspro.utils.network.exception.GenericResponse
+import org.json.JSONObject
+import javax.inject.Inject
+
+/**
+ * @Description 详情 repository
+ * @Author yulu
+ * @CreateTime 2025年07月04日 17:24:04
+ */
+
+class NewsDetailRepository @Inject constructor(private val appHttpService: AppHttpService) {
+    suspend fun queryNewsDetail(id: String): ArticleDetailEntry {
+        return appHttpService.queryArticleDetail(id)
+    }
+
+    suspend fun addFeedBack(id: String, content: String): GenericResponse<CommonResponseEntry> {
+        val jsonObject = JSONObject()
+        jsonObject.put("content", content)
+        return appHttpService.addFeedBack(id, Utils.createJsonRequestBody(jsonObject.toString()))
+    }
+
+    suspend fun saveHis(id: String): GenericResponse<CommonResponseEntry> {
+        return appHttpService.saveNewsHis(id)
+    }
+
+    suspend fun collectHis(id:String):GenericResponse<CommonResponseEntry>{
+        return  appHttpService.collectNews(id)
+    }
+
+    suspend fun deleteCollect(id:String):GenericResponse<CommonResponseEntry>{
+        return  appHttpService.deleteCollect(id)
+    }
+}

@@ -1,0 +1,261 @@
+package com.anssy.znewspro.utils;
+
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000t\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0006\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0005\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0007\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\t\n\u0002\u0018\u0002\n\u0002\b\u0012\n\u0002\u0010\u0013\n\u0002\b\r\n\u0002\u0010\u000b\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\b\t\b\u00c7\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nJ\u0012\u0010\u000b\u001a\u00020\f2\b\u0010\r\u001a\u0004\u0018\u00010\u000eH\u0007J$\u0010\u000f\u001a\u00020\n2\b\u0010\u0010\u001a\u0004\u0018\u00010\u000e2\b\u0010\u0011\u001a\u0004\u0018\u00010\u000e2\b\u0010\u0012\u001a\u0004\u0018\u00010\u000eJ\u0010\u0010\u0013\u001a\u00020\u00142\b\u0010\u0015\u001a\u0004\u0018\u00010\u0016J\u0016\u0010\u0017\u001a\u00020\u00142\u0006\u0010\u0018\u001a\u00020\u00192\u0006\u0010\u001a\u001a\u00020\u000eJ\u0018\u0010\u001b\u001a\u00020\u00042\u0006\u0010\u001c\u001a\u00020\u001d2\u0006\u0010\u0018\u001a\u00020\u0019H\u0007J\u0016\u0010\u001e\u001a\u00020\u00042\u0006\u0010\u001f\u001a\u00020\u001d2\u0006\u0010 \u001a\u00020!J\u000e\u0010\"\u001a\u00020\u000e2\u0006\u0010#\u001a\u00020\u000eJ\u001a\u0010$\u001a\u00020\u00042\b\u0010%\u001a\u0004\u0018\u00010\u000e2\b\u0010&\u001a\u0004\u0018\u00010\u000eJ\u0010\u0010\'\u001a\u00020\u000e2\u0006\u0010(\u001a\u00020\nH\u0002J\u0010\u0010)\u001a\u00020\u000e2\b\u0010*\u001a\u0004\u0018\u00010+J\u0010\u0010,\u001a\u00020\u000e2\b\u0010*\u001a\u0004\u0018\u00010+J\u001a\u0010-\u001a\u00020\u00042\b\u0010.\u001a\u0004\u0018\u00010\u000e2\b\u0010/\u001a\u0004\u0018\u00010\u000eJ\u0018\u00100\u001a\u00020\u000e2\u0006\u0010\u0018\u001a\u00020\u00192\b\u00101\u001a\u0004\u0018\u00010\u000eJ\u0010\u00102\u001a\u00020\u000e2\b\u0010*\u001a\u0004\u0018\u00010+J\u0012\u00103\u001a\u00020\u000e2\b\u0010*\u001a\u0004\u0018\u00010+H\u0007J\u000e\u00104\u001a\u00020\u000e2\u0006\u0010(\u001a\u00020\nJ\u000e\u00105\u001a\u00020\u00042\u0006\u0010\u0018\u001a\u00020\u0019J\u0012\u00106\u001a\u00020\u000e2\b\u0010*\u001a\u0004\u0018\u00010+H\u0007J\u000e\u00107\u001a\u00020\n2\u0006\u00108\u001a\u00020\u0019J\u000e\u00109\u001a\u00020\u000e2\u0006\u00108\u001a\u00020\u0019J\u0010\u0010:\u001a\u00020\u000e2\b\u0010;\u001a\u0004\u0018\u00010\u000eJ\u0010\u0010<\u001a\u00020\u000e2\b\u0010*\u001a\u0004\u0018\u00010+J\u001e\u0010=\u001a\u00020>2\u0006\u0010?\u001a\u00020\b2\u0006\u0010@\u001a\u00020\b2\u0006\u0010A\u001a\u00020\bJ\u0010\u0010B\u001a\u0004\u0018\u00010+2\u0006\u0010C\u001a\u00020\u000eJ\u000e\u0010D\u001a\u00020\u000e2\u0006\u0010E\u001a\u00020\u000eJ\u000e\u0010F\u001a\u00020\u000e2\u0006\u0010G\u001a\u00020\u000eJ\u000e\u0010H\u001a\u00020\u000e2\u0006\u0010I\u001a\u00020\u000eJ\u0010\u0010J\u001a\u00020\u00142\u0006\u0010\u0018\u001a\u00020\u0019H\u0007J\u001a\u0010K\u001a\u00020L2\b\u0010M\u001a\u0004\u0018\u00010\u000e2\b\u0010N\u001a\u0004\u0018\u00010\u000eJ\u0012\u0010O\u001a\u00020L2\b\u0010\r\u001a\u0004\u0018\u00010\u000eH\u0007J\u000e\u0010P\u001a\u00020L2\u0006\u0010Q\u001a\u00020RJ\u0010\u0010S\u001a\u00020L2\b\u0010\u0018\u001a\u0004\u0018\u00010\u0019J\u0016\u0010T\u001a\u00020\u00042\u0006\u0010\u0018\u001a\u00020\u00192\u0006\u0010U\u001a\u00020\u001dJ\u0017\u0010V\u001a\u00020+2\b\u0010C\u001a\u0004\u0018\u00010\u000eH\u0000\u00a2\u0006\u0002\bWJ\u000e\u0010X\u001a\u00020\u00142\u0006\u0010\u0018\u001a\u00020\u0019J\u0018\u0010Y\u001a\u00020\u00142\b\u0010Z\u001a\u0004\u0018\u00010\u000e2\u0006\u0010\u0018\u001a\u00020\u0019R\u0011\u0010\u0003\u001a\u00020\u00048F\u00a2\u0006\u0006\u001a\u0004\b\u0005\u0010\u0006\u00a8\u0006["}, d2 = {"Lcom/anssy/znewspro/utils/Utils;", "", "()V", "month", "", "getMonth", "()I", "convertBytesToMB", "", "bytes", "", "createJsonRequestBody", "Lokhttp3/RequestBody;", "json", "", "dateDiff", "startTime", "endTime", "format", "decimal", "", "edt", "Landroid/text/Editable;", "dialPhoneNumber", "context", "Landroid/content/Context;", "phoneNumber", "dip2px", "dpValue", "", "dpToPx", "dp", "resources", "Landroid/content/res/Resources;", "formatBank", "str", "getBetweenDays", "startTimeStr", "endTimeStr", "getDateTimeFromMillisecond", "millisecond", "getDayDate", "date", "Ljava/util/Date;", "getFormatTime", "getGapMinutes", "startDate", "endDate", "getJson", "fileName", "getRealMintuteDate", "getSecondTime", "getSpaceTime", "getStatusBarHeight", "getTime", "getVersionCode", "mContext", "getVersionName", "getWeek", "time", "getYearDate", "get_coordinate", "", "latitude", "longitude", "altitude", "gmtFormat", "strDate", "hideAli", "ali", "hideCardLast4Number", "card", "hidePhone4Number", "phone", "hideSoftMethod", "isDateOneBigger", "", "str1", "str2", "isGoodJson", "isLocationEnable", "activity", "Landroid/app/Activity;", "isLogin", "px2dip", "pxValue", "strToDateLong", "strToDateLong$app_debug", "toSelfSetting", "toWeb", "url", "app_debug"})
+public final class Utils {
+    @org.jetbrains.annotations.NotNull()
+    public static final com.anssy.znewspro.utils.Utils INSTANCE = null;
+    
+    private Utils() {
+        super();
+    }
+    
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    @kotlin.jvm.JvmStatic()
+    public static final int dip2px(float dpValue, @org.jetbrains.annotations.NotNull()
+    android.content.Context context) {
+        return 0;
+    }
+    
+    /**
+     * 将字节数转换成MB的函数
+     * @param bytes 输入的字节数
+     * @return 转换后的MB数
+     */
+    public final double convertBytesToMB(long bytes) {
+        return 0.0;
+    }
+    
+    /**
+     * 获取两个时间段的分钟差
+     *
+     *
+     *
+     * @param startDate 年月日时分秒
+     *
+     * @param endDate
+     *
+     * @return
+     */
+    public final int getGapMinutes(@org.jetbrains.annotations.Nullable()
+    java.lang.String startDate, @org.jetbrains.annotations.Nullable()
+    java.lang.String endDate) {
+        return 0;
+    }
+    
+    @org.jetbrains.annotations.Nullable()
+    public final java.util.Date gmtFormat(@org.jetbrains.annotations.NotNull()
+    java.lang.String strDate) {
+        return null;
+    }
+    
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    public final int px2dip(@org.jetbrains.annotations.NotNull()
+    android.content.Context context, float pxValue) {
+        return 0;
+    }
+    
+    public final int dpToPx(float dp, @org.jetbrains.annotations.NotNull()
+    android.content.res.Resources resources) {
+        return 0;
+    }
+    
+    @kotlin.jvm.JvmStatic()
+    public static final boolean isGoodJson(@org.jetbrains.annotations.Nullable()
+    java.lang.String json) {
+        return false;
+    }
+    
+    public final int getStatusBarHeight(@org.jetbrains.annotations.NotNull()
+    android.content.Context context) {
+        return 0;
+    }
+    
+    /**
+     * 控制输入格式，保留两位小数
+     *
+     * @param edt Editable
+     */
+    public final void decimal(@org.jetbrains.annotations.Nullable()
+    android.text.Editable edt) {
+    }
+    
+    @kotlin.jvm.JvmStatic()
+    public static final void hideSoftMethod(@org.jetbrains.annotations.NotNull()
+    android.content.Context context) {
+    }
+    
+    @kotlin.jvm.JvmStatic()
+    @org.jetbrains.annotations.NotNull()
+    public static final java.lang.String getTime(@org.jetbrains.annotations.Nullable()
+    java.util.Date date) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getYearDate(@org.jetbrains.annotations.Nullable()
+    java.util.Date date) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getDayDate(@org.jetbrains.annotations.Nullable()
+    java.util.Date date) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getRealMintuteDate(@org.jetbrains.annotations.Nullable()
+    java.util.Date date) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getWeek(@org.jetbrains.annotations.Nullable()
+    java.lang.String time) {
+        return null;
+    }
+    
+    /**
+     * @Desc 获取两个时间之间的间隔天数（方式2）
+     * @param startTimeStr
+     * @param endTimeStr
+     * @return
+     */
+    public final int getBetweenDays(@org.jetbrains.annotations.Nullable()
+    java.lang.String startTimeStr, @org.jetbrains.annotations.Nullable()
+    java.lang.String endTimeStr) {
+        return 0;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.util.Date strToDateLong$app_debug(@org.jetbrains.annotations.Nullable()
+    java.lang.String strDate) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getSpaceTime(long millisecond) {
+        return null;
+    }
+    
+    private final java.lang.String getDateTimeFromMillisecond(long millisecond) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getFormatTime(@org.jetbrains.annotations.Nullable()
+    java.util.Date date) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final double[] get_coordinate(double latitude, double longitude, double altitude) {
+        return null;
+    }
+    
+    @kotlin.jvm.JvmStatic()
+    @org.jetbrains.annotations.NotNull()
+    public static final java.lang.String getSecondTime(@org.jetbrains.annotations.Nullable()
+    java.util.Date date) {
+        return null;
+    }
+    
+    public final boolean isDateOneBigger(@org.jetbrains.annotations.Nullable()
+    java.lang.String str1, @org.jetbrains.annotations.Nullable()
+    java.lang.String str2) {
+        return false;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getJson(@org.jetbrains.annotations.NotNull()
+    android.content.Context context, @org.jetbrains.annotations.Nullable()
+    java.lang.String fileName) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String getVersionName(@org.jetbrains.annotations.NotNull()
+    android.content.Context mContext) {
+        return null;
+    }
+    
+    public final long getVersionCode(@org.jetbrains.annotations.NotNull()
+    android.content.Context mContext) {
+        return 0L;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String hidePhone4Number(@org.jetbrains.annotations.NotNull()
+    java.lang.String phone) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String hideCardLast4Number(@org.jetbrains.annotations.NotNull()
+    java.lang.String card) {
+        return null;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String hideAli(@org.jetbrains.annotations.NotNull()
+    java.lang.String ali) {
+        return null;
+    }
+    
+    public final void toWeb(@org.jetbrains.annotations.Nullable()
+    java.lang.String url, @org.jetbrains.annotations.NotNull()
+    android.content.Context context) {
+    }
+    
+    public final void dialPhoneNumber(@org.jetbrains.annotations.NotNull()
+    android.content.Context context, @org.jetbrains.annotations.NotNull()
+    java.lang.String phoneNumber) {
+    }
+    
+    public final int getMonth() {
+        return 0;
+    }
+    
+    public final void toSelfSetting(@org.jetbrains.annotations.NotNull()
+    android.content.Context context) {
+    }
+    
+    public final boolean isLogin(@org.jetbrains.annotations.Nullable()
+    android.content.Context context) {
+        return false;
+    }
+    
+    @kotlin.jvm.JvmStatic()
+    @org.jetbrains.annotations.NotNull()
+    public static final okhttp3.RequestBody createJsonRequestBody(@org.jetbrains.annotations.Nullable()
+    java.lang.String json) {
+        return null;
+    }
+    
+    /**
+     * 判断网络定位是否打开
+     *
+     * @return 定位打开结果
+     */
+    public final boolean isLocationEnable(@org.jetbrains.annotations.NotNull()
+    android.app.Activity activity) {
+        return false;
+    }
+    
+    public final long dateDiff(@org.jetbrains.annotations.Nullable()
+    java.lang.String startTime, @org.jetbrains.annotations.Nullable()
+    java.lang.String endTime, @org.jetbrains.annotations.Nullable()
+    java.lang.String format) {
+        return 0L;
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final java.lang.String formatBank(@org.jetbrains.annotations.NotNull()
+    java.lang.String str) {
+        return null;
+    }
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+    <com.hjq.shape.view.ShapeRadioButton
+        android:id="@+id/item_rb"
+        android:layout_width="108dp"
+        android:layout_height="33dp"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/hongkong"
+        android:layout_centerHorizontal="true"
+        android:paddingVertical="8dp"
+        android:textSize="13sp"
+        app:shape_solidCheckedColor="@color/main_color"
+        app:shape_solidColor="@color/back_color"
+        app:shape_textCheckedColor="@color/white"
+        app:shape_textColor="#454545" />
+
+</RelativeLayout>

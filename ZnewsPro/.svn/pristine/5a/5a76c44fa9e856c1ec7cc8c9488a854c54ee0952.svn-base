@@ -1,0 +1,154 @@
+[
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_meida_iv.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_meida_iv.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_home_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_home_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/ques_pop.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/ques_pop.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/fliter_popu.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/fliter_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_brown_his.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_brown_his.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/frag_home.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/frag_home.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_score.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_score.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_related_topic.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_related_topic.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_register.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_register.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_login.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_report_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_report_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/frag_child_home.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/frag_child_home.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_all_report.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_all_report.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_ad.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_ad.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_related_news_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_related_news_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_child_media_focus_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_child_media_focus_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_temp_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_temp_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/frag_search.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/frag_search.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_news_detail.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_news_detail.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_related_news.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_related_news.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_no_data.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_no_data.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_brown_his.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_brown_his.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_main.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/common_toolbar_layout.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/common_toolbar_layout.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/layout_media_focus.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/layout_media_focus.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_topic_modify.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_topic_modify.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_con_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_con_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/setting_popu.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/setting_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/tag_tv.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/tag_tv.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/frag_advice.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/frag_advice.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/rate_popu.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/rate_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_topic_recycler.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_topic_recycler.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_all_topic.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_all_topic.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/frag_my.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/frag_my.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_web.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_web.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/feedback_popu.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/feedback_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/item_banner.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/item_banner.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-85:/layout/activity_login_email.xml",
+        "source": "com.anssy.znewspro.app-main-88:/layout/activity_login_email.xml"
+    }
+]

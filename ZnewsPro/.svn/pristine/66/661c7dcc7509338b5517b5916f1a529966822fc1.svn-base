@@ -1,0 +1,33 @@
+package com.anssy.znewspro.model
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.anssy.znewspro.entry.ArticleDetailEntry
+import com.anssy.znewspro.repository.NewsDetailRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月04日 17:26:42
+ */
+@HiltViewModel
+class NewsDetailModel @Inject constructor(private val newsDetailRepository: NewsDetailRepository):ViewModel() {
+    private var _newsDetailEntry:MutableLiveData<ArticleDetailEntry> = MutableLiveData<ArticleDetailEntry>()
+    var newsDetailEntry:LiveData<ArticleDetailEntry> = _newsDetailEntry
+
+    fun queryNewsDetail(id:String){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                newsDetailRepository.queryNewsDetail(id)
+            }
+            _newsDetailEntry.value = result
+        }
+    }
+}

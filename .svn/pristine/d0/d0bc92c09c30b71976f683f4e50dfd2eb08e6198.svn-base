@@ -1,0 +1,150 @@
+[
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_media_focus.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_media_focus.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\tag_tv.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\tag_tv.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_con_recycler.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_con_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_brown_his.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_brown_his.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\frag_search.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\frag_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_no_data.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_no_data.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\frag_home.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\frag_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_related_topic.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_related_topic.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_all_report.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_all_report.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_report_recycler.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_report_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_score.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_score.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_all_topic.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_all_topic.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_register.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_register.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\fliter_popu.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\fliter_popu.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\frag_my.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\frag_my.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\setting_popu.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\setting_popu.xml"
+    },
+    {
+        "merged": "com.anssy.znewspro.app-mergeDebugResources-69:/layout/frag_my.xml",
+        "source": "com.anssy.znewspro.app-main-72:/layout/frag_my.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_ad.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_ad.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\layout_related_news.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\layout_related_news.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_home_recycler.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_home_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_child_media_focus_recycler.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_child_media_focus_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_brown_his.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_brown_his.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_meida_iv.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_meida_iv.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_topic_modify.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_topic_modify.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_related_news_recycler.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_related_news_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_news_detail.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_news_detail.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_banner.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_banner.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\common_toolbar_layout.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\common_toolbar_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\rate_popu.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\rate_popu.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_login.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\feedback_popu.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\feedback_popu.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_login_email.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_login_email.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\activity_web.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\activity_web.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\frag_child_home.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\frag_child_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\item_topic_recycler.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\item_topic_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-mergeDebugResources-69:\\layout\\frag_advice.xml",
+        "source": "C:\\Users\\ANSSY241115\\.gradle\\daemon\\8.9\\com.anssy.znewspro.app-main-72:\\layout\\frag_advice.xml"
+    }
+]

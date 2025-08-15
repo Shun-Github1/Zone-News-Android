@@ -1,0 +1,69 @@
+package com.anssy.shunxingass.entry;
+
+import java.io.Serializable;
+
+/**
+ * @Author yulu
+ * @Date 2023/3/14
+ */
+public class TagEntry implements Serializable {
+    private String tagName;
+    private boolean tagCheck;
+    private String level;
+    private int tagId;
+    private int parentId;
+
+    public TagEntry(String tagName, boolean tagCheck) {
+        this.tagName = tagName;
+        this.tagCheck = tagCheck;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public boolean isTagCheck() {
+        return tagCheck;
+    }
+
+    public void setTagCheck(boolean tagCheck) {
+        this.tagCheck = tagCheck;
+    }
+
+    @Override
+    public String toString() {
+        return "TagEntry{" +
+                "tagName='" + tagName + '\'' +
+                ", tagCheck=" + tagCheck +
+                ", tagId=" + tagId +
+                '}';
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+}

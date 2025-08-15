@@ -1,0 +1,126 @@
+package com.anssy.znewspro.net;
+
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000h\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\b\n\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\t\bf\u0018\u00002\u00020\u0001J8\u0010\u0002\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u00062\b\b\u0001\u0010\u0007\u001a\u00020\b2\b\b\u0001\u0010\t\u001a\u00020\nH\u00a7@\u00a2\u0006\u0002\u0010\u000bJ.\u0010\f\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u00062\b\b\u0001\u0010\r\u001a\u00020\bH\u00a7@\u00a2\u0006\u0002\u0010\u000eJ.\u0010\u000f\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u00062\b\b\u0001\u0010\r\u001a\u00020\bH\u00a7@\u00a2\u0006\u0002\u0010\u000eJ8\u0010\u0010\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u00062\b\b\u0001\u0010\u0011\u001a\u00020\b2\b\b\u0001\u0010\u0012\u001a\u00020\bH\u00a7@\u00a2\u0006\u0002\u0010\u0013J\u0018\u0010\u0014\u001a\u00020\u00152\b\b\u0001\u0010\t\u001a\u00020\nH\u00a7@\u00a2\u0006\u0002\u0010\u0016J.\u0010\u0017\u001a\u0018\u0012\u0004\u0012\u00020\u0018\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0018`\u00062\b\b\u0001\u0010\t\u001a\u00020\nH\u00a7@\u00a2\u0006\u0002\u0010\u0016J$\u0010\u0019\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ$\u0010\u001b\u001a\u0018\u0012\u0004\u0012\u00020\u001c\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u001c`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ$\u0010\u001d\u001a\u0018\u0012\u0004\u0012\u00020\u001e\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u001e`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ\u0018\u0010\u001f\u001a\u00020 2\b\b\u0001\u0010\u0007\u001a\u00020\bH\u00a7@\u00a2\u0006\u0002\u0010\u000eJ$\u0010!\u001a\u0018\u0012\u0004\u0012\u00020\"\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\"`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ$\u0010#\u001a\u0018\u0012\u0004\u0012\u00020$\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020$`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ$\u0010%\u001a\u0018\u0012\u0004\u0012\u00020\u001e\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u001e`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ8\u0010&\u001a\u0018\u0012\u0004\u0012\u00020\'\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\'`\u00062\b\b\u0001\u0010(\u001a\u00020)2\b\b\u0001\u0010*\u001a\u00020)H\u00a7@\u00a2\u0006\u0002\u0010+J$\u0010,\u001a\u0018\u0012\u0004\u0012\u00020\'\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\'`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ$\u0010-\u001a\u0018\u0012\u0004\u0012\u00020\"\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\"`\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001aJ.\u0010.\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u00062\b\b\u0001\u0010\t\u001a\u00020\nH\u00a7@\u00a2\u0006\u0002\u0010\u0016J.\u0010/\u001a\u0018\u0012\u0004\u0012\u00020\u0004\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\u0004`\u00062\b\b\u0001\u0010\r\u001a\u00020\bH\u00a7@\u00a2\u0006\u0002\u0010\u000eJ.\u00100\u001a\u0018\u0012\u0004\u0012\u00020\'\u0012\u0004\u0012\u00020\u00050\u0003j\b\u0012\u0004\u0012\u00020\'`\u00062\b\b\u0001\u00101\u001a\u00020\bH\u00a7@\u00a2\u0006\u0002\u0010\u000e\u00a8\u00062"}, d2 = {"Lcom/anssy/znewspro/net/AppHttpService;", "", "addFeedBack", "Lcom/anssy/znewspro/utils/network/exception/NetworkResponse;", "Lcom/anssy/znewspro/entry/CommonResponseEntry;", "Lcom/anssy/znewspro/utils/network/exception/HttpError;", "Lcom/anssy/znewspro/utils/network/exception/GenericResponse;", "articleId", "", "requestBody", "Lokhttp3/RequestBody;", "(Ljava/lang/String;Lokhttp3/RequestBody;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "collectNews", "id", "(Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "deleteCollect", "editTopic", "actionType", "topic", "(Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getHomeData", "Lcom/anssy/znewspro/entry/HomeDataListEntry;", "(Lokhttp3/RequestBody;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "loginApp", "Lcom/anssy/znewspro/entry/LoginEntry;", "logoutApp", "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "queryAboutUs", "Lcom/anssy/znewspro/entry/AboutUsEntry;", "queryAllTopics", "Lcom/anssy/znewspro/entry/TopicListEntry;", "queryArticleDetail", "Lcom/anssy/znewspro/entry/ArticleDetailEntry;", "queryMyCollect", "Lcom/anssy/znewspro/entry/ViewHisEntry;", "queryMyFormation", "Lcom/anssy/znewspro/entry/MyFormationEntry;", "queryMyTopics", "queryPersonRecommend", "Lcom/anssy/znewspro/entry/SearchListEntry;", "pageNo", "", "pageSize", "(IILkotlin/coroutines/Continuation;)Ljava/lang/Object;", "querySearchList", "queryViewHis", "registerApp", "saveNewsHis", "searchNewsByTitle", "title", "app_debug"})
+public abstract interface AppHttpService {
+    
+    @retrofit2.http.POST(value = "auth/login")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object loginApp(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    okhttp3.RequestBody requestBody, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.LoginEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "feed")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getHomeData(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    okhttp3.RequestBody requestBody, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.HomeDataListEntry> $completion);
+    
+    @retrofit2.http.GET(value = "search/trending")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object querySearchList(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.SearchListEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "search")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object searchNewsByTitle(@retrofit2.http.Query(value = "q")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String title, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.SearchListEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "article/{id}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryArticleDetail(@retrofit2.http.Path(value = "id")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String articleId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.ArticleDetailEntry> $completion);
+    
+    @retrofit2.http.POST(value = "article/{id}/feedback")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object addFeedBack(@retrofit2.http.Path(value = "id")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String articleId, @retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    okhttp3.RequestBody requestBody, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "profile/saveadd")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object collectNews(@retrofit2.http.Query(value = "articleID")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String id, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "track/action")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object saveNewsHis(@retrofit2.http.Query(value = "articleID")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String id, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "profile/saved/delete")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object deleteCollect(@retrofit2.http.Query(value = "articleID")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String id, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "feed/personal")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryPersonRecommend(@retrofit2.http.Query(value = "offset")
+    int pageNo, @retrofit2.http.Query(value = "limit")
+    int pageSize, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.SearchListEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "profile/topics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryMyTopics(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.TopicListEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "profile/listtopics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryAllTopics(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.TopicListEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "profile/edittopic")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object editTopic(@retrofit2.http.Query(value = "action")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String actionType, @retrofit2.http.Query(value = "topic")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String topic, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "profile")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryMyFormation(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.MyFormationEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "profile/history")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryViewHis(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.ViewHisEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "profile/saved")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryMyCollect(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.ViewHisEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.GET(value = "info/aboutus")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryAboutUs(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.AboutUsEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "auth/logout")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object logoutApp(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+    
+    @retrofit2.http.POST(value = "auth/register")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object registerApp(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    okhttp3.RequestBody requestBody, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.utils.network.exception.NetworkResponse<? extends com.anssy.znewspro.entry.CommonResponseEntry, com.anssy.znewspro.utils.network.exception.HttpError>> $completion);
+}

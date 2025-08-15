@@ -1,0 +1,66 @@
+package com.anssy.znewspro.ui.topicmodify
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
+import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityTopicModifyBinding
+import com.jaeger.library.StatusBarUtil
+import com.kongzue.dialogx.dialogs.BottomMenu
+import com.kongzue.dialogx.util.TextInfo
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+
+/**
+ * @Description 编辑主题
+ * @Author yulu
+ * @CreateTime 2025年07月01日 16:10:23
+ */
+
+class TopicModifyActivity :BaseActivity() {
+    private lateinit var mViewBinding:ActivityTopicModifyBinding
+    private var mList = ArrayList<Int>()
+    private lateinit var mAdapter:CommonAdapter<Int>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBinding = ActivityTopicModifyBinding.inflate(layoutInflater)
+        setContentView(mViewBinding.root)
+        StatusBarUtil.setLightMode(this)
+        StatusBarUtil.setColor(this,getColor(R.color.white),0)
+        initView()
+        initData()
+    }
+
+    private fun initView() {
+        mViewBinding.topicRecycler.layoutManager = LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        mAdapter = object : CommonAdapter<Int>(this,R.layout.item_topic_recycler,mList){
+            override fun convert(holder: ViewHolder?, t: Int?, position: Int) {
+                val deleteIv :ImageView = holder!!.getView(R.id.delete_iv)
+                deleteIv.setOnClickListener {
+                    BottomMenu.show(arrayOf("删除","取消"))
+                        .setMenuTextInfo(TextInfo().setGravity(Gravity.CENTER))
+                        .setOnMenuItemClickListener { dialog, text, index ->
+                            dialog.dismiss()
+                            Log.e("xxx",text.toString())
+                            true
+                        }
+
+                }
+            }
+        }
+        mViewBinding.topicRecycler.adapter = mAdapter
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initData(){
+        for (i in 1..3){
+            mList.add(i)
+        }
+        mAdapter.notifyDataSetChanged()
+    }
+}

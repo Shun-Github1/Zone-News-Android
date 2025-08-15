@@ -1,0 +1,861 @@
+package com.anssy.znewspro.ui.newsdetail
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.Interpolator
+import android.view.animation.Transformation
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RadioGroup
+import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.constraintlayout.utils.widget.ImageFilterView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.animation.PathInterpolatorCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.anssy.znewspro.utils.Constants
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityNewsDetailBinding
+import com.anssy.znewspro.entry.ArticleDetailEntry
+import com.anssy.znewspro.entry.TagEntry
+import com.anssy.znewspro.model.NewsDetailModel
+import com.anssy.znewspro.selfview.CanScrollRecyclerView
+import com.anssy.znewspro.selfview.popup.FeedBackPopupWindow
+import com.anssy.znewspro.selfview.popup.FilterPopupWindow
+import com.anssy.znewspro.selfview.popup.QuestionPopupWindow
+import com.anssy.znewspro.selfview.popup.RatePopupWindow
+import com.anssy.znewspro.utils.CalculateUtil
+import com.anssy.znewspro.utils.ToastUtils
+import com.anssy.znewspro.utils.Utils
+import com.bumptech.glide.Glide
+import com.hjq.shape.view.ShapeButton
+import com.hjq.shape.view.ShapeRadioButton
+import com.jaeger.library.StatusBarUtil
+import com.kongzue.dialogx.dialogs.TipDialog
+import com.kongzue.dialogx.dialogs.WaitDialog
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+import com.zhy.view.flowlayout.FlowLayout
+import com.zhy.view.flowlayout.TagAdapter
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.math.min
+
+
+/**
+ * @Description 新闻详情
+ * @Author yulu
+ * @CreateTime 2025年07月01日 16:58:28
+ */
+class NewsDetailActivity : BaseActivity() {
+    private val newsDetailModel:NewsDetailModel by viewModels ()
+    private lateinit var mViewBinding: ActivityNewsDetailBinding
+    private var isMediaExpand = false
+    private var isReportExpand = false
+    private var isTopicExpand = false
+    private var isNewsExpand = false
+    private lateinit var mFilterPopupWindow: FilterPopupWindow
+    private lateinit var mRatePopupWindow: RatePopupWindow
+    private lateinit var mFeedBackPopupWindow: FeedBackPopupWindow
+    private lateinit var mQuestionPopupWindow: QuestionPopupWindow
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBinding = ActivityNewsDetailBinding.inflate(layoutInflater)
+        setContentView(mViewBinding.root)
+        StatusBarUtil.setLightMode(this)
+        StatusBarUtil.setColor(this, getColor(R.color.white), 0)
+        initView()
+    }
+
+
+    private var cScore = 0.0f
+    private var inScore = 0.0
+    private var mainScore = 0.0
+    private var articleId = ""
+    private fun initView() {
+        articleId = intent.getStringExtra("id").toString()
+        mFilterPopupWindow = FilterPopupWindow(this)
+        mRatePopupWindow = RatePopupWindow(this)
+        mFeedBackPopupWindow = FeedBackPopupWindow(this)
+        mQuestionPopupWindow = QuestionPopupWindow(this)
+        Glide.with(this)
+            .load("https://www.laiketui.com/wp-content/uploads/2023/11/8826f202310071447543819.jpg")
+            .into(mViewBinding.adLayout.adIv)
+        initMediaFocus()
+        initAllReportList()
+        initTopicLayout()
+        initRelateNews()
+        initModel()
+        mViewBinding.feedBackLayout.setOnClickListener {
+                showFeedBackWindow()
+        }
+        mViewBinding.collectIv.setOnClickListener {
+            if(null==mArticleDetailEntry){
+                return@setOnClickListener
+            }
+            if (mArticleDetailEntry!!.liked){
+                WaitDialog.show("正在提交")
+                newsDetailModel.deleteCollect(articleId)
+            }else{
+                WaitDialog.show("正在提交")
+                newsDetailModel.collectHis(articleId)
+            }
+        }
+        mViewBinding.helpIv.setOnClickListener {
+            showQuestionPop()
+        }
+        mViewBinding.shareIv.setOnClickListener {
+            if (mArticleDetailEntry==null){
+                return@setOnClickListener
+            }
+            shareLink(  if(mArticleDetailEntry!!.articleURL==null) mArticleDetailEntry!!.pictureURL else mArticleDetailEntry!!.articleURL)
+        }
+    }
+
+    /**
+     * 分享链接
+     */
+
+    private fun shareLink(link:String) {
+        val shareIntent = Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, link);
+        startActivity(Intent.createChooser(shareIntent, "Zone News"));
+    }
+    /**
+     *获取数据
+     */
+    private fun initModel(){
+        newsDetailModel.queryNewsDetail(articleId)
+        newsDetailModel.newsDetailEntry.observe(this) {
+            if (it.code == Constants.SUCCESS_CODE) {
+                completeView(it.data)
+                addHis()
+            } else {
+                ToastUtils.showShortToast(mContext!!, it.msg)
+            }
+        }
+        newsDetailModel.feeBackResponseEntry.observe(this){
+            if (it!=null){
+                if (it.code== Constants.SUCCESS_CODE){
+                    TipDialog.show("Success",WaitDialog.TYPE.SUCCESS)
+                }else{
+                    if (it.code==1000){
+                        TipDialog.show("Server Error",WaitDialog.TYPE.ERROR)
+                    }else{
+                        TipDialog.show(it.msg,WaitDialog.TYPE.ERROR)
+                    }
+                }
+            }else{
+               WaitDialog.dismiss()
+            }
+        }
+        newsDetailModel.addHisEntry.observe(this){
+            if (it!=null){
+                if (it.code== Constants.SUCCESS_CODE){
+                    Log.e("xxx","添加成功");
+                }else{
+                    Log.e("xxx","添加失败")
+                }
+            }
+        }
+        newsDetailModel.collectEntry.observe(this){
+            if (it!=null){
+                if (it.code== Constants.SUCCESS_CODE){
+                    WaitDialog.dismiss()
+                    ToastUtils.showShortToast(mContext!!,"收藏成功")
+                    mArticleDetailEntry!!.liked = true
+                    mViewBinding.collectIv.apply {
+                        setImageResource(R.drawable.pg_tab_special_click)
+                    }
+                }else{
+                    if (it.code==1000){
+                        TipDialog.show("Server Error",WaitDialog.TYPE.ERROR)
+                    }else{
+                        TipDialog.show(it.msg,WaitDialog.TYPE.ERROR)
+                    }
+                }
+            }else{
+                WaitDialog.dismiss()
+            }
+        }
+        newsDetailModel.deleteCollectEntry.observe(this){
+            if (it!=null){
+                if (it.code== Constants.SUCCESS_CODE){
+                    WaitDialog.dismiss()
+                    ToastUtils.showShortToast(mContext!!,"取消收藏成功")
+                    mArticleDetailEntry!!.liked = false
+                    mViewBinding.collectIv.apply {
+                        setImageResource(R.drawable.pg_detail_collect)
+                    }
+                }else{
+                    if (it.code==1000){
+                        TipDialog.show("Server Error",WaitDialog.TYPE.ERROR)
+                    }else{
+                        TipDialog.show(it.msg,WaitDialog.TYPE.ERROR)
+                    }
+                }
+            }else{
+                WaitDialog.dismiss()
+            }
+        }
+
+    }
+    private var mArticleDetailEntry: ArticleDetailEntry.DataDTO?=null
+    @SuppressLint("NotifyDataSetChanged")
+    private fun completeView(articleDetailEntry: ArticleDetailEntry.DataDTO){
+        mArticleDetailEntry = articleDetailEntry
+        Glide.with(mContext!!).load(articleDetailEntry.pictureURL).error(R.drawable.ease_default_image)
+            .into(mViewBinding.newsIv)
+        mViewBinding.newsTitleTv.text = articleDetailEntry.title
+        mViewBinding.newsDescTv.text = articleDetailEntry.description
+        cScore = articleDetailEntry.coverage.percentage.centric.toFloat()
+        mainScore = CalculateUtil.round(articleDetailEntry.metrics.subjectivity,2)
+        inScore = CalculateUtil.round(articleDetailEntry.metrics.sentiment,2)
+        changeCpScoreLayout()
+        changeMediaFocus(0)
+        //topic
+        articleDetailEntry.relatedTopics.forEach {
+            mContentTagList.add(TagEntry(it,false))
+        }
+        mContentTagAdapter!!.notifyDataChanged()
+        //相关新闻
+        mRelateList.addAll(articleDetailEntry.relatedArticles)
+        mRelateAdapter.notifyDataSetChanged()
+        if (articleDetailEntry.liked){
+            mViewBinding.collectIv.apply {
+                setImageResource(R.drawable.pg_tab_special_click)
+            }
+        }else{
+            mViewBinding.collectIv.apply {
+                setImageResource(R.drawable.pg_detail_collect)
+            }
+        }
+        mAllReportList.clear()
+        mAllReportList.addAll(articleDetailEntry.articles)
+        mAdapter.notifyDataSetChanged()
+    }
+
+    /**
+     * 媒体观点数据切换
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private fun changeMediaFocus(type:Int){
+        if (mArticleDetailEntry==null){
+            return
+        }
+        mMediaFocusList.clear()
+        if(type==0){
+            mMediaFocusList.addAll(mArticleDetailEntry!!.coverage.icons.centric)
+        }else{
+            mMediaFocusList.addAll(mArticleDetailEntry!!.coverage.icons.progressive)
+        }
+        mMediaSplitFocusList.clear()
+        mMediaSplitFocusList.addAll(splitCollection(mMediaFocusList,5) as ArrayList<List<String>>)
+        mMediaAdapter.notifyDataSetChanged()
+    }
+
+    /**
+     * 反馈弹窗
+     */
+    private fun showFeedBackWindow(){
+        mFeedBackPopupWindow.apply {
+            popupGravity = Gravity.BOTTOM
+            showPopupWindow()
+        }
+        mFeedBackPopupWindow.findViewById<ImageView>(R.id.close_iv).setOnClickListener {
+            mFeedBackPopupWindow.dismiss()
+        }
+        val feedEt:EditText = mFeedBackPopupWindow.findViewById(R.id.feed_et)
+        mFeedBackPopupWindow.findViewById<ShapeButton>(R.id.yes_btn).setOnClickListener {
+            if (TextUtils.isEmpty(feedEt.text)){
+                ToastUtils.showShortToast(mContext!!,"请输入反馈内容")
+                return@setOnClickListener
+            }
+            mFeedBackPopupWindow.dismiss()
+            addFeedBack(feedEt.text.toString())
+        }
+
+    }
+
+
+    private fun showQuestionPop(){
+        mQuestionPopupWindow.apply {
+            popupGravity = Gravity.BOTTOM
+            showPopupWindow()
+        }
+        mQuestionPopupWindow.findViewById<ImageView>(R.id.close_iv).setOnClickListener {
+            mQuestionPopupWindow.dismiss()
+        }
+        val contentTv:TextView = mQuestionPopupWindow.findViewById(R.id.content_tv)
+        val params = contentTv.layoutParams as LinearLayout.LayoutParams
+        params.height = resources.displayMetrics.heightPixels/2
+        contentTv.layoutParams = params
+        contentTv.text = "暂无内容"
+        contentTv.gravity = Gravity.CENTER
+    }
+
+    /**
+     * 添加反馈
+     */
+    private fun addFeedBack(content:String){
+        WaitDialog.show("正在提交")
+        newsDetailModel.addFeedBack(articleId,content)
+    }
+
+    /**
+     * 添加历史
+     */
+    private fun addHis(){
+        newsDetailModel.addNewsHis(articleId)
+    }
+
+
+    /**
+     * C,P占比
+     */
+    @SuppressLint("SetTextI18n")
+    private fun changeCpScoreLayout() {
+        mViewBinding.scoreLayout.cPLayout.post(Runnable {
+            val cWidth = mViewBinding.scoreLayout.cPLayout.width * cScore
+            val cParams = mViewBinding.scoreLayout.cView.layoutParams as LinearLayout.LayoutParams
+            cParams.width = cWidth.toInt()
+            mViewBinding.scoreLayout.cView.layoutParams = cParams
+            changeInScoreLayout(mViewBinding.scoreLayout.cPLayout.width)
+            changeMainScoreLayout(mViewBinding.scoreLayout.cPLayout.width)
+        })
+        mViewBinding.scoreLayout.cTv.text = String.format(
+            getString(R.string.c_score_format),
+            (cScore * 100)
+        ) + "%"
+        mViewBinding.scoreLayout.pTv.text =
+            String.format(getString(R.string.p_score_format), ((1 - cScore) * 100)) + "%"
+    }
+
+
+
+
+    /**
+     * 主观分析
+     */
+    @SuppressLint("SetTextI18n")
+    private fun changeMainScoreLayout(mProgressWidth: Int) {
+        val margin = mProgressWidth * mainScore
+        val params =
+            mViewBinding.scoreLayout.scoreSubDividerTv.layoutParams as ConstraintLayout.LayoutParams
+        params.marginStart = (margin - Utils.dpToPx(1.5f, resources)).toInt()
+        mViewBinding.scoreLayout.scoreSubDividerTv.layoutParams = params
+        mViewBinding.scoreLayout.transSubScoreTv.text = "主观分析:$mainScore"
+    }
+
+
+    /**
+     * 情感分析
+     */
+    @SuppressLint("SetTextI18n")
+    private fun changeInScoreLayout(mProgressWidth: Int) {
+        mViewBinding.scoreLayout.scoreTv.post(Runnable {
+            val params =
+                mViewBinding.scoreLayout.scoreTv.layoutParams as ConstraintLayout.LayoutParams
+            params.marginStart = changeScoreToMargin(
+                inScore,
+                mProgressWidth
+            ).toInt() - mViewBinding.scoreLayout.scoreTv.measuredWidth / 2
+            mViewBinding.scoreLayout.scoreTv.layoutParams = params
+        })
+
+        val params1 =
+            mViewBinding.scoreLayout.scoreDividerTv.layoutParams as ConstraintLayout.LayoutParams
+        params1.marginStart =
+            changeScoreToMargin(inScore, mProgressWidth).toInt() - Utils.dpToPx(
+                1.5f,
+                resources
+            )
+        mViewBinding.scoreLayout.scoreDividerTv.layoutParams = params1
+        mViewBinding.scoreLayout.scoreTv.text = inScore.toString()
+        mViewBinding.scoreLayout.transScoreTv.text = "情感分析:$inScore"
+
+    }
+
+    /**
+     * 切割数组
+     */
+    private fun <T> splitCollection(sourceList: List<T>, groupSize: Int): List<List<T>> {
+        val partitionedList: MutableList<List<T>> = ArrayList()
+        val size = sourceList.size
+        var i = 0
+        while (i < size) {
+            partitionedList.add(
+                ArrayList(
+                    sourceList.subList(
+                        i,
+                        min(size.toDouble(), (i + groupSize).toDouble()).toInt()
+                    )
+                )
+            )
+            i += groupSize
+        }
+        return partitionedList
+    }
+
+    private val easeInOutQuart: Interpolator = PathInterpolatorCompat.create(0.77f, 0f, 0.175f, 1f)
+
+    /**
+     * 展开动画
+     */
+    private fun expand(view: View, which: Int) {
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(
+                (view.parent as View).width,
+                View.MeasureSpec.EXACTLY
+            ), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val targetHeight = view.measuredHeight
+        view.layoutParams.height = 1
+        view.visibility = View.VISIBLE
+        when (which) {
+            0 -> {
+                mViewBinding.mediaFocusLayout.exMediaFocusIv.apply {
+                    setImageResource(R.drawable.icon_arrow_regular_up)
+                }
+            }
+
+            1 -> {
+                mViewBinding.allReportLayout.exReportIv.apply {
+                    setImageResource(R.drawable.icon_arrow_regular_up)
+                }
+            }
+
+            2 -> {
+                mViewBinding.relateTopicLayout.exTopicIv.apply {
+                    setImageResource(R.drawable.icon_arrow_regular_up)
+                }
+            }
+
+            else -> {
+                mViewBinding.relateNewsLayout.exNewsIv.apply {
+                    setImageResource(R.drawable.icon_arrow_regular_up)
+                }
+            }
+        }
+        val animation: Animation = object : Animation() {
+            override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+                view.layoutParams.height = if (interpolatedTime == 1f)
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                else (targetHeight * interpolatedTime).toInt()
+                view.requestLayout()
+            }
+
+            override fun willChangeBounds(): Boolean {
+                return true
+            }
+        }
+        animation.interpolator = this.easeInOutQuart
+        animation.setDuration(computeDurationFromHeight(view).toLong())
+        view.startAnimation(animation)
+    }
+
+    private fun collapse(view: View, which: Int) {
+        val initialHeight = view.measuredHeight
+        val a: Animation = object : Animation() {
+            override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+                if (interpolatedTime == 1.0f) {
+                    when (which) {
+                        0 -> {
+                            mViewBinding.mediaFocusLayout.exMediaFocusIv.apply {
+                                setImageResource(R.drawable.icon_arrow_regular_down)
+                            }
+                        }
+
+                        1 -> {
+                            mViewBinding.allReportLayout.exReportIv.apply {
+                                setImageResource(R.drawable.icon_arrow_regular_down)
+                            }
+                        }
+
+                        2 -> {
+                            mViewBinding.relateTopicLayout.exTopicIv.apply {
+                                setImageResource(R.drawable.icon_arrow_regular_down)
+                            }
+                        }
+
+                        else -> {
+                            mViewBinding.relateNewsLayout.exNewsIv.apply {
+                                setImageResource(R.drawable.icon_arrow_regular_down)
+                            }
+                        }
+                    }
+                    view.visibility = View.GONE
+                    return
+                }
+                val layoutParams = view.layoutParams
+                layoutParams.height =
+                    initialHeight - (((initialHeight.toFloat()) * interpolatedTime).toInt())
+                view.requestLayout()
+            }
+
+            override fun willChangeBounds(): Boolean {
+                return true
+            }
+        }
+        a.interpolator = this.easeInOutQuart
+        a.setDuration(computeDurationFromHeight(view).toLong())
+        view.startAnimation(a)
+    }
+
+    private fun computeDurationFromHeight(view: View): Int {
+        return ((view.measuredHeight.toFloat()) / view.context.resources.displayMetrics.density).toInt()
+    }
+
+
+    private var mMediaFocusList = ArrayList<String>()
+    private var mMediaSplitFocusList = ArrayList<List<String>>()
+    private lateinit var mMediaAdapter: CommonAdapter<List<String>>
+    private var mCurrentMediaType = 0
+    /**
+     * 媒体立场分布
+     */
+    private fun initMediaFocus() {
+        mViewBinding.mediaFocusLayout.topMediaFocusLayout.setOnClickListener {
+            if (isMediaExpand) {
+                collapse(mViewBinding.mediaFocusLayout.mediaHideLayout, 0)
+            } else {
+                expand(mViewBinding.mediaFocusLayout.mediaHideLayout, 0)
+            }
+            isMediaExpand = !isMediaExpand
+        }
+        val layoutManager = object : LinearLayoutManager(this, RecyclerView.VERTICAL, false) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        mViewBinding.mediaFocusLayout.mediaFocusRecycler.layoutManager = layoutManager
+        mMediaAdapter = object :
+            CommonAdapter<List<String>>(this, R.layout.item_child_media_focus_recycler, mMediaSplitFocusList) {
+            override fun convert(holder: ViewHolder?, list:List<String>, position: Int) {
+                val childRecycler = holder!!.getView<CanScrollRecyclerView>(R.id.child_focus_rv)
+                childRecycler.layoutManager =
+                    object : GridLayoutManager(mContext, if (list.size < 5) list.size else 5) {
+                        override fun canScrollVertically(): Boolean {
+                            return false
+                        }
+                    }
+                val childAdapter =
+                    object : CommonAdapter<String>(mContext, R.layout.item_meida_iv, list) {
+                        override fun convert(holder: ViewHolder?, t: String, position: Int) {
+                            val avatarIv = holder!!.getView<ImageView>(R.id.avatar_iv)
+                            val params = avatarIv.layoutParams as LinearLayout.LayoutParams
+                            if (position == list.size - 1) {
+                                params.marginEnd = 0
+                            } else {
+                                params.marginEnd = Utils.dpToPx(10f, resources)
+                            }
+                            avatarIv.layoutParams = params
+                            Glide.with(mContext).load(t).error(R.drawable.ease_default_image).into(avatarIv)
+                        }
+                    }
+                childRecycler.adapter = childAdapter
+            }
+
+
+        }
+        mViewBinding.mediaFocusLayout.mediaFocusRecycler.adapter = mMediaAdapter
+        mViewBinding.mediaFocusLayout.cRb.setOnClickListener {
+            if (mCurrentMediaType!=0){
+                changeMediaFocus(0)
+                mCurrentMediaType = 0
+            }
+            mViewBinding.mediaFocusLayout.rRb.shapeDrawableBuilder.apply {
+                setSolidColor(android.graphics.Color.parseColor("#F0F0F0"))
+                intoBackground()
+            }
+            mViewBinding.mediaFocusLayout.cRb.shapeDrawableBuilder.apply {
+                setSolidColor(android.graphics.Color.parseColor("#FFFFFF"))
+                intoBackground()
+            }
+            mViewBinding.mediaFocusLayout.cTv.apply {
+                setTextColor(getColor(R.color.colorTextDeep))
+            }
+            mViewBinding.mediaFocusLayout.pTv.apply {
+                setTextColor(android.graphics.Color.parseColor("#777777"))
+            }
+        }
+        mViewBinding.mediaFocusLayout.rRb.setOnClickListener {
+            if (mCurrentMediaType!=1){
+                changeMediaFocus(1)
+                mCurrentMediaType = 1
+            }
+            mViewBinding.mediaFocusLayout.rRb.shapeDrawableBuilder.apply {
+                setSolidColor(android.graphics.Color.parseColor("#FFFFFF"))
+                intoBackground()
+            }
+            mViewBinding.mediaFocusLayout.cRb.shapeDrawableBuilder.apply {
+                setSolidColor(android.graphics.Color.parseColor("#F0F0F0"))
+                intoBackground()
+            }
+            mViewBinding.mediaFocusLayout.cTv.apply {
+                setTextColor(android.graphics.Color.parseColor("#777777"))
+            }
+            mViewBinding.mediaFocusLayout.pTv.apply {
+                setTextColor(getColor(R.color.colorTextDeep))
+            }
+        }
+    }
+    private var mAllReportList = ArrayList<ArticleDetailEntry.DataDTO.ArticlesDTO>()
+    private lateinit var mAdapter: CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO>
+    /**
+     *  所有报道
+     */
+    private fun initAllReportList() {
+        mViewBinding.allReportLayout.topReportLayout.setOnClickListener {
+            if (isReportExpand) {
+                collapse(mViewBinding.allReportLayout.reportHideLayout, 1)
+            } else {
+                expand(mViewBinding.allReportLayout.reportHideLayout, 1)
+            }
+            isReportExpand = !isReportExpand
+        }
+        mViewBinding.allReportLayout.reportRecycler.layoutManager =
+            object : LinearLayoutManager(this, RecyclerView.HORIZONTAL, false) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+
+        mAdapter = object : CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO>(this, R.layout.item_report_recycler, mAllReportList) {
+            override fun convert(holder: ViewHolder, t: ArticleDetailEntry.DataDTO.ArticlesDTO, position: Int) {
+                    val mediaIv:ImageFilterView = holder.getView(R.id.media_iv)
+                    val mediaNameTv:TextView = holder.getView(R.id.media_name_tv)
+                    val titleTv:TextView = holder.getView(R.id.title_tv)
+                    val focusTv:TextView = holder.getView(R.id.focus_tv)
+                    val placeTv:TextView = holder.getView(R.id.place_tv)
+                    focusTv.text = t.publisherStance
+                    placeTv.text = t.publisherRegion
+                    Glide.with(mContext).load(t.publisherIcon).error(R.drawable.ease_default_image).into(mediaIv)
+                    mediaNameTv.text = t.publisherName
+                    titleTv.text = t.description
+                    holder.convertView.setOnClickListener {
+                        Utils.toWeb(t.articleURL,mContext)
+                    }
+
+            }
+
+        }
+        mViewBinding.allReportLayout.reportRecycler.adapter = mAdapter
+        mViewBinding.allReportLayout.filterLayout.setOnClickListener {
+                lifecycleScope.launch {
+                    showFilterPop()
+                }
+        }
+        mViewBinding.allReportLayout.rateLayout.setOnClickListener {
+            lifecycleScope.launch {
+                showRatePop()
+            }
+
+        }
+    }
+
+    /**
+     * 筛选弹窗
+     */
+    private fun showFilterPop(){
+        mFilterPopupWindow.apply {
+            popupGravity = Gravity.BOTTOM
+            showPopupWindow()
+        }
+        val mediaRg:RadioGroup = mFilterPopupWindow.findViewById(R.id.media_rg)
+        var policyType = 0
+        mediaRg.setOnCheckedChangeListener { group, checkedId ->
+            policyType = if(checkedId==R.id.negative_rb){
+                0
+            }else{
+                1
+            }
+        }
+        mFilterPopupWindow.findViewById<ImageView>(R.id.close_iv).setOnClickListener {
+            mFilterPopupWindow.dismiss()
+        }
+        mFilterPopupWindow.findViewById<ShapeButton>(R.id.yes_btn).setOnClickListener {
+            mFilterPopupWindow.dismiss()
+        }
+        val recyclerView:RecyclerView = mFilterPopupWindow.findViewById(R.id.con_recycler)
+        recyclerView.layoutManager = GridLayoutManager(this,3)
+        val conList = ArrayList<TagEntry>()
+        conList.run {
+            add(TagEntry("香港",false))
+            add(TagEntry("中国",false))
+            add(TagEntry("英国",false))
+            add(TagEntry("美国",false))
+            add(TagEntry("亚洲其他",false))
+            add(TagEntry("欧洲其他",false))
+        }
+        val adapter = object : CommonAdapter<TagEntry>(this,R.layout.item_con_recycler,conList){
+            @SuppressLint("NotifyDataSetChanged")
+            override fun convert(holder: ViewHolder?, t: TagEntry?, position: Int) {
+                 val conRb:ShapeRadioButton = holder!!.getView(R.id.item_rb)
+                 conRb.text = t!!.tagName
+                 conRb.isChecked = t.isTagCheck
+                 conRb.setOnClickListener {
+                     conList.forEach {
+                         it.isTagCheck = false
+                     }
+                     t.isTagCheck = true
+                     conList[position].isTagCheck = true
+                     notifyDataSetChanged()
+                 }
+            }
+
+        }
+        recyclerView.adapter = adapter
+    }
+
+    /**
+     * 显示排序弹框
+     */
+    private fun  showRatePop(){
+        mRatePopupWindow.apply {
+            popupGravity = Gravity.BOTTOM
+            showPopupWindow()
+        }
+        mRatePopupWindow.findViewById<ImageView>(R.id.close_iv).setOnClickListener {
+            mRatePopupWindow.dismiss()
+        }
+        mRatePopupWindow.findViewById<ShapeButton>(R.id.yes_btn).setOnClickListener {
+            mRatePopupWindow.dismiss()
+        }
+        val rateRg = mRatePopupWindow.findViewById<RadioGroup>(R.id.rate_rg)
+        var rateValue = "1"
+        rateRg.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.default_rb->{
+                    rateValue = "1"
+                }
+                R.id.big_rb-> rateValue = "2"
+                R.id.small_rb-> rateValue = "3"
+                R.id.now_rb->rateValue = "4"
+                R.id.before_rb->rateValue = "5"
+            }
+        }
+    }
+
+
+    private var mContentTagAdapter: TagAdapter<TagEntry>? = null
+    private val mContentTagList: ArrayList<TagEntry> = ArrayList()
+
+    /**
+     * 相关主题
+     */
+    private fun initTopicLayout() {
+        mViewBinding.relateTopicLayout.topTopicLayout.setOnClickListener {
+            if (isTopicExpand) {
+                collapse(mViewBinding.relateTopicLayout.topicHideLayout, 2)
+            } else {
+                expand(mViewBinding.relateTopicLayout.topicHideLayout, 2)
+            }
+            isTopicExpand = !isTopicExpand
+        }
+        mContentTagAdapter = object : TagAdapter<TagEntry>(mContentTagList) {
+            override fun getView(parent: FlowLayout?, position: Int, tagEntry: TagEntry): View {
+                val tv = LayoutInflater.from(mContext).inflate(
+                    R.layout.tag_tv,
+                    mViewBinding.relateTopicLayout.topicTagLayout, false
+                ) as TextView
+                tv.text = tagEntry.tagName
+                return tv
+            }
+        }
+        mViewBinding.relateTopicLayout.topicTagLayout.setAdapter(mContentTagAdapter)
+    }
+
+    private var mRelateList = ArrayList<ArticleDetailEntry.DataDTO.RelatedArticlesDTO>()
+    private lateinit var mRelateAdapter:CommonAdapter<ArticleDetailEntry.DataDTO.RelatedArticlesDTO>
+    /**
+     * 相关新闻
+     */
+    private fun initRelateNews() {
+        mViewBinding.relateNewsLayout.topNewsLayout.setOnClickListener {
+            if (isNewsExpand) {
+                collapse(mViewBinding.relateNewsLayout.newsHideLayout, 3)
+            } else {
+                expand(mViewBinding.relateNewsLayout.newsHideLayout, 3)
+            }
+            isNewsExpand = !isNewsExpand
+        }
+        mViewBinding.relateNewsLayout.relateNewsRecycler.layoutManager =
+            object : LinearLayoutManager(this, RecyclerView.VERTICAL, false) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+        val mProgressWidth = resources.displayMetrics.widthPixels  - Utils.dpToPx(34+36f,resources)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        mRelateAdapter =
+            object : CommonAdapter<ArticleDetailEntry.DataDTO.RelatedArticlesDTO>(this, R.layout.item_related_news_recycler, mRelateList) {
+                @SuppressLint("SetTextI18n")
+                override fun convert(holder: ViewHolder, t: ArticleDetailEntry.DataDTO.RelatedArticlesDTO, position: Int) {
+                    val titleTv: TextView = holder.getView(R.id.news_title_tv)
+                    val newsIv: ImageView = holder.getView(R.id.news_iv)
+                    val scoreTv: TextView = holder.getView(R.id.score_tv)
+                    val scoreDivideView: View = holder.getView(R.id.score_divider_tv)
+                    val timeTv: TextView = holder.getView(R.id.news_time_tv)
+                    val countTv: TextView = holder.getView(R.id.news_count_tv)
+                    countTv.text = "${t.nSources}个报道"
+                    val transScoreTv: TextView = holder.getView(R.id.trans_score_tv)
+                    holder.convertView.setOnClickListener {
+                        val intent = Intent(mContext, NewsDetailActivity::class.java)
+                        intent.putExtra("id",t.articleID)
+                        startActivity(intent)
+                    }
+                    transScoreTv.text = "情感分析：" + CalculateUtil.round(t.metrics.sentiment, 2)
+                    scoreTv.text = CalculateUtil.round(t.metrics.sentiment, 2).toString()
+                    titleTv.text = t.title
+                    Glide.with(mContext).load(t.pictureURL).error(R.drawable.ease_default_image)
+                        .into(newsIv)
+
+                    try {
+                        val parse = dateFormat.parse(t.date)
+                        timeTv.text = Utils.getSpaceTime(parse!!.time)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    scoreTv.post(Runnable {
+                        val params = scoreTv.layoutParams as ConstraintLayout.LayoutParams
+                        val marginWidth =  changeScoreToMargin(
+                            CalculateUtil.round(t.metrics.sentiment, 2),
+                            mProgressWidth
+                        ).toInt()
+                        val realMargin = if (marginWidth>=mProgressWidth-scoreTv.measuredWidth / 2) marginWidth - scoreTv.measuredWidth else marginWidth - scoreTv.measuredWidth/2
+                        params.marginStart = realMargin
+                        scoreTv.layoutParams = params
+                    })
+
+                    val params1 = scoreDivideView.layoutParams as ConstraintLayout.LayoutParams
+                    params1.marginStart =
+                        changeScoreToMargin(
+                            CalculateUtil.round(t.metrics.sentiment, 2),
+                            mProgressWidth
+                        ).toInt() - Utils.dpToPx(
+                            1.5f,
+                            resources
+                        )
+                    scoreDivideView.layoutParams = params1
+                }
+            }
+        mViewBinding.relateNewsLayout.relateNewsRecycler.adapter = mRelateAdapter
+    }
+
+}

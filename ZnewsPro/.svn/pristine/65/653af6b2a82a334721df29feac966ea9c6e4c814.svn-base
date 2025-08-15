@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1027106789501",
+    "project_id": "zone-news",
+    "storage_bucket": "zone-news.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027106789501:android:abdd03ee61b60568d6b914",
+        "android_client_info": {
+          "package_name": "com.anssy.znewspro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027106789501-67h6gr1s6d21j61rdhc4h9uv4jfult6p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anssy.znewspro",
+            "certificate_hash": "63ab2c17b1e9428997a0e1b8bc65f322e321c541"
+          }
+        },
+        {
+          "client_id": "1027106789501-199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzBGjCEHBgofCZ5dKatF7R3RDrvmouaTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027106789501-199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

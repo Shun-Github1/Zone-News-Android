@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingTop="140dp"
+            android:paddingBottom="8dp">
+
+            <!-- Brand block -->
+            <ImageView
+                android:id="@+id/logo_iv"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@null"
+                android:src="@mipmap/pg_login_logo" />
+
+            <TextView
+                android:id="@+id/app_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="8dp"
+                android:text="@string/app_name"
+                android:textColor="@color/main_color"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tagline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:text="@string/login_tagline"
+                android:textColor="@color/colorTextMiddle"
+                android:textSize="15sp" />
+
+            <!-- Form section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/email"
+                android:textColor="@color/colorTextDeep"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <com.hjq.shape.view.ShapeEditText
+                android:id="@+id/email_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="17dp"
+                android:paddingVertical="10dp"
+                android:textColor="@color/colorTextDeep"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="15sp"
+                android:minHeight="48dp"
+                app:shape_radius="12dp"
+                app:shape_solidColor="@color/light_gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/password"
+                android:textColor="@color/colorTextDeep"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <com.hjq.shape.view.ShapeEditText
+                android:id="@+id/pass_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:paddingHorizontal="17dp"
+                android:paddingVertical="10dp"
+                android:textColor="@color/colorTextDeep"
+                android:textColorHint="@color/colorTextHint"
+                android:textSize="15sp"
+                android:minHeight="48dp"
+                app:shape_radius="12dp"
+                app:shape_solidColor="@color/light_gray" />
+
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/login_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:minHeight="48dp"
+                app:shape_radius="14dp"
+                app:shape_solidColor="@color/main_color"
+                app:shape_solidPressedColor="@color/divider_color" />
+
+            <!-- OR divider -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#E5E7EB" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:text="@string/or_label"
+                    android:textColor="@color/colorTextHint"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#E5E7EB" />
+            </LinearLayout>
+
+            <!-- Social: Google -->
+            <com.hjq.shape.layout.ShapeRelativeLayout
+                android:id="@+id/google_login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                app:shape_radius="14dp"
+                app:shape_solidColor="#FFFFFF"
+                app:shape_strokeColor="#DADCE0"
+                app:shape_strokeSize="1dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_login_google" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/google_login"
+                        android:textColor="#3C4043"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </com.hjq.shape.layout.ShapeRelativeLayout>
+
+            <!-- Social: Facebook custom button consistent with Google -->
+            <com.hjq.shape.layout.ShapeRelativeLayout
+                android:id="@+id/facebook_login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                app:shape_radius="14dp"
+                app:shape_solidColor="#1877F2"
+                app:shape_strokeSize="0dp"
+                android:paddingHorizontal="12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_login_face"
+                        android:tint="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/facebook_login"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </com.hjq.shape.layout.ShapeRelativeLayout>
+
+            <!-- Hidden native Facebook LoginButton to keep SDK flow -->
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:visibility="gone" />
+
+            <!-- Footer link -->
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/register_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="@string/signup_prompt"
+                android:textColor="@color/main_color"
+                android:textSize="15sp"
+                app:shape_solidPressedColor="@color/divider_color" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

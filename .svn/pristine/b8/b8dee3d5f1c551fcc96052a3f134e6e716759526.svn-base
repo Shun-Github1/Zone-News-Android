@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\2024workspace\ZnewsPro\app\src\main\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\2024workspace\ZnewsPro\app\src\main\res"><file name="actionsheet_dialog_in" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\actionsheet_dialog_in.xml" qualifiers="" type="anim"/><file name="actionsheet_dialog_out" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\actionsheet_dialog_out.xml" qualifiers="" type="anim"/><file name="add_new_in" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\add_new_in.xml" qualifiers="" type="anim"/><file name="add_new_out" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\add_new_out.xml" qualifiers="" type="anim"/><file name="bounce" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\bounce.xml" qualifiers="" type="anim"/><file name="fade_in" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\fade_in.xml" qualifiers="" type="anim"/><file name="fade_out" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\fade_out.xml" qualifiers="" type="anim"/><file name="head_in" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\head_in.xml" qualifiers="" type="anim"/><file name="head_out" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\head_out.xml" qualifiers="" type="anim"/><file name="hold" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\hold.xml" qualifiers="" type="anim"/><file name="push_bottom_in" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\push_bottom_in.xml" qualifiers="" type="anim"/><file name="push_bottom_out" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\push_bottom_out.xml" qualifiers="" type="anim"/><file name="push_top_in" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\push_top_in.xml" qualifiers="" type="anim"/><file name="push_top_in2" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\push_top_in2.xml" qualifiers="" type="anim"/><file name="push_top_out" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\push_top_out.xml" qualifiers="" type="anim"/><file name="push_top_out2" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\push_top_out2.xml" qualifiers="" type="anim"/><file name="slide_in_from_left" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\slide_in_from_left.xml" qualifiers="" type="anim"/><file name="slide_in_from_right" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\slide_in_from_right.xml" qualifiers="" type="anim"/><file name="slide_out_to_left" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\slide_out_to_left.xml" qualifiers="" type="anim"/><file name="slide_out_to_right" path="D:\2024workspace\ZnewsPro\app\src\main\res\anim\slide_out_to_right.xml" qualifiers="" type="anim"/><file name="back_sting_white" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\back_sting_white.xml" qualifiers="" type="drawable"/><file name="bottom_line" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\bottom_line.xml" qualifiers="" type="drawable"/><file name="home_selector" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\home_selector.xml" qualifiers="" type="drawable"/><file name="ic_launcher_background" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\ic_launcher_background.xml" qualifiers="" type="drawable"/><file name="ic_launcher_foreground" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\ic_launcher_foreground.xml" qualifiers="" type="drawable"/><file name="my_selector" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\my_selector.xml" qualifiers="" type="drawable"/><file name="search_selector" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\search_selector.xml" qualifiers="" type="drawable"/><file name="selecter_text" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\selecter_text.xml" qualifiers="" type="drawable"/><file name="special_selector" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable\special_selector.xml" qualifiers="" type="drawable"/><file name="icon_arrow_regular_right" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\icon_arrow_regular_right.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="icon_popup_close_default" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\icon_popup_close_default.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="icon_search" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\icon_search.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_advice_setting" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_advice_setting.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_home_more" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_home_more.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_home_notice" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_home_notice.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_more" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_more.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_my_about_us" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_my_about_us.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_my_collect" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_my_collect.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_my_his" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_my_his.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_my_version" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_my_version.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_home_click" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_home_click.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_home_normal" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_home_normal.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_search_click" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_search_click.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_search_normal" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_search_normal.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_special_click" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_special_click.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_special_normal" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_special_normal.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_wode_click" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_wode_click.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_tab_wode_normal" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_tab_wode_normal.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="pg_temp_avatar" path="D:\2024workspace\ZnewsPro\app\src\main\res\drawable-xxhdpi\pg_temp_avatar.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="activity_main" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\activity_main.xml" qualifiers="" type="layout"/><file name="activity_topic_modify" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\activity_topic_modify.xml" qualifiers="" type="layout"/><file name="frag_advice" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\frag_advice.xml" qualifiers="" type="layout"/><file name="frag_child_home" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\frag_child_home.xml" qualifiers="" type="layout"/><file name="frag_home" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\frag_home.xml" qualifiers="" type="layout"/><file name="frag_my" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\frag_my.xml" qualifiers="" type="layout"/><file name="frag_search" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\frag_search.xml" qualifiers="" type="layout"/><file name="item_banner" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\item_banner.xml" qualifiers="" type="layout"/><file name="item_home_recycler" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\item_home_recycler.xml" qualifiers="" type="layout"/><file name="item_topic_recycler" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\item_topic_recycler.xml" qualifiers="" type="layout"/><file name="setting_popu" path="D:\2024workspace\ZnewsPro\app\src\main\res\layout\setting_popu.xml" qualifiers="" type="layout"/><file name="ic_launcher" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-anydpi-v26\ic_launcher.xml" qualifiers="anydpi-v26" type="mipmap"/><file name="ic_launcher_round" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-anydpi-v26\ic_launcher_round.xml" qualifiers="anydpi-v26" type="mipmap"/><file name="ic_launcher" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-hdpi\ic_launcher.webp" qualifiers="hdpi-v4" type="mipmap"/><file name="ic_launcher_round" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-hdpi\ic_launcher_round.webp" qualifiers="hdpi-v4" type="mipmap"/><file name="ic_launcher" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-mdpi\ic_launcher.webp" qualifiers="mdpi-v4" type="mipmap"/><file name="ic_launcher_round" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-mdpi\ic_launcher_round.webp" qualifiers="mdpi-v4" type="mipmap"/><file name="ic_launcher" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-xhdpi\ic_launcher.webp" qualifiers="xhdpi-v4" type="mipmap"/><file name="ic_launcher_round" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-xhdpi\ic_launcher_round.webp" qualifiers="xhdpi-v4" type="mipmap"/><file name="ic_launcher" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-xxhdpi\ic_launcher.webp" qualifiers="xxhdpi-v4" type="mipmap"/><file name="ic_launcher_round" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-xxhdpi\ic_launcher_round.webp" qualifiers="xxhdpi-v4" type="mipmap"/><file name="ic_launcher" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-xxxhdpi\ic_launcher.webp" qualifiers="xxxhdpi-v4" type="mipmap"/><file name="ic_launcher_round" path="D:\2024workspace\ZnewsPro\app\src\main\res\mipmap-xxxhdpi\ic_launcher_round.webp" qualifiers="xxxhdpi-v4" type="mipmap"/><file path="D:\2024workspace\ZnewsPro\app\src\main\res\values\attrs.xml" qualifiers=""><declare-styleable name="MyRatingBar">
+        
+        <attr format="dimension" name="starImageSize"/>
+        
+        <attr format="dimension" name="starPadding"/>
+        
+        <attr format="integer" name="starCount"/>
+        
+        <attr format="reference" name="starEmpty"/>
+        
+        <attr format="reference" name="starFill"/>
+        
+        <attr format="reference" name="starHalf"/>
+        
+        <attr format="boolean" name="clickable"/>
+        
+        <attr format="float" name="starStep"/>
+        
+        <attr name="stepSize">
+            <enum name="Half" value="0"/>
+            <enum name="Full" value="1"/>
+        </attr>
+    </declare-styleable><declare-styleable name="BubbleView">
+        <attr format="dimension" name="arrowWidth"/>
+        <attr format="dimension" name="angle"/>
+        <attr format="dimension" name="arrowHeight"/>
+        <attr format="dimension" name="arrowPosition"/>
+        <attr format="color" name="bubbleColor"/>
+        <attr format="enum" name="arrowLocation">
+            <enum name="left" value="0x00"/>
+            <enum name="right" value="0x01"/>
+            <enum name="top" value="0x02"/>
+            <enum name="bottom" value="0x03"/>
+        </attr>
+    </declare-styleable><declare-styleable name="EaseImageView">
+        <attr format="color" name="ease_border_color"/>
+        <attr format="dimension" name="ease_border_width"/>
+        <attr format="integer" name="ease_press_alpha"/>
+        <attr format="color" name="ease_press_color"/>
+        <attr format="dimension" name="ease_radius"/>
+        <attr format="enum" name="ease_shape_type">
+            <enum name="none" value="0"/>
+            <enum name="round" value="1"/>
+            <enum name="rectangle" value="2"/>
+        </attr>
+    </declare-styleable><declare-styleable name="RoundBackChange">
+        <attr format="color" name="self_color"/>
+    </declare-styleable><declare-styleable name="PswInputView">
+        <attr format="integer" name="count"/>
+        <attr format="color" name="border_color"/>
+        <attr format="color" name="dot_color"/>
+    </declare-styleable><declare-styleable name="RealtimeBlurView">
+        <attr format="float" name="realtimeBlurRadius"/>
+        <attr format="float" name="realtimeDownsampleFactor"/>
+        <attr format="color" name="realtimeOverlayColor"/>
+        <attr format="dimension" name="realtimeBlurRoundCornerRadius"/>
+    </declare-styleable><declare-styleable name="LabelTextView">
+
+        <attr format="color" name="backgroundColor"/>
+        <attr format="color" name="textColor"/>
+        <attr format="color" name="numColor"/>
+
+        <attr format="string" name="text"/>
+        <attr format="string" name="num"/>
+
+        <attr format="dimension" name="numSize"/>
+        <attr format="dimension" name="textsSize"/>
+
+        <attr format="dimension" name="labelTopPadding"/>
+        <attr format="dimension" name="labelCenterPadding"/>
+        <attr format="dimension" name="labelBottomPadding"/>
+
+
+        <attr name="numStyle">
+            <enum name="normal" value="0"/>
+            <enum name="italic" value="1"/>
+            <enum name="bold" value="2"/>
+        </attr>
+
+        <attr name="textStyle">
+            <enum name="normal" value="0"/>
+            <enum name="italic" value="1"/>
+            <enum name="bold" value="2"/>
+        </attr>
+
+        <attr name="direction">
+            <enum name="leftTop" value="-45"/>
+            <enum name="rightTop" value="45"/>
+        </attr>
+
+
+    </declare-styleable><declare-styleable name="WaterMaskView">
+        
+        <attr format="color" name="title_background_color"/>
+        
+        <attr format="boolean" name="left_button_visible"/>
+        
+        <attr format="string" name="company_text"/>
+        
+        <attr format="color" name="title_text_color"/>
+        
+        <attr format="string" name="logo_button_text"/>
+        
+        <attr format="color" name="logo_button_text_color"/>
+        
+        <attr format="reference|integer" name="logo_button_drawable"/>
+        
+        <attr format="string" name="info_text"/>
+        
+        <attr format="color" name="info_text_color"/>
+        
+        <attr format="reference|integer" name="right_button_drawable"/>
+    </declare-styleable><declare-styleable name="LoadingView">
+        <attr name="loading_renderer">
+            
+            <enum name="MaterialLoadingRenderer" value="0"/>
+            <enum name="LevelLoadingRenderer" value="1"/>
+            <enum name="WhorlLoadingRenderer" value="2"/>
+            <enum name="GearLoadingRenderer" value="3"/>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </attr>
+    </declare-styleable><declare-styleable name="ArcImageView">
+        <attr format="dimension" name="arcHeight"/>
+        <attr format="color" name="bColor"/>
+        <attr format="enum" name="mDirection">
+            <enum name="out" value="0"/>
+            <enum name="inner" value="1"/>
+        </attr>
+        <attr format="enum" name="mPosition">
+            <enum name="left" value="0"/>
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="bottom" value="3"/>
+        </attr>
+    </declare-styleable><declare-styleable name="YLCircleImageView">
+        <attr format="dimension" name="radiusYL">圆角半径</attr>
+        <attr format="dimension" name="topLeftRadiusYL">左上</attr>
+        <attr format="dimension" name="topRightRadiusYL">右上</attr>
+        <attr format="dimension" name="bottomLeftRadiusYL">左下</attr>
+        <attr format="dimension" name="bottomRightRadiusYL">右下</attr>
+
+        <attr format="dimension" name="topLeftRadius_xYL">左上X轴</attr>
+        <attr format="dimension" name="topLeftRadius_yYL">左上Y轴</attr>
+
+        <attr format="dimension" name="topRightRadius_xYL">右上X轴</attr>
+        <attr format="dimension" name="topRightRadius_yYL">右上Y轴</attr>
+
+        <attr format="dimension" name="bottomLeftRadius_xYL">左下X轴</attr>
+        <attr format="dimension" name="bottomLeftRadius_yYL">左下Y轴</attr>
+
+        <attr format="dimension" name="bottomRightRadius_xYL">右下X轴</attr>
+        <attr format="dimension" name="bottomRightRadius_yYL">右下Y轴</attr>
+
+        <attr format="dimension" name="borderWidthYL">描边宽度</attr>
+        <attr format="color" name="borderColorYL">描边颜色</attr>
+        <attr format="dimension" name="borderSpaceYL">描边与图片间距</attr>
+        
+        <attr format="enum" name="scaleTypeYL">
+            <enum name="top" value="0">从图片顶部开始绘制，即肯定会展示图片顶部，默认</enum>
+            <enum name="center" value="1">展示图片中心</enum>
+            <enum name="bottom" value="2">从图片底部开始绘制，即肯定会展示图片底部</enum>
+            <enum name="fitXY" value="3">完全展示，有可能变形</enum>
+        </attr>
+    </declare-styleable><declare-styleable name="AddWidget">
+        <attr format="boolean" name="circle_anim"/>
+        <attr format="boolean" name="sub_anim"/>
+    </declare-styleable><declare-styleable name="EaseSwitchButton">
+        <attr format="reference" name="switchOpenImage"/>
+        <attr format="reference" name="switchCloseImage"/>
+        <attr name="switchStatus">
+            <enum name="open" value="0"/>
+            <enum name="close" value="1"/>
+        </attr>
+    </declare-styleable><declare-styleable name="CollapsibleTextView">
+        <attr format="color" name="suffixColor"/>
+        <attr format="integer" name="collapsedLines"/>
+        <attr format="string" name="collapsedText"/>
+        <attr format="string" name="expandedText"/>
+        <attr format="boolean" name="suffixTrigger"/>
+    </declare-styleable><declare-styleable name="ArcProgressBar">
+        <attr format="float" name="arc_max_progress"/>
+        <attr format="color" name="arc_bg_color"/>
+        <attr format="dimension" name="arc_stroke_width"/>
+        <attr format="float" name="arc_progress"/>
+        <attr format="color" name="arc_progress_color"/>
+        <attr format="string" name="arc_first_text"/>
+        <attr format="color" name="arc_first_text_color"/>
+        <attr format="dimension" name="arc_first_text_size"/>
+        <attr format="string" name="arc_second_text"/>
+        <attr format="color" name="arc_second_text_color"/>
+        <attr format="dimension" name="arc_second_text_size"/>
+        <attr format="float" name="arc_angle_size"/>
+        <attr format="float" name="arc_start_angle"/>
+    </declare-styleable><declare-styleable name="CircleLayout">
+        <attr format="dimension" name="radius"/>
+        <attr format="integer" name="offset"/>
+    </declare-styleable><declare-styleable name="RingProgressBar">
+        <attr format="color" name="ringColor"/>
+        <attr format="color" name="ringProgressColor"/>
+        <attr format="color" name="textsColor"/>
+        <attr format="dimension" name="ringWidth"/>
+        <attr format="dimension" name="textSize"/>
+        <attr format="integer" name="max"/>
+        <attr format="boolean" name="showTextProgress"/>
+        <attr format="string" name="ringText"/>
+        <attr name="style">
+            <enum name="STROKE" value="0"/>
+            <enum name="FULL" value="1"/>
+        </attr>
+    </declare-styleable><declare-styleable name="CircleView">
+        <attr format="color" name="circleBack"/>
+        <attr format="string" name="circleText"/>
+    </declare-styleable><declare-styleable name="RectView">
+        <attr format="color" name="rectBack"/>
+        <attr format="string" name="rectText"/>
+        <attr format="color" name="rectTextColor"/>
+    </declare-styleable><declare-styleable name="LabelView">
+        
+        <attr format="string" name="lv_text"/>
+        
+        <attr format="color" name="lv_text_color"/>
+        
+        <attr format="dimension" name="lv_text_size"/>
+        
+        <attr format="boolean" name="lv_text_bold"/>
+        
+        <attr format="boolean" name="lv_text_all_caps"/>
+        
+        <attr format="color" name="lv_background_color"/>
+        
+        <attr format="dimension" name="lv_min_size"/>
+        
+        <attr format="dimension" name="lv_padding"/>
+        
+        <attr format="enum" name="lv_gravity">
+            <enum name="TOP_LEFT" value="51"/>
+            <enum name="TOP_RIGHT" value="53"/>
+            <enum name="BOTTOM_LEFT" value="83"/>
+            <enum name="BOTTOM_RIGHT" value="85"/>
+        </attr>
+        
+        <attr format="boolean" name="lv_fill_triangle"/>
+        
+        <attr format="integer" name="lv_fill_size"/>
+    </declare-styleable></file><file path="D:\2024workspace\ZnewsPro\app\src\main\res\values\colors.xml" qualifiers=""><color name="colorPrimary">#6200EE</color><color name="colorPrimaryDark">#3700B3</color><color name="colorAccent">#218EFF</color><color name="purple_200">#FFBB86FC</color><color name="purple_500">#FF6200EE</color><color name="purple_700">#FF3700B3</color><color name="teal_200">#FF03DAC5</color><color name="teal_700">#FF018786</color><color name="white">#FFFFFF</color><color name="white_transparent_f4">#f4ffffff</color><color name="yellow">#FD6639</color><color name="top_blue">#a1d9fe</color><color name="transparent">#00000000</color><color name="transparent_half">#99000000</color><color name="transparent_one">#66000000</color><color name="pure_color">#d3b2d4</color><color name="red">#f87675</color><color name="price_color">#ff2e00</color><color name="light_gray">#fff5f5f5</color><color name="lightgrey">#ececec</color><color name="lightlightgrey">#f1f1f1</color><color name="line_color">#f1f2f3</color><color name="logout">#ff5555</color><color name="main_blue">#0F3299</color><color name="main_blue_alpha">#cc0F3299</color><color name="gray_normal">#666667</color><color name="green">#3cb371</color><color name="grey">#acacac</color><color name="back_color">#F6F6F6</color><color name="blue">#0000ff</color><color name="divider_color">#E3E3E3</color><color name="colorRed">#F53A39</color><color name="colorRoute">#0fc200</color><color name="colorTextDeep">#151515</color><color name="colorTextHint">#cdcdcd</color><color name="colorTextMiddle">#666666</color><color name="colorTextSmall">#999999</color><color name="colorUnClickable">#9fd1c1</color><color name="colorUnSelected">#7dff6400</color><color name="colorYellow">#FC5016</color><color name="gold">#E7DEB9</color><color name="color_text_gray">#989898</color><color name="black">#101010</color><color name="product_back_color">#2B6DF9</color><color name="produce_transparent_color">#FAE2E6</color><color name="colorBlue">#219dff</color><color name="left_back_color">#D0EBF5</color><color name="btn_gray_normal">#c0c0c0</color><color name="act_background">#efefef</color><color name="private_bg">#FFD9EB</color><color name="public_bg">#E2EEF7</color><color name="public_text_color">#6E98BB</color><color name="private_text_color">#CE859D</color><color name="not_pingheng_color">#FF4545</color><color name="pingheng_color">#189E5B</color><color name="main_color">#00A9A9</color><color name="pre_color">#F6EAD5</color><color name="wrong_color">#FF6726</color><color name="money_one_color">#88E2E1</color><color name="money_two_color">#F23A50</color><color name="money_three_color">#F6AB5B</color><color name="selectable_cursor">#004DDD</color><color name="selectable_select_text_bg">#59004DDD</color><color name="selectable_select_pop_bg">#6B6B6E</color></file><file path="D:\2024workspace\ZnewsPro\app\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">Zone News</string></file><file path="D:\2024workspace\ZnewsPro\app\src\main\res\values\themes.xml" qualifiers=""><style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style><style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+    </style><style name="tabStyle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@drawable/selecter_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1</item>
+    </style><style name="ThemeSplash" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style><style name="horizontal_slide" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/AnimFade2</item>
+    </style><style name="TabText" parent="TextAppearance.Design.Tab">
+        <item name="textSize">15sp</item>
+        <item name="textStyle">normal</item>
+        <item name="textAllCaps">false</item>
+        <item name="textColor">@color/colorTextDeep</item>
+    </style><style name="AnimFade2" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
+    </style><style name="dialogStyle" parent="@android:style/Theme.Holo.Dialog">
+        
+        <item name="android:windowFrame">@null</item>
+        
+        <item name="android:windowIsFloating">true</item>
+        
+        <item name="android:windowNoTitle">true</item>
+        
+        <item name="android:windowIsTranslucent">true</item>
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style><style name="dialog_share" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style><style name="CityPickerAnimation" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style><style name="ActionSheetDialogStyle" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style><style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style><style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style><style name="DefaultDialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style><style name="NavPage">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style><style name="customSpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <item name="paddingStart">10dp</item>
+        <item name="paddingEnd">10dp</item>
+    </style></file><file name="backup_rules" path="D:\2024workspace\ZnewsPro\app\src\main\res\xml\backup_rules.xml" qualifiers="" type="xml"/><file name="data_extraction_rules" path="D:\2024workspace\ZnewsPro\app\src\main\res\xml\data_extraction_rules.xml" qualifiers="" type="xml"/><file name="file_paths" path="D:\2024workspace\ZnewsPro\app\src\main\res\xml\file_paths.xml" qualifiers="" type="xml"/><file name="network_security_config" path="D:\2024workspace\ZnewsPro\app\src\main\res\xml\network_security_config.xml" qualifiers="" type="xml"/></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\2024workspace\ZnewsPro\app\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\2024workspace\ZnewsPro\app\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\2024workspace\ZnewsPro\app\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\2024workspace\ZnewsPro\app\build\generated\res\resValues\debug"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="EaseSwitchButton">
+        <attr format="reference" name="switchOpenImage"/>
+        <attr format="reference" name="switchCloseImage"/>
+        <attr name="switchStatus">
+            <enum name="open" value="0"/>
+            <enum name="close" value="1"/>
+        </attr>
+    </declare-styleable><declare-styleable name="LabelView">
+        
+        <attr format="string" name="lv_text"/>
+        
+        <attr format="color" name="lv_text_color"/>
+        
+        <attr format="dimension" name="lv_text_size"/>
+        
+        <attr format="boolean" name="lv_text_bold"/>
+        
+        <attr format="boolean" name="lv_text_all_caps"/>
+        
+        <attr format="color" name="lv_background_color"/>
+        
+        <attr format="dimension" name="lv_min_size"/>
+        
+        <attr format="dimension" name="lv_padding"/>
+        
+        <attr format="enum" name="lv_gravity">
+            <enum name="TOP_LEFT" value="51"/>
+            <enum name="TOP_RIGHT" value="53"/>
+            <enum name="BOTTOM_LEFT" value="83"/>
+            <enum name="BOTTOM_RIGHT" value="85"/>
+        </attr>
+        
+        <attr format="boolean" name="lv_fill_triangle"/>
+        
+        <attr format="integer" name="lv_fill_size"/>
+    </declare-styleable><declare-styleable name="YLCircleImageView">
+        <attr format="dimension" name="radiusYL">圆角半径</attr>
+        <attr format="dimension" name="topLeftRadiusYL">左上</attr>
+        <attr format="dimension" name="topRightRadiusYL">右上</attr>
+        <attr format="dimension" name="bottomLeftRadiusYL">左下</attr>
+        <attr format="dimension" name="bottomRightRadiusYL">右下</attr>
+
+        <attr format="dimension" name="topLeftRadius_xYL">左上X轴</attr>
+        <attr format="dimension" name="topLeftRadius_yYL">左上Y轴</attr>
+
+        <attr format="dimension" name="topRightRadius_xYL">右上X轴</attr>
+        <attr format="dimension" name="topRightRadius_yYL">右上Y轴</attr>
+
+        <attr format="dimension" name="bottomLeftRadius_xYL">左下X轴</attr>
+        <attr format="dimension" name="bottomLeftRadius_yYL">左下Y轴</attr>
+
+        <attr format="dimension" name="bottomRightRadius_xYL">右下X轴</attr>
+        <attr format="dimension" name="bottomRightRadius_yYL">右下Y轴</attr>
+
+        <attr format="dimension" name="borderWidthYL">描边宽度</attr>
+        <attr format="color" name="borderColorYL">描边颜色</attr>
+        <attr format="dimension" name="borderSpaceYL">描边与图片间距</attr>
+        
+        <attr format="enum" name="scaleTypeYL">
+            <enum name="top" value="0">从图片顶部开始绘制，即肯定会展示图片顶部，默认</enum>
+            <enum name="center" value="1">展示图片中心</enum>
+            <enum name="bottom" value="2">从图片底部开始绘制，即肯定会展示图片底部</enum>
+            <enum name="fitXY" value="3">完全展示，有可能变形</enum>
+        </attr>
+    </declare-styleable><declare-styleable name="RoundBackChange">
+        <attr format="color" name="self_color"/>
+    </declare-styleable><declare-styleable name="EaseImageView">
+        <attr format="color" name="ease_border_color"/>
+        <attr format="dimension" name="ease_border_width"/>
+        <attr format="integer" name="ease_press_alpha"/>
+        <attr format="color" name="ease_press_color"/>
+        <attr format="dimension" name="ease_radius"/>
+        <attr format="enum" name="ease_shape_type">
+            <enum name="none" value="0"/>
+            <enum name="round" value="1"/>
+            <enum name="rectangle" value="2"/>
+        </attr>
+    </declare-styleable><declare-styleable name="WaterMaskView">
+        
+        <attr format="color" name="title_background_color"/>
+        
+        <attr format="boolean" name="left_button_visible"/>
+        
+        <attr format="string" name="company_text"/>
+        
+        <attr format="color" name="title_text_color"/>
+        
+        <attr format="string" name="logo_button_text"/>
+        
+        <attr format="color" name="logo_button_text_color"/>
+        
+        <attr format="reference|integer" name="logo_button_drawable"/>
+        
+        <attr format="string" name="info_text"/>
+        
+        <attr format="color" name="info_text_color"/>
+        
+        <attr format="reference|integer" name="right_button_drawable"/>
+    </declare-styleable><declare-styleable name="ArcProgressBar">
+        <attr format="float" name="arc_max_progress"/>
+        <attr format="color" name="arc_bg_color"/>
+        <attr format="dimension" name="arc_stroke_width"/>
+        <attr format="float" name="arc_progress"/>
+        <attr format="color" name="arc_progress_color"/>
+        <attr format="string" name="arc_first_text"/>
+        <attr format="color" name="arc_first_text_color"/>
+        <attr format="dimension" name="arc_first_text_size"/>
+        <attr format="string" name="arc_second_text"/>
+        <attr format="color" name="arc_second_text_color"/>
+        <attr format="dimension" name="arc_second_text_size"/>
+        <attr format="float" name="arc_angle_size"/>
+        <attr format="float" name="arc_start_angle"/>
+    </declare-styleable><declare-styleable name="LabelTextView">
+
+        <attr format="color" name="backgroundColor"/>
+        <attr format="color" name="textColor"/>
+        <attr format="color" name="numColor"/>
+
+        <attr format="string" name="text"/>
+        <attr format="string" name="num"/>
+
+        <attr format="dimension" name="numSize"/>
+        <attr format="dimension" name="textsSize"/>
+
+        <attr format="dimension" name="labelTopPadding"/>
+        <attr format="dimension" name="labelCenterPadding"/>
+        <attr format="dimension" name="labelBottomPadding"/>
+
+
+        <attr name="numStyle">
+            <enum name="normal" value="0"/>
+            <enum name="italic" value="1"/>
+            <enum name="bold" value="2"/>
+        </attr>
+
+        <attr name="textStyle">
+            <enum name="normal" value="0"/>
+            <enum name="italic" value="1"/>
+            <enum name="bold" value="2"/>
+        </attr>
+
+        <attr name="direction">
+            <enum name="leftTop" value="-45"/>
+            <enum name="rightTop" value="45"/>
+        </attr>
+
+
+    </declare-styleable><declare-styleable name="RealtimeBlurView">
+        <attr format="float" name="realtimeBlurRadius"/>
+        <attr format="float" name="realtimeDownsampleFactor"/>
+        <attr format="color" name="realtimeOverlayColor"/>
+        <attr format="dimension" name="realtimeBlurRoundCornerRadius"/>
+    </declare-styleable><declare-styleable name="CircleView">
+        <attr format="color" name="circleBack"/>
+        <attr format="string" name="circleText"/>
+    </declare-styleable><declare-styleable name="PswInputView">
+        <attr format="integer" name="count"/>
+        <attr format="color" name="border_color"/>
+        <attr format="color" name="dot_color"/>
+    </declare-styleable><declare-styleable name="CircleLayout">
+        <attr format="dimension" name="radius"/>
+        <attr format="integer" name="offset"/>
+    </declare-styleable><declare-styleable name="MyRatingBar">
+        
+        <attr format="dimension" name="starImageSize"/>
+        
+        <attr format="dimension" name="starPadding"/>
+        
+        <attr format="integer" name="starCount"/>
+        
+        <attr format="reference" name="starEmpty"/>
+        
+        <attr format="reference" name="starFill"/>
+        
+        <attr format="reference" name="starHalf"/>
+        
+        <attr format="boolean" name="clickable"/>
+        
+        <attr format="float" name="starStep"/>
+        
+        <attr name="stepSize">
+            <enum name="Half" value="0"/>
+            <enum name="Full" value="1"/>
+        </attr>
+    </declare-styleable><declare-styleable name="AddWidget">
+        <attr format="boolean" name="circle_anim"/>
+        <attr format="boolean" name="sub_anim"/>
+    </declare-styleable><declare-styleable name="RingProgressBar">
+        <attr format="color" name="ringColor"/>
+        <attr format="color" name="ringProgressColor"/>
+        <attr format="color" name="textsColor"/>
+        <attr format="dimension" name="ringWidth"/>
+        <attr format="dimension" name="textSize"/>
+        <attr format="integer" name="max"/>
+        <attr format="boolean" name="showTextProgress"/>
+        <attr format="string" name="ringText"/>
+        <attr name="style">
+            <enum name="STROKE" value="0"/>
+            <enum name="FULL" value="1"/>
+        </attr>
+    </declare-styleable><declare-styleable name="RectView">
+        <attr format="color" name="rectBack"/>
+        <attr format="string" name="rectText"/>
+        <attr format="color" name="rectTextColor"/>
+    </declare-styleable><declare-styleable name="LoadingView">
+        <attr name="loading_renderer">
+            
+            <enum name="MaterialLoadingRenderer" value="0"/>
+            <enum name="LevelLoadingRenderer" value="1"/>
+            <enum name="WhorlLoadingRenderer" value="2"/>
+            <enum name="GearLoadingRenderer" value="3"/>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </attr>
+    </declare-styleable><declare-styleable name="ArcImageView">
+        <attr format="dimension" name="arcHeight"/>
+        <attr format="color" name="bColor"/>
+        <attr format="enum" name="mDirection">
+            <enum name="out" value="0"/>
+            <enum name="inner" value="1"/>
+        </attr>
+        <attr format="enum" name="mPosition">
+            <enum name="left" value="0"/>
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="bottom" value="3"/>
+        </attr>
+    </declare-styleable><declare-styleable name="CollapsibleTextView">
+        <attr format="color" name="suffixColor"/>
+        <attr format="integer" name="collapsedLines"/>
+        <attr format="string" name="collapsedText"/>
+        <attr format="string" name="expandedText"/>
+        <attr format="boolean" name="suffixTrigger"/>
+    </declare-styleable><declare-styleable name="BubbleView">
+        <attr format="dimension" name="arrowWidth"/>
+        <attr format="dimension" name="angle"/>
+        <attr format="dimension" name="arrowHeight"/>
+        <attr format="dimension" name="arrowPosition"/>
+        <attr format="color" name="bubbleColor"/>
+        <attr format="enum" name="arrowLocation">
+            <enum name="left" value="0x00"/>
+            <enum name="right" value="0x01"/>
+            <enum name="top" value="0x02"/>
+            <enum name="bottom" value="0x03"/>
+        </attr>
+    </declare-styleable></configuration></mergedItems></merger>

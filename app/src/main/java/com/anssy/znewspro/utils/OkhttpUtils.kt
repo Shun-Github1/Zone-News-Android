@@ -1,0 +1,137 @@
+package com.anssy.znewspro.utils
+
+import android.content.Context
+import android.text.TextUtils
+import android.util.Log
+import com.anssy.znewspro.utils.SharedPreferenceUtils.getString
+
+import okhttp3.Cache
+import okhttp3.Headers
+import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import okio.Buffer
+import java.io.EOFException
+import java.io.IOException
+import java.io.InputStream
+import java.nio.charset.StandardCharsets
+import java.nio.charset.UnsupportedCharsetException
+import java.security.KeyStore
+import java.security.SecureRandom
+import java.security.cert.CertificateFactory
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManagerFactory
+
+object OkhttpUtils {
+     lateinit var okHttpClient: OkHttpClient
+     var index =0
+     fun initOkHttp(context: Context) {
+         val externalCacheDir = context.externalCacheDir
+         val string = getString(context, "token")
+         val addInterceptor = OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
+             .readTimeout(30, TimeUnit.SECONDS).writeTimeout(20, TimeUnit.SECONDS)
+         if (!TextUtils.isEmpty(string)) {
+             addInterceptor.addInterceptor { chain ->
+                 val headers = Headers.Builder()
+                     .add("apiToken", string!!)
+                     .build()
+                 chain.proceed(chain.request().newBuilder().headers(headers).build())//可以省略return
+             }
+         }
+         if (externalCacheDir != null && externalCacheDir.exists()) {
+             addInterceptor.cache(Cache(externalCacheDir.absoluteFile, 10485760))
+         }
+         okHttpClient = addInterceptor.build()
+    }
+
+
+    /**
+     * 解析 ResponseBody
+     * @param responseBody -
+     * @return 解析结果
+     */
+    @Throws(java.lang.Exception::class)
+    private fun getResponseBody(responseBody: ResponseBody): String? {
+        val source = responseBody.source()
+        source.request(Long.MAX_VALUE)
+        val buffer: Buffer = source.buffer
+
+        var charset = StandardCharsets.UTF_8
+        val contentType = responseBody.contentType()
+        if (contentType != null) {
+            try {
+                charset = contentType.charset(StandardCharsets.UTF_8)
+            } catch (e: UnsupportedCharsetException) {
+                Log.e("xxx", "将http数据写入流异常,异常原因：" + e.stackTrace.contentToString())
+            }
+        }
+
+        if (!isPlaintext(buffer)) {
+            return null
+        }
+
+        if (responseBody.contentLength() != 0L) {
+            checkNotNull(charset)
+            return buffer.clone().readString(charset)
+        }
+        return null
+    }
+
+
+    private fun isPlaintext(buffer: Buffer): Boolean {
+        try {
+            val prefix = Buffer()
+            val byteCount: Long = if (buffer.size < 64) buffer.size else 64
+            buffer.copyTo(prefix, 0, byteCount)
+            for (i in 0..15) {
+                if (prefix.exhausted()) {
+                    break
+                }
+                val codePoint: Int = prefix.readUtf8CodePoint()
+                if (Character.isISOControl(codePoint) && !Character.isWhitespace(codePoint)) {
+                    return false
+                }
+            }
+            return true
+        } catch (e: EOFException) {
+            return false
+        }
+    }
+
+    /**
+     * 获取SSLSocketFactory
+     *
+     * @param certificates 证书流文件
+     * @return
+     */
+    private fun getSSLSocketFactory(vararg certificates: InputStream): SSLSocketFactory? {
+        try {
+            val certificateFactory = CertificateFactory.getInstance("X.509")
+            val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+            keyStore.load(null)
+            var index = 0
+            for (certificate in certificates) {
+                val certificateAlias = Integer.toString(index++)
+                keyStore.setCertificateEntry(
+                    certificateAlias,
+                    certificateFactory.generateCertificate(certificate)
+                )
+                try {
+                    certificate.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            val sslContext = SSLContext.getInstance("TLS")
+            val trustManagerFactory =
+                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+            trustManagerFactory.init(keyStore)
+            sslContext.init(null, trustManagerFactory.trustManagers, SecureRandom())
+            return sslContext.socketFactory
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+}

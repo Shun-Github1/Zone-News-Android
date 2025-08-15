@@ -1,0 +1,108 @@
+package com.anssy.znewspro.model
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.anssy.znewspro.entry.CommonResponseEntry
+import com.anssy.znewspro.entry.TopicListEntry
+import com.anssy.znewspro.repository.TopicRepository
+import com.anssy.znewspro.utils.network.exception.NetworkResponse
+import com.kongzue.dialogx.dialogs.WaitDialog
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+/**
+ * @Description 主题
+ * @Author yulu
+ * @CreateTime 2025年07月07日 11:31:20
+ */
+@HiltViewModel
+class TopicModel @Inject constructor(private val topicRepository: TopicRepository):ViewModel() {
+    private var _topicListEntry:MutableLiveData<TopicListEntry>  = MutableLiveData()
+    var topicListEntry:LiveData<TopicListEntry> = _topicListEntry
+
+    private var _commonResponseEntry:MutableLiveData<CommonResponseEntry> = MutableLiveData()
+    var commonResponseEntry:LiveData<CommonResponseEntry> = _commonResponseEntry
+
+    fun queryMyTopics(){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                topicRepository.queryMyTopic()
+            }
+            when(result){
+                is NetworkResponse.NetError->{
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "服务器错误"
+                    _topicListEntry.value = topicListEntry
+                }
+                is  NetworkResponse.Success->{
+                    _topicListEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError->{
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _topicListEntry.value = topicListEntry
+                }
+            }
+        }
+    }
+
+
+    fun queryAllTopics(){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                topicRepository.queryAllTopic()
+            }
+            when(result){
+                is NetworkResponse.NetError->{
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "服务器错误"
+                    _topicListEntry.value = topicListEntry
+                }
+                is  NetworkResponse.Success->{
+                    _topicListEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError->{
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _topicListEntry.value = topicListEntry
+                }
+            }
+        }
+    }
+
+    fun editTopic(type:String,topic:String){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                topicRepository.editTopic(type,topic)
+            }
+            when(result){
+                is NetworkResponse.NetError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = "服务器错误"
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+
+                is NetworkResponse.Success -> {
+                     result.body.msg = topic
+                    _commonResponseEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = "未知错误"
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+            }
+        }
+    }
+}

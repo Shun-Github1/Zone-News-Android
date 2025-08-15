@@ -1,0 +1,51 @@
+package com.anssy.znewspro.utils;
+
+import android.content.Context;
+import dagger.internal.DaggerGenerated;
+import dagger.internal.Factory;
+import dagger.internal.Preconditions;
+import dagger.internal.Provider;
+import dagger.internal.QualifierMetadata;
+import dagger.internal.ScopeMetadata;
+import javax.annotation.processing.Generated;
+
+@ScopeMetadata("javax.inject.Singleton")
+@QualifierMetadata("dagger.hilt.android.qualifiers.ApplicationContext")
+@DaggerGenerated
+@Generated(
+    value = "dagger.internal.codegen.ComponentProcessor",
+    comments = "https://dagger.dev"
+)
+@SuppressWarnings({
+    "unchecked",
+    "rawtypes",
+    "KotlinInternal",
+    "KotlinInternalInJava",
+    "cast",
+    "deprecation",
+    "nullness:initialization.field.uninitialized"
+})
+public final class MVUtils_GetMvUtilsFactory implements Factory<MVUtils> {
+  private final MVUtils module;
+
+  private final Provider<Context> contextProvider;
+
+  public MVUtils_GetMvUtilsFactory(MVUtils module, Provider<Context> contextProvider) {
+    this.module = module;
+    this.contextProvider = contextProvider;
+  }
+
+  @Override
+  public MVUtils get() {
+    return getMvUtils(module, contextProvider.get());
+  }
+
+  public static MVUtils_GetMvUtilsFactory create(MVUtils module,
+      Provider<Context> contextProvider) {
+    return new MVUtils_GetMvUtilsFactory(module, contextProvider);
+  }
+
+  public static MVUtils getMvUtils(MVUtils instance, Context context) {
+    return Preconditions.checkNotNullFromProvides(instance.getMvUtils(context));
+  }
+}

@@ -1,0 +1,57 @@
+package com.anssy.znewspro.ui.mainfrag;
+
+/**
+ * @Description 搜寻
+ * @Author yulu
+ * @CreateTime 2025年06月30日 09:28:48
+ */
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000R\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\u0007\u0018\u0000 \u001d2\u00020\u0001:\u0001\u001dB\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0012\u001a\u00020\u0013H\u0016J\b\u0010\u0014\u001a\u00020\u0013H\u0003J$\u0010\u0015\u001a\u00020\u00162\u0006\u0010\u0017\u001a\u00020\u00182\b\u0010\u0019\u001a\u0004\u0018\u00010\u001a2\b\u0010\u001b\u001a\u0004\u0018\u00010\u001cH\u0016R\u0014\u0010\u0003\u001a\b\u0012\u0004\u0012\u00020\u00050\u0004X\u0082.\u00a2\u0006\u0002\n\u0000R\u0014\u0010\u0006\u001a\b\u0012\u0004\u0012\u00020\u00050\u0007X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\tX\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u000bX\u0082.\u00a2\u0006\u0002\n\u0000R\u001b\u0010\f\u001a\u00020\r8BX\u0082\u0084\u0002\u00a2\u0006\f\n\u0004\b\u0010\u0010\u0011\u001a\u0004\b\u000e\u0010\u000f\u00a8\u0006\u001e"}, d2 = {"Lcom/anssy/znewspro/ui/mainfrag/SearchFrag;", "Lcom/anssy/znewspro/base/BaseFragment;", "()V", "mAdapter", "Lcom/zhy/adapter/recyclerview/CommonAdapter;", "Lcom/anssy/znewspro/entry/SearchListEntry$DataDTO$ArticlesDTO;", "mNewsList", "Ljava/util/ArrayList;", "mProgressWidth", "", "mViewBinding", "Lcom/anssy/znewspro/databinding/FragSearchBinding;", "searchModel", "Lcom/anssy/znewspro/model/SearchModel;", "getSearchModel", "()Lcom/anssy/znewspro/model/SearchModel;", "searchModel$delegate", "Lkotlin/Lazy;", "initData", "", "initModel", "onCreateView", "Landroid/view/View;", "inflater", "Landroid/view/LayoutInflater;", "container", "Landroid/view/ViewGroup;", "savedInstanceState", "Landroid/os/Bundle;", "Companion", "app_debug"})
+public final class SearchFrag extends com.anssy.znewspro.base.BaseFragment {
+    @org.jetbrains.annotations.NotNull()
+    private final kotlin.Lazy searchModel$delegate = null;
+    private com.anssy.znewspro.databinding.FragSearchBinding mViewBinding;
+    private int mProgressWidth = 0;
+    private com.zhy.adapter.recyclerview.CommonAdapter<com.anssy.znewspro.entry.SearchListEntry.DataDTO.ArticlesDTO> mAdapter;
+    @org.jetbrains.annotations.NotNull()
+    private java.util.ArrayList<com.anssy.znewspro.entry.SearchListEntry.DataDTO.ArticlesDTO> mNewsList;
+    @org.jetbrains.annotations.NotNull()
+    public static final com.anssy.znewspro.ui.mainfrag.SearchFrag.Companion Companion = null;
+    
+    public SearchFrag() {
+        super();
+    }
+    
+    private final com.anssy.znewspro.model.SearchModel getSearchModel() {
+        return null;
+    }
+    
+    @java.lang.Override()
+    @org.jetbrains.annotations.NotNull()
+    public android.view.View onCreateView(@org.jetbrains.annotations.NotNull()
+    android.view.LayoutInflater inflater, @org.jetbrains.annotations.Nullable()
+    android.view.ViewGroup container, @org.jetbrains.annotations.Nullable()
+    android.os.Bundle savedInstanceState) {
+        return null;
+    }
+    
+    @java.lang.Override()
+    public void initData() {
+    }
+    
+    @android.annotation.SuppressLint(value = {"NotifyDataSetChanged"})
+    private final void initModel() {
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u0006\u0010\u0003\u001a\u00020\u0004\u00a8\u0006\u0005"}, d2 = {"Lcom/anssy/znewspro/ui/mainfrag/SearchFrag$Companion;", "", "()V", "getInstance", "Lcom/anssy/znewspro/ui/mainfrag/SearchFrag;", "app_debug"})
+    public static final class Companion {
+        
+        private Companion() {
+            super();
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.anssy.znewspro.ui.mainfrag.SearchFrag getInstance() {
+            return null;
+        }
+    }
+}

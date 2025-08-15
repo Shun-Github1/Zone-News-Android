@@ -1,0 +1,31 @@
+package com.anssy.znewspro.ui.login
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityRegisterBinding
+import com.jaeger.library.StatusBarUtil
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月03日 15:52:57
+ */
+
+class RegisterActivity :BaseActivity() {
+    private lateinit var mViewBindIng:ActivityRegisterBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBindIng = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(mViewBindIng.root)
+        StatusBarUtil.setLightMode(this)
+        StatusBarUtil.setColor(this,getColor(R.color.white),0)
+        initView()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initView() {
+        mViewBindIng.topLayout.titleTv.text ="Create Account"
+    }
+}

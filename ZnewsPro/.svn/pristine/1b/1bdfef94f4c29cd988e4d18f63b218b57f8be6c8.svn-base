@@ -1,0 +1,78 @@
+[versions]
+agp = "8.7.2"
+androidxLifecycleViewmodelKtx = "2.6.2"
+androidxLifecycleRuntimeKtxVersion = "2.6.2"
+googleHiltAndroid = "2.56.2"
+googleHiltAndroidCompiler = "2.56.2"
+kotlin = "2.0.0"
+coreKtx = "1.10.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+lifecycleRuntimeKtx = "2.6.1"
+activityCompose = "1.8.0"
+composeBom = "2024.04.01"
+reactivexRxandroid = "1.2.1"
+reactivexRxjava = "1.2.6"
+reactivexRxjavaVersion = "2.2.20"
+reactivexRxandroidVersion = "2.1.1"
+squareupAdapterRxjava2Version = "2.4.0"
+squareupLoggingInterceptorVersion = "3.10.0"
+squareupAdapterRxjavaVersion = "2.1.0"
+squareupRetrofit = "2.9.0"
+squareupConverterGson = "2.3.0"
+tencentMmkv = "1.2.11"
+appcompat = "1.7.0"
+xxpermissions = "21.3"
+autosize = "1.2.1"
+githubShapeviewVersion = "9.6"
+glide = "4.13.2"
+bannerviewpager = "3.1.6"
+githubBaseadapter = "v1.0.0"
+libraryVersion = "1.5.1"
+basepopup = "3.2.1"
+comKongzueDialogxDialogx2 = "0.0.47"
+[libraries]
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycleViewmodelKtx" }
+com-squareup-retrofit2-adapter-rxjava = { module = "com.squareup.retrofit2:adapter-rxjava", version.ref = "squareupAdapterRxjavaVersion" }
+com-squareup-okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "squareupLoggingInterceptorVersion" }
+com-squareup-retrofit2-adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "squareupAdapterRxjava2Version" }
+com-tencent-mmkv = { module = "com.tencent:mmkv", version.ref = "tencentMmkv" }
+google-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "googleHiltAndroidCompiler" }
+google-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroid" }
+io-reactivex-rxjava2-rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "reactivexRxandroidVersion" }
+io-reactivex-rxjava2-rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "reactivexRxjavaVersion" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+reactivex-rxjava = { module = "io.reactivex:rxjava", version.ref = "reactivexRxjava" }
+reactivex-rxandroid = { module = "io.reactivex:rxandroid", version.ref = "reactivexRxandroid" }
+squareup-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "squareupConverterGson" }
+squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "squareupRetrofit" }
+xxpermissions = { module = "com.github.getActivity:XXPermissions", version.ref = "xxpermissions" }
+autosize = { module = "me.jessyan:autosize", version.ref = "autosize" }
+bannerviewpager = { module = "com.github.zhpanvip:BannerViewPager", version.ref = "bannerviewpager" }
+com-github-getactivity-shapeview = { module = "com.github.getActivity:ShapeView", version.ref = "githubShapeviewVersion" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+github-baseadapter = { module = "com.github.meijingkang:baseAdapter", version.ref = "githubBaseadapter" }
+statusbarutil-library = { module = "com.jaeger.statusbarutil:library", version.ref = "libraryVersion" }
+basepopup = { module = "io.github.razerdp:BasePopup", version.ref = "basepopup" }
+com-kongzue-dialogx-dialogx4 = { module = "com.kongzue.dialogx:DialogX", version.ref = "comKongzueDialogxDialogx2" }
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+

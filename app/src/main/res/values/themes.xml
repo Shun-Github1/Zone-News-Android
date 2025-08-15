@@ -1,0 +1,303 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Force brand colors to override any system purple -->
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/teal_200</item>
+        <item name="colorOnSecondaryContainer">@color/black</item>
+        <item name="colorTertiary">@color/main_color</item>
+        <item name="colorOnTertiary">@color/white</item>
+        <item name="colorTertiaryContainer">@color/colorPrimaryDark</item>
+        <item name="colorOnTertiaryContainer">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorSurfaceVariant">@color/light_gray</item>
+        <item name="colorOnSurfaceVariant">@color/gray_normal</item>
+        <!-- System bar colors -->
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+        <item name="android:navigationBarColor">@color/navigation_bar_color</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <!-- Override to prevent any system purple from appearing -->
+        <item name="android:fontFamily">@font/custom</item>
+        <!-- Add these lines -->
+        <item name="android:textViewStyle">@style/GlobalTextViewStyle</item>
+        <item name="radioButtonStyle">@style/GlobalRadioButtonStyle</item>
+        <item name="buttonStyle">@style/GlobalButtonStyle</item>
+        <item name="editTextStyle">@style/GlobalEditTextStyle</item>
+        <item name="android:editTextStyle">@style/GlobalEditTextStyle</item>
+        <item name="checkboxStyle">@style/GlobalCheckboxStyle</item>
+        <item name="switchStyle">@style/GlobalSwitchStyle</item>
+    </style>
+
+    <!-- Define the global TextView style -->
+    <style name="GlobalTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <!-- Define the global RadioButton style -->
+    <style name="GlobalRadioButtonStyle" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <!-- Define the global Button style -->
+    <style name="GlobalButtonStyle" parent="Widget.Material3.Button">
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <!-- Define the global EditText style (applies to AppCompat and framework EditText) -->
+    <style name="GlobalEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+    </style>
+
+    <!-- Define the global Checkbox style -->
+    <style name="GlobalCheckboxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <!-- Define the global Switch style -->
+    <style name="GlobalSwitchStyle" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="Widget.Material3.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="tabStyle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@drawable/selecter_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="ThemeSplash" parent="@style/Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="horizontal_slide" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/AnimFade2</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="TabText" parent="TextAppearance.Material3.LabelLarge">
+        <item name="textAllCaps">false</item>
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AnimFade2" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+    <!-- Dialog 样式-->
+    <style name="dialogStyle" parent="@android:style/Theme.Holo.Dialog">
+        <!-- 是否有边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!--是否在悬浮Activity之上  -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!--阴影  -->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <!--背景透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+    <!--弹出框 动画-->
+    <style name="dialog_share" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="CityPickerAnimation" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="ActionSheetDialogStyle" parent="@style/Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="DefaultDialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="NavPage">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <style name="customSpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <item name="paddingStart">10dp</item>
+        <item name="paddingEnd">10dp</item>
+        <item name="android:fontFamily">@font/custom</item>
+    </style>
+
+    <!-- Material 3 Typography Styles -->
+    <style name="Material3.Typography.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">57sp</item>
+        <item name="android:lineHeight">64sp</item>
+        <item name="android:letterSpacing">-0.0044</item>
+    </style>
+
+    <style name="Material3.Typography.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">45sp</item>
+        <item name="android:lineHeight">52sp</item>
+    </style>
+
+    <style name="Material3.Typography.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:lineHeight">44sp</item>
+    </style>
+
+    <style name="Material3.Typography.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:lineHeight">40sp</item>
+    </style>
+
+    <style name="Material3.Typography.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:lineHeight">36sp</item>
+    </style>
+
+    <style name="Material3.Typography.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineHeight">32sp</item>
+    </style>
+
+    <style name="Material3.Typography.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:lineHeight">28sp</item>
+    </style>
+
+    <style name="Material3.Typography.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">24sp</item>
+        <item name="android:letterSpacing">0.0094</item>
+    </style>
+
+    <style name="Material3.Typography.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20sp</item>
+        <item name="android:letterSpacing">0.0071</item>
+    </style>
+
+    <style name="Material3.Typography.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">24sp</item>
+        <item name="android:letterSpacing">0.0312</item>
+    </style>
+
+    <style name="Material3.Typography.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20sp</item>
+        <item name="android:letterSpacing">0.0179</item>
+    </style>
+
+    <style name="Material3.Typography.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">400</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineHeight">16sp</item>
+        <item name="android:letterSpacing">0.0333</item>
+    </style>
+
+    <style name="Material3.Typography.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineHeight">20sp</item>
+        <item name="android:letterSpacing">0.0071</item>
+    </style>
+
+    <style name="Material3.Typography.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineHeight">16sp</item>
+        <item name="android:letterSpacing">0.0312</item>
+    </style>
+
+    <style name="Material3.Typography.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="fontWeight">500</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineHeight">16sp</item>
+        <item name="android:letterSpacing">0.0312</item>
+    </style>
+</resources>

@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.anssy.znewspro.app-mergeDebugResources-84:/values-ldltr-v21/values-ldltr-v21.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ANSSY241115\\.gradle\\caches\\8.9\\transforms\\22808cdfee714a7a0e959bee32b36fe7\\transformed\\appcompat-1.7.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "112",
+                        "endOffsets": "163"
+                    }
+                }
+            ]
+        }
+    ]
+}

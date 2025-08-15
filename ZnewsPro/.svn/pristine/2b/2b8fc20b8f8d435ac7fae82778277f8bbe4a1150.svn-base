@@ -1,0 +1,45 @@
+package com.anssy.znewspro.base
+
+import android.app.Application
+import com.anssy.znewspro.R
+import com.anssy.znewspro.utils.MVUtils
+import com.anssy.znewspro.utils.network.NetworkApi
+import com.anssy.znewspro.utils.network.NetworkRequiredInfo
+import com.kongzue.dialogx.DialogX
+import com.scwang.smartrefresh.header.MaterialHeader
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import dagger.hilt.android.HiltAndroidApp
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年06月25日 10:01:36
+ */
+
+@HiltAndroidApp
+class BaseApplication : Application() {
+    companion object{
+        var instances: BaseApplication?=null
+        init {
+            SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
+                layout.setPrimaryColorsId(R.color.back_color, R.color.black)
+                MaterialHeader(context)
+            }
+            SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
+
+                ClassicsFooter(context).setAccentColorId(R.color.black).setDrawableSize(20.0f)
+            }
+        }
+    }
+
+
+    override fun onCreate() {
+        super.onCreate()
+        NetworkApi.init(NetworkRequiredInfo(this))
+        MVUtils.instance.getMvUtils(applicationContext)
+        instances  = this
+        DialogX.init(this)
+    }
+
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Override Material You Dynamic Colors with Brand Green for Android 12+ -->
+    <color name="colorPrimary">#239b98</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorPrimaryContainer">#1A7A77</color>
+    <color name="colorOnPrimaryContainer">#FFFFFF</color>
+    
+    <color name="colorSecondary">#00A9A9</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorSecondaryContainer">#03DAC5</color>
+    <color name="colorOnSecondaryContainer">#000000</color>
+    
+    <color name="colorTertiary">#239b98</color>
+    <color name="colorOnTertiary">#FFFFFF</color>
+    <color name="colorTertiaryContainer">#1A7A77</color>
+    <color name="colorOnTertiaryContainer">#FFFFFF</color>
+    
+    <color name="colorSurface">@android:color/system_neutral1_10</color>
+    <color name="colorOnSurface">@android:color/system_neutral1_900</color>
+    <color name="colorSurfaceVariant">@android:color/system_neutral2_100</color>
+    <color name="colorOnSurfaceVariant">@android:color/system_neutral2_700</color>
+    
+    <color name="colorBackground">@android:color/system_neutral1_10</color>
+    <color name="colorOnBackground">@android:color/system_neutral1_900</color>
+    
+    <color name="colorError">#F53A39</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorErrorContainer">#FFEBEE</color>
+    <color name="colorOnErrorContainer">#C62828</color>
+    
+    <!-- Fallback green colors for Android 12+ if system colors don't work -->
+    <color name="main_color">#239b98</color>
+    <color name="pure_color">#B2DFD3</color>
+    <color name="private_bg">#E0F2EE</color>
+    <color name="selectable_cursor">#239b98</color>
+    <color name="selectable_select_text_bg">#59239b98</color>
+</resources>

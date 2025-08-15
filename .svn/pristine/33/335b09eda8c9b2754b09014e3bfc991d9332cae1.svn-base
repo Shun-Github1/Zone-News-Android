@@ -1,0 +1,16 @@
+package com.anssy.znewspro.ui.his
+
+import android.os.Bundle
+import com.anssy.znewspro.base.BaseActivity
+
+/**
+ * @Description 浏览历史
+ * @Author yulu
+ * @CreateTime 2025年07月03日 16:53:39
+ */
+
+class BrownHisActivity:BaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+}

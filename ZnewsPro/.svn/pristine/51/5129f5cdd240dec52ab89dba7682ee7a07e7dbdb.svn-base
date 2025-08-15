@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Zone News</string>
+    <string name="c_score_format">保守 %.2f</string>
+    <string name="p_score_format">积极 %.2f</string>
+    <string name="auth_google_id">1027106789501–199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">2833216987066254</string>
+    <string name="fb_login_protocol_scheme">fb2833216987066254</string>
+    <string name="facebook_client_token">2b509a1655e9c011023213f22cafa53f</string>
+
+
+</resources>

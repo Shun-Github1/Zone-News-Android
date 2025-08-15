@@ -1,0 +1,231 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.anssy.znewspro"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:4:5-66
+11-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:4:22-64
+12
+13    <permission
+13-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\4513942c3dc2a3628558d3637dd705d2\transformed\core-1.13.0\AndroidManifest.xml:22:5-24:47
+14        android:name="com.anssy.znewspro.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+14-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\4513942c3dc2a3628558d3637dd705d2\transformed\core-1.13.0\AndroidManifest.xml:23:9-81
+15        android:protectionLevel="signature" />
+15-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\4513942c3dc2a3628558d3637dd705d2\transformed\core-1.13.0\AndroidManifest.xml:24:9-44
+16
+17    <uses-permission android:name="com.anssy.znewspro.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+17-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\4513942c3dc2a3628558d3637dd705d2\transformed\core-1.13.0\AndroidManifest.xml:26:5-97
+17-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\4513942c3dc2a3628558d3637dd705d2\transformed\core-1.13.0\AndroidManifest.xml:26:22-94
+18
+19    <application
+19-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:5:5-57:19
+20        android:name="com.anssy.znewspro.base.BaseApplication"
+20-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:11:9-45
+21        android:allowBackup="true"
+21-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:6:9-35
+22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+22-->[androidx.core:core:1.13.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\4513942c3dc2a3628558d3637dd705d2\transformed\core-1.13.0\AndroidManifest.xml:28:18-86
+23        android:dataExtractionRules="@xml/data_extraction_rules"
+23-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:7:9-65
+24        android:debuggable="true"
+25        android:extractNativeLibs="false"
+26        android:fullBackupContent="@xml/backup_rules"
+26-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:8:9-54
+27        android:icon="@mipmap/ic_launcher"
+27-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:9:9-43
+28        android:label="@string/app_name"
+28-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:10:9-41
+29        android:networkSecurityConfig="@xml/network_security_config"
+29-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:17:9-69
+30        android:preserveLegacyExternalStorage="true"
+30-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:15:9-53
+31        android:requestLegacyExternalStorage="true"
+31-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:16:9-52
+32        android:roundIcon="@mipmap/ic_launcher_round"
+32-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:12:9-54
+33        android:supportsRtl="true"
+33-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:13:9-35
+34        android:testOnly="true"
+35        android:theme="@style/AppTheme" >
+35-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:14:9-40
+36        <meta-data
+36-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:19:9-21:35
+37            android:name="design_width_in_dp"
+37-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:20:13-46
+38            android:value="375" />
+38-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:21:13-32
+39        <meta-data
+39-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:22:9-24:35
+40            android:name="design_height_in_dp"
+40-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:23:13-47
+41            android:value="812" />
+41-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:24:13-32
+42
+43        <activity
+43-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:25:9-30:20
+44            android:name="com.anssy.znewspro.ui.MainActivity"
+44-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:26:13-44
+45            android:exported="false"
+45-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:27:13-37
+46            android:theme="@style/horizontal_slide" >
+46-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:28:13-52
+47        </activity>
+48        <activity
+48-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:31:9-34:15
+49            android:name="com.anssy.znewspro.ui.topicmodify.TopicModifyActivity"
+49-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:31:19-87
+50            android:exported="false"
+50-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:32:13-37
+51            android:theme="@style/horizontal_slide" />
+51-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:33:13-52
+52        <activity
+52-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:35:9-38:15
+53            android:name="com.anssy.znewspro.ui.newsdetail.NewsDetailActivity"
+53-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:35:19-85
+54            android:exported="false"
+54-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:36:13-37
+55            android:theme="@style/horizontal_slide" />
+55-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:37:13-52
+56        <activity
+56-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:39:9-48:20
+57            android:name="com.anssy.znewspro.ui.login.LoginActivity"
+57-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:39:19-75
+58            android:exported="true"
+58-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:40:13-36
+59            android:theme="@style/horizontal_slide" >
+59-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:41:13-52
+60            <intent-filter>
+60-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:43:13-47:29
+61                <action android:name="android.intent.action.MAIN" />
+61-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:17-69
+61-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:44:25-66
+62
+63                <category android:name="android.intent.category.LAUNCHER" />
+63-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:46:17-77
+63-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:46:27-74
+64            </intent-filter>
+65        </activity>
+66        <activity
+66-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:49:9-52:15
+67            android:name="com.anssy.znewspro.ui.login.LoginEmailActivity"
+67-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:49:19-80
+68            android:exported="false"
+68-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:50:13-37
+69            android:theme="@style/horizontal_slide" />
+69-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:51:13-52
+70        <activity
+70-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:53:9-56:15
+71            android:name="com.anssy.znewspro.ui.login.RegisterActivity"
+71-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:53:19-78
+72            android:exported="false"
+72-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:54:13-37
+73            android:theme="@style/horizontal_slide" />
+73-->D:\2024workspace\ZnewsPro\app\src\main\AndroidManifest.xml:55:13-52
+74        <activity
+74-->[androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\05a29c34b5281e703ce6309a6df2fa27\transformed\jetified-ui-tooling-release\AndroidManifest.xml:23:9-25:39
+75            android:name="androidx.compose.ui.tooling.PreviewActivity"
+75-->[androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\05a29c34b5281e703ce6309a6df2fa27\transformed\jetified-ui-tooling-release\AndroidManifest.xml:24:13-71
+76            android:exported="true" />
+76-->[androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\05a29c34b5281e703ce6309a6df2fa27\transformed\jetified-ui-tooling-release\AndroidManifest.xml:25:13-36
+77        <activity
+77-->[androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3fbcb47666014fb3d522837e3bc20397\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:23:9-25:39
+78            android:name="androidx.activity.ComponentActivity"
+78-->[androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3fbcb47666014fb3d522837e3bc20397\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:24:13-63
+79            android:exported="true" />
+79-->[androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3fbcb47666014fb3d522837e3bc20397\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:25:13-36
+80
+81        <provider
+81-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+82            android:name="androidx.startup.InitializationProvider"
+82-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+83            android:authorities="com.anssy.znewspro.androidx-startup"
+83-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+84            android:exported="false" >
+84-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+85            <meta-data
+85-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+86                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+86-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+87                android:value="androidx.startup" />
+87-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\3422d448080dd10094ffeee552841f6b\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+88            <meta-data
+88-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\dc39b3a7ee869f0eb2cdc5e5ab1204f0\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+89                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+89-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\dc39b3a7ee869f0eb2cdc5e5ab1204f0\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+90                android:value="androidx.startup" />
+90-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\dc39b3a7ee869f0eb2cdc5e5ab1204f0\transformed\jetified-lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+91            <meta-data
+91-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+92                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+92-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+93                android:value="androidx.startup" />
+93-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+94        </provider>
+95
+96        <receiver
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+97            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+97-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+98            android:directBootAware="false"
+98-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+99            android:enabled="true"
+99-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+100            android:exported="true"
+100-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+101            android:permission="android.permission.DUMP" >
+101-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+102            <intent-filter>
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+103                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+104            </intent-filter>
+105            <intent-filter>
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+106                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+106-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+106-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+107            </intent-filter>
+108            <intent-filter>
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+109                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+110            </intent-filter>
+111            <intent-filter>
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+112                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\475d57d362fbff3b4030ee75491bc1c5\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+113            </intent-filter>
+114        </receiver>
+115
+116        <provider
+116-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\1e20dbc61165456377372ea6fa4d48d8\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:12:9-16:43
+117            android:name="me.jessyan.autosize.InitProvider"
+117-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\1e20dbc61165456377372ea6fa4d48d8\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:13:13-60
+118            android:authorities="com.anssy.znewspro.autosize-init-provider"
+118-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\1e20dbc61165456377372ea6fa4d48d8\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:14:13-74
+119            android:exported="false"
+119-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\1e20dbc61165456377372ea6fa4d48d8\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:15:13-37
+120            android:multiprocess="true" />
+120-->[me.jessyan:autosize:1.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\1e20dbc61165456377372ea6fa4d48d8\transformed\jetified-autosize-1.2.1\AndroidManifest.xml:16:13-40
+121        <provider
+121-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\04458e82fbe1dcfe284faabfc4c7dfa5\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:10:9-14:43
+122            android:name="razerdp.basepopup.BasePopupInitializer"
+122-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\04458e82fbe1dcfe284faabfc4c7dfa5\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:11:13-66
+123            android:authorities="com.github.razerdp.com.anssy.znewspro.BasePopupInitializer"
+123-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\04458e82fbe1dcfe284faabfc4c7dfa5\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:12:13-91
+124            android:exported="false"
+124-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\04458e82fbe1dcfe284faabfc4c7dfa5\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:13:13-37
+125            android:multiprocess="true" />
+125-->[io.github.razerdp:BasePopup:3.2.1] C:\Users\ANSSY241115\.gradle\caches\8.9\transforms\04458e82fbe1dcfe284faabfc4c7dfa5\transformed\jetified-BasePopup-3.2.1\AndroidManifest.xml:14:13-40
+126    </application>
+127
+128</manifest>

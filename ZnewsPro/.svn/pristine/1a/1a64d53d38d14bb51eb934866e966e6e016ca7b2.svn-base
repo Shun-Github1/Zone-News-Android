@@ -1,0 +1,46 @@
+package com.anssy.znewspro.ui.his
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityBrownHisBinding
+import com.jaeger.library.StatusBarUtil
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+
+/**
+ * @Description 浏览历史
+ * @Author yulu
+ * @CreateTime 2025年07月03日 16:53:39
+ */
+
+class BrownHisActivity:BaseActivity() {
+    private lateinit var mViewBinding:ActivityBrownHisBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBinding = ActivityBrownHisBinding.inflate(layoutInflater)
+        setContentView(mViewBinding.root)
+        StatusBarUtil.setLightMode(this)
+        StatusBarUtil.setColor(this,getColor(R.color.white),0)
+        initView()
+    }
+    private var mList = ArrayList<Int>()
+    private lateinit var mAdapter:CommonAdapter<Int>
+    private fun initView() {
+        mViewBinding.topLayout.titleTv.text = "浏览记录"
+        mViewBinding.hisRecycler.layoutManager = LinearLayoutManager(mContext,RecyclerView.VERTICAL,false)
+        for (i in 1..5){
+            mList.add(i)
+        }
+        mAdapter = object : CommonAdapter<Int>(this, R.layout.item_brown_his,mList){
+            override fun convert(holder: ViewHolder?, t: Int?, position: Int) {
+
+            }
+
+        }
+        mViewBinding.hisRecycler.adapter = mAdapter
+    }
+}

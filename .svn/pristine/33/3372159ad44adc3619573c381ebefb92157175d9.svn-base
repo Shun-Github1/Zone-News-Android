@@ -1,0 +1,78 @@
+package com.anssy.znewspro.ui.login
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.text.TextUtils
+import androidx.activity.viewModels
+import com.anssy.znewspro.utils.Constants
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityRegisterBinding
+import com.anssy.znewspro.model.LoginModel
+import com.anssy.znewspro.utils.ToastUtils
+import com.jaeger.library.StatusBarUtil
+import com.kongzue.dialogx.dialogs.TipDialog
+import com.kongzue.dialogx.dialogs.WaitDialog
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月03日 15:52:57
+ */
+
+class RegisterActivity :BaseActivity() {
+    private lateinit var mViewBindIng:ActivityRegisterBinding
+    private val loginModel:LoginModel by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBindIng = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(mViewBindIng.root)
+        StatusBarUtil.setLightMode(this)
+        StatusBarUtil.setColor(this,getColor(R.color.white),0)
+        initView()
+        initModel()
+    }
+
+    private fun initModel() {
+        loginModel.outLoginEntry.observe(this){
+            if (it!=null){
+                if (it.code== Constants.SUCCESS_CODE){
+                    TipDialog.show("注册成功",WaitDialog.TYPE.SUCCESS)
+                }else{
+                    TipDialog.show(it.msg,WaitDialog.TYPE.ERROR)
+                }
+            }else{
+                WaitDialog.dismiss()
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initView() {
+        mViewBindIng.topLayout.titleTv.text ="Create Account"
+        mViewBindIng.registerBtn.setOnClickListener {
+            if (TextUtils.isEmpty(mViewBindIng.emailEt.text)){
+                ToastUtils.showShortToast(mContext!!,"请输入邮箱")
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(mViewBindIng.nameEt.text)){
+                ToastUtils.showShortToast(mContext!!,"请输入用户名")
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(mViewBindIng.passEt.text)){
+                ToastUtils.showShortToast(mContext!!,"请输入密码")
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(mViewBindIng.passAgainEt.text)){
+                ToastUtils.showShortToast(mContext!!,"请再次输入密码")
+                return@setOnClickListener
+            }
+            if (!TextUtils.equals(mViewBindIng.passEt.text,mViewBindIng.passAgainEt.text)){
+                ToastUtils.showShortToast(mContext!!,"两次密码不一致")
+                return@setOnClickListener
+            }
+            WaitDialog.show("正在注册")
+            loginModel.registerApp(mViewBindIng.emailEt.text.toString(),mViewBindIng.nameEt.text.toString(),mViewBindIng.passEt.text.toString())
+        }
+    }
+}

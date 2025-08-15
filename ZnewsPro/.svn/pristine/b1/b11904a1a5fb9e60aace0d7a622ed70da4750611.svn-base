@@ -1,0 +1,17 @@
+package com.anssy.znewspro.repository
+
+import com.anssy.znewspro.entry.ArticleDetailEntry
+import com.anssy.znewspro.net.AppHttpService
+import javax.inject.Inject
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月04日 17:24:04
+ */
+
+class NewsDetailRepository @Inject constructor(private val appHttpService: AppHttpService) {
+    suspend fun queryNewsDetail(id:String):ArticleDetailEntry{
+        return appHttpService.queryArticleDetail(id)
+    }
+}

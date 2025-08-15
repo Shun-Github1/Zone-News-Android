@@ -1,0 +1,132 @@
+package com.anssy.znewspro.ui.web;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
+
+
+import com.anssy.znewspro.R;
+import com.anssy.znewspro.base.BaseActivity;
+import com.anssy.znewspro.selfview.ProgressWebView;
+import com.anssy.znewspro.utils.SharedPreferenceUtils;
+import com.jaeger.library.StatusBarUtil;
+
+import java.util.Objects;
+
+
+public class WebActivity extends BaseActivity {
+    private ProgressWebView mWebView;
+    private TextView mTitleTv;
+    private String type;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web);
+        StatusBarUtil.setLightMode(this);
+        StatusBarUtil.setColor(this,getColor(R.color.white),0);
+        type = getIntent().getStringExtra("type");
+        initView();
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initView() {
+        mTitleTv = findViewById(R.id.title_tv);
+        mWebView = findViewById(R.id.agree_web);
+        WebSettings settings = this.mWebView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setAllowFileAccess(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setAllowContentAccess(true);
+//        settings.setUseWideViewPort(true);
+        settings.setDisplayZoomControls(false);
+        int screenDensity = getResources().getDisplayMetrics().densityDpi;
+        WebSettings.ZoomDensity zoomDensity = WebSettings.ZoomDensity.MEDIUM;
+        switch (screenDensity) {
+            case DisplayMetrics.DENSITY_LOW:
+                zoomDensity = WebSettings.ZoomDensity.CLOSE;
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                zoomDensity = WebSettings.ZoomDensity.MEDIUM;
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                zoomDensity = WebSettings.ZoomDensity.FAR;
+                break;
+        }
+        settings.setDefaultZoom(zoomDensity);
+        if (Build.VERSION.SDK_INT >= 21) {
+            settings.setMixedContentMode(settings.getMixedContentMode());
+        }
+        settings.setDomStorageEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        this.mWebView.setWebViewClient(new WebViewClient() {
+            /* class com.test.insureproject.web.ClassRoomDetailWebActivity.AnonymousClass1 */
+
+            @Override // android.webkit.WebViewClient
+            public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                WebView.HitTestResult hit = webView.getHitTestResult();
+                if (hit != null) {
+                    int hitType = hit.getType();
+                    if (hitType == WebView.HitTestResult.SRC_ANCHOR_TYPE) {// 点击超链接
+                        // 这里执行自定义的操作
+                        Intent intent= new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        Uri content_url = Uri.parse(url);
+                        intent.setData(content_url);
+                        startActivity(intent);
+                    }
+                }else{
+                   webView.loadUrl(url);
+                }
+                return true;
+            }
+
+            public void onPageFinished(WebView webView, String str) {
+                webView.getSettings().setJavaScriptEnabled(true);
+                super.onPageFinished(webView, str);
+            }
+        });
+        if (!TextUtils.isEmpty(type)){
+            switch (type) {
+                case "detail": {
+                    settings.setUseWideViewPort(true);
+                    mTitleTv.setText("详情");
+                    String content = SharedPreferenceUtils.getString(Objects.requireNonNull(getMContext()), "content");
+                    mWebView.loadDataWithBaseURL(null, getHtmlData(content), "text/html", "UTF-8", null);
+                    break;
+                }
+                case"about":
+                    String content = SharedPreferenceUtils.getString(Objects.requireNonNull(getMContext()), "content");
+                    mWebView.loadDataWithBaseURL(null, getHtmlData(content), "text/html", "UTF-8", null);
+                    mTitleTv.setText("关于我们");
+                    break;
+                default: {
+                    settings.setUseWideViewPort(true);
+                    mTitleTv.setText("详情");
+                    mWebView.loadUrl(Objects.requireNonNull(getIntent().getStringExtra("url")));
+                    break;
+                }
+            }
+
+        }
+
+    }
+
+
+
+    private String getHtmlData(String str) {
+        return "<html>" + "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> <style>img{max-width: 100%; width:auto; height:auto!important;}</style></head>" + "<body>" + str + "</body></html>";
+    }
+}

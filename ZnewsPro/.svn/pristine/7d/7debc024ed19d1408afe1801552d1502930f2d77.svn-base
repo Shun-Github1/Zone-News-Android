@@ -1,0 +1,103 @@
+package com.anssy.znewspro.utils.network
+
+
+import android.content.Context
+
+import com.anssy.videolive.utils.Constants
+import com.anssy.znewspro.net.AppHttpService
+import com.anssy.znewspro.utils.SharedPreferenceUtils
+import com.anssy.znewspro.utils.network.exception.NetworkResponseAdapterFactory
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Named
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+
+    // 普通用户的 OkHttpClient
+    @Provides
+    @Singleton
+    @Named("user")
+    fun provideUserOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val tokens = SharedPreferenceUtils.getString(context,"token")
+                val token = tokens ?: ""
+                val request = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $token") // 添加 token
+                    .build()
+                chain.proceed(request)
+            }
+            .addInterceptor(CustomLoggingInterceptor())
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+    }
+
+    // 商家的 OkHttpClient
+    @Provides
+    @Singleton
+    @Named("merchant")
+    fun provideMerchantOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val token = SharedPreferenceUtils.getString(context,"token")
+                val rtoken = token ?: ""
+                val request = chain.request().newBuilder()
+                    .addHeader("token", rtoken) // 添加 rtoken
+                    .build()
+                chain.proceed(request)
+            }
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+    }
+
+    // 普通用户的 Retrofit
+    @Provides
+    @Singleton
+    @Named("user")
+    fun provideUserRetrofit(@Named("user") okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constants.COMMON_URL)
+            .client(okHttpClient)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // 商家的 Retrofit
+    @Provides
+    @Singleton
+    @Named("merchant")
+    fun provideMerchantRetrofit(@Named("merchant") okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constants.COMMON_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // 普通用户的 ApiService
+    @Provides
+    @Singleton
+    fun provideApiService(@Named("user") retrofit: Retrofit): AppHttpService {
+        return retrofit.create(AppHttpService::class.java)
+    }
+
+
+}

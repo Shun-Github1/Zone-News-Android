@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="act_background">#efefef</color>
+    <color name="back_color">#F6F6F6</color>
+    <color name="black">#101010</color>
+    <color name="blue">#0000ff</color>
+    <color name="btn_gray_normal">#c0c0c0</color>
+    <color name="c_color">#CCF8F7</color>
+    <color name="colorAccent">#00A9A9</color>
+    <color name="colorBlue">#219dff</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorRed">#F53A39</color>
+    <color name="colorRoute">#0fc200</color>
+    <color name="colorTextDeep">#151515</color>
+    <color name="colorTextHint">#cdcdcd</color>
+    <color name="colorTextMiddle">#666666</color>
+    <color name="colorTextSmall">#999999</color>
+    <color name="colorUnClickable">#9fd1c1</color>
+    <color name="colorUnSelected">#7dff6400</color>
+    <color name="colorYellow">#FC5016</color>
+    <color name="color_text_gray">#989898</color>
+    <color name="divider_color">#E3E3E3</color>
+    <color name="gold">#E7DEB9</color>
+    <color name="gray_normal">#666667</color>
+    <color name="green">#3cb371</color>
+    <color name="grey">#acacac</color>
+    <color name="left_back_color">#D0EBF5</color>
+    <color name="light_gray">#fff5f5f5</color>
+    <color name="lightgrey">#ececec</color>
+    <color name="lightlightgrey">#f1f1f1</color>
+    <color name="line_color">#f1f2f3</color>
+    <color name="logout">#ff5555</color>
+    <color name="main_blue">#0F3299</color>
+    <color name="main_blue_alpha">#cc0F3299</color>
+    <color name="main_color">#239b98</color>
+    <color name="money_one_color">#88E2E1</color>
+    <color name="money_three_color">#F6AB5B</color>
+    <color name="money_two_color">#F23A50</color>
+    <color name="not_pingheng_color">#FF4545</color>
+    <color name="p_color">#00DBD5</color>
+    <color name="pingheng_color">#189E5B</color>
+    <color name="pre_color">#F6EAD5</color>
+    <color name="price_color">#ff2e00</color>
+    <color name="private_bg">#FFD9EB</color>
+    <color name="private_text_color">#CE859D</color>
+    <color name="produce_transparent_color">#FAE2E6</color>
+    <color name="product_back_color">#2B6DF9</color>
+    <color name="public_bg">#E2EEF7</color>
+    <color name="public_text_color">#6E98BB</color>
+    <color name="pure_color">#d3b2d4</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="red">#f87675</color>
+    <color name="selectable_cursor">#004DDD</color>
+    <color name="selectable_select_pop_bg">#6B6B6E</color>
+    <color name="selectable_select_text_bg">#59004DDD</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="top_blue">#a1d9fe</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_half">#99000000</color>
+    <color name="transparent_one">#66000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_transparent_f4">#f4ffffff</color>
+    <color name="wrong_color">#FF6726</color>
+    <color name="yellow">#FD6639</color>
+    <dimen name="chat_nick_margin_left">12dp</dimen>
+    <dimen name="chat_nick_text_size">13sp</dimen>
+    <dimen name="dp_10">6dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
+    <dimen name="header_goods_height">250dp</dimen>
+    <dimen name="header_height">210dp</dimen>
+    <dimen name="header_pager_offset">-400dip</dimen>
+    <dimen name="header_title_height">50dp</dimen>
+    <dimen name="header_title_init_offset">-50dp</dimen>
+    <dimen name="large_txt">20sp</dimen>
+    <dimen name="little_large_txt">18sp</dimen>
+    <dimen name="low_txt">13sp</dimen>
+    <dimen name="margin_chat_activity">5dp</dimen>
+    <dimen name="medium_txt">15sp</dimen>
+    <dimen name="offset_title">5dp</dimen>
+    <dimen name="search_margin_top">0dp</dimen>
+    <dimen name="size_avatar">48dp</dimen>
+    <dimen name="small_txt">10sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="tabs_height">45dip</dimen>
+    <string name="app_name">Zone News</string>
+    <string name="auth_google_id">1027106789501–199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com</string>
+    <string name="c_score_format">保守 %.2f</string>
+    <string name="default_web_client_id" translatable="false">1027106789501-199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">2833216987066254</string>
+    <string name="facebook_client_token">2b509a1655e9c011023213f22cafa53f</string>
+    <string name="fb_login_protocol_scheme">fb2833216987066254</string>
+    <string name="gcm_defaultSenderId" translatable="false">1027106789501</string>
+    <string name="google_api_key" translatable="false">AIzaSyAzBGjCEHBgofCZ5dKatF7R3RDrvmouaTQ</string>
+    <string name="google_app_id" translatable="false">1:1027106789501:android:abdd03ee61b60568d6b914</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAzBGjCEHBgofCZ5dKatF7R3RDrvmouaTQ</string>
+    <string name="google_storage_bucket" translatable="false">zone-news.firebasestorage.app</string>
+    <string name="p_score_format">积极 %.2f</string>
+    <string name="project_id" translatable="false">zone-news</string>
+    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+    </style>
+    <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style>
+    <style name="ActionSheetDialogStyle" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="AnimFade2" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
+    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="CityPickerAnimation" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style>
+    <style name="DefaultDialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+    <style name="Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="NavPage">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="TabText" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+    <style name="ThemeSplash" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+    <style name="customSpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <item name="paddingStart">10dp</item>
+        <item name="paddingEnd">10dp</item>
+    </style>
+    <style name="dialogStyle" parent="@android:style/Theme.Holo.Dialog">
+        
+        <item name="android:windowFrame">@null</item>
+        
+        <item name="android:windowIsFloating">true</item>
+        
+        <item name="android:windowNoTitle">true</item>
+        
+        <item name="android:windowIsTranslucent">true</item>
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="dialog_share" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style>
+    <style name="horizontal_slide" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/AnimFade2</item>
+    </style>
+    <style name="tabStyle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@drawable/selecter_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+</resources>

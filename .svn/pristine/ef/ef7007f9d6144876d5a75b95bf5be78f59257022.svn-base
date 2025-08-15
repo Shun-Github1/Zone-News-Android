@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.anssy.znewspro.app-mergeDebugResources-84:/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ANSSY241115\\.gradle\\caches\\8.9\\transforms\\bad70d51704e0b6f8fe100b242cebe32\\transformed\\jetified-BasePopup-3.2.1\\res\\values-en\\values-en.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,193,317,452,538,617,682,778,849,967",
+                        "endColumns": "137,123,134,85,78,64,95,70,117,98",
+                        "endOffsets": "188,312,447,533,612,677,773,844,962,1061"
+                    }
+                }
+            ]
+        }
+    ]
+}

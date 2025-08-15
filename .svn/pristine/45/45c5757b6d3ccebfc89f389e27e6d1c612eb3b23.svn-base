@@ -1,0 +1,64 @@
+package com.anssy.znewspro.ui.mainfrag
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.anssy.znewspro.base.BaseFragment
+import com.anssy.znewspro.databinding.FragHomeBinding
+import com.anssy.znewspro.ui.MainActivity
+import com.anssy.znewspro.ui.mainfrag.homechild.HomeChildFrag
+import com.google.android.material.tabs.TabLayoutMediator
+
+/**
+ * @Description 主界面
+ * @Author yulu
+ * @CreateTime 2025年06月30日 08:50:12
+ */
+
+class HomeFrag : BaseFragment() {
+    private lateinit var mViewBinding:FragHomeBinding
+    private var fragmentList = ArrayList<Fragment>()
+    private val titleGroup = arrayOf("Today","HongKong","China")
+    companion object{
+        fun  getInstance():HomeFrag{
+            return HomeFrag()
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        mViewBinding = FragHomeBinding.inflate(inflater)
+        return mViewBinding.root
+    }
+
+    override fun initData() {
+        titleGroup.forEach {
+            fragmentList.add(HomeChildFrag.getInstance(it))
+        }
+        mViewBinding.homeVp.adapter = MyAdapter(this)
+        mViewBinding.homeVp.isUserInputEnabled = false
+        val tabLayoutMediator  =TabLayoutMediator(mViewBinding.tabLayout,mViewBinding.homeVp){ tab, position ->
+            tab.text = titleGroup[position]
+        }
+        tabLayoutMediator.attach()
+        mViewBinding.homeMoreIv.setOnClickListener {
+            (requireActivity() as MainActivity).showSettingPop(it)
+        }
+    }
+
+    private inner class MyAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+        override fun getItemCount(): Int = titleGroup.size
+
+        override fun createFragment(position: Int): Fragment {
+            return fragmentList[position]
+        }
+    }
+}

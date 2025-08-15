@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bottom_line"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="@null"
+            android:id="@+id/close_iv"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_popup_close_default"
+            app:tint="@color/colorTextDeep" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorTextDeep"
+                android:text="筛选"
+                android:textSize="@dimen/medium_txt"
+                />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="媒体立场"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="15sp" />
+
+        <RadioGroup
+            android:id="@+id/media_rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <com.hjq.shape.view.ShapeRadioButton
+                android:id="@+id/negative_rb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:text="保守派"
+                android:textSize="13sp"
+                app:shape_solidCheckedColor="@color/main_color"
+                app:shape_solidColor="@color/back_color"
+                app:shape_textCheckedColor="@color/white"
+                app:shape_textColor="#454545" />
+
+            <com.hjq.shape.view.ShapeRadioButton
+                android:id="@+id/progress_rb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:text="自由派"
+                android:textSize="13sp"
+                app:shape_solidCheckedColor="@color/main_color"
+                app:shape_solidColor="@color/back_color"
+                app:shape_textCheckedColor="@color/white"
+                app:shape_textColor="#454545" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="媒体所在地区"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="15sp" />
+        <com.anssy.znewspro.selfview.CanScrollRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:id="@+id/con_recycler"
+            android:overScrollMode="never"
+            />
+        <com.hjq.shape.view.ShapeButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:shape_solidColor="@color/main_color"
+            android:paddingVertical="10dp"
+            app:shape_radius="6dp"
+            android:gravity="center"
+            android:text="确定"
+            android:id="@+id/yes_btn"
+            android:textSize="@dimen/medium_txt"
+            android:textColor="@color/white"
+            android:layout_marginTop="14dp"
+            />
+    </LinearLayout>
+</LinearLayout>

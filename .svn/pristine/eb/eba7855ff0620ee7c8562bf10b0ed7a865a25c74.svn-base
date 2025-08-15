@@ -1,0 +1,31 @@
+package com.anssy.znewspro.base
+
+import android.app.Application
+import com.anssy.znewspro.utils.MVUtils
+import com.anssy.znewspro.utils.network.NetworkApi
+import com.anssy.znewspro.utils.network.NetworkRequiredInfo
+import com.kongzue.dialogx.DialogX
+import dagger.hilt.android.HiltAndroidApp
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年06月25日 10:01:36
+ */
+
+@HiltAndroidApp
+class BaseApplication : Application() {
+    companion object{
+        var instances: BaseApplication?=null
+    }
+
+
+    override fun onCreate() {
+        super.onCreate()
+        NetworkApi.init(NetworkRequiredInfo(this))
+        MVUtils.instance.getMvUtils(applicationContext)
+        instances  = this
+        DialogX.init(this)
+    }
+
+}

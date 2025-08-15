@@ -1,0 +1,163 @@
+package com.anssy.znewspro.utils;
+
+@dagger.Module()
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\b\u0007\u0018\u0000 \u00062\u00020\u0001:\u0001\u0006B\u0005\u00a2\u0006\u0002\u0010\u0002J\u0012\u0010\u0003\u001a\u00020\u00002\b\b\u0001\u0010\u0004\u001a\u00020\u0005H\u0007\u00a8\u0006\u0007"}, d2 = {"Lcom/anssy/znewspro/utils/MVUtils;", "", "()V", "getMvUtils", "context", "Landroid/content/Context;", "Companion", "app_debug"})
+@dagger.hilt.InstallIn(value = {dagger.hilt.components.SingletonComponent.class})
+public final class MVUtils {
+    @org.jetbrains.annotations.Nullable()
+    private static com.anssy.znewspro.utils.MVUtils mInstance;
+    @org.jetbrains.annotations.Nullable()
+    private static com.tencent.mmkv.MMKV mmkv;
+    @org.jetbrains.annotations.NotNull()
+    public static final com.anssy.znewspro.utils.MVUtils.Companion Companion = null;
+    
+    public MVUtils() {
+        super();
+    }
+    
+    @dagger.Provides()
+    @javax.inject.Singleton()
+    @org.jetbrains.annotations.NotNull()
+    public final com.anssy.znewspro.utils.MVUtils getMvUtils(@dagger.hilt.android.qualifiers.ApplicationContext()
+    @org.jetbrains.annotations.NotNull()
+    android.content.Context context) {
+        return null;
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\\\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\u0012\n\u0000\n\u0002\u0010\u0006\n\u0000\n\u0002\u0010\u0007\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\"\n\u0002\b\b\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u0006\u0010\n\u001a\u00020\u000bJ\u0010\u0010\f\u001a\u00020\r2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010\f\u001a\u00020\r2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0006\u0010\u0010\u001a\u00020\rJ\u0012\u0010\u0011\u001a\u0004\u0018\u00010\u00122\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u001c\u0010\u0011\u001a\u0004\u0018\u00010\u00122\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\b\u0010\u0010\u001a\u0004\u0018\u00010\u0012J\u0010\u0010\u0013\u001a\u00020\u00142\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010\u0013\u001a\u00020\u00142\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0006\u0010\u0010\u001a\u00020\u0014J\u0010\u0010\u0015\u001a\u00020\u00162\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010\u0015\u001a\u00020\u00162\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0006\u0010\u0010\u001a\u00020\u0016J\u0010\u0010\u0017\u001a\u00020\u00182\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010\u0017\u001a\u00020\u00182\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0006\u0010\u0010\u001a\u00020\u0018J\u0010\u0010\u0019\u001a\u00020\u001a2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010\u0019\u001a\u00020\u001a2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0006\u0010\u0010\u001a\u00020\u001aJ\u0012\u0010\u001b\u001a\u0004\u0018\u00010\u001c2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0012\u0010\u001d\u001a\u0004\u0018\u00010\u000f2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u001c\u0010\u001d\u001a\u0004\u0018\u00010\u000f2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\b\u0010\u0010\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010\u001e\u001a\n\u0012\u0004\u0012\u00020\u000f\u0018\u00010\u001f2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fJ\u0018\u0010 \u001a\u00020\u000b2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0006\u0010!\u001a\u00020\u0001J\u001a\u0010\"\u001a\u00020\u000b2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\b\u0010#\u001a\u0004\u0018\u00010\u001cJ\"\u0010$\u001a\u00020\u000b2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000f2\u0010\u0010%\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u001fJ\u0010\u0010&\u001a\u00020\u000b2\b\u0010\u000e\u001a\u0004\u0018\u00010\u000fR\u0011\u0010\u0003\u001a\u00020\u00048F\u00a2\u0006\u0006\u001a\u0004\b\u0005\u0010\u0006R\u0010\u0010\u0007\u001a\u0004\u0018\u00010\u0004X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u0010\u0010\b\u001a\u0004\u0018\u00010\tX\u0082\u000e\u00a2\u0006\u0002\n\u0000\u00a8\u0006\'"}, d2 = {"Lcom/anssy/znewspro/utils/MVUtils$Companion;", "", "()V", "instance", "Lcom/anssy/znewspro/utils/MVUtils;", "getInstance", "()Lcom/anssy/znewspro/utils/MVUtils;", "mInstance", "mmkv", "Lcom/tencent/mmkv/MMKV;", "clearAll", "", "getBoolean", "", "key", "", "defaultValue", "getBytes", "", "getDouble", "", "getFloat", "", "getInt", "", "getLong", "", "getParcelable", "Landroid/os/Parcelable;", "getString", "getStringSet", "", "put", "object", "putParcelable", "obj", "putSet", "sets", "removeKey", "app_debug"})
+    public static final class Companion {
+        
+        private Companion() {
+            super();
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.anssy.znewspro.utils.MVUtils getInstance() {
+            return null;
+        }
+        
+        /**
+         * 写入基本数据类型缓存
+         *
+         * @param key    键
+         * @param object 值
+         */
+        public final void put(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, @org.jetbrains.annotations.NotNull()
+        java.lang.Object object) {
+        }
+        
+        public final void putSet(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, @org.jetbrains.annotations.Nullable()
+        java.util.Set<java.lang.String> sets) {
+        }
+        
+        public final void putParcelable(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, @org.jetbrains.annotations.Nullable()
+        android.os.Parcelable obj) {
+        }
+        
+        public final int getInt(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return 0;
+        }
+        
+        public final int getInt(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, int defaultValue) {
+            return 0;
+        }
+        
+        public final double getDouble(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return 0.0;
+        }
+        
+        public final double getDouble(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, double defaultValue) {
+            return 0.0;
+        }
+        
+        public final long getLong(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return 0L;
+        }
+        
+        public final long getLong(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, long defaultValue) {
+            return 0L;
+        }
+        
+        public final boolean getBoolean(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return false;
+        }
+        
+        public final boolean getBoolean(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, boolean defaultValue) {
+            return false;
+        }
+        
+        public final float getFloat(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return 0.0F;
+        }
+        
+        public final float getFloat(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, float defaultValue) {
+            return 0.0F;
+        }
+        
+        @org.jetbrains.annotations.Nullable()
+        public final byte[] getBytes(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.Nullable()
+        public final byte[] getBytes(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, @org.jetbrains.annotations.Nullable()
+        byte[] defaultValue) {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.Nullable()
+        public final java.lang.String getString(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.Nullable()
+        public final java.lang.String getString(@org.jetbrains.annotations.Nullable()
+        java.lang.String key, @org.jetbrains.annotations.Nullable()
+        java.lang.String defaultValue) {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.Nullable()
+        public final java.util.Set<java.lang.String> getStringSet(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.Nullable()
+        public final android.os.Parcelable getParcelable(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+            return null;
+        }
+        
+        /**
+         * 移除某个key对
+         *
+         * @param key
+         */
+        public final void removeKey(@org.jetbrains.annotations.Nullable()
+        java.lang.String key) {
+        }
+        
+        /**
+         * 清除所有key
+         */
+        public final void clearAll() {
+        }
+    }
+}

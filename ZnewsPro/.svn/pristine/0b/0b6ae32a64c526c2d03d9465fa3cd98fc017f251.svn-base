@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="offset_title">5dp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="dp_10">6dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="large_txt">20sp</dimen>
+    <dimen name="low_txt">13sp</dimen>
+    <dimen name="small_txt">10sp</dimen>
+    <dimen name="medium_txt">15sp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
+    <dimen name="size_avatar">48dp</dimen>
+    <dimen name="margin_chat_activity">5dp</dimen>
+    <dimen name="chat_nick_margin_left">12dp</dimen>
+    <dimen name="chat_nick_text_size">13sp</dimen>
+    <dimen name="little_large_txt">18sp</dimen>
+
+    <dimen name="header_title_height">50dp</dimen>
+    <dimen name="header_title_init_offset">-50dp</dimen>
+    <dimen name="header_pager_offset">-400dip</dimen>
+    <dimen name="tabs_height">45dip</dimen>
+    <dimen name="header_height">210dp</dimen>
+    <dimen name="header_goods_height">250dp</dimen>
+    <dimen name="search_margin_top">0dp</dimen>
+</resources>

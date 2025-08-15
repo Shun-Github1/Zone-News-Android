@@ -1,0 +1,32 @@
+package com.anssy.znewspro.model;
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年06月30日 14:01:42
+ */
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000,\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0010\u0002\n\u0000\b\u0007\u0018\u00002\u00020\u0001B\u0007\b\u0007\u00a2\u0006\u0002\u0010\u0002J\u0006\u0010\u000e\u001a\u00020\u000fR$\u0010\u0003\u001a\u0018\u0012\u0014\u0012\u0012\u0012\u0004\u0012\u00020\u00060\u0005j\b\u0012\u0004\u0012\u00020\u0006`\u00070\u0004X\u0082\u000e\u00a2\u0006\u0002\n\u0000R0\u0010\b\u001a\u0018\u0012\u0014\u0012\u0012\u0012\u0004\u0012\u00020\u00060\u0005j\b\u0012\u0004\u0012\u00020\u0006`\u00070\tX\u0086\u000e\u00a2\u0006\u000e\n\u0000\u001a\u0004\b\n\u0010\u000b\"\u0004\b\f\u0010\r\u00a8\u0006\u0010"}, d2 = {"Lcom/anssy/znewspro/model/HomeModel;", "Landroidx/lifecycle/ViewModel;", "()V", "_mBannerList", "Landroidx/lifecycle/MutableLiveData;", "Ljava/util/ArrayList;", "Lcom/anssy/znewspro/entry/HomeBannerEntry;", "Lkotlin/collections/ArrayList;", "mBannerList", "Landroidx/lifecycle/LiveData;", "getMBannerList", "()Landroidx/lifecycle/LiveData;", "setMBannerList", "(Landroidx/lifecycle/LiveData;)V", "getBannerList", "", "app_debug"})
+@dagger.hilt.android.lifecycle.HiltViewModel()
+public final class HomeModel extends androidx.lifecycle.ViewModel {
+    @org.jetbrains.annotations.NotNull()
+    private androidx.lifecycle.MutableLiveData<java.util.ArrayList<com.anssy.znewspro.entry.HomeBannerEntry>> _mBannerList;
+    @org.jetbrains.annotations.NotNull()
+    private androidx.lifecycle.LiveData<java.util.ArrayList<com.anssy.znewspro.entry.HomeBannerEntry>> mBannerList;
+    
+    @javax.inject.Inject()
+    public HomeModel() {
+        super();
+    }
+    
+    @org.jetbrains.annotations.NotNull()
+    public final androidx.lifecycle.LiveData<java.util.ArrayList<com.anssy.znewspro.entry.HomeBannerEntry>> getMBannerList() {
+        return null;
+    }
+    
+    public final void setMBannerList(@org.jetbrains.annotations.NotNull()
+    androidx.lifecycle.LiveData<java.util.ArrayList<com.anssy.znewspro.entry.HomeBannerEntry>> p0) {
+    }
+    
+    public final void getBannerList() {
+    }
+}

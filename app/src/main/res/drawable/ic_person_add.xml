@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="84dp"
+    android:height="84dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Person silhouette -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/main_color"
+        android:strokeWidth="2"
+        android:pathData="M12,11a4,4 0 1,0 -0.001,-8.001A4,4 0 0,0 12,11z"/>
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/main_color"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M4,20c0,-3.3137 3.134,-6 8,-6s8,2.6863 8,6"/>
+
+    <!-- Plus badge (bottom-right) -->
+    <!-- Circle centered at (19,19), radius 4 -->
+    <path
+        android:fillColor="@color/main_color"
+        android:pathData="M19,15a4,4 0 1,0 0,8a4,4 0 1,0 0,-8z"/>
+    <!-- Plus sign aligned to the badge circle center (19,19). Bar width ~1.5, length ~4) -->
+    <!-- Vertical bar -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M18.25,17 L19.75,17 L19.75,21 L18.25,21 Z"/>
+    <!-- Horizontal bar -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M17,18.25 L21,18.25 L21,19.75 L17,19.75 Z"/>
+</vector>
+
+

@@ -1,0 +1,100 @@
+package com.anssy.znewspro.entry;
+
+import java.util.List;
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月07日 15:05:20
+ */
+
+public class ViewHisEntry {
+
+    private Integer code;
+    private DataDTO data;
+    private String msg;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public DataDTO getData() {
+        return data;
+    }
+
+    public void setData(DataDTO data) {
+        this.data = data;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public static class DataDTO {
+        private List<ArticlesDTO> articles;
+
+        public List<ArticlesDTO> getArticles() {
+            return articles;
+        }
+
+        public void setArticles(List<ArticlesDTO> articles) {
+            this.articles = articles;
+        }
+
+        public static class ArticlesDTO {
+            private String articleID;
+            private String articleURL;
+            private String date;
+            private String pictureURL;
+            private String title;
+
+            public String getArticleID() {
+                return articleID;
+            }
+
+            public void setArticleID(String articleID) {
+                this.articleID = articleID;
+            }
+
+            public String getArticleURL() {
+                return articleURL;
+            }
+
+            public void setArticleURL(String articleURL) {
+                this.articleURL = articleURL;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
+            }
+
+            public String getPictureURL() {
+                return pictureURL;
+            }
+
+            public void setPictureURL(String pictureURL) {
+                this.pictureURL = pictureURL;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+        }
+    }
+}

@@ -1,0 +1,330 @@
+package com.anssy.znewspro.net;
+
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000R\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010$\n\u0002\u0010\u000e\n\u0002\b\u0004\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\t\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\b%\n\u0002\u0018\u0002\n\u0002\b\u000f\bf\u0018\u00002\u00020\u0001J\u001e\u0010\t\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J.\u0010\f\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010\u0010\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u001e\u0010\u0011\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J\u001c\u0010\u0012\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010\u0013\u001a\u00020\u0014H\'J.\u0010\u0015\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0018\u0010\u0016\u001a\u00020\u00172\b\b\u0001\u0010\n\u001a\u00020\u000bH\u00a7@\u00a2\u0006\u0002\u0010\u0018J.\u0010\u0019\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010\u001a\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010\u001b\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010\u001c\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u001c\u0010\u001d\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010\u001e\u001a\u00020\u0014H\'J\u001e\u0010\u001f\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J\u0018\u0010 \u001a\u00020!2\b\b\u0001\u0010\n\u001a\u00020\u000bH\u00a7@\u00a2\u0006\u0002\u0010\u0018J\u001c\u0010\"\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010#\u001a\u00020\u0014H\'J\u001e\u0010$\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J.\u0010%\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0018\u0010&\u001a\u00020\'2\b\b\u0001\u0010(\u001a\u00020\u000fH\u00a7@\u00a2\u0006\u0002\u0010)J\u0012\u0010*\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u0012\u0010+\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u0010,\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010-\u001a\u00020\u0014H\'J.\u0010.\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0012\u0010/\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u00100\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010-\u001a\u00020\u0014H\'J\u0012\u00101\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u00102\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010\u001e\u001a\u00020\u0014H\'J\u001c\u00103\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u00104\u001a\u00020\u0014H\'J\u0012\u00105\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u0012\u00106\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001e\u00107\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u00108\u001a\u0004\u0018\u00010\u000fH\'J\u0012\u00109\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u0010:\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010;\u001a\u00020\u0014H\'J\u0012\u0010<\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u0012\u0010=\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u0012\u0010>\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J.\u0010?\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010@\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010A\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0012\u0010B\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u0010C\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010\u001e\u001a\u00020\u0014H\'J.\u0010D\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0012\u0010E\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u0012\u0010F\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u0010G\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010H\u001a\u00020\u0014H\'J\u0012\u0010I\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J.\u0010J\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0012\u0010K\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u000e\u0010L\u001a\u00020MH\u00a7@\u00a2\u0006\u0002\u0010NJ\u0012\u0010O\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J\u001c\u0010P\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010\u0013\u001a\u00020\u0014H\'J\u0012\u0010Q\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u0003H\'J.\u0010R\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u001c\u0010S\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\b\b\u0001\u0010\u001e\u001a\u00020\u0014H\'J.\u0010T\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J.\u0010U\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\u001a\b\u0001\u0010\r\u001a\u0014\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0012\u0006\u0012\u0004\u0018\u00010\u000f\u0018\u00010\u000eH\'J\u0018\u0010V\u001a\u00020M2\b\b\u0001\u0010W\u001a\u00020\u000fH\u00a7@\u00a2\u0006\u0002\u0010)J\u001e\u0010X\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J\u001e\u0010Y\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J\u001e\u0010Z\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'J\u001e\u0010[\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00032\n\b\u0001\u0010\n\u001a\u0004\u0018\u00010\u000bH\'R\u001e\u0010\u0002\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00038gX\u00a6\u0004\u00a2\u0006\u0006\u001a\u0004\b\u0005\u0010\u0006R\u001e\u0010\u0007\u001a\f\u0012\u0006\u0012\u0004\u0018\u00010\u0004\u0018\u00010\u00038gX\u00a6\u0004\u00a2\u0006\u0006\u001a\u0004\b\b\u0010\u0006\u00a8\u0006\\"}, d2 = {"Lcom/anssy/znewspro/net/AppHttpService;", "", "allEquipUserList", "Lrx/Observable;", "Lokhttp3/ResponseBody;", "getAllEquipUserList", "()Lrx/Observable;", "versionInfo", "getVersionInfo", "addEquipUseOrder", "requestBody", "Lokhttp3/RequestBody;", "addReviewCheck", "keyMap", "", "", "addRiserTask", "addSickData", "createOrder", "userId", "", "getHomeCheckTaskList", "getHomeData", "Lcom/anssy/znewspro/entry/HomeDataListEntry;", "(Lokhttp3/RequestBody;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getInstallTaskList", "getMessagePushList", "getReviewHomeData", "getZoneArea", "installReceiveOrder", "taskId", "installSubmitOrder", "loginApp", "Lcom/anssy/znewspro/entry/LoginEntry;", "modifyMessageRead", "taskPushId", "modifyUserFormation", "queryAllCheckTask", "queryArticleDetail", "Lcom/anssy/znewspro/entry/ArticleDetailEntry;", "articleId", "(Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "queryCheckCalc", "queryCheckContentTag", "queryCheckContentTagNew", "id", "queryCheckHomeData", "queryCheckSickTag", "queryCheckSickTagNew", "queryCheckStaffList", "queryCheckTaskDetail", "queryCommonTaskDetail", "ajOrderId", "queryCompanyConfig", "queryDicMap", "queryDicValueByType", "dicType", "queryEquipAll", "queryEquipByType", "typeId", "queryEquipTypeList", "queryInDoorProcess", "queryInstallCalc", "queryInstallDevice", "queryInstallDeviceHis", "queryInstallHomeData", "queryInstallSelfEquipList", "queryInstallTaskDetail", "queryInstallUseHis", "queryInstallWaitOrder", "queryNotReadMessageList", "queryPayOrderStatus", "orderId", "queryReviewCalc", "queryReviewTaskList", "queryRiserTaskList", "querySearchList", "Lcom/anssy/znewspro/entry/SearchListEntry;", "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "querySickParentList", "queryUserDetail", "queryUserFormation", "queryUserList", "reviewAcceptOrder", "reviewSubmitOrder", "saveInstallCheckFormation", "searchNewsByTitle", "title", "submitCheck", "submitOrder", "uploadPhoto", "uploadVoice", "app_debug"})
+public abstract interface AppHttpService {
+    
+    @retrofit2.http.POST(value = "auth/login")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object loginApp(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    okhttp3.RequestBody requestBody, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.LoginEntry> $completion);
+    
+    @retrofit2.http.POST(value = "feed")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getHomeData(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    okhttp3.RequestBody requestBody, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.HomeDataListEntry> $completion);
+    
+    @retrofit2.http.GET(value = "search/trending")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object querySearchList(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.SearchListEntry> $completion);
+    
+    @retrofit2.http.GET(value = "search")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object searchNewsByTitle(@retrofit2.http.Query(value = "q")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String title, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.SearchListEntry> $completion);
+    
+    @retrofit2.http.GET(value = "article/{id}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object queryArticleDetail(@retrofit2.http.Path(value = "id")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String articleId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super com.anssy.znewspro.entry.ArticleDetailEntry> $completion);
+    
+    @retrofit2.http.POST(value = "common/queryRegionListByPid")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getZoneArea(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "common/queryStaffById")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryUserFormation();
+    
+    @retrofit2.http.POST(value = "common/getVersionInfo")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getVersionInfo();
+    
+    @retrofit2.http.POST(value = "common/queryDictMap")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryDicMap();
+    
+    @retrofit2.http.POST(value = "common/queryDictDataListByDictType")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryDicValueByType(@retrofit2.http.Query(value = "dictType")
+    @org.jetbrains.annotations.Nullable()
+    java.lang.String dicType);
+    
+    @retrofit2.http.POST(value = "aj/addRiserTask")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> addRiserTask(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "common/upload")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> uploadPhoto(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "aj/queryRiserTaskList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryRiserTaskList();
+    
+    @retrofit2.http.POST(value = "aj/queryAjDataStatistics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckCalc();
+    
+    @retrofit2.http.POST(value = "aj/selectAjHomeOrderTask")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getHomeCheckTaskList(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "aj/queryUserList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryUserList(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "aj/queryUserDetails")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryUserDetail(@retrofit2.http.Query(value = "userId")
+    int userId);
+    
+    @retrofit2.http.POST(value = "aj/queryAjProcess")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInDoorProcess();
+    
+    @retrofit2.http.POST(value = "common/queryDeptConfig")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCompanyConfig();
+    
+    @retrofit2.http.POST(value = "aj/createOrder")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> createOrder(@retrofit2.http.Query(value = "userId")
+    int userId);
+    
+    @retrofit2.http.POST(value = "aj/ajOrderSubmit")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> submitOrder(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "aj/queryAjOrderTaskDetails")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckTaskDetail(@retrofit2.http.Query(value = "taskId")
+    int taskId);
+    
+    @retrofit2.http.POST(value = "common/queryTaskOrderAll")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCommonTaskDetail(@retrofit2.http.Query(value = "ajOrderId")
+    int ajOrderId);
+    
+    @retrofit2.http.POST(value = "aj/queryHazardLabel")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckSickTag();
+    
+    @retrofit2.http.POST(value = "aj/queryHazardLabel")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckSickTagNew(@retrofit2.http.Query(value = "hazardLabelId")
+    int id);
+    
+    @retrofit2.http.POST(value = "aj/queryRectificationContentList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckContentTag();
+    
+    @retrofit2.http.POST(value = "aj/queryRectificationContentList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckContentTagNew(@retrofit2.http.Query(value = "hiddenDangersId")
+    int id);
+    
+    @retrofit2.http.POST(value = "aj/summitHiddenDangers")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> addSickData(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "aj/queryHiddenDangersList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> querySickParentList();
+    
+    @retrofit2.http.POST(value = "aj/queryAllAzUserList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getAllEquipUserList();
+    
+    @retrofit2.http.POST(value = "aj/startAj")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> submitCheck(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "aj/selectAjDataStatistics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckHomeData(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "aj/selectAjAllOrderTask")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryAllCheckTask(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "aj/updateUser")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> modifyUserFormation(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "az/selectAzDataStatistics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallHomeData(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "az/selectAzOrderTask")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getInstallTaskList(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "az/queryDeviceTypeList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryEquipTypeList();
+    
+    @retrofit2.http.POST(value = "az/queryDeviceList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryEquipByType(@retrofit2.http.Query(value = "deviceTypeId")
+    int typeId);
+    
+    @retrofit2.http.POST(value = "az/queryDeviceAll")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryEquipAll();
+    
+    @retrofit2.http.POST(value = "az/addAzUseOrder")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> addEquipUseOrder(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "az/queryStaffDevice")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallDevice(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "az/queryAzUseOrder")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallDeviceHis(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "az/queryAzOrderTaskDetails")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallTaskDetail(@retrofit2.http.Query(value = "taskId")
+    int taskId);
+    
+    @retrofit2.http.POST(value = "az/submitHiddenItem")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> saveInstallCheckFormation(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "az/queryStaffDeviceAll")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallSelfEquipList();
+    
+    @retrofit2.http.POST(value = "az/queryAjStaffList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryCheckStaffList();
+    
+    @retrofit2.http.POST(value = "az/selectAzAcceptableOrderNumber")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallWaitOrder();
+    
+    @retrofit2.http.POST(value = "az/queryAzDataStatistics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallCalc();
+    
+    @retrofit2.http.POST(value = "az/azClaimOrder")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> installReceiveOrder(@retrofit2.http.Query(value = "azTaskId")
+    int taskId);
+    
+    @retrofit2.http.POST(value = "az/submitAzOrder")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> installSubmitOrder(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+    
+    @retrofit2.http.POST(value = "az/getAzOrderPayStatus")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryPayOrderStatus(@retrofit2.http.Query(value = "orderId")
+    int orderId);
+    
+    @retrofit2.http.POST(value = "az/queryAzDeviceUseRecord")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryInstallUseHis(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "ys/selectYsDataStatistics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getReviewHomeData(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "ys/selectYsOrderTask")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryReviewTaskList(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "ys/submitHiddenItem")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> addReviewCheck(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "ys/ysClaimOrder")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> reviewAcceptOrder(@retrofit2.http.Query(value = "ysOrderId")
+    int taskId);
+    
+    @retrofit2.http.POST(value = "ys/ysSubmit")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> reviewSubmitOrder(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "common/taskPushList")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> getMessagePushList(@retrofit2.http.QueryMap()
+    @org.jetbrains.annotations.Nullable()
+    java.util.Map<java.lang.String, java.lang.String> keyMap);
+    
+    @retrofit2.http.POST(value = "common/queryStaffUnreadQty")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryNotReadMessageList();
+    
+    @retrofit2.http.POST(value = "common/queryTaskPushLookStatus")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> modifyMessageRead(@retrofit2.http.Query(value = "taskPushId")
+    int taskPushId);
+    
+    @retrofit2.http.POST(value = "ys/queryYsDataStatistics")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> queryReviewCalc();
+    
+    @retrofit2.http.POST(value = "common/uploadRecording")
+    @org.jetbrains.annotations.Nullable()
+    public abstract rx.Observable<okhttp3.ResponseBody> uploadVoice(@retrofit2.http.Body()
+    @org.jetbrains.annotations.Nullable()
+    okhttp3.RequestBody requestBody);
+}

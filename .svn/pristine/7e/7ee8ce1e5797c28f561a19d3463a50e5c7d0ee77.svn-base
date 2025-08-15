@@ -1,0 +1,41 @@
+package com.anssy.znewspro.model
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.anssy.znewspro.entry.SearchListEntry
+import com.anssy.znewspro.repository.SearchRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月04日 16:28:13
+ */
+
+@HiltViewModel
+class SearchModel @Inject constructor(private val searchRepository: SearchRepository):ViewModel() {
+    private var _searchListEntry:MutableLiveData<SearchListEntry> = MutableLiveData<SearchListEntry>()
+    var searchListEntry:LiveData<SearchListEntry> = _searchListEntry
+    fun querySearchList(){
+        viewModelScope.launch {
+           val result =  withContext(Dispatchers.IO){
+                 searchRepository.querySearchList()
+            }
+            _searchListEntry.value = result
+        }
+    }
+    fun  queryListByTitle(title:String){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                searchRepository.queryNewsByTitle(title)
+            }
+            _searchListEntry.value = result
+        }
+    }
+}

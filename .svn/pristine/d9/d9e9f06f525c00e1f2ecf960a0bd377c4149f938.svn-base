@@ -1,0 +1,29 @@
+package com.anssy.znewspro.model
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.anssy.znewspro.entry.HomeBannerEntry
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年06月30日 14:01:42
+ */
+@HiltViewModel
+class HomeModel @Inject constructor() :ViewModel(){
+    private var _mBannerList:MutableLiveData<ArrayList<HomeBannerEntry>> = MutableLiveData<ArrayList<HomeBannerEntry>>()
+    var mBannerList: LiveData<ArrayList<HomeBannerEntry>> = _mBannerList
+
+    fun  getBannerList(){
+        _mBannerList.value?.add(HomeBannerEntry("https://www.laiketui.com/wp-content/uploads/2023/11/8826f202310071447543819.jpg","聯合反詐！港警攜手六地拘逾千人成功攔截1.5億騙款","聯合反詐！港警攜手六地拘逾千人成功攔截1.5億騙款"))
+
+    }
+}

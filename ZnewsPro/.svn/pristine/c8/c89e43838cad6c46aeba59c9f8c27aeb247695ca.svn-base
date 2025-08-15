@@ -1,0 +1,218 @@
+package com.anssy.znewspro.net
+
+
+import com.anssy.znewspro.entry.ArticleDetailEntry
+import com.anssy.znewspro.entry.CommonResponseEntry
+import com.anssy.znewspro.entry.HomeDataListEntry
+import com.anssy.znewspro.entry.LoginEntry
+import com.anssy.znewspro.entry.SearchListEntry
+import com.anssy.znewspro.utils.network.exception.GenericResponse
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
+import retrofit2.http.QueryMap
+import rx.Observable
+
+
+interface AppHttpService  {
+    @POST("auth/login")
+    suspend fun loginApp(
+        @Body requestBody: RequestBody
+    ): LoginEntry //登录App
+
+    @POST("feed")
+    suspend fun getHomeData(@Body requestBody: RequestBody): HomeDataListEntry //首页数据
+
+    @GET("search/trending")
+    suspend fun querySearchList(): SearchListEntry //查询搜索
+
+    @GET("search")
+    suspend fun searchNewsByTitle(@Query("q") title: String): SearchListEntry //搜索列表
+
+    @GET("article/{id}")
+   suspend fun queryArticleDetail(@Path("id")articleId:String): ArticleDetailEntry //新闻详情
+
+    @POST("article/{id}/feedback")
+   suspend fun addFeedBack(@Path("id")articleId:String,@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry> //文章反馈
+
+   @POST("profile/saveadd")
+   suspend fun saveNewsHis(@Body requestBody: RequestBody):GenericResponse<CommonResponseEntry>//添加记录
+
+    @POST("common/queryStaffById")
+    fun queryUserFormation(): Observable<ResponseBody?>? //查询用户信息
+
+    @get:POST("common/getVersionInfo")
+    val versionInfo: Observable<ResponseBody?>?
+
+    @POST("common/queryDictMap")
+    fun queryDicMap(): Observable<ResponseBody?>? //获取字典类型
+
+    @POST("common/queryDictDataListByDictType")
+    fun queryDicValueByType(@Query("dictType") dicType: String?): Observable<ResponseBody?>? //根据类型获取值
+
+    @POST("aj/addRiserTask")
+    fun addRiserTask(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //添加立管检查
+
+    @POST("common/upload")
+    fun uploadPhoto(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //上传照片
+
+    @POST("aj/queryRiserTaskList")
+    fun queryRiserTaskList(): Observable<ResponseBody?>? //查询立管检查任务列表
+
+    @POST("aj/queryAjDataStatistics")
+    fun queryCheckCalc(): Observable<ResponseBody?>?
+
+    @POST("aj/selectAjHomeOrderTask")
+    fun getHomeCheckTaskList(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //获取安检员任务列表
+
+    @POST("aj/queryUserList")
+    fun queryUserList(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询用户列表
+
+    @POST("aj/queryUserDetails")
+    fun queryUserDetail(@Query("userId") userId: Int): Observable<ResponseBody?>? //获取用户详情
+
+    @POST("aj/queryAjProcess")
+    fun queryInDoorProcess(): Observable<ResponseBody?>? //获取入户流程
+
+    @POST("common/queryDeptConfig")
+    fun queryCompanyConfig(): Observable<ResponseBody?>? //查询公司配置
+
+    @POST("aj/createOrder")
+    fun createOrder(@Query("userId") userId: Int): Observable<ResponseBody?>? //创建订单
+
+    @POST("aj/ajOrderSubmit")
+    fun submitOrder(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //提交安检单
+
+    @POST("aj/queryAjOrderTaskDetails")
+    fun queryCheckTaskDetail(@Query("taskId") taskId: Int): Observable<ResponseBody?>? //查询任务详情
+
+    @POST("common/queryTaskOrderAll")
+    fun queryCommonTaskDetail(@Query("ajOrderId") ajOrderId: Int): Observable<ResponseBody?>? //查询通用任务详情
+
+    @POST("aj/queryHazardLabel")
+    fun queryCheckSickTag(): Observable<ResponseBody?>? //查询隐患标签
+
+
+    @POST("aj/queryHazardLabel")
+    fun queryCheckSickTagNew(@Query("hazardLabelId") id: Int): Observable<ResponseBody?>? //查询隐患标签（新）
+
+    @POST("aj/queryRectificationContentList")
+    fun queryCheckContentTag(): Observable<ResponseBody?>? //查询整改内容
+
+    @POST("aj/queryRectificationContentList")
+    fun queryCheckContentTagNew(@Query("hiddenDangersId") id: Int): Observable<ResponseBody?>? //查询整改内容
+
+    @POST("aj/summitHiddenDangers")
+    fun addSickData(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //添加隐患
+
+    @POST("aj/queryHiddenDangersList")
+    fun querySickParentList(): Observable<ResponseBody?>? //查询所有隐患内容
+
+    @get:POST("aj/queryAllAzUserList")
+    val allEquipUserList: Observable<ResponseBody?>?
+
+    @POST("aj/startAj")
+    fun submitCheck(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //提交安检任务
+
+    @POST("aj/selectAjDataStatistics")
+    fun queryCheckHomeData(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询安检员首页数据
+
+    @POST("aj/selectAjAllOrderTask")
+    fun queryAllCheckTask(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //安检员全部任务
+
+    @POST("aj/updateUser")
+    fun modifyUserFormation(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //修改燃气用户
+
+    @POST("az/selectAzDataStatistics")
+    fun queryInstallHomeData(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询安装员首页统计数据
+
+    //安装员 start
+    @POST("az/selectAzOrderTask")
+    fun getInstallTaskList(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //安装员任务列表(大厅)
+
+    @POST("az/queryDeviceTypeList")
+    fun queryEquipTypeList(): Observable<ResponseBody?>? //查询设备类型
+
+    @POST("az/queryDeviceList")
+    fun queryEquipByType(@Query("deviceTypeId") typeId: Int): Observable<ResponseBody?>? //根据类型查询设备
+
+    @POST("az/queryDeviceAll")
+    fun queryEquipAll(): Observable<ResponseBody?>? //一次查询所有设备
+
+    @POST("az/addAzUseOrder")
+    fun addEquipUseOrder(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //添加领用记录
+
+    @POST("az/queryStaffDevice")
+    fun queryInstallDevice(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //安装员自己的设备
+
+    @POST("az/queryAzUseOrder")
+    fun queryInstallDeviceHis(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询安装员领用记录
+
+    @POST("az/queryAzOrderTaskDetails")
+    fun queryInstallTaskDetail(@Query("taskId") taskId: Int): Observable<ResponseBody?>? //查询安装员任务详情
+
+    @POST("az/submitHiddenItem")
+    fun saveInstallCheckFormation(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //保存安装员整改信息
+
+    @POST("az/queryStaffDeviceAll")
+    fun queryInstallSelfEquipList(): Observable<ResponseBody?>? //安装员自己的设备
+
+    @POST("az/queryAjStaffList")
+    fun queryCheckStaffList(): Observable<ResponseBody?>? //查询安检员工
+
+    @POST("az/selectAzAcceptableOrderNumber")
+    fun queryInstallWaitOrder(): Observable<ResponseBody?>? //查询安装员待接订单
+
+    @POST("az/queryAzDataStatistics")
+    fun queryInstallCalc(): Observable<ResponseBody?>?
+
+
+    @POST("az/azClaimOrder")
+    fun installReceiveOrder(@Query("azTaskId") taskId: Int): Observable<ResponseBody?>? //安装员接单
+
+    @POST("az/submitAzOrder")
+    fun installSubmitOrder(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //安装员接单
+
+    @POST("az/getAzOrderPayStatus")
+    fun queryPayOrderStatus(@Query("orderId") orderId: Int): Observable<ResponseBody?>? //查询支付订单
+
+    @POST("az/queryAzDeviceUseRecord")
+    fun queryInstallUseHis(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询设备安装记录
+
+    //安装结束
+    //验收开始
+    @POST("ys/selectYsDataStatistics")
+    fun getReviewHomeData(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询验收员首页数据
+
+    @POST("ys/selectYsOrderTask")
+    fun queryReviewTaskList(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查收验收员验收任务列表
+
+    @POST("ys/submitHiddenItem")
+    fun addReviewCheck(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //验收添加
+
+    @POST("ys/ysClaimOrder")
+    fun reviewAcceptOrder(@Query("ysOrderId") taskId: Int): Observable<ResponseBody?>? //验收接单
+
+    @POST("ys/ysSubmit")
+    fun reviewSubmitOrder(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //验收提交订单
+
+    //验收 end
+    @POST("common/taskPushList")
+    fun getMessagePushList(@QueryMap keyMap: Map<String?, String?>?): Observable<ResponseBody?>? //查询消息列表
+
+    @POST("common/queryStaffUnreadQty")
+    fun queryNotReadMessageList(): Observable<ResponseBody?>? //查询未读消息数量
+
+    @POST("common/queryTaskPushLookStatus")
+    fun modifyMessageRead(@Query("taskPushId") taskPushId: Int): Observable<ResponseBody?>? //修改消息为已读
+
+    @POST("ys/queryYsDataStatistics")
+    fun queryReviewCalc(): Observable<ResponseBody?>?
+
+    @POST("common/uploadRecording")
+    fun uploadVoice(@Body requestBody: RequestBody?): Observable<ResponseBody?>? //上传语音文件
+}

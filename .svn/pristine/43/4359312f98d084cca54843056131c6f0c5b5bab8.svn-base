@@ -1,0 +1,36 @@
+package com.anssy.znewspro.model
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.anssy.znewspro.entry.LoginEntry
+import com.anssy.znewspro.repository.LoginRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import javax.inject.Inject
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月04日 10:54:19
+ */
+@HiltViewModel
+class LoginModel @Inject constructor(private val loginRepository: LoginRepository):ViewModel() {
+
+    private var _loginEntry: MutableLiveData<LoginEntry> = MutableLiveData<LoginEntry>()
+    var loginEntry: LiveData<LoginEntry> = _loginEntry
+
+    fun loginApp(name: String,pass:String){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                loginRepository.loginApp(name,pass)// 一个耗时的异步操作
+            }
+            _loginEntry.value = result
+        }
+    }
+}

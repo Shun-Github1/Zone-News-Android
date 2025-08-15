@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="17dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/language"
+        android:textColor="@color/colorTextDeep"
+        android:textSize="15sp" />
+
+
+    <RadioGroup
+        android:id="@+id/lang_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal">
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/eng_rb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="English"
+            android:textSize="13sp"
+            app:shape_solidCheckedColor="@color/main_color"
+            app:shape_solidColor="@color/light_gray"
+            app:shape_textCheckedColor="?attr/colorOnPrimary"
+            app:shape_textColor="@color/colorTextMiddle" />
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/traditional_rb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="繁體"
+            android:textSize="13sp"
+            app:shape_solidCheckedColor="@color/main_color"
+            app:shape_solidColor="@color/light_gray"
+            app:shape_textCheckedColor="?attr/colorOnPrimary"
+            app:shape_textColor="@color/colorTextMiddle" />
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/simple_rb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="简体"
+            android:textSize="13sp"
+            app:shape_solidCheckedColor="@color/main_color"
+            app:shape_solidColor="@color/light_gray"
+            app:shape_textCheckedColor="?attr/colorOnPrimary"
+            app:shape_textColor="@color/colorTextMiddle" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/depth"
+        android:textColor="@color/colorTextDeep"
+        android:textSize="15sp" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:id="@+id/know_rg"
+        android:orientation="horizontal">
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="@string/concise"
+            android:textSize="13sp"
+            android:id="@+id/easy_rb"
+            app:shape_solidCheckedColor="?attr/colorPrimary"
+            app:shape_solidColor="@color/light_gray"
+            app:shape_textCheckedColor="?attr/colorOnPrimary"
+            app:shape_textColor="@color/colorTextMiddle" />
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:id="@+id/professional_rb"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="@string/detailed"
+            android:textSize="13sp"
+            app:shape_solidCheckedColor="?attr/colorPrimary"
+            app:shape_solidColor="?attr/colorSurfaceVariant"
+            app:shape_textCheckedColor="?attr/colorOnPrimary"
+            app:shape_textColor="@color/colorTextMiddle" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:visibility="invisible" />
+    </RadioGroup>
+    <com.hjq.shape.view.ShapeButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shape_solidColor="?attr/colorPrimary"
+        android:paddingVertical="10dp"
+        app:shape_radius="6dp"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:id="@+id/yes_btn"
+        android:textSize="@dimen/medium_txt"
+        android:textColor="?attr/colorOnPrimary"
+        android:layout_marginTop="20dp"
+        />
+</LinearLayout>

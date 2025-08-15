@@ -1,0 +1,67 @@
+package com.anssy.znewspro.base
+
+
+import android.content.Context
+import android.content.res.Resources
+import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
+import me.jessyan.autosize.AutoSizeCompat
+import kotlin.math.abs
+
+@AndroidEntryPoint
+open class BaseActivity :AppCompatActivity() {
+    protected var mContext:Context? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mContext = this
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+    override fun getResources(): Resources {
+        //需要升级到 v1.1.2 及以上版本才能使用 AutoSizeCompat
+        val resources = super.getResources()
+        runOnUiThread {
+            AutoSizeCompat.autoConvertDensityOfGlobal(resources) //如果没有自定义需求用这个方法
+        }
+        return super.getResources()
+    }
+
+    fun back(view:View){
+        finish()
+    }
+    /**
+     * 转换分值为 marginStart
+     */
+    fun changeScoreToMargin(score: Double, mProgressWidth: Int): Double {
+        if (!(score >= -1.0 && score <= 1.0)) {
+            return 0.0
+        }
+        val marginWidth: Double
+        if (score < 0) {
+            val percent = abs(score)
+            marginWidth = (1 - percent) * (mProgressWidth / 2)
+
+        } else if (score == 0.00) {
+            val percent = 0.5
+            marginWidth = percent * mProgressWidth
+        } else {
+            val percent = score / 2 + 0.5
+            marginWidth = percent * mProgressWidth
+        }
+        return marginWidth
+    }
+
+}

@@ -1,0 +1,147 @@
+package com.anssy.znewspro.ui.login
+
+import android.content.Intent
+import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.credentials.Credential
+import androidx.credentials.CredentialManager
+import androidx.credentials.CredentialManagerCallback
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseActivity
+import com.anssy.znewspro.databinding.ActivityLoginBinding
+import com.anssy.znewspro.model.LoginModel
+import com.anssy.znewspro.ui.MainActivity
+import com.anssy.znewspro.utils.SharedPreferenceUtils
+import com.anssy.znewspro.utils.ToastUtils
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.auth
+import com.jaeger.library.StatusBarUtil
+import com.kongzue.dialogx.dialogs.WaitDialog
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import kotlin.getValue
+
+/**
+ * @Description 登录界面
+ * @Author yulu
+ * @CreateTime 2025年07月03日 15:32:28
+ */
+
+class LoginActivity :BaseActivity() {
+    private lateinit var mViewBinding:ActivityLoginBinding
+    private lateinit var auth: FirebaseAuth
+    private val loginModel: LoginModel by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(mViewBinding.root)
+        if (SharedPreferenceUtils.getBoolean(mContext,"isLogin")){
+            val intent = Intent(mContext,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }else{
+            initView()
+            auth = Firebase.auth
+            StatusBarUtil.setTranslucentForImageView(this,0,null)
+        }
+    }
+
+    private suspend  fun initGoogleAuth(){
+        WaitDialog.show("正在登录")
+        // Instantiate a Google sign-in request
+        val googleIdOption = GetGoogleIdOption.Builder()
+            // Your server's client ID, not your Android client ID.
+            .setServerClientId("1027106789501-199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com")
+            // Only show accounts previously used to sign in.
+            .setFilterByAuthorizedAccounts(false)
+            .setAutoSelectEnabled(true)
+            .build()
+        val request: GetCredentialRequest = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        val credentialManager = CredentialManager.Companion.create(this)
+ //Create the Credential Manager request
+        coroutineScope {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = this@LoginActivity,
+                )
+                handleSignIn(result.credential)
+            } catch (e: GetCredentialException) {
+                ToastUtils.showShortToast(mContext!!,"登录失败")
+                WaitDialog.dismiss()
+                 e.printStackTrace()
+            }
+    }
+    }
+
+    private fun handleSignIn(credential: Credential) {
+        // Check if credential is of type Google ID
+        if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+            // Create Google ID Token
+            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+
+            // Sign in to Firebase with using the token
+            firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+        } else {
+            ToastUtils.showShortToast(mContext!!,"登录失败")
+            WaitDialog.dismiss()
+            Log.w("xxx", "Credential is not of type Google ID!")
+        }
+    }
+    private fun initView() {
+        mViewBinding.emailLoginLayout.setOnClickListener {
+            val intent = Intent(mContext,LoginEmailActivity::class.java)
+            startActivity(intent)
+        }
+        mViewBinding.googleLoginLayout.setOnClickListener {
+            lifecycleScope.launch {
+                initGoogleAuth()
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    WaitDialog.dismiss()
+                    ToastUtils.showShortToast(mContext!!,"获取成功")
+                    user?.email.let {
+                        if (!TextUtils.isEmpty(user?.email)){
+
+
+                        }else{
+                            ToastUtils.showShortToast(mContext!!,"邮箱为空")
+                        }
+                    }
+
+                } else {
+                    ToastUtils.showShortToast(mContext!!,"登录失败")
+                    WaitDialog.dismiss()
+                    // If sign in fails, display a message to the user
+                    Log.w("xxx", "signInWithCredential:failure", task.exception)
+
+                }
+            }
+    }
+}

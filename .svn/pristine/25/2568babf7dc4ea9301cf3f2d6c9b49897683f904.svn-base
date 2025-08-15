@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Zone News</string>
+    <string name="c_score_format">Conservative %.2f</string>
+    <string name="p_score_format">Progressive %.2f</string>
+</resources>

@@ -1,0 +1,167 @@
+package com.anssy.znewspro.ui.mainfrag
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.anssy.znewspro.R
+import com.anssy.znewspro.base.BaseFragment
+import com.anssy.znewspro.databinding.FragAdviceBinding
+import com.anssy.znewspro.databinding.FragSearchBinding
+import com.anssy.znewspro.entry.HomeNewsEntry
+import com.anssy.znewspro.ui.MainActivity
+import com.anssy.znewspro.utils.Utils
+import com.bumptech.glide.Glide
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+/**
+ * @Description 搜寻
+ * @Author yulu
+ * @CreateTime 2025年06月30日 09:28:48
+ */
+
+class SearchFrag : BaseFragment() {
+    private lateinit var mViewBinding:FragSearchBinding
+    companion object{
+        fun  getInstance():SearchFrag{
+            return SearchFrag()
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        mViewBinding = FragSearchBinding.inflate(layoutInflater)
+        return mViewBinding.root
+    }
+    private var mProgressWidth = 0
+    private lateinit var mAdapter: CommonAdapter<HomeNewsEntry>
+    private var mNewsList = ArrayList<HomeNewsEntry>()
+
+    override fun initData() {
+        mProgressWidth = resources.displayMetrics.widthPixels - Utils.dpToPx(36f, resources)
+        mViewBinding.searchEt.setOnEditorActionListener { v, actionId, event ->
+            if (actionId== EditorInfo.IME_ACTION_SEARCH){
+                Log.e("xxx","搜索")
+
+            }
+            false
+        }
+        mViewBinding.homeRecycler.layoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        mAdapter = object :
+            CommonAdapter<HomeNewsEntry>(mContext, R.layout.item_home_recycler, mNewsList) {
+            @SuppressLint("SetTextI18n")
+            override fun convert(holder: ViewHolder?, t: HomeNewsEntry?, position: Int) {
+                val placeTv: TextView = holder!!.getView(R.id.place_tv)
+                val tagTv: TextView = holder.getView(R.id.tag_tv)
+                val titleTv: TextView = holder.getView(R.id.news_title_tv)
+                val newsIv: ImageView = holder.getView(R.id.news_iv)
+                val scoreTv: TextView = holder.getView(R.id.score_tv)
+                val scoreDivideView: View = holder.getView(R.id.score_divider_tv)
+                val timeTv: TextView = holder.getView(R.id.news_time_tv)
+                val transScoreTv: TextView = holder.getView(R.id.trans_score_tv)
+                placeTv.text = t!!.place
+                transScoreTv.text = "情感分析：" + t.score
+                tagTv.text = t.tag
+                scoreTv.text = t.score.toString()
+                titleTv.text = t.title
+                Glide.with(mContext).load(t.imageUrl).into(newsIv)
+                try {
+                    val parse = dateFormat.parse(t.time)
+                    timeTv.text = Utils.getSpaceTime(parse!!.time)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                scoreTv.post(Runnable {
+                    val params = scoreTv.layoutParams as ConstraintLayout.LayoutParams
+                    params.marginStart = changeScoreToMargin(t.score,mProgressWidth).toInt() - scoreTv.measuredWidth/2
+                    scoreTv.layoutParams = params
+                })
+
+                val params1 = scoreDivideView.layoutParams as ConstraintLayout.LayoutParams
+                params1.marginStart = changeScoreToMargin(t.score,mProgressWidth).toInt() - Utils.dpToPx(1.5f,resources)
+                scoreDivideView.layoutParams = params1
+
+                //   scoreDivideView.layoutParams = params
+
+            }
+        }
+        mViewBinding.homeRecycler.adapter = mAdapter
+        initHomeData()
+        mViewBinding.homeRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    // 滚动停止
+                    (requireActivity() as MainActivity).mBottomView?.visibility = View.VISIBLE
+                } else  {
+                    (requireActivity() as MainActivity).mBottomView?.visibility = View.INVISIBLE
+                }
+            }
+        })
+        mViewBinding.settingIv.setOnClickListener {  (requireActivity() as MainActivity).showSettingPop(it) }
+    }
+
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initHomeData() {
+        mNewsList.run {
+            add(
+                HomeNewsEntry(
+                    "https://www.laiketui.com/wp-content/uploads/2023/11/8826f202310071447543819.jpg",
+                    -0.33,
+                    "香港",
+                    "经济",
+                    "2025-07-01 10:24:24",
+                    "小米汽車業務預計今年三四季度實現盈利小米汽車業務預計今年三四季度實現盈利"
+                )
+            )
+            add(
+                HomeNewsEntry(
+                    "https://www.laiketui.com/wp-content/uploads/2023/11/8826f202310071447543819.jpg",
+                    0.00,
+                    "香港",
+                    "经济",
+                    "2025-07-01 10:24:24",
+                    "小米汽車業務預計今年三四季度實現盈利小米汽車業務預計今年三四季度實現盈利"
+                )
+            )
+            add(
+                HomeNewsEntry(
+                    "https://www.laiketui.com/wp-content/uploads/2023/11/8826f202310071447543819.jpg",
+                    0.33,
+                    "香港",
+                    "经济",
+                    "2025-07-01 10:24:24",
+                    "小米汽車業務預計今年三四季度實現盈利小米汽車業務預計今年三四季度實現盈利"
+                )
+            )
+            add(
+                HomeNewsEntry(
+                    "https://www.laiketui.com/wp-content/uploads/2023/11/8826f202310071447543819.jpg",
+                    0.78,
+                    "香港",
+                    "经济",
+                    "2025-07-01 10:24:24",
+                    "小米汽車業務預計今年三四季度實現盈利小米汽車業務預計今年三四季度實現盈利"
+                )
+            )
+        }
+        mAdapter.notifyDataSetChanged()
+    }
+}

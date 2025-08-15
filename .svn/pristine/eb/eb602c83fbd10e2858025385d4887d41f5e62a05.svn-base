@@ -1,0 +1,22 @@
+package com.anssy.znewspro.repository
+
+import com.anssy.znewspro.entry.LoginEntry
+import com.anssy.znewspro.net.AppHttpService
+import com.anssy.znewspro.utils.Utils
+import org.json.JSONObject
+import javax.inject.Inject
+
+/**
+ * @Description TODO
+ * @Author yulu
+ * @CreateTime 2025年07月04日 10:55:09
+ */
+
+class LoginRepository @Inject constructor(private val appHttpService: AppHttpService) {
+    suspend fun loginApp(name:String,pass:String):LoginEntry{
+        val jsonObject = JSONObject()
+        jsonObject.put("username",name)
+        jsonObject.put("password",pass)
+       return appHttpService.loginApp(Utils.createJsonRequestBody(jsonObject.toString()))
+    }
+}

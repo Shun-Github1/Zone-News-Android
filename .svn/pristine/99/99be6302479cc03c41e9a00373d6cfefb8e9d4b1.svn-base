@@ -1,0 +1,46 @@
+package com.anssy.znewspro.model;
+
+import com.anssy.znewspro.repository.HomeRepository;
+import dagger.internal.DaggerGenerated;
+import dagger.internal.Factory;
+import dagger.internal.Provider;
+import dagger.internal.QualifierMetadata;
+import dagger.internal.ScopeMetadata;
+import javax.annotation.processing.Generated;
+
+@ScopeMetadata
+@QualifierMetadata
+@DaggerGenerated
+@Generated(
+    value = "dagger.internal.codegen.ComponentProcessor",
+    comments = "https://dagger.dev"
+)
+@SuppressWarnings({
+    "unchecked",
+    "rawtypes",
+    "KotlinInternal",
+    "KotlinInternalInJava",
+    "cast",
+    "deprecation",
+    "nullness:initialization.field.uninitialized"
+})
+public final class HomeModel_Factory implements Factory<HomeModel> {
+  private final Provider<HomeRepository> homeRepositoryProvider;
+
+  public HomeModel_Factory(Provider<HomeRepository> homeRepositoryProvider) {
+    this.homeRepositoryProvider = homeRepositoryProvider;
+  }
+
+  @Override
+  public HomeModel get() {
+    return newInstance(homeRepositoryProvider.get());
+  }
+
+  public static HomeModel_Factory create(Provider<HomeRepository> homeRepositoryProvider) {
+    return new HomeModel_Factory(homeRepositoryProvider);
+  }
+
+  public static HomeModel newInstance(HomeRepository homeRepository) {
+    return new HomeModel(homeRepository);
+  }
+}

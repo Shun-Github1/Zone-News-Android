@@ -15,7 +15,12 @@ import javax.inject.Inject
 
 class PersonRecommendRepository @Inject constructor(private val appHttpService: AppHttpService) {
 
-    suspend fun queryRecommendList(pageNo:Int,pageSize:Int):GenericResponse<SearchListEntry>{
-        return appHttpService.queryPersonRecommend(pageNo,pageSize)
+    suspend fun queryRecommendList(
+        pageNo: Int, 
+        pageSize: Int, 
+        language: String? = null,
+        sortBy: String? = null
+    ): GenericResponse<SearchListEntry> {
+        return appHttpService.queryPersonRecommend(pageNo, pageSize, language, sortBy)
     }
 }

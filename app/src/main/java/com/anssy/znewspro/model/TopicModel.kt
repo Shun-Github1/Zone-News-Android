@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.anssy.znewspro.entry.CommonResponseEntry
 import com.anssy.znewspro.entry.TopicListEntry
 import com.anssy.znewspro.repository.TopicRepository
+import com.anssy.znewspro.utils.LanguageManager
 import com.anssy.znewspro.utils.network.exception.NetworkResponse
-import com.kongzue.dialogx.dialogs.WaitDialog
+import com.anssy.znewspro.utils. SystemDialogUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,29 +24,60 @@ import com.anssy.znewspro.R
  * @CreateTime 2025年07月07日 11:31:20
  */
 @HiltViewModel
-class TopicModel @Inject constructor(private val topicRepository: TopicRepository):ViewModel() {
-    private var _topicListEntry:MutableLiveData<TopicListEntry>  = MutableLiveData()
-    var topicListEntry:LiveData<TopicListEntry> = _topicListEntry
+class TopicModel @Inject constructor(
+    private val topicRepository: TopicRepository,
+    private val languageManager: LanguageManager
+): ViewModel() {
+    private var _topicListEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
+    var topicListEntry: LiveData<TopicListEntry> = _topicListEntry
 
-    private var _commonResponseEntry:MutableLiveData<CommonResponseEntry> = MutableLiveData()
-    var commonResponseEntry:LiveData<CommonResponseEntry> = _commonResponseEntry
+    private var _myTopicsEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
+    var myTopicsEntry: LiveData<TopicListEntry> = _myTopicsEntry
 
-    fun queryMyTopics(){
+    private var _commonResponseEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
+    var commonResponseEntry: LiveData<CommonResponseEntry> = _commonResponseEntry
+
+    fun queryMyTopics() {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
-                topicRepository.queryMyTopic()
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.queryMyTopic(languageManager.getCurrentLanguageCode())
             }
-            when(result){
-                is NetworkResponse.NetError->{
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = getString(R.string.server_error_message)
+                    _myTopicsEntry.value = topicListEntry
+                }
+                is NetworkResponse.Success -> {
+                    _myTopicsEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _myTopicsEntry.value = topicListEntry
+                }
+            }
+        }
+    }
+
+    fun queryAllTopics() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.queryAllTopic(languageManager.getCurrentLanguageCode())
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
                     val topicListEntry = TopicListEntry()
                     topicListEntry.code = 1000
                     topicListEntry.msg = getString(R.string.server_error_message)
                     _topicListEntry.value = topicListEntry
                 }
-                is  NetworkResponse.Success->{
+                is NetworkResponse.Success -> {
                     _topicListEntry.value = result.body
                 }
-                is NetworkResponse.UnknownError->{
+                is NetworkResponse.UnknownError -> {
                     val topicListEntry = TopicListEntry()
                     topicListEntry.code = 1000
                     topicListEntry.msg = "未知错误"
@@ -55,38 +87,12 @@ class TopicModel @Inject constructor(private val topicRepository: TopicRepositor
         }
     }
 
-
-    fun queryAllTopics(){
+    fun editTopic(type: String, topic: String) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
-                topicRepository.queryAllTopic()
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.editTopic(type, topic, languageManager.getCurrentLanguageCode())
             }
-            when(result){
-                is NetworkResponse.NetError->{
-                    val topicListEntry = TopicListEntry()
-                    topicListEntry.code = 1000
-                    topicListEntry.msg = getString(R.string.server_error_message)
-                    _topicListEntry.value = topicListEntry
-                }
-                is  NetworkResponse.Success->{
-                    _topicListEntry.value = result.body
-                }
-                is NetworkResponse.UnknownError->{
-                    val topicListEntry = TopicListEntry()
-                    topicListEntry.code = 1000
-                    topicListEntry.msg = "未知错误"
-                    _topicListEntry.value = topicListEntry
-                }
-            }
-        }
-    }
-
-    fun editTopic(type:String,topic:String){
-        viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
-                topicRepository.editTopic(type,topic)
-            }
-            when(result){
+            when (result) {
                 is NetworkResponse.NetError -> {
                     val commonResponseEntry = CommonResponseEntry()
                     commonResponseEntry.code = 1000
@@ -95,7 +101,7 @@ class TopicModel @Inject constructor(private val topicRepository: TopicRepositor
                 }
 
                 is NetworkResponse.Success -> {
-                     result.body.msg = topic
+                    result.body.msg = topic
                     _commonResponseEntry.value = result.body
                 }
                 is NetworkResponse.UnknownError -> {
@@ -103,6 +109,31 @@ class TopicModel @Inject constructor(private val topicRepository: TopicRepositor
                     commonResponseEntry.code = 1000
                     commonResponseEntry.msg = "未知错误"
                     _commonResponseEntry.value = commonResponseEntry
+                }
+            }
+        }
+    }
+
+    fun getTrendingTopics() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.getTrendingTopics(languageManager.getCurrentLanguageCode())
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = getString(R.string.server_error_message)
+                    _topicListEntry.value = topicListEntry
+                }
+                is NetworkResponse.Success -> {
+                    _topicListEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _topicListEntry.value = topicListEntry
                 }
             }
         }

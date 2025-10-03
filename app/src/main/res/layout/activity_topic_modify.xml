@@ -31,23 +31,23 @@
                 android:textColor="@color/colorTextDeep"
                 />
         <ImageView
+            android:id="@+id/addIv"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:contentDescription="@null"
             android:rotation="45"
-            android:id="@+id/add_iv"
             android:layout_marginEnd="13dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/icon_popup_close_default"
             app:tint="@color/colorTextDeep" />
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/topicRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="19dp"
         android:overScrollMode="never"
-        android:id="@+id/topic_recycler"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_layout"
         />

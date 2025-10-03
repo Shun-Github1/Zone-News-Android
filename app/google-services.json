@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "1027106789501-67h6gr1s6d21j61rdhc4h9uv4jfult6p.apps.googleusercontent.com",
+          "client_id": "1027106789501-52ktegfodtqtk7lq8jea6r1qddgol33f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.anssy.znewspro",
-            "certificate_hash": "63ab2c17b1e9428997a0e1b8bc65f322e321c541"
+            "certificate_hash": "26e3732a4f2691715d0f17384623b5939b8cbf79"
+          }
+        },
+        {
+          "client_id": "1027106789501-rsccbmlaqupfrle1dreo569ksmgq03lt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anssy.znewspro",
+            "certificate_hash": "9c20372a55cea8bcdd27db5b442c06b488ac8715"
           }
         },
         {
@@ -37,6 +45,13 @@
             {
               "client_id": "1027106789501-199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1027106789501-mi6jglqh7f9ncsjufs9ib94f8hv8mhqg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zimuth.ZNews"
+              }
             }
           ]
         }

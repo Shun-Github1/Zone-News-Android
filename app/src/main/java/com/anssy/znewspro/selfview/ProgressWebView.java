@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
+import androidx.core.content.ContextCompat;
 
 import com.anssy.znewspro.R;
 
@@ -15,7 +16,7 @@ import com.anssy.znewspro.R;
 @SuppressWarnings("deprecation")
 public class ProgressWebView extends WebView {
 
-    private ProgressBar progressbar;
+    private final ProgressBar progressbar;
 
     public ProgressWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -24,7 +25,7 @@ public class ProgressWebView extends WebView {
         progressbar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 10, 0, 0));
 
-        Drawable drawable = context.getResources().getDrawable(R.drawable.progress_bar_states);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
         // setWebViewClient(new WebViewClient(){});

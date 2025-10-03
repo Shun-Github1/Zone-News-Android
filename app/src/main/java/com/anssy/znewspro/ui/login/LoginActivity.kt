@@ -6,13 +6,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.credentials.ClearCredentialStateRequest
-import androidx.credentials.Credential
-import androidx.credentials.CredentialManager
-import androidx.credentials.CustomCredential
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.exceptions.ClearCredentialException
-import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.anssy.znewspro.R
 import com.anssy.znewspro.base.BaseActivity
@@ -25,20 +18,21 @@ import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.jaeger.library.StatusBarUtil
-import com.kongzue.dialogx.dialogs.WaitDialog
-import kotlinx.coroutines.coroutineScope
+import com.anssy.znewspro.utils.SystemDialogUtils
 import kotlinx.coroutines.launch
-import kotlin.getValue
 
 /**
  * @Description 登录界面
@@ -46,26 +40,31 @@ import kotlin.getValue
  * @CreateTime 2025年07月03日 15:32:28
  */
 
-class LoginActivity :BaseActivity() {
-    private lateinit var mViewBinding:ActivityLoginBinding
+class LoginActivity : BaseActivity() {
+    private lateinit var mViewBinding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var credentialManager: CredentialManager
+    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
     private val loginModel: LoginModel by viewModels()
+    
+    companion object {
+        private const val RC_SIGN_IN = 9001
+        val TAG = LoginActivity::class.simpleName
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
-        if (SharedPreferenceUtils.getBoolean(mContext,"isLogin")){
-            val intent = Intent(mContext,MainActivity::class.java)
+        
+        if (SharedPreferenceUtils.getBoolean(mContext, "isLogin")) {
+            val intent = Intent(mContext, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }else{
+        } else {
+            Log.d(TAG, "onCreate: User not logged in, initializing views")
             initView()
-            auth = Firebase.auth
-            credentialManager = CredentialManager.Companion.create(this)
-            callbackManager = CallbackManager.Factory.create()
-            StatusBarUtil.setTranslucentForImageView(this,0,null)
+            initFirebase()
+            initGoogleSignIn()
             initFacebookAuth()
             initModel()
         }
@@ -73,12 +72,12 @@ class LoginActivity :BaseActivity() {
 
 
     private fun initFacebookAuth() {
-        mViewBinding.loginButton.setReadPermissions(getString(R.string.email), "public_profile")
-        mViewBinding.loginButton.registerCallback(
+        // Initialize Facebook LoginManager
+        LoginManager.getInstance().registerCallback(
             callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                        Log.d(TAG, "facebook:onSuccess:$result")
+                    Log.d(TAG, "facebook:onSuccess:$result")
                     handleFacebookAccessToken(result.accessToken)
                 }
 
@@ -88,103 +87,180 @@ class LoginActivity :BaseActivity() {
 
                 override fun onError(error: FacebookException) {
                     Log.d(TAG, "facebook:onError", error)
+                    ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
                 }
-            },
+            }
         )
     }
+
+
+    /**
+     * Facebook登录处理
+     */
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d(TAG, "handleFacebookAccessToken:$token")
+        
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    user?.email.let {
+                        if (!TextUtils.isEmpty(user?.email)) {
+                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_prefix, user?.email ?: ""))
+                            SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", true)
+                            SharedPreferenceUtils.saveBoolean(mContext, "isLogin", true)
+                            
+                            // Navigate to MainActivity
+                            val intent = Intent(mContext, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
+                        }
+                    }
+                } else {
+                    // If sign in fails, display a message to the user
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                }
+            }
+    }
+
+    private fun initFirebase() {
+        auth = Firebase.auth
+        callbackManager = CallbackManager.Factory.create()
+        StatusBarUtil.setTranslucentForImageView(this, 0, null)
+    }
+
+    private fun initGoogleSignIn() {
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun signInWithGoogle() {
+        Log.d(TAG, "signInWithGoogle: Starting Google Sign-in process")
+        
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun signInWithFacebook() {
+        Log.d(TAG, "signInWithFacebook: Starting Facebook Sign-in process")
+        
+        LoginManager.getInstance().logInWithReadPermissions(
+            this,
+            listOf("email", "public_profile")
+        )
+    }
+
+    private fun signInWithEmailAndPassword(email: String, password: String) {
+        Log.d(TAG, "signInWithEmailAndPassword: Starting email/password sign-in")
+        
+        // Check for special development admin access - use old API
+        if (email == "admin" && password == "admin") {
+            Log.d(TAG, "Development admin access - using old API method")
+            SystemDialogUtils.showLoadingDialog(this, getString(R.string.login_logging_in))
+            loginModel.loginApp(email, password)
+            return
+        }
+        
+        // Use Firebase for regular users
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmailAndPassword:success")
+                    val user = auth.currentUser
+                    user?.email.let {
+                        if (!TextUtils.isEmpty(user?.email)) {
+                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_prefix, user?.email ?: ""))
+                            SharedPreferenceUtils.saveBoolean(mContext, "isLogin", true)
+                            
+                            // Navigate to MainActivity
+                            val intent = Intent(mContext, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
+                        }
+                    }
+                } else {
+                    // If sign in fails, display a message to the user
+                    Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
+                    val errorMessage = when {
+                        task.exception?.message?.contains("invalid-email") == true -> 
+                            getString(R.string.login_error_invalid_email)
+                        task.exception?.message?.contains("user-disabled") == true -> 
+                            getString(R.string.login_error_user_disabled)
+                        task.exception?.message?.contains("user-not-found") == true -> 
+                            getString(R.string.login_error_user_not_found)
+                        task.exception?.message?.contains("wrong-password") == true -> 
+                            getString(R.string.login_error_wrong_password)
+                        else -> getString(R.string.login_failed)
+                    }
+                    ToastUtils.showShortToast(mContext!!, errorMessage)
+                }
+            }
+    }
+
+    private fun initModel(){
+        loginModel.loginEntry.observe(this){
+            if (it.code == com.anssy.znewspro.utils.Constants.SUCCESS_CODE){
+                SystemDialogUtils.showSuccessMessage(this, getString(R.string.login_success))
+                SharedPreferenceUtils.saveString(mContext,"token",it.data.access_token)
+                SharedPreferenceUtils.saveBoolean(mContext,"isLogin",true)
+                val intent = Intent(mContext,MainActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+            }else{
+                SystemDialogUtils.dismissLoadingDialog()
+                ToastUtils.showShortToast(mContext!!,it.msg)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
 
-    companion object{
-        val TAG = this::class.simpleName
-    }
-
-    /**
-     * FaceBook登录
-     */
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
-        WaitDialog.show(getString(R.string.wait_logging_in))
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                WaitDialog.dismiss()
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    SharedPreferenceUtils.saveBoolean(mContext,"thirdLogin",true)
-                    ToastUtils.showShortToast(mContext!!,getString(R.string.email_prefix, user?.email ?: ""))
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                     Toast.makeText(
-                        baseContext,
-                        getString(R.string.auth_failed),
-                        Toast.LENGTH_SHORT,
-                    ).show()
-
-                }
-            }
-    }
-
-    private suspend  fun initGoogleAuth(){
-        WaitDialog.show(getString(R.string.wait_logging_in))
-        // Instantiate a Google sign-in request
-        val googleIdOption = GetGoogleIdOption.Builder()
-            // Your server's client ID, not your Android client ID.
-            .setServerClientId("1027106789501-199b76gsugq2aejldiq6hf8prqudv9i7.apps.googleusercontent.com")
-            // Only show accounts previously used to sign in.
-            .setAutoSelectEnabled(true)
-            .setNonce(System.currentTimeMillis().toString())
-            .build()
-        val request: GetCredentialRequest = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
-            .build()
-
- //Create the Credential Manager request
-        coroutineScope {
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val result = credentialManager.getCredential(
-                    request = request,
-                    context = this@LoginActivity,
-                )
-                handleSignIn(result.credential)
-            } catch (e: GetCredentialException) {
-                ToastUtils.showShortToast(mContext!!,getString(R.string.login_failed))
-                WaitDialog.dismiss()
-                 e.printStackTrace()
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)!!
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e)
+                ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
             }
-    }
-    }
-
-    private fun handleSignIn(credential: Credential) {
-        // Check if credential is of type Google ID
-        if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-            // Create Google ID Token
-            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-
-            // Sign in to Firebase with using the token
-            firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
-        } else {
-            ToastUtils.showShortToast(mContext!!,getString(R.string.login_failed))
-            WaitDialog.dismiss()
-            Log.w("xxx", "Credential is not of type Google ID!")
         }
     }
     private fun initView() {
+        Log.d(TAG, "initView: Setting up Google Sign-in button click listener")
         mViewBinding.googleLoginLayout.setOnClickListener {
-            lifecycleScope.launch {
-                initGoogleAuth()
-            }
+            Log.d(TAG, "Google Sign-in button clicked")
+            signInWithGoogle()
         }
-        // Trigger hidden Facebook LoginButton from custom row
+        Log.d(TAG, "initView: Google Sign-in button click listener set up")
+        // Set up Facebook login button click listener
         val facebookRow = mViewBinding.root.findViewById<android.view.View>(R.id.facebook_login_layout)
-        facebookRow?.setOnClickListener { mViewBinding.loginButton.performClick() }
+        facebookRow?.setOnClickListener {
+            Log.d(TAG, "Facebook Sign-in button clicked")
+            signInWithFacebook()
+        }
 
         // Email/password login
         mViewBinding.loginBtn.setOnClickListener {
@@ -198,8 +274,7 @@ class LoginActivity :BaseActivity() {
                 ToastUtils.showShortToast(mContext!!,getString(R.string.login_enter_password))
                 return@setOnClickListener
             }
-            com.kongzue.dialogx.dialogs.WaitDialog.show(getString(R.string.login_logging_in))
-            loginModel.loginApp(email,password)
+            signInWithEmailAndPassword(email, password)
         }
 
         // Go to register
@@ -215,40 +290,28 @@ class LoginActivity :BaseActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    WaitDialog.dismiss()
                     user?.email.let {
-                        if (!TextUtils.isEmpty(user?.email)){
-                            ToastUtils.showShortToast(mContext!!,getString(R.string.email_prefix, user?.email ?: ""))
-                            SharedPreferenceUtils.saveBoolean(mContext,"thirdLogin",true)
-                        }else{
-                            ToastUtils.showShortToast(mContext!!,getString(R.string.email_empty))
+                        if (!TextUtils.isEmpty(user?.email)) {
+                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_prefix, user?.email ?: ""))
+                            SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", true)
+                            SharedPreferenceUtils.saveBoolean(mContext, "isLogin", true)
+                            
+                            // Navigate to MainActivity
+                            val intent = Intent(mContext, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
                         }
                     }
-
                 } else {
-                    ToastUtils.showShortToast(mContext!!,getString(R.string.login_failed))
-                    WaitDialog.dismiss()
                     // If sign in fails, display a message to the user
-                    Log.w("xxx", "signInWithCredential:failure", task.exception)
-
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
                 }
             }
     }
 
-    private fun initModel(){
-        loginModel.loginEntry.observe(this){
-            if (it.code == com.anssy.znewspro.utils.Constants.SUCCESS_CODE){
-                com.kongzue.dialogx.dialogs.TipDialog.show(getString(R.string.login_success), com.kongzue.dialogx.dialogs.WaitDialog.TYPE.SUCCESS)
-                SharedPreferenceUtils.saveString(mContext,"token",it.data.access_token)
-                SharedPreferenceUtils.saveBoolean(mContext,"isLogin",true)
-                val intent = Intent(mContext,MainActivity::class.java)
-                startActivity(intent)
-                finishAffinity()
-            }else{
-                com.kongzue.dialogx.dialogs.WaitDialog.dismiss()
-                ToastUtils.showShortToast(mContext!!,it.msg)
-            }
-        }
-    }
 }

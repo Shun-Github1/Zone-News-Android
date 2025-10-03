@@ -44,12 +44,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 ThemeManager.applyTheme(themeMode)
                 updateThemePreferenceSummary()
                 
-                // Restart the main activity with proper flags to clear all fragments
-                val intent = android.content.Intent(requireContext(), com.anssy.znewspro.ui.MainActivity::class.java)
-                intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
-                requireActivity().finish()
+                // Simply recreate the current activity to apply theme changes
+                requireActivity().recreate()
             }
         }
     }

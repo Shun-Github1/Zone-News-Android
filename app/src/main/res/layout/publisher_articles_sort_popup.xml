@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="240dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/sort_popup_background"
+    android:padding="4dp">
+
+    <!-- Publisher Name -->
+    <LinearLayout
+        android:id="@+id/sort_publisher_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <!-- Fixed checkmark area -->
+        <FrameLayout
+            android:layout_width="16dp"
+            android:layout_height="16dp">
+            <ImageView
+                android:id="@+id/check_publisher_name"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@null"
+                android:visibility="visible"
+                app:tint="@color/colorTextDeep"/>
+        </FrameLayout>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/publisher_name"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_regular"/>
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_building_2_24"
+            android:contentDescription="@null"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/colorTextDeep"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@color/divider_color" />
+
+    <!-- Media Significance -->
+    <LinearLayout
+        android:id="@+id/sort_media_significance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <!-- Fixed checkmark area -->
+        <FrameLayout
+            android:layout_width="16dp"
+            android:layout_height="16dp">
+            <ImageView
+                android:id="@+id/check_media_significance"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:tint="@color/colorTextDeep"/>
+        </FrameLayout>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/media_significance"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_regular"/>
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_media_significance_24"
+            android:contentDescription="@null"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/colorTextDeep"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@color/divider_color" />
+
+    <!-- Publisher Bias -->
+    <LinearLayout
+        android:id="@+id/sort_publisher_bias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <!-- Fixed checkmark area -->
+        <FrameLayout
+            android:layout_width="16dp"
+            android:layout_height="16dp">
+            <ImageView
+                android:id="@+id/check_publisher_bias"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:tint="@color/colorTextDeep"/>
+        </FrameLayout>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/publisher_bias"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_regular"/>
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_publisher_bias_24"
+            android:contentDescription="@null"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/colorTextDeep"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@color/divider_color" />
+
+    <!-- Publisher Region -->
+    <LinearLayout
+        android:id="@+id/sort_publisher_region"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <!-- Fixed checkmark area -->
+        <FrameLayout
+            android:layout_width="16dp"
+            android:layout_height="16dp">
+            <ImageView
+                android:id="@+id/check_publisher_region"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:tint="@color/colorTextDeep"/>
+        </FrameLayout>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/publisher_region"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_regular"/>
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_publisher_region_24"
+            android:contentDescription="@null"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/colorTextDeep"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@color/divider_color" />
+
+    <!-- Article Title -->
+    <LinearLayout
+        android:id="@+id/sort_article_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <!-- Fixed checkmark area -->
+        <FrameLayout
+            android:layout_width="16dp"
+            android:layout_height="16dp">
+            <ImageView
+                android:id="@+id/check_article_title"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:tint="@color/colorTextDeep"/>
+        </FrameLayout>
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/article_title"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_regular"/>
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_article_title_24"
+            android:contentDescription="@null"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/colorTextDeep"/>
+    </LinearLayout>
+
+
+</LinearLayout>

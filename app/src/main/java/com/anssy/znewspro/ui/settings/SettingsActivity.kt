@@ -1,6 +1,7 @@
 package com.anssy.znewspro.ui.settings
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import com.anssy.znewspro.base.BaseActivity
 import androidx.core.view.WindowCompat
 import com.anssy.znewspro.R
@@ -19,11 +20,8 @@ class SettingsActivity : BaseActivity() {
         // Set up status bar
         applyStatusBarStyle()
         
-        // Set up toolbar
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = getString(R.string.settings)
+        // Set up MaterialToolbar with modern approach
+        setupToolbar()
         
         // Load settings fragment
         if (savedInstanceState == null) {
@@ -32,10 +30,23 @@ class SettingsActivity : BaseActivity() {
                 .replace(R.id.settings_container, SettingsFragment())
                 .commit()
         }
+        
+        // Set up modern back pressed handling
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
+    }
+
+    private fun setupToolbar() {
+        val toolbar = binding.toolbar
+        toolbar.title = getString(R.string.settings)
+        toolbar.setNavigationOnClickListener { finish() }
     }
     
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 }

@@ -12,11 +12,11 @@ import javax.inject.Inject
  */
 
 class SearchRepository @Inject constructor(private val appHttpService: AppHttpService) {
-    suspend fun querySearchList():GenericResponse<SearchListEntry>{
-        return  appHttpService.querySearchList()
+    suspend fun querySearchList(language: String? = null): GenericResponse<SearchListEntry> {
+        return appHttpService.querySearchList(language)
     }
 
-    suspend fun queryNewsByTitle(title:String):GenericResponse<SearchListEntry>{
-        return appHttpService.searchNewsByTitle(title)
+    suspend fun queryNewsByTitle(title: String, language: String? = null): GenericResponse<SearchListEntry> {
+        return appHttpService.searchNewsByTitle(title, language)
     }
 }

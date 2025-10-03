@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.webkit.ValueCallback;
+
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
+import androidx.appcompat.widget.Toolbar;
 import android.webkit.JavascriptInterface;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,18 +26,25 @@ import com.anssy.znewspro.R;
 import com.anssy.znewspro.base.BaseActivity;
 import com.anssy.znewspro.selfview.ProgressWebView;
 import com.anssy.znewspro.utils.SharedPreferenceUtils;
+import com.anssy.znewspro.utils.SwipeGestureHelper;
 import com.jaeger.library.StatusBarUtil;
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
+import android.widget.TextView;
 
 import java.util.Objects;
 
 
 public class WebActivity extends BaseActivity {
     private ProgressWebView mWebView;
-    private TextView mTitleTv;
     private String type;
-    private ImageView ivShare, ivTranslate, ivOpenInBrowser;
     private boolean isTranslated = false;
     private String originalUrl = "";
+    
+    // MaterialToolbar
+    private Toolbar toolbar;
+    private ShapeableImageView mediaIcon;
+    private TextView mediaName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,52 +54,27 @@ public class WebActivity extends BaseActivity {
         type = getIntent().getStringExtra("type");
         initView();
     }
-    private TextView mTransTv;
+    
     @SuppressLint("SetJavaScriptEnabled")
     private void initView() {
-        mTitleTv = findViewById(R.id.title_tv);
-        mWebView = findViewById(R.id.agree_web);
-        mTransTv = findViewById(R.id.trans_tv);
-        mTransTv.setVisibility(View.GONE);
-        ivShare = findViewById(R.id.iv_share);
-        ivTranslate = findViewById(R.id.iv_translate);
-        ivOpenInBrowser = findViewById(R.id.iv_open_in_browser);
+        // Initialize MaterialToolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        
+        // Initialize media display views
+        mediaIcon = findViewById(R.id.media_icon);
+        mediaName = findViewById(R.id.media_name);
+        
+        // Enable back button and hide title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        
 
-        ivShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = originalUrl;
-                if (url == null) url = "";
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, url);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
-            }
-        });
-        ivTranslate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(originalUrl)) return;
-                String toLoad;
-                if (!isTranslated) {
-                    String base = "https://translate.google.com/translate?sl=auto&tl=en&u=";
-                    toLoad = base + Uri.encode(originalUrl);
-                } else {
-                    toLoad = originalUrl;
-                }
-                isTranslated = !isTranslated;
-                mWebView.loadUrl(toLoad);
-            }
-        });
-        ivOpenInBrowser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = originalUrl;
-                if (url == null) url = "";
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(browserIntent);
-            }
-        });
+        
+        mWebView = findViewById(R.id.agree_web);
 
         WebSettings settings = this.mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -157,7 +137,6 @@ public class WebActivity extends BaseActivity {
             switch (type) {
                 case "detail": {
                     settings.setUseWideViewPort(true);
-                    mTitleTv.setText(R.string.details);
                     String content = SharedPreferenceUtils.getString(Objects.requireNonNull(getMContext()), "content");
                     mWebView.loadDataWithBaseURL(null, getHtmlData(content), "text/html", "UTF-8", null);
                     break;
@@ -165,7 +144,6 @@ public class WebActivity extends BaseActivity {
                 
                 default: {
                     settings.setUseWideViewPort(true);
-                    mTransTv.setVisibility(View.GONE);
                     String url = getIntent().getStringExtra("url");
                     if (TextUtils.isEmpty(url)) {
                         Toast.makeText(this, R.string.open_in_browser, Toast.LENGTH_SHORT).show();
@@ -176,19 +154,43 @@ public class WebActivity extends BaseActivity {
                         url = "https://" + url;
                     }
                     originalUrl = url;
-                    try {
-                        Uri uri = Uri.parse(originalUrl);
-                        String host = uri.getHost();
-                        if (host != null) mTitleTv.setText(host);
-                    } catch (Exception ignored) {}
+                    
+                    // Get media information from intent
+                    String publisherIcon = getIntent().getStringExtra("publisherIcon");
+                    String publisherName = getIntent().getStringExtra("publisherName");
+                    
+                    // Display media information in toolbar
+                    if (publisherIcon != null && !publisherIcon.isEmpty()) {
+                        Glide.with(this)
+                            .load(publisherIcon)
+                            .error(R.drawable.ease_default_image)
+                            .into(mediaIcon);
+                    }
+                    
+                    if (publisherName != null && !publisherName.isEmpty()) {
+                        mediaName.setText(publisherName);
+                    } else {
+                        // Fallback to host if no publisher name
+                        try {
+                            Uri uri = Uri.parse(originalUrl);
+                            String host = uri.getHost();
+                            if (host != null) {
+                                mediaName.setText(host);
+                            }
+                        } catch (Exception ignored) {}
+                    }
                     mWebView.loadUrl(originalUrl);
                     break;
                 }
             }
 
         }
+        
+        // Setup swipe gesture for back navigation
+        setupSwipeGesture();
 
     }
+
 
 
     private String getHtmlData(String str) {
@@ -219,11 +221,71 @@ public class WebActivity extends BaseActivity {
             }
             reader.close();
         } catch (IOException e) {
-            Log.e("WebActivity", "Error loading JavaScript", e);
+            // Error loading JavaScript resource
         }
         return script.toString();
     }
 
     // Legacy widget toggle no longer used; kept as empty to avoid references
     private void toggleGoogleTranslate() {}
+    
+    /**
+     * Setup swipe gesture detection for back navigation
+     */
+    private void setupSwipeGesture() {
+        SwipeGestureHelper swipeGestureHelper = new SwipeGestureHelper(() -> {
+            // Handle swipe right gesture - finish the activity (go back)
+            finish();
+            return null; // Explicitly return null for Unit type
+        });
+        
+        // Apply swipe gesture to the WebView
+        mWebView.setOnTouchListener(swipeGestureHelper);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_browser_toolbar, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        } else if (id == R.id.action_share) {
+            String url = originalUrl;
+            if (url == null) url = "";
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, url);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
+            return true;
+        } else if (id == R.id.action_translate) {
+            if (TextUtils.isEmpty(originalUrl)) return true;
+            String toLoad;
+            if (!isTranslated) {
+                String base = "https://translate.google.com/translate?sl=auto&tl=en&u=";
+                toLoad = base + Uri.encode(originalUrl);
+            } else {
+                toLoad = originalUrl;
+            }
+            isTranslated = !isTranslated;
+            mWebView.loadUrl(toLoad);
+            return true;
+        } else if (id == R.id.action_open_in_browser) {
+            String url = originalUrl;
+            if (url == null) url = "";
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(browserIntent);
+            Toast.makeText(this, R.string.open_in_browser, Toast.LENGTH_SHORT).show();
+            finish();
+            return true;
+        }
+        
+        return super.onOptionsItemSelected(item);
+    }
 }

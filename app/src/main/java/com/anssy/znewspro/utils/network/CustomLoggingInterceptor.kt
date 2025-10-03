@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 
 import java.io.EOFException
@@ -37,7 +38,7 @@ class CustomLoggingInterceptor : Interceptor {
         )
         // 重新构建响应以确保内容可再次读取
         return response.newBuilder()
-            .body(ResponseBody.create(response.body?.contentType(), responseBodyString ?: ""))
+            .body((responseBodyString ?: "").toResponseBody(response.body?.contentType()))
             .build()
     }
 
@@ -110,7 +111,7 @@ object PrettyLogger {
 
     fun logBoxed(tag: String = "NetworkLog", message: String) {
         val border = "═".repeat(60)
-        val boxedMsg = buildString {
+        buildString {
             append("╔$border\n")
             message.lines().forEach {
                 append("║ $it\n")

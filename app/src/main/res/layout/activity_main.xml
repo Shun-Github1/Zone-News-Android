@@ -16,16 +16,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/main_bottom_card"
+        android:id="@+id/mainBottomCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         style="@style/Widget.Material3.CardView.Elevated"
         app:cardCornerRadius="14dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <RadioGroup
-            android:id="@+id/main_rg"
+            android:id="@+id/mainRg"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:padding="4dp"

@@ -41,7 +41,7 @@ object NetworkApi {
                 //OkHttp构建器
                 val builder = OkHttpClient.Builder()
                 //设置缓存大小
-                val cacheSize = 100 * 1024 * 1024
+                100 * 1024 * 1024
                 //设置网络请求超时时长，这里设置为6s
                 builder.connectTimeout(6, TimeUnit.SECONDS)
                 //添加请求拦截器，如果接口有请求头的话，可以放在这个拦截器里面
@@ -96,7 +96,7 @@ object NetworkApi {
         //设置访问地址
         builder.baseUrl(BASE_URL)
         //设置OkHttp客户端，传入上面写好的方法即可获得配置后的OkHttp客户端。
-        builder.client(okHttpClient)
+        builder.client(okHttpClient!!)
         //设置数据解析器 会自动把请求返回的结果（json字符串）通过Gson转化工厂自动转化成与其结构相符的实体Bean
         builder.addConverterFactory(GsonConverterFactory.create())
         //设置请求回调，使用RxJava 对网络返回进行处理

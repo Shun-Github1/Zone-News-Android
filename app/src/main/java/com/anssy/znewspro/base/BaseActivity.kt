@@ -10,7 +10,7 @@ import com.anssy.znewspro.R
 import com.anssy.znewspro.utils.ThemeManager
 import com.anssy.znewspro.utils.foresult.IMsa
 import com.anssy.znewspro.utils.foresult.msa
-import com.hjq.language.MultiLanguages
+
 import com.jaeger.library.StatusBarUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
@@ -30,8 +30,7 @@ open class BaseActivity :AppCompatActivity(), IMsa by msa() {
 
 
     override fun attachBaseContext(newBase: Context) {
-        // 绑定语种
-        super.attachBaseContext(MultiLanguages.attach(newBase))
+        super.attachBaseContext(newBase)
     }
 
     override fun onDestroy() {

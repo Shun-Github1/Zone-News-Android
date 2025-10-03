@@ -23,14 +23,33 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/article_publisher_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorTextMiddle"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            
+            <TextView
+                android:id="@+id/article_publisher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorTextMiddle"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+                
+            <TextView
+                android:id="@+id/article_publisher_bias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                android:background="@drawable/publisher_bias_tag_background"
+                android:visibility="gone"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/article_title"
             android:layout_width="wrap_content"

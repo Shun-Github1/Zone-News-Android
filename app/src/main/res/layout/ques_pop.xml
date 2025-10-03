@@ -25,7 +25,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/content_tv"
                 android:textSize="@dimen/medium_txt"
                 android:textColor="@color/colorTextDeep"
                 android:layout_marginTop="10dp"

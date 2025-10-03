@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <!-- Sort button -->
+    <item
+        android:id="@+id/action_sort"
+        android:title="@string/sort_by"
+        android:icon="@drawable/ic_swap_vert_24"
+        app:iconTint="@color/colorTextDeep"
+        app:iconSize="24dp"
+        app:showAsAction="always" />
+        
+    <!-- Menu button -->
+    <item
+        android:id="@+id/action_menu"
+        android:title="@string/filter_by"
+        android:icon="@drawable/ic_menu_24"
+        app:iconTint="@color/colorTextDeep"
+        app:iconSize="24dp"
+        app:showAsAction="always" />
+        
+</menu>

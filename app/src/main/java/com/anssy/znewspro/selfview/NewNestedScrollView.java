@@ -46,7 +46,7 @@ public class NewNestedScrollView extends NestedScrollView implements NestedScrol
     private long lastTime ;
 
 
-    private Handler handler;
+    private final Handler handler;
     /**
      * 整個滾動内容高度
      *

@@ -16,12 +16,17 @@ class AboutActivity : BaseActivity() {
         // Status bar style consistent with app theme
         applyStatusBarStyle()
 
-        // Use standardized included toolbar
-        binding.topLayout.titleTv.text = getString(com.anssy.znewspro.R.string.about)
+        // Setup new top bar with back functionality
+        setupTopBar()
 
         // Simple clicks for legal links (placeholder)
         binding.privacyPolicyBtn.setOnClickListener { }
         binding.termsBtn.setOnClickListener { }
+    }
+
+    private fun setupTopBar() {
+        // Setup back arrow icon click
+        binding.backArrowIcon.setOnClickListener { finish() }
     }
 }
 

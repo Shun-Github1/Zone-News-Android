@@ -16,7 +16,7 @@ public class RequestInterceptor implements Interceptor {
     /**
      * 网络请求信息
      */
-    private INetworkRequiredInfo iNetworkRequiredInfo;
+    private final INetworkRequiredInfo iNetworkRequiredInfo;
 
     public RequestInterceptor(INetworkRequiredInfo iNetworkRequiredInfo){
         this.iNetworkRequiredInfo = iNetworkRequiredInfo;

@@ -38,14 +38,43 @@ public class TopicListEntry {
     }
 
     public static class DataDTO {
-        private List<String> topics;
+        private List<TopicDTO> topics;
 
-        public List<String> getTopics() {
+        public List<TopicDTO> getTopics() {
             return topics;
         }
 
-        public void setTopics(List<String> topics) {
+        public void setTopics(List<TopicDTO> topics) {
             this.topics = topics;
+        }
+        
+        // Backward compatibility method
+        public List<String> getTopicsAsStrings() {
+            if (topics == null) return null;
+            return topics.stream()
+                .map(TopicDTO::getDisplayName)
+                .collect(java.util.stream.Collectors.toList());
+        }
+    }
+    
+    public static class TopicDTO {
+        private String tag;
+        private String displayName;
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
         }
     }
 }

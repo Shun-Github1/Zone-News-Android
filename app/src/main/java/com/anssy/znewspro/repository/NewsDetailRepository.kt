@@ -15,8 +15,8 @@ import javax.inject.Inject
  */
 
 class NewsDetailRepository @Inject constructor(private val appHttpService: AppHttpService) {
-    suspend fun queryNewsDetail(id: String): ArticleDetailEntry {
-        return appHttpService.queryArticleDetail(id)
+    suspend fun queryNewsDetail(id: String, language: String? = null): ArticleDetailEntry {
+        return appHttpService.queryArticleDetail(id, language)
     }
 
     suspend fun addFeedBack(id: String, content: String): GenericResponse<CommonResponseEntry> {
@@ -29,11 +29,11 @@ class NewsDetailRepository @Inject constructor(private val appHttpService: AppHt
         return appHttpService.saveNewsHis(id)
     }
 
-    suspend fun collectHis(id:String):GenericResponse<CommonResponseEntry>{
-        return  appHttpService.collectNews(id)
+    suspend fun collectHis(id: String): GenericResponse<CommonResponseEntry> {
+        return appHttpService.collectNews(id)
     }
 
-    suspend fun deleteCollect(id:String):GenericResponse<CommonResponseEntry>{
-        return  appHttpService.deleteCollect(id)
+    suspend fun deleteCollect(id: String): GenericResponse<CommonResponseEntry> {
+        return appHttpService.deleteCollect(id)
     }
 }

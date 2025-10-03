@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <!-- Main content area with RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recap_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="24dp"
+        android:paddingEnd="100dp"
+        android:paddingBottom="120dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never" />
+
+    <!-- Progress tracker - positioned lower on the right -->
+    <com.anssy.znewspro.selfview.RecapProgressTracker
+        android:id="@+id/recap_progress_tracker"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="16dp" />
+
+</FrameLayout>
+

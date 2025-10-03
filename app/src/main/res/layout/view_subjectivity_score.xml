@@ -14,7 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Subjectivity Score"
+            android:text="@string/subjectivity_score"
             android:textStyle="bold"
             android:textColor="@color/colorTextDeep"
             android:textSize="16sp"/>
@@ -44,7 +44,7 @@
                 android:textColor="@color/colorTextDeep"
                 android:textSize="44sp"
                 android:paddingStart="5dp"
-                android:paddingEnd="12dp"/>
+                android:paddingEnd="5dp"/>
             <TextView
                 android:id="@+id/subjectivity_denom"
                 android:layout_width="wrap_content"
@@ -52,7 +52,6 @@
                 android:textColor="@color/colorTextSmall"
                 android:textSize="10sp"
                 android:layout_gravity="bottom|end"
-                android:paddingEnd="2dp"
                 android:paddingBottom="6dp"/>
         </FrameLayout>
 

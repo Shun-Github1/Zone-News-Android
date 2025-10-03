@@ -2,14 +2,10 @@ package com.anssy.znewspro.ui.notice
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.anssy.znewspro.R
 import com.anssy.znewspro.base.BaseActivity
-import com.anssy.znewspro.databinding.ActivityBrownHisBinding
+import com.anssy.znewspro.databinding.ActivityNoticeListBinding
 import com.jaeger.library.StatusBarUtil
-import com.zhy.adapter.recyclerview.CommonAdapter
-import com.zhy.adapter.recyclerview.base.ViewHolder
 
 /**
  * @Description 通知
@@ -18,30 +14,32 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
  */
 
 class NoticeListActivity:BaseActivity() {
-    private lateinit var mViewBinding: ActivityBrownHisBinding
+    private lateinit var mViewBinding: ActivityNoticeListBinding
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewBinding = ActivityBrownHisBinding.inflate(layoutInflater)
+        mViewBinding = ActivityNoticeListBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
         applyStatusBarStyle()
         initView()
     }
-    private var mList = ArrayList<Int>()
-    private lateinit var mAdapter: CommonAdapter<Int>
+    
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        mViewBinding.topLayout.titleTv.text = getString(R.string.title_notification)
-        mViewBinding.hisRecycler.layoutManager = LinearLayoutManager(mContext,
-            RecyclerView.VERTICAL,false)
-        for (i in 1..5){
-            mList.add(i)
-        }
-        mAdapter = object : CommonAdapter<Int>(this, R.layout.item_brown_his,mList){
-            override fun convert(holder: ViewHolder?, t: Int?, position: Int) {
+        // Setup MaterialToolbar with navigation click listener
+        setupToolbar()
+    }
 
+    private fun setupToolbar() {
+        val toolbar = mViewBinding.toolbar
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_close -> {
+                    finish()
+                    true
+                }
+                else -> false
             }
-
         }
-        mViewBinding.hisRecycler.adapter = mAdapter
     }
 }

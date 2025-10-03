@@ -21,7 +21,7 @@ class SentimentMeterView @JvmOverloads constructor(
         style = Paint.Style.STROKE
         strokeWidth = dp(1f)
         strokeCap = Paint.Cap.BUTT
-        color = ContextCompat.getColor(context, R.color.divider_color)
+        color = ContextCompat.getColor(context, R.color.colorTextSmall)
     }
 
 	private val positivePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -76,8 +76,9 @@ class SentimentMeterView @JvmOverloads constructor(
 		val w = width.toFloat()
 		val h = height.toFloat()
 		val centerX = w / 2f
-        val centerY = h * 0.82f
-        val radius = (minOf(w, h) * 0.68f) - dp(6f)
+        // Adjust centerY to leave more space at the bottom for the new labels
+        val centerY = h * 0.70f
+        val radius = (minOf(w, h * 0.85f) * 0.68f) - dp(6f)
 		val left = centerX - radius
 		val top = centerY - radius
 		val right = centerX + radius
@@ -114,6 +115,12 @@ class SentimentMeterView @JvmOverloads constructor(
 		drawCenteredText(canvas, "0", centerX, centerY - radius - dp(18f), labelPaint)
         drawCenteredText(canvas, "-1", left, centerY + dp(12f), labelPaint)
         drawCenteredText(canvas, "+1", right, centerY + dp(12f), labelPaint)
+
+        // Add descriptive labels under the -1 and +1 values (localized)
+        val negativeLabel = resources.getString(R.string.sentiment_negative)
+        val positiveLabel = resources.getString(R.string.sentiment_positive)
+        drawCenteredText(canvas, negativeLabel, left, centerY + dp(28f), labelPaint)
+        drawCenteredText(canvas, positiveLabel, right, centerY + dp(28f), labelPaint)
 
 		// Current value: color follows highlight (green for positive, red for negative; neutral gray for zero)
 		val valueStr = (if (sentiment > 0) "+" else if (sentiment < 0) "" else "") + String.format("%.2f", sentiment)

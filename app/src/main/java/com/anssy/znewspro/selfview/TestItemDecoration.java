@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TestItemDecoration extends RecyclerView.ItemDecoration {
 
-    private int spanCount;
-    private int spacing;
-    private int spanSize;
+    private final int spanCount;
+    private final int spacing;
+    private final int spanSize;
 
 
     public TestItemDecoration(int spanCount, int spanSize, int spacing) {
@@ -69,7 +69,7 @@ public class TestItemDecoration extends RecyclerView.ItemDecoration {
                     outRect.left = spacing / 2; //
                     outRect.right = tmp;
                 } else {
-                    if (rows == totalRows - 1 && column == extraCount - 1) {;
+                    if (rows == totalRows - 1 && column == extraCount - 1) {
                         outRect.right = extraTmp;
                     } else {
                         outRect.right = spacing / 2;

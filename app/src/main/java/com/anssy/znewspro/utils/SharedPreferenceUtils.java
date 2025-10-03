@@ -63,6 +63,15 @@ public class SharedPreferenceUtils {
         context.getSharedPreferences(FILE_NAME, 0).edit().clear().apply();
     }
 
+    /**
+     * Check if the user is currently logged in
+     * @param context The application context
+     * @return true if user is logged in, false otherwise
+     */
+    public static boolean isUserLoggedIn(Context context) {
+        return getBoolean(context, "isLogin");
+    }
+
     public static void putList(Context context, String key, List<? extends Serializable> list) {
         try {
             put(context, key, list);

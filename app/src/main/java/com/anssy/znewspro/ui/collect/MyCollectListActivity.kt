@@ -43,7 +43,9 @@ class MyCollectListActivity:BaseActivity() {
     private lateinit var mAdapter: CommonAdapter<ViewHisEntry.DataDTO.ArticlesDTO>
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        mViewBinding.topLayout.titleTv.text = getString(R.string.saved)
+        // Setup MaterialToolbar with navigation and title
+        setupToolbar()
+        
         mViewBinding.hisRecycler.layoutManager = LinearLayoutManager(mContext,
             RecyclerView.VERTICAL,false)
 
@@ -65,6 +67,12 @@ class MyCollectListActivity:BaseActivity() {
 
         }
         mViewBinding.hisRecycler.adapter = mAdapter
+    }
+
+    private fun setupToolbar() {
+        val toolbar = mViewBinding.topLayout.toolbar
+        toolbar.title = getString(R.string.saved)
+        toolbar.setNavigationOnClickListener { finish() }
     }
 
     @SuppressLint("NotifyDataSetChanged")

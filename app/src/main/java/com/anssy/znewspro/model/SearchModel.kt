@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anssy.znewspro.entry.SearchListEntry
 import com.anssy.znewspro.repository.SearchRepository
+import com.anssy.znewspro.utils.LanguageManager
 import com.anssy.znewspro.utils.network.exception.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,25 +23,29 @@ import com.anssy.znewspro.R
  */
 
 @HiltViewModel
-class SearchModel @Inject constructor(private val searchRepository: SearchRepository):ViewModel() {
-    private var _searchListEntry:MutableLiveData<SearchListEntry> = MutableLiveData<SearchListEntry>()
-    var searchListEntry:LiveData<SearchListEntry> = _searchListEntry
-    fun querySearchList(){
+class SearchModel @Inject constructor(
+    private val searchRepository: SearchRepository,
+    private val languageManager: LanguageManager
+): ViewModel() {
+    private var _searchListEntry: MutableLiveData<SearchListEntry> = MutableLiveData<SearchListEntry>()
+    var searchListEntry: LiveData<SearchListEntry> = _searchListEntry
+    
+    fun querySearchList() {
         viewModelScope.launch {
-           val result =  withContext(Dispatchers.IO){
-                 searchRepository.querySearchList()
+            val result = withContext(Dispatchers.IO) {
+                searchRepository.querySearchList(languageManager.getCurrentLanguageCode())
             }
-            when(result){
-                is NetworkResponse.NetError->{
+            when (result) {
+                is NetworkResponse.NetError -> {
                     val searchListEntry = SearchListEntry()
                     searchListEntry.code = 1000
                     searchListEntry.msg = getString(R.string.server_error_message)
                     _searchListEntry.value = searchListEntry
                 }
-                is NetworkResponse.Success->{
+                is NetworkResponse.Success -> {
                     _searchListEntry.value = result.body
                 }
-                is NetworkResponse.UnknownError->{
+                is NetworkResponse.UnknownError -> {
                     val searchListEntry = SearchListEntry()
                     searchListEntry.code = 1000
                     searchListEntry.msg = "未知错误"
@@ -49,22 +54,23 @@ class SearchModel @Inject constructor(private val searchRepository: SearchReposi
             }
         }
     }
-    fun  queryListByTitle(title:String){
+    
+    fun queryListByTitle(title: String) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
-                searchRepository.queryNewsByTitle(title)
+            val result = withContext(Dispatchers.IO) {
+                searchRepository.queryNewsByTitle(title, languageManager.getCurrentLanguageCode())
             }
-            when(result){
-                is NetworkResponse.NetError->{
+            when (result) {
+                is NetworkResponse.NetError -> {
                     val searchListEntry = SearchListEntry()
                     searchListEntry.code = 1000
                     searchListEntry.msg = getString(R.string.server_error_message)
                     _searchListEntry.value = searchListEntry
                 }
-                is NetworkResponse.Success->{
+                is NetworkResponse.Success -> {
                     _searchListEntry.value = result.body
                 }
-                is NetworkResponse.UnknownError->{
+                is NetworkResponse.UnknownError -> {
                     val searchListEntry = SearchListEntry()
                     searchListEntry.code = 1000
                     searchListEntry.msg = "未知错误"

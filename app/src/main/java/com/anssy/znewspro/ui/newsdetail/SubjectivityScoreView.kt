@@ -16,6 +16,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import com.anssy.znewspro.R
+import androidx.core.content.ContextCompat
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -48,10 +49,10 @@ class SubjectivityScoreView @JvmOverloads constructor(
 		valueTv.text = formatted
 		denomTv.text = "/1"
 		val status = when {
-			value > 0.66 -> "Low objectivity"
-			value > 0.33 && value < 0.66 -> "Medium objectivity"
-			value < 0.33 -> "High objectivity"
-			else -> "Medium objectivity"
+			value > 0.66 -> context.getString(R.string.low_objectivity)
+			value > 0.33 && value < 0.66 -> context.getString(R.string.medium_objectivity)
+			value < 0.33 -> context.getString(R.string.high_objectivity)
+			else -> context.getString(R.string.medium_objectivity)
 		}
 		statusTv.text = status
 		applyStatusColors(value)
@@ -59,12 +60,14 @@ class SubjectivityScoreView @JvmOverloads constructor(
 
 	private fun applyStatusColors(value: Double) {
 		val (textColor, bgColor) = when {
-			value > 0.66 -> Pair(Color.parseColor("#879693"), Color.parseColor("#2E3D3A"))
-			value > 0.33 && value < 0.66 -> Pair(Color.parseColor("#9AEDDD"), Color.parseColor("#3D776C"))
-			value < 0.33 -> Pair(Color.parseColor("#239B98"), Color.parseColor("#9AEDDD"))
-			else -> Pair(Color.parseColor("#9AEDDD"), Color.parseColor("#3D776C"))
+			value > 0.66 -> Pair(ContextCompat.getColor(context, R.color.subjectivity_high), ContextCompat.getColor(context, R.color.subjectivity_bg_high))
+			value > 0.33 && value < 0.66 -> Pair(ContextCompat.getColor(context, R.color.subjectivity_medium), ContextCompat.getColor(context, R.color.subjectivity_bg_medium))
+			value < 0.33 -> Pair(ContextCompat.getColor(context, R.color.subjectivity_low), ContextCompat.getColor(context, R.color.subjectivity_bg_low))
+			else -> Pair(ContextCompat.getColor(context, R.color.subjectivity_medium), ContextCompat.getColor(context, R.color.subjectivity_bg_medium))
 		}
-		statusTv.setTextColor(textColor)
+		// Ensure text color has no opacity by setting alpha to fully opaque
+		val opaqueTextColor = android.graphics.Color.argb(255, android.graphics.Color.red(textColor), android.graphics.Color.green(textColor), android.graphics.Color.blue(textColor))
+		statusTv.setTextColor(opaqueTextColor)
 		val bg = GradientDrawable()
 		bg.cornerRadius = resources.displayMetrics.density * 4f
 		bg.setColor(bgColor)
@@ -72,11 +75,11 @@ class SubjectivityScoreView @JvmOverloads constructor(
 	}
 
     private fun showInfoPopover(anchor: View) {
-        val content = android.widget.LinearLayout(context).apply {
-            orientation = android.widget.LinearLayout.VERTICAL
+        val content = LinearLayout(context).apply {
+            orientation = VERTICAL
             setPadding(dp(16f).toInt(), dp(12f).toInt(), dp(16f).toInt(), dp(12f).toInt())
-            val fullText = "Determined by a stolen algorithm from a…\nVisit our webpage for detailed information."
-            val linkText = "our webpage"
+            val fullText = context.getString(R.string.subjectivity_algorithm_description)
+            val linkText = context.getString(R.string.our_webpage)
             val spannable = SpannableString(fullText)
             val start = fullText.indexOf(linkText)
             if (start >= 0) {
@@ -84,18 +87,17 @@ class SubjectivityScoreView @JvmOverloads constructor(
                 spannable.setSpan(object : ClickableSpan() {
                     override fun onClick(widget: View) {
                         try {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.example.com"))
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.example_website)))
                             context.startActivity(intent)
                         } catch (_: Exception) {}
                     }
                 }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                val linkColor = Color.parseColor("#219dff")
+                val linkColor = ContextCompat.getColor(context, R.color.link_color)
                 spannable.setSpan(ForegroundColorSpan(linkColor), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
             val tv = TextView(context).apply {
                 text = spannable
-                setTextColor(Color.parseColor("#333333"))
+                setTextColor(ContextCompat.getColor(context, R.color.colorTextSmall))
                 textSize = 14f
                 movementMethod = LinkMovementMethod.getInstance()
             }
@@ -106,10 +108,10 @@ class SubjectivityScoreView @JvmOverloads constructor(
         val popup = android.widget.PopupWindow(content, popupWidth, LayoutParams.WRAP_CONTENT, true)
         popup.isOutsideTouchable = true
         popup.isFocusable = true
-        popup.elevation = dp(12f)
-        popup.setBackgroundDrawable(android.graphics.drawable.GradientDrawable().apply {
+        popup.elevation = dp(4f)
+        popup.setBackgroundDrawable(GradientDrawable().apply {
             cornerRadius = dp(12f)
-            setColor(Color.WHITE)
+            setColor(ContextCompat.getColor(context, R.color.profile_card_bg))
         })
         // Align popup's left edge with the card's left edge (negative offset to move left from anchor)
         // Include this view's left padding so we snap to the card boundary, not the inner content.

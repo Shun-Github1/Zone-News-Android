@@ -3,12 +3,19 @@ package com.anssy.znewspro.ui.mainfrag.homechild
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,7 +63,7 @@ class HomeChildFrag : BaseFragment() {
         }
     }
 
-    private lateinit var mAdapter: CommonAdapter<HomeDataListEntry.DataDTO.ArticlesDTO>
+    private lateinit var mAdapter: NewsAdapter
     private var mNewsList = ArrayList<HomeDataListEntry.DataDTO.ArticlesDTO>()
     private var mBannerList = ArrayList<HomeDataListEntry.DataDTO.HeadlinesDTO>()
     override fun onCreateView(
@@ -101,78 +108,48 @@ class HomeChildFrag : BaseFragment() {
             mViewBinding.homeBanner.create()
         }
 
-        mViewBinding.homeRecycler.layoutManager =
-            object : LinearLayoutManager(mContext, RecyclerView.VERTICAL, false) {
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        mAdapter = object :
-            CommonAdapter<HomeDataListEntry.DataDTO.ArticlesDTO>(
-                mContext,
-                R.layout.item_home_recycler,
-                mNewsList
-            ) {
-            @SuppressLint("SetTextI18n")
-            override fun convert(
-                holder: ViewHolder?,
-                t: HomeDataListEntry.DataDTO.ArticlesDTO,
-                position: Int
-            ) {
-                val placeTv: TextView = holder!!.getView(R.id.place_tv)
-                val tagTv: TextView = holder.getView(R.id.tag_tv)
-                val titleTv: TextView = holder.getView(R.id.news_title_tv)
-                val newsIv: ImageView = holder.getView(R.id.news_iv)
-                val trackView: View = holder.getView(R.id.progress_track)
-                val highlightView: View = holder.getView(R.id.progress_highlight)
-                val timeTv: TextView = holder.getView(R.id.news_time_tv)
-                val countTv: TextView = holder.getView(R.id.news_count_tv)
-                countTv.text = "${t.nSources}个报道"
-                val transScoreTv: TextView = holder.getView(R.id.trans_score_tv)
-                holder.convertView.setOnClickListener {
-                    val intent = Intent(mContext, NewsDetailActivity::class.java)
-                    intent.putExtra("id",t.articleID)
-                    startActivity(intent)
-                }
-                placeTv.text = t.region
-                transScoreTv.text = "Subjectivity: " + CalculateUtil.round(t.metrics.sentiment, 2)
-                tagTv.text = t.sector
-                titleTv.text = t.title
-                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ease_default_image)
-                    .into(newsIv)
-
-                try {
-                    val parse = dateFormat.parse(t.date)
-                    timeTv.text = Utils.getSpaceTime(parse!!.time)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                // layout highlight based on score in range [-1, 1]
-                trackView.post {
-                    val totalWidth = trackView.width
-                    val half = totalWidth / 2
-                    val score = CalculateUtil.round(t.metrics.sentiment, 2)
-                    val distance = (kotlin.math.abs(score) * half).toInt()
-                    val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
-                    if (distance <= 0) {
-                        // Avoid width==0 which equals MATCH_CONSTRAINT in ConstraintLayout
-                        highlightView.visibility = View.INVISIBLE
-                        lp.width = 1
-                        lp.marginStart = half
-                    } else {
-                        highlightView.visibility = View.VISIBLE
-                        lp.width = distance
-                        lp.marginStart = if (score > 0) half else (half - distance)
-                    }
-                    highlightView.layoutParams = lp
-                    highlightView.setBackgroundResource(
-                        if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
-                    )
-                }
-            }
+        mViewBinding.homeRecycler.layoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
+        
+        // Disable NestedScrollView scrolling to let RecyclerView handle it
+        mViewBinding.scrollView.isNestedScrollingEnabled = false
+        
+        mAdapter = NewsAdapter(mContext!!, mNewsList) { article ->
+            shareArticle(article)
         }
         mViewBinding.homeRecycler.adapter = mAdapter
+        
+        // Add RecyclerView scroll listener
+        android.util.Log.d("HomeChildFrag", "Adding RecyclerView scroll listener")
+        mViewBinding.homeRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                android.util.Log.d("HomeChildFrag", "RecyclerView onScrolled: dx=$dx, dy=$dy")
+                val activity = requireActivity() as MainActivity
+                if (dy > 0) {
+                    android.util.Log.d("HomeChildFrag", "RecyclerView scrolling down - hiding bottom bar")
+                    activity.hideBottomBar()
+                } else if (dy < 0) {
+                    android.util.Log.d("HomeChildFrag", "RecyclerView scrolling up - showing bottom bar")
+                    activity.showBottomBar()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                android.util.Log.d("HomeChildFrag", "RecyclerView onScrollStateChanged: $newState")
+                val activity = requireActivity() as MainActivity
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    android.util.Log.d("HomeChildFrag", "RecyclerView IDLE - scheduling auto-show")
+                    activity.scheduleBottomBarAutoShow()
+                } else {
+                    android.util.Log.d("HomeChildFrag", "RecyclerView not IDLE - canceling auto-show")
+                    activity.cancelBottomBarAutoShow()
+                }
+            }
+        })
+        
+        // Add NestedScrollView scroll listener as backup
+        android.util.Log.d("HomeChildFrag", "Adding NestedScrollView scroll listener")
         mViewBinding.scrollView.addScrollChangeListener(object :
             NewNestedScrollView.AddScrollChangeListener {
             override fun onScrollChange(
@@ -181,29 +158,68 @@ class HomeChildFrag : BaseFragment() {
                 oldScrollX: Int,
                 oldScrollY: Int
             ) {
+                android.util.Log.d("HomeChildFrag", "NestedScrollView onScrollChange: scrollY=$scrollY, oldScrollY=$oldScrollY, isLoadingMore=$isLoadingMore")
                 val activity = requireActivity() as MainActivity
-                if (scrollY > oldScrollY) {
-                    activity.hideBottomBar()
-                } else if (scrollY < oldScrollY) {
-                    activity.showBottomBar()
+                
+                // Detect suspicious scroll changes that might be load-more rebound
+                // The rebound typically shows scrollY < oldScrollY with a large difference
+                val scrollDifference = oldScrollY - scrollY
+                val isSuspiciousRebound = scrollDifference > 100 && scrollY < oldScrollY
+                
+                // Only handle scroll direction changes if we're not loading more and not a suspicious rebound
+                if (!isLoadingMore && !isSuspiciousRebound) {
+                    if (scrollY > oldScrollY) {
+                        android.util.Log.d("HomeChildFrag", "NestedScrollView scrolling down - hiding bottom bar")
+                        activity.hideBottomBar()
+                    } else if (scrollY < oldScrollY) {
+                        android.util.Log.d("HomeChildFrag", "NestedScrollView scrolling up - showing bottom bar")
+                        activity.showBottomBar()
+                    }
+                } else {
+                    if (isSuspiciousRebound) {
+                        android.util.Log.d("HomeChildFrag", "NestedScrollView suspicious rebound detected (diff=$scrollDifference) - ignoring scroll change")
+                    } else {
+                        android.util.Log.d("HomeChildFrag", "NestedScrollView scroll change during load-more - ignoring")
+                    }
                 }
             }
 
             override fun onScrollState(state: NewNestedScrollView.ScrollState?) {
+                android.util.Log.d("HomeChildFrag", "NestedScrollView onScrollState: $state")
                 val activity = requireActivity() as MainActivity
                 when (state) {
-                    NewNestedScrollView.ScrollState.IDLE -> activity.scheduleBottomBarAutoShow()
-                    NewNestedScrollView.ScrollState.DRAG, NewNestedScrollView.ScrollState.SCROLLING -> activity.cancelBottomBarAutoShow()
+                    NewNestedScrollView.ScrollState.IDLE -> {
+                        android.util.Log.d("HomeChildFrag", "NestedScrollView IDLE - scheduling auto-show")
+                        activity.scheduleBottomBarAutoShow()
+                    }
+                    NewNestedScrollView.ScrollState.DRAG, NewNestedScrollView.ScrollState.SCROLLING -> {
+                        android.util.Log.d("HomeChildFrag", "NestedScrollView DRAG/SCROLLING - canceling auto-show")
+                        activity.cancelBottomBarAutoShow()
+                    }
                     else -> {}
                 }
             }
-
         })
         mViewBinding.smartRefresh.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                refresh = true
-                pageNo = 1
-                mHomeModel.getHomeDataList(mCurrentType, pageNo, pageSize)
+                // Only proceed if this is a pull-to-refresh, not a button-triggered refresh
+                if (!isButtonRefresh) {
+                    // Check debounce timing for pull-to-refresh as well
+                    val currentTime = System.currentTimeMillis()
+                    val timeSinceLastRefresh = currentTime - lastRefreshTime
+                    if (timeSinceLastRefresh < minimumTimeBetweenRefreshes) {
+                        android.util.Log.d("HomeChildFrag", "Pull-to-refresh blocked - too soon since last refresh (${timeSinceLastRefresh}ms < ${minimumTimeBetweenRefreshes}ms)")
+                        refreshLayout.finishRefresh()
+                        return
+                    }
+                    
+                    // Update last refresh time and proceed
+                    lastRefreshTime = currentTime
+                    refreshStartTime = System.currentTimeMillis()
+                    refresh = true
+                    pageNo = 1
+                    mHomeModel.getHomeDataList(mCurrentType, pageNo, pageSize)
+                }
             }
 
             override fun onLoadMore(refreshLayout: RefreshLayout) {
@@ -211,6 +227,8 @@ class HomeChildFrag : BaseFragment() {
                     refreshLayout.finishLoadMore(true)
                     return
                 }
+                android.util.Log.d("HomeChildFrag", "Starting load-more - setting isLoadingMore=true")
+                isLoadingMore = true
                 refresh = false
                 pageNo++
                 mHomeModel.getHomeDataList(mCurrentType, pageNo, pageSize)
@@ -222,6 +240,16 @@ class HomeChildFrag : BaseFragment() {
     private var refresh = true
     private var isBannerLoad = false
     private var isLastPage = false
+    private var isLoadingMore = false
+    
+    // Animation timing
+    private var refreshStartTime: Long = 0
+    private val minimumRefreshDuration = 800L // 800ms minimum duration
+    private var isButtonRefresh = false // Flag to prevent double API calls
+    
+    // Debounce timing to prevent rapid successive refreshes
+    private var lastRefreshTime: Long = 0
+    private val minimumTimeBetweenRefreshes = 1500L // 1.5 seconds minimum between refreshes
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initModel() {
@@ -232,9 +260,11 @@ class HomeChildFrag : BaseFragment() {
                     isBannerLoad = false
                     mNewsList.clear()
                     mBannerList.clear()
-                    mViewBinding.smartRefresh.finishRefresh(true)
+                    finishRefreshWithMinimumDuration(true)
                 } else {
                     mViewBinding.smartRefresh.finishLoadMore(true)
+                    android.util.Log.d("HomeChildFrag", "Load-more completed - setting isLoadingMore=false")
+                    isLoadingMore = false
                 }
                 isLastPage = it.data.articles.isEmpty()
                 mNewsList.addAll(it.data.articles)
@@ -252,9 +282,11 @@ class HomeChildFrag : BaseFragment() {
 
             } else {
                 if (refresh) {
-                    mViewBinding.smartRefresh.finishRefresh(false)
+                    finishRefreshWithMinimumDuration(false)
                 } else {
                     mViewBinding.smartRefresh.finishLoadMore(false)
+                    android.util.Log.d("HomeChildFrag", "Load-more failed - setting isLoadingMore=false")
+                    isLoadingMore = false
                 }
                 ToastUtils.showShortToast(mContext!!, it.msg)
             }
@@ -271,10 +303,89 @@ class HomeChildFrag : BaseFragment() {
     }
 
     private fun shouldShowBanner(): Boolean {
-        // Only show banner on Today; hide on Hong Kong and China
-        return mCurrentType == getString(R.string.today)
+        // Update mCurrentType to current localized string if it matches the "today" type
+        // This handles language changes where the stored type might be in a different language
+        val currentTodayString = getString(R.string.today)
+        if (mCurrentType != currentTodayString) {
+            // Check if this fragment was originally the "today" tab by comparing with stored type
+            // This is a fallback for when language changes but the stored type is in old language
+            val wasTodayTab = mCurrentType == getString(R.string.today) || 
+                             mCurrentType == "Today" || 
+                             mCurrentType == "今日" || 
+                             mCurrentType == "今天"
+            if (wasTodayTab) {
+                mCurrentType = currentTodayString
+            }
+        }
+        return mCurrentType == currentTodayString
     }
 
+    /**
+     * Refresh the fragment data
+     */
+    fun refreshData() {
+        android.util.Log.d("HomeChildFrag", "Refreshing HomeChildFrag data for type: $mCurrentType")
+        
+        // Check if fragment is properly attached before accessing ViewModels
+        if (!isAdded || isDetached || activity == null) {
+            android.util.Log.w("HomeChildFrag", "Fragment not properly attached, skipping refresh")
+            return
+        }
+        
+        // Update mCurrentType from arguments in case it was updated due to language change
+        val newType = arguments?.getString("type")
+        if (newType != null && newType != mCurrentType) {
+            mCurrentType = newType
+            android.util.Log.d("HomeChildFrag", "Updated mCurrentType to: $mCurrentType")
+        }
+        
+        // Check debounce timing to prevent rapid successive refreshes
+        val currentTime = System.currentTimeMillis()
+        val timeSinceLastRefresh = currentTime - lastRefreshTime
+        if (timeSinceLastRefresh < minimumTimeBetweenRefreshes) {
+            android.util.Log.d("HomeChildFrag", "Refresh blocked - too soon since last refresh (${timeSinceLastRefresh}ms < ${minimumTimeBetweenRefreshes}ms)")
+            return
+        }
+        
+        // Update last refresh time and proceed
+        lastRefreshTime = currentTime
+        
+        // Start the refresh animation and set button refresh flag
+        refreshStartTime = System.currentTimeMillis()
+        isButtonRefresh = true
+        mViewBinding.smartRefresh.autoRefresh()
+        
+        // Scroll to top before refreshing (instant for better performance)
+        mViewBinding.scrollView.post {
+            mViewBinding.scrollView.scrollTo(0, 0)
+        }
+        
+        refresh = true
+        pageNo = 1
+        mHomeModel.getHomeDataList(mCurrentType, pageNo, pageSize)
+    }
+    
+    /**
+     * Finish refresh animation with minimum duration to prevent abrupt ending
+     */
+    private fun finishRefreshWithMinimumDuration(success: Boolean) {
+        val elapsed = System.currentTimeMillis() - refreshStartTime
+        val remainingTime = minimumRefreshDuration - elapsed
+        
+        if (remainingTime > 0) {
+            // Delay the finish to meet minimum duration
+            Handler(Looper.getMainLooper()).postDelayed({
+                mViewBinding.smartRefresh.finishRefresh(success)
+                // Reset button refresh flag when animation completes
+                isButtonRefresh = false
+            }, remainingTime)
+        } else {
+            // Already exceeded minimum duration, finish immediately
+            mViewBinding.smartRefresh.finishRefresh(success)
+            // Reset button refresh flag when animation completes
+            isButtonRefresh = false
+        }
+    }
 
     inner class NetViewHolder(itemView: View) :
         BaseViewHolder<HomeDataListEntry.DataDTO.HeadlinesDTO>(itemView) {
@@ -291,6 +402,24 @@ class HomeChildFrag : BaseFragment() {
             mTitleTv.text = data.title
             mTransTv.text = data.description
         }
+    }
+
+    /**
+     * Share article functionality
+     */
+    private fun shareArticle(article: HomeDataListEntry.DataDTO.ArticlesDTO) {
+        val shareText = buildString {
+            append(article.title)
+            if (!article.articleURL.isNullOrEmpty()) {
+                append("\n\n")
+                append(article.articleURL)
+            }
+        }
+        
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.app_name)))
     }
 
     /**

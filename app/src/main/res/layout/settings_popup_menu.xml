@@ -80,6 +80,61 @@
         android:layout_marginVertical="16dp"
         android:background="@color/divider_color" />
 
+    <!-- App Icon Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_icon"
+        android:textColor="@color/colorTextDeep"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/app_icon_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/default_icon_rb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="@string/app_icon_default"
+            android:textSize="13sp"
+            app:shape_solidCheckedColor="@color/main_color"
+            app:shape_solidColor="@color/light_gray"
+            app:shape_textCheckedColor="@color/colorOnPrimary"
+            app:shape_textColor="@color/colorOnSurfaceVariant" />
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/alternate_icon_rb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="@string/app_icon_alternate"
+            android:textSize="13sp"
+            app:shape_solidCheckedColor="@color/main_color"
+            app:shape_solidColor="@color/light_gray"
+            app:shape_textCheckedColor="@color/colorOnPrimary"
+            app:shape_textColor="@color/colorOnSurfaceVariant" />
+    </RadioGroup>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="16dp"
+        android:background="@color/divider_color" />
+
     <!-- Language Section -->
     <TextView
         android:layout_width="wrap_content"
@@ -102,10 +157,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:checked="true"
             android:gravity="center"
             android:paddingVertical="8dp"
-            android:text="English"
+            android:text="@string/english"
             android:textSize="13sp"
             app:shape_solidCheckedColor="@color/main_color"
             app:shape_solidColor="@color/colorSurfaceVariant"
@@ -121,7 +175,7 @@
             android:button="@null"
             android:gravity="center"
             android:paddingVertical="8dp"
-            android:text="繁體"
+            android:text="@string/traditional_chinese"
             android:textSize="13sp"
             app:shape_solidCheckedColor="@color/main_color"
             app:shape_solidColor="@color/colorSurfaceVariant"
@@ -137,7 +191,7 @@
             android:button="@null"
             android:gravity="center"
             android:paddingVertical="8dp"
-            android:text="简体"
+            android:text="@string/simplified_chinese"
             android:textSize="13sp"
             app:shape_solidCheckedColor="@color/main_color"
             app:shape_solidColor="@color/colorSurfaceVariant"

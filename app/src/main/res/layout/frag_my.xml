@@ -4,38 +4,54 @@
     android:background="?attr/colorSurface"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_layout"
+    
+    <!-- MaterialToolbar for consistent top bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:background="@color/white"
+        android:background="?attr/colorSurface"
+        android:elevation="0dp"
+        app:title=""
+        app:titleTextColor="@color/colorTextDeep"
+        app:titleTextAppearance="@style/ProfileHeadingStyle"
+        app:menu="@menu/menu_profile_toolbar"
+        style="@style/Widget.Material3.Toolbar"
+        app:contentInsetStart="6dp"
+        app:contentInsetStartWithNavigation="6dp"
+        app:contentInsetEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/top_header"
+        
+        <!-- Custom layout for logo and title -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical">
+            
+            <!-- Brand Logo -->
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                android:contentDescription="@null"
+                android:id="@+id/brand_logo"
+                android:layout_width="200dp"
+                android:layout_height="48dp"
                 android:src="@drawable/pg_home_top_news"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitStart" />
+            
+        </LinearLayout>
+        
+    </com.google.android.material.appbar.MaterialToolbar>
+        
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/top_layout"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/profile_scroll"
+            android:id="@+id/profileScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
@@ -47,86 +63,76 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/back_color"
+                android:background="@color/profile_page_bg"
                 android:paddingTop="0dp"
                 android:paddingBottom="12dp">
             <com.google.android.material.card.MaterialCardView
-				android:id="@+id/profile_card"
-				android:layout_width="match_parent"
+                android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="12dp"
 				android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/profile_card_bg"
                 app:cardForegroundColor="@android:color/transparent"
                 app:strokeColor="@android:color/transparent"
-                android:backgroundTint="@color/white">
+                android:backgroundTint="@color/profile_card_bg">
 
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
+					android:gravity="center_horizontal"
 					android:padding="20dp">
 					<androidx.constraintlayout.utils.widget.ImageFilterView
+						android:id="@+id/avatarIv"
 						android:layout_width="87dp"
 						android:layout_height="87dp"
 						android:layout_gravity="center"
 						app:round="100dp"
-						android:id="@+id/avatar_iv"
-						android:src="@drawable/pg_temp_avatar"
+                        android:src="@drawable/pg_temp_avatar"
 						/>
 					<TextView
-						android:id="@+id/user_name_tv"
-						android:layout_width="wrap_content"
+                        android:id="@+id/userNameTv"
+                        android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center"
 						android:layout_marginTop="12dp"
 						android:textSize="16sp"
 						android:textColor="@color/colorTextDeep" />
-
-					<TextView
-						android:id="@+id/user_email_tv"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center"
-						android:layout_marginTop="4dp"
-						android:textSize="12sp"
-						android:textColor="@color/colorTextHint" />
 				</LinearLayout>
 			</com.google.android.material.card.MaterialCardView>
             <com.google.android.material.card.MaterialCardView
-				android:id="@+id/settings_card"
-				android:layout_width="match_parent"
+                android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="12dp"
 				android:layout_marginTop="16dp"
 				android:layout_marginBottom="20dp"
                 app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/profile_card_bg"
                 app:cardForegroundColor="@android:color/transparent"
                 app:strokeColor="@android:color/transparent"
-                android:backgroundTint="@color/white">
-				<LinearLayout
+                android:backgroundTint="@color/profile_card_bg">
+				                <LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:paddingHorizontal="16dp"
 					android:paddingVertical="8dp">
                     <LinearLayout
+						android:id="@+id/hisLayout"
 						android:layout_width="match_parent"
 						android:layout_height="58dp"
 						android:orientation="horizontal"
                         android:gravity="center_vertical"
-						android:id="@+id/his_layout"
                         android:background="@drawable/selector_row_no_divider"
 						>
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/pg_my_his"
+                    android:src="@drawable/ic_history_24"
                     android:layout_gravity="center"
-                    />
+                    app:tint="@color/main_color" />
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -144,7 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/history_subtitle"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textColor="@color/colorTextSmall"/>
                 </LinearLayout>
                 <ImageView
@@ -152,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/icon_arrow_regular_right"
+                    android:src="@drawable/ic_arrow_forward_ios"
                     />
 					</LinearLayout>
 					<View
@@ -162,20 +168,19 @@
 						android:background="@color/line_color" />
                     
                     <LinearLayout
+						android:id="@+id/collectLayout"
 						android:layout_width="match_parent"
 						android:layout_height="58dp"
 						android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:background="@drawable/selector_row_no_divider"
-						android:id="@+id/collect_layout"
-						>
+                        android:background="@drawable/selector_row_no_divider">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/pg_my_collect"
+                    android:src="@drawable/ic_bookmark_24"
                     android:layout_gravity="center"
-                    />
+                    app:tint="@color/main_color" />
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -201,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/icon_arrow_regular_right"
+                    android:src="@drawable/ic_arrow_forward_ios"
                     />
 					</LinearLayout>
 					<View
@@ -212,8 +217,8 @@
                     
 
                     <LinearLayout
-						android:id="@+id/language_layout"
-						android:layout_width="match_parent"
+                        android:id="@+id/languageLayout"
+                        android:layout_width="match_parent"
 						android:layout_height="58dp"
 						android:orientation="horizontal"
                         android:gravity="center_vertical"
@@ -223,7 +228,8 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/pg_my_version" />
+                    android:src="@drawable/ic_public_24"
+                    app:tint="@color/main_color" />
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -249,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/icon_arrow_regular_right" />
+                    android:src="@drawable/ic_arrow_forward_ios" />
 					</LinearLayout>
 					<View
 						android:layout_width="match_parent"
@@ -257,20 +263,714 @@
                         android:layout_marginStart="44dp"
 						android:background="@color/line_color" />
                     
-
+                    <!-- Media Region Section -->
                     <LinearLayout
-						android:id="@+id/feedback_layout"
-						android:layout_width="match_parent"
+                        android:id="@+id/mediaRegionLayout"
+                        android:layout_width="match_parent"
 						android:layout_height="58dp"
 						android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:background="@drawable/selector_row_no_divider">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_building_2_24"
+                            app:tint="@color/main_color" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/media_region"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorTextDeep"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/media_region_subtitle"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorTextSmall"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/mediaRegionChevron"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_arrow_forward_ios" />
+                    </LinearLayout>
+                    
+                    <!-- Media Region Dropdown -->
+                    <LinearLayout
+                        android:id="@+id/mediaRegionDropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp">>
+                        <!-- First Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+                            
+                            <!-- Hong Kong SAR -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/hongKongCard"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="@color/media_region_card_unselected"
+                                app:strokeWidth="0dp"
+                                android:clickable="true"
+                                android:focusable="true">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
+                                    <ImageView
+                                        android:layout_width="19dp"
+                                        android:layout_height="13dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/flag_hong_kong"
+                                        android:scaleType="centerCrop" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/hong_kong_sar"
+                                        android:textSize="11sp"
+                                        android:textColor="@color/colorTextDeep"
+                                        android:lineSpacingMultiplier="0.9" />
+                                    <ImageView
+                                        android:id="@+id/hongKongCheck"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_check_circle"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                            
+                            <!-- Mainland China -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/mainlandChinaCard"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="@color/media_region_card_unselected"
+                                app:strokeWidth="0dp"
+                                android:clickable="true"
+                                android:focusable="true">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
+                                    <ImageView
+                                        android:layout_width="19dp"
+                                        android:layout_height="13dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/flag_china"
+                                        android:scaleType="centerCrop" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/mainland_china"
+                                        android:textSize="11sp"
+                                        android:textColor="@color/colorTextDeep"
+                                        android:lineSpacingMultiplier="0.9" />
+                                    <ImageView
+                                        android:id="@+id/mainlandChinaCheck"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_check_circle"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+                        
+                        <!-- Second Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+                            
+                            <!-- United Kingdom -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/unitedKingdomCard"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="@color/media_region_card_unselected"
+                                app:strokeWidth="0dp"
+                                android:clickable="true"
+                                android:focusable="true">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
+                                    <ImageView
+                                        android:layout_width="19dp"
+                                        android:layout_height="13dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/flag_uk"
+                                        android:scaleType="centerCrop" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/united_kingdom"
+                                        android:textSize="11sp"
+                                        android:textColor="@color/colorTextDeep"
+                                        android:lineSpacingMultiplier="0.9" />
+                                    <ImageView
+                                        android:id="@+id/unitedKingdomCheck"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_check_circle"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                            
+                            <!-- United States -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/unitedStatesCard"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="@color/media_region_card_unselected"
+                                app:strokeWidth="0dp"
+                                android:clickable="true"
+                                android:focusable="true">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
+                                    <ImageView
+                                        android:layout_width="19dp"
+                                        android:layout_height="13dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/flag_usa"
+                                        android:scaleType="centerCrop" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/united_states"
+                                        android:textSize="11sp"
+                                        android:textColor="@color/colorTextDeep"
+                                        android:lineSpacingMultiplier="0.9" />
+                                    <ImageView
+                                        android:id="@+id/unitedStatesCheck"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_check_circle"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+                        
+                        <!-- Third Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            
+                            <!-- Asia other -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/asiaOtherCard"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="@color/media_region_card_unselected"
+                                app:strokeWidth="0dp"
+                                android:clickable="true"
+                                android:focusable="true">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
+                                    <ImageView
+                                        android:layout_width="19dp"
+                                        android:layout_height="13dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/flag_asia"
+                                        android:scaleType="centerCrop" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/asia_other"
+                                        android:textSize="11sp"
+                                        android:textColor="@color/colorTextDeep"
+                                        android:lineSpacingMultiplier="0.9" />
+                                    <ImageView
+                                        android:id="@+id/asiaOtherCheck"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_check_circle"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                            
+                            <!-- Europe other -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/europeOtherCard"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="@color/media_region_card_unselected"
+                                app:strokeWidth="0dp"
+                                android:clickable="true"
+                                android:focusable="true">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:padding="12dp">
+                                    <ImageView
+                                        android:layout_width="19dp"
+                                        android:layout_height="13dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/flag_europe"
+                                        android:scaleType="centerCrop" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/europe_other"
+                                        android:textSize="11sp"
+                                        android:textColor="@color/colorTextDeep"
+                                        android:lineSpacingMultiplier="0.9" />
+                                    <ImageView
+                                        android:id="@+id/europeOtherCheck"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginStart="6dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_check_circle"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+                    </LinearLayout>
+                    
+                    <View
+						android:layout_width="match_parent"
+						android:layout_height="1dp"
+                        android:layout_marginStart="44dp"
+						android:background="@color/line_color" />
+                    
+                    <!-- Appearance Section -->
+                    <LinearLayout
+                        android:id="@+id/appearanceLayout"
+                        android:layout_width="match_parent"
+						android:layout_height="58dp"
+						android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/selector_row_no_divider">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_paintbrush_24"
+                            app:tint="@color/main_color" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/appearance"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorTextDeep"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/appearance_subtitle"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorTextSmall"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/appearanceChevron"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_arrow_forward_ios" />
+                    </LinearLayout>
+                    
+                    <!-- Appearance Dropdown -->
+                    <LinearLayout
+                        android:id="@+id/appearanceDropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:paddingBottom="20dp">
+                        
+                        <!-- Horizontal Layout for Appearance Options -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_horizontal"
+                            android:paddingHorizontal="16dp">
+                            
+                            <!-- System Theme Option -->
+                            <LinearLayout
+                                android:id="@+id/systemModeLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:layout_marginEnd="8dp"
+                            android:background="@drawable/appearance_option_background"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:strokeWidth="0dp">
+                                
+                                <!-- Icon Container -->
+                                <LinearLayout
+                                    android:id="@+id/systemIconContainer"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/appearance_icon_background"
+                                    android:gravity="center">
+                            <ImageView
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                android:contentDescription="@null"
+                                        android:src="@drawable/ic_phone_24"
+                                        android:tint="@color/colorTextDeep" />
+                                </LinearLayout>
+                                
+                                <!-- Label -->
+                            <TextView
+                                    android:id="@+id/systemThemeText"
+                                    android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/theme_system"
+                                    android:textSize="11sp"
+                                android:textColor="@color/colorTextDeep"
+                                    android:textStyle="normal"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center" />
+                        </LinearLayout>
+                            
+                            <!-- Light Theme Option -->
+                        <LinearLayout
+                            android:id="@+id/lightModeLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:layout_marginHorizontal="8dp"
+                            android:background="@drawable/appearance_option_background"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:strokeWidth="0dp">
+                                
+                                <!-- Icon Container -->
+                                <LinearLayout
+                                    android:id="@+id/lightIconContainer"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/appearance_icon_background"
+                                    android:gravity="center">
+                            <ImageView
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                android:contentDescription="@null"
+                                        android:src="@drawable/ic_light_theme_24"
+                                        android:tint="@color/yellow" />
+                                </LinearLayout>
+                                
+                                <!-- Label -->
+                            <TextView
+                                    android:id="@+id/lightThemeText"
+                                    android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/theme_light"
+                                    android:textSize="11sp"
+                                android:textColor="@color/colorTextDeep"
+                                    android:textStyle="normal"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center" />
+                        </LinearLayout>
+                            
+                            <!-- Dark Theme Option -->
+                        <LinearLayout
+                            android:id="@+id/darkModeLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:layout_marginStart="8dp"
+                            android:background="@drawable/appearance_option_background"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:strokeWidth="0dp">
+                                
+                                <!-- Icon Container -->
+                                <LinearLayout
+                                    android:id="@+id/darkIconContainer"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:background="@drawable/appearance_icon_background"
+                                    android:gravity="center">
+                            <ImageView
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                android:contentDescription="@null"
+                                        android:src="@drawable/ic_dark_theme_24"
+                                        android:tint="@color/blue" />
+                                </LinearLayout>
+                                
+                                <!-- Label -->
+                            <TextView
+                                    android:id="@+id/darkThemeText"
+                                    android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/theme_dark"
+                                    android:textSize="11sp"
+                                android:textColor="@color/colorTextDeep"
+                                    android:textStyle="normal"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    
+                    <View
+						android:layout_width="match_parent"
+						android:layout_height="1dp"
+                        android:layout_marginStart="44dp"
+						android:background="@color/line_color" />
+                    
+                    <!-- App Icon Section -->
+                    <LinearLayout
+                        android:id="@+id/appIconLayout"
+                        android:layout_width="match_parent"
+						android:layout_height="58dp"
+						android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/selector_row_no_divider">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                        android:src="@drawable/ic_app_24"
+                        app:tint="@color/main_color" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_icon"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorTextDeep"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/app_icon_subtitle"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorTextSmall"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/appIconChevron"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_arrow_forward_ios" />
+                    </LinearLayout>
+                    
+                    <!-- App Icon Dropdown -->
+                    <LinearLayout
+                        android:id="@+id/appIconDropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:paddingBottom="20dp">
+                        
+                        <!-- Horizontal Layout for App Icon Options -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_horizontal"
+                            android:paddingHorizontal="16dp">
+                            
+                            <!-- Default Icon Option -->
+                            <LinearLayout
+                                android:id="@+id/defaultIconLayout"
+                                android:layout_width="85dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:layout_marginHorizontal="8dp"
+                                android:background="@drawable/app_icon_option_background"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:strokeWidth="0dp">
+                                
+                                <!-- Icon Container -->
+                                <com.google.android.material.card.MaterialCardView
+                                    android:id="@+id/defaultIconContainer"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    app:cardBackgroundColor="@android:color/transparent"
+                                    app:strokeWidth="0dp"
+                                    android:background="@drawable/rounded_app_icon_default">
+                                </com.google.android.material.card.MaterialCardView>
+                                
+                                <!-- Label -->
+                                <TextView
+                                    android:id="@+id/defaultIconText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/app_icon_default"
+                                    android:textSize="11sp"
+                                    android:textColor="@color/colorTextDeep"
+                                    android:textStyle="normal"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center" />
+                            </LinearLayout>
+                            
+                            <!-- Alternate Icon Option -->
+                            <LinearLayout
+                                android:id="@+id/alternateIconLayout"
+                                android:layout_width="85dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:layout_marginHorizontal="8dp"
+                                android:background="@drawable/app_icon_option_background"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:strokeWidth="0dp">
+                                
+                                <!-- Icon Container -->
+                                <com.google.android.material.card.MaterialCardView
+                                    android:id="@+id/alternateIconContainer"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    app:cardBackgroundColor="@android:color/transparent"
+                                    app:strokeWidth="0dp"
+                                    android:background="@drawable/rounded_app_icon_alternate">
+                                </com.google.android.material.card.MaterialCardView>
+                                
+                                <!-- Label -->
+                                <TextView
+                                    android:id="@+id/alternateIconText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/app_icon_alternate"
+                                    android:textSize="11sp"
+                                    android:textColor="@color/colorTextDeep"
+                                    android:textStyle="normal"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    
+                    <View
+						android:layout_width="match_parent"
+						android:layout_height="1dp"
+                        android:layout_marginStart="44dp"
+						android:background="@color/line_color" />
+                    
+
+                                        <LinearLayout
+                        android:id="@+id/feedbackLayout"
+                        android:layout_width="match_parent"
+						android:layout_height="58dp"
+						android:orientation="horizontal"
+                        android:gravity="center_vertical"
+						android:background="@drawable/selector_row_no_divider">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/pg_detail_ask"
+                    android:src="@drawable/ic_feedback_24"
                     app:tint="@color/main_color" />
                 <LinearLayout
                     android:layout_width="0dp"
@@ -297,7 +997,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/icon_arrow_regular_right" />
+                    android:src="@drawable/ic_arrow_forward_ios" />
 					</LinearLayout>
 					<View
 						android:layout_width="match_parent"
@@ -307,20 +1007,20 @@
                     
 
                     <LinearLayout
+						android:id="@+id/aboutLayout"
 						android:layout_width="match_parent"
 						android:layout_height="58dp"
 						android:orientation="horizontal"
                         android:gravity="center_vertical"
-						android:id="@+id/about_layout"
                         android:background="@drawable/selector_row_no_divider"
 						>
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/pg_my_about_us"
+                    android:src="@drawable/ic_info_24"
                     android:layout_gravity="center"
-                    />
+                    app:tint="@color/main_color" />
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -346,7 +1046,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/icon_arrow_regular_right"
+                    android:src="@drawable/ic_arrow_forward_ios"
                     />
 					</LinearLayout>
 					<View
@@ -355,8 +1055,8 @@
                         android:layout_marginStart="44dp"
 						android:background="@color/line_color" />
                     <LinearLayout
-						android:id="@+id/logout_layout"
-						android:layout_width="match_parent"
+                        android:id="@+id/logoutLayout"
+                        android:layout_width="match_parent"
 						android:layout_height="58dp"
 						android:orientation="horizontal"
                         android:gravity="center_vertical"
@@ -366,7 +1066,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/pg_more"
+                    android:src="@drawable/ic_logout_24"
                     app:tint="@color/colorRed" />
                 <LinearLayout
                     android:layout_width="0dp"
@@ -393,10 +1093,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
-                    android:src="@drawable/icon_arrow_regular_right" />
+                    android:src="@drawable/ic_arrow_forward_ios" />
 					</LinearLayout>
 				</LinearLayout>
 			</com.google.android.material.card.MaterialCardView>
+            
+            <!-- Bottom padding to account for floating bar -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:background="@android:color/transparent"/>
             
 			</LinearLayout>
 		</androidx.core.widget.NestedScrollView>

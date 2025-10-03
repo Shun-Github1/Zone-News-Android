@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_sheet_background"
+    android:layout_marginTop="80dp">
+
+    <!-- Navigation Header - matches iOS NavigationStack -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:elevation="1dp">
+
+        <!-- Combined back button container with ripple effect -->
+        <LinearLayout
+            android:id="@+id/backButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="4dp">
+
+            <!-- Left back icon - matching reading history tab -->
+            <ImageView
+                android:id="@+id/exitArrowIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back_ios"
+                android:tint="@color/brand_primary"
+                android:contentDescription="@string/dialog_button_cancel"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <!-- Cancel button - positioned directly next to the icon -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelButton"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_button_cancel"
+                android:textColor="@color/main_color"
+                android:textSize="14sp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </LinearLayout>
+
+        <!-- Navigation title - inline mode like iOS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/feedback"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorTextDeep" />
+
+    </RelativeLayout>
+
+    <!-- Scrollable content area for keyboard handling -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:minHeight="400dp">
+
+            <!-- Submit title - center aligned and matches Select Topics text size -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_feedback"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextDeep"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Text input area with flexible height for keyboard -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
+                android:minHeight="200dp">
+
+                <!-- Text editor with flexible height -->
+                <EditText
+                    android:id="@+id/feedbackEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:background="@drawable/ios_text_editor_background"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:scrollbars="vertical"
+                    android:hint="@string/ios_feedback_placeholder"
+                    android:textColor="@color/colorTextDeep"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="4dp" />
+
+            </FrameLayout>
+
+            <!-- Submit button - always visible at bottom -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitButton"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:text="@string/submit"
+                android:textColor="@color/colorTextHint"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                android:paddingHorizontal="32dp"
+                app:backgroundTint="@color/main_color"
+                app:cornerRadius="12dp"
+                android:enabled="false" />
+
+            <!-- Bottom spacer for keyboard clearance -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

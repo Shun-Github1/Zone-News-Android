@@ -1,10 +1,10 @@
 [versions]
-agp = "8.12.0"
+agp = "8.12.1"
 androidxLifecycleViewmodelKtx = "2.6.2"
 androidxLifecycleRuntimeKtxVersion = "2.6.2"
 googleHiltAndroid = "2.56.2"
 googleHiltAndroidCompiler = "2.56.2"
-kotlin = "2.0.0"
+kotlin = "2.0.21"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -78,5 +78,4 @@ com-scwang-smartrefresh-smartrefreshheader2 = { module = "com.scwang.smartrefres
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

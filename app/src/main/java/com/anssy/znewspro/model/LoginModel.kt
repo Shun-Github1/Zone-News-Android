@@ -1,5 +1,6 @@
 package com.anssy.znewspro.model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginModel @Inject constructor(private val loginRepository: LoginRepository):ViewModel() {
 
+    private val TAG = "LoginModel"
+
     private var _loginEntry: MutableLiveData<LoginEntry> = MutableLiveData<LoginEntry>()
     var loginEntry: LiveData<LoginEntry> = _loginEntry
 
@@ -31,21 +34,26 @@ class LoginModel @Inject constructor(private val loginRepository: LoginRepositor
     var outLoginEntry:LiveData<CommonResponseEntry> = _outLoginEntry
 
     fun loginApp(name: String,pass:String){
+        Log.d(TAG, "Attempting login for user: $name")
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 loginRepository.loginApp(name,pass)// 一个耗时的异步操作
             }
             when(result){
                 is NetworkResponse.NetError->{
+                    Log.e(TAG, "Login network error - HTTP Code: ${result.httpCode}, Error: ${result.errorMsg}")
+                    Log.e(TAG, "Full error details: $result")
                     val loginEntry = LoginEntry()
-                    loginEntry.code = 1000
-                    loginEntry.msg = getString(R.string.server_error_message)
+                    loginEntry.code = result.httpCode ?: 1000
+                    loginEntry.msg = result.errorMsg ?: getString(R.string.server_error_message)
                     _loginEntry.value = loginEntry
                 }
                 is NetworkResponse.Success->{
+                    Log.d(TAG, "Login successful for user: $name")
                     _loginEntry.value = result.body
                 }
                 is NetworkResponse.UnknownError->{
+                    Log.e(TAG, "Login unknown error: ${result.error?.message}")
                     val loginEntry = LoginEntry()
                     loginEntry.code = 1000
                     loginEntry.msg = "未知错误"
@@ -63,8 +71,8 @@ class LoginModel @Inject constructor(private val loginRepository: LoginRepositor
             when(result){
                 is NetworkResponse.NetError->{
                     val loginEntry = CommonResponseEntry()
-                    loginEntry.code = 1000
-                    loginEntry.msg = getString(R.string.server_error_message)
+                    loginEntry.code = result.httpCode ?: 1000
+                    loginEntry.msg = result.errorMsg ?: getString(R.string.server_error_message)
                     _outLoginEntry.value = loginEntry
                 }
                 is NetworkResponse.Success->{
@@ -88,8 +96,8 @@ class LoginModel @Inject constructor(private val loginRepository: LoginRepositor
             when(result){
                 is NetworkResponse.NetError->{
                     val loginEntry = CommonResponseEntry()
-                    loginEntry.code = 1000
-                    loginEntry.msg = getString(R.string.server_error_message)
+                    loginEntry.code = result.httpCode ?: 1000
+                    loginEntry.msg = result.errorMsg ?: getString(R.string.server_error_message)
                     _outLoginEntry.value = loginEntry
                 }
                 is NetworkResponse.Success->{

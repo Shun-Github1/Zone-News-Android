@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.anssy.znewspro.entry.ArticleDetailEntry
 import com.anssy.znewspro.entry.CommonResponseEntry
 import com.anssy.znewspro.repository.NewsDetailRepository
+import com.anssy.znewspro.utils.LanguageManager
 import com.anssy.znewspro.utils.network.exception.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,85 +24,84 @@ import com.anssy.znewspro.R
  * @CreateTime 2025年07月04日 17:26:42
  */
 @HiltViewModel
-class NewsDetailModel @Inject constructor(private val newsDetailRepository: NewsDetailRepository) :
-    ViewModel() {
-    private var _newsDetailEntry: MutableLiveData<ArticleDetailEntry> =
-        MutableLiveData<ArticleDetailEntry>()
+class NewsDetailModel @Inject constructor(
+    private val newsDetailRepository: NewsDetailRepository,
+    private val languageManager: LanguageManager
+) : ViewModel() {
+    private var _newsDetailEntry: MutableLiveData<ArticleDetailEntry> = MutableLiveData<ArticleDetailEntry>()
     var newsDetailEntry: LiveData<ArticleDetailEntry> = _newsDetailEntry
 
     private var _feedBackResponseEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
     var feeBackResponseEntry: LiveData<CommonResponseEntry> = _feedBackResponseEntry
 
     private var _addHisEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
-    var  addHisEntry: LiveData<CommonResponseEntry> = _addHisEntry
+    var addHisEntry: LiveData<CommonResponseEntry> = _addHisEntry
 
     private var _collectEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
-    var  collectEntry:LiveData<CommonResponseEntry> = _collectEntry
+    var collectEntry: LiveData<CommonResponseEntry> = _collectEntry
 
     private var _deleteCollectEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
-    var  deleteCollectEntry: LiveData<CommonResponseEntry> = _deleteCollectEntry
+    var deleteCollectEntry: LiveData<CommonResponseEntry> = _deleteCollectEntry
 
     fun queryNewsDetail(id: String) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                runCatching {  newsDetailRepository.queryNewsDetail(id) }
+                runCatching { newsDetailRepository.queryNewsDetail(id, languageManager.getCurrentLanguageCode()) }
             }
-            if (result.isSuccess){
+            if (result.isSuccess) {
                 _newsDetailEntry.value = result.getOrNull()!!
-            }else{
+            } else {
                 val articleDetailEntry = ArticleDetailEntry()
-                articleDetailEntry.code=1000
+                articleDetailEntry.code = 1000
                 articleDetailEntry.msg = getString(R.string.server_error_message)
                 _newsDetailEntry.value = articleDetailEntry
             }
-
         }
     }
 
     fun addFeedBack(id: String, content: String) {
-            viewModelScope.launch {
-                val result = withContext(Dispatchers.IO) {
-                        newsDetailRepository.addFeedBack(id, content)
-
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                newsDetailRepository.addFeedBack(id, content)
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = getString(R.string.server_error_message)
+                    _feedBackResponseEntry.value = commonResponseEntry
                 }
-                when(result){
-                    is NetworkResponse.NetError->{
-                        val commonResponseEntry = CommonResponseEntry()
-                        commonResponseEntry.code=1000
-                        commonResponseEntry.msg = getString(R.string.server_error_message)
-                        _feedBackResponseEntry.value = commonResponseEntry
-                    }
-                    is NetworkResponse.Success->{
-                        _feedBackResponseEntry.value = result.body
-                    }
-                    is NetworkResponse.UnknownError->{
-                        val commonResponseEntry = CommonResponseEntry()
-                        commonResponseEntry.code=1000
-                        commonResponseEntry.msg = "未知错误"
-                        _feedBackResponseEntry.value = commonResponseEntry
-                    }
+                is NetworkResponse.Success -> {
+                    _feedBackResponseEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = "未知错误"
+                    _feedBackResponseEntry.value = commonResponseEntry
                 }
             }
-
+        }
     }
-    fun addNewsHis(id: String){
+    
+    fun addNewsHis(id: String) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
+            val result = withContext(Dispatchers.IO) {
                 newsDetailRepository.saveHis(id)
             }
-            when(result){
-                is NetworkResponse.NetError->{
+            when (result) {
+                is NetworkResponse.NetError -> {
                     val commonResponseEntry = CommonResponseEntry()
-                    commonResponseEntry.code= 1000
+                    commonResponseEntry.code = 1000
                     commonResponseEntry.msg = result.errorMsg
                     _addHisEntry.value = commonResponseEntry
                 }
-                is NetworkResponse.Success->{
+                is NetworkResponse.Success -> {
                     _addHisEntry.value = result.body
                 }
-                is NetworkResponse.UnknownError->{
+                is NetworkResponse.UnknownError -> {
                     val commonResponseEntry = CommonResponseEntry()
-                    commonResponseEntry.code= 1000
+                    commonResponseEntry.code = 1000
                     commonResponseEntry.msg = "未知错误"
                     _addHisEntry.value = commonResponseEntry
                 }
@@ -112,51 +112,52 @@ class NewsDetailModel @Inject constructor(private val newsDetailRepository: News
     /**
      * 收藏
      */
-    fun  collectHis(id:String){
+    fun collectHis(id: String) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
+            val result = withContext(Dispatchers.IO) {
                 newsDetailRepository.collectHis(id)
             }
-            when(result){
-                is NetworkResponse.NetError->{
+            when (result) {
+                is NetworkResponse.NetError -> {
                     val commonResponseEntry = CommonResponseEntry()
-                    commonResponseEntry.code= 1000
+                    commonResponseEntry.code = 1000
                     commonResponseEntry.msg = getString(R.string.server_error_message)
                     _collectEntry.value = commonResponseEntry
                 }
-                is NetworkResponse.Success->{
+                is NetworkResponse.Success -> {
                     _collectEntry.value = result.body
                 }
-                is NetworkResponse.UnknownError->{
+                is NetworkResponse.UnknownError -> {
                     val commonResponseEntry = CommonResponseEntry()
-                    commonResponseEntry.code= 1000
+                    commonResponseEntry.code = 1000
                     commonResponseEntry.msg = "未知错误"
                     _collectEntry.value = commonResponseEntry
                 }
             }
         }
     }
+    
     /**
      * 取消收藏
      */
-    fun deleteCollect(id: String){
+    fun deleteCollect(id: String) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
+            val result = withContext(Dispatchers.IO) {
                 newsDetailRepository.deleteCollect(id)
             }
-            when(result){
-                is NetworkResponse.NetError->{
+            when (result) {
+                is NetworkResponse.NetError -> {
                     val commonResponseEntry = CommonResponseEntry()
-                    commonResponseEntry.code= 1000
+                    commonResponseEntry.code = 1000
                     commonResponseEntry.msg = getString(R.string.server_error_message)
                     _deleteCollectEntry.value = commonResponseEntry
                 }
-                is NetworkResponse.Success->{
+                is NetworkResponse.Success -> {
                     _deleteCollectEntry.value = result.body
                 }
-                is NetworkResponse.UnknownError->{
+                is NetworkResponse.UnknownError -> {
                     val commonResponseEntry = CommonResponseEntry()
-                    commonResponseEntry.code= 1000
+                    commonResponseEntry.code = 1000
                     commonResponseEntry.msg = "未知错误"
                     _deleteCollectEntry.value = commonResponseEntry
                 }

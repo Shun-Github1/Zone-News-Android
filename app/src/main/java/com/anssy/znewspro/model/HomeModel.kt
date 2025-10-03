@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.anssy.znewspro.R
 import com.anssy.znewspro.entry.HomeDataListEntry
 import com.anssy.znewspro.repository.HomeRepository
+import com.anssy.znewspro.utils.LanguageManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,28 +21,31 @@ import javax.inject.Inject
  * @CreateTime 2025年06月30日 14:01:42
  */
 @HiltViewModel
-class HomeModel @Inject constructor(private val homeRepository: HomeRepository) :ViewModel(){
-    private var _homeDataList:MutableLiveData<HomeDataListEntry> = MutableLiveData<HomeDataListEntry>()
+class HomeModel @Inject constructor(
+    private val homeRepository: HomeRepository,
+    private val languageManager: LanguageManager
+) : ViewModel() {
+    private var _homeDataList: MutableLiveData<HomeDataListEntry> = MutableLiveData<HomeDataListEntry>()
     var homeDataList: LiveData<HomeDataListEntry> = _homeDataList
 
-    fun  getHomeDataList(tag:String,pageNo:Int,pageSize:Int){
+    fun getHomeDataList(tag: String, pageNo: Int, pageSize: Int) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
-                   runCatching {
-                       homeRepository.queryHomeData(tag,pageNo,pageSize)
-                   }
+            val result = withContext(Dispatchers.IO) {
+                runCatching {
+                    homeRepository.queryHomeData(tag, pageNo, pageSize, languageManager.getCurrentLanguageCode())
+                }
             }
-           if(result.isSuccess){
-               if (result.getOrNull()==null){
-                   return@launch
-               }
-               _homeDataList.value = result.getOrNull()!!
-           }else{
-               val homeDataListEntry = HomeDataListEntry()
-               homeDataListEntry.code=500
-               homeDataListEntry.msg = getString(R.string.server_error_message)
-               _homeDataList.value = homeDataListEntry
-           }
+            if (result.isSuccess) {
+                if (result.getOrNull() == null) {
+                    return@launch
+                }
+                _homeDataList.value = result.getOrNull()!!
+            } else {
+                val homeDataListEntry = HomeDataListEntry()
+                homeDataListEntry.code = 500
+                homeDataListEntry.msg = getString(R.string.server_error_message)
+                _homeDataList.value = homeDataListEntry
+            }
         }
     }
 }

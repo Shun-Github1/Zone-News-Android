@@ -14,14 +14,19 @@ import javax.inject.Inject
 
 class TopicRepository @Inject constructor(private val appHttpService: AppHttpService) {
 
-    suspend fun queryMyTopic():GenericResponse<TopicListEntry>{
-        return  appHttpService.queryMyTopics()
+    suspend fun queryMyTopic(language: String? = null): GenericResponse<TopicListEntry> {
+        return appHttpService.queryMyTopics(language)
     }
-    suspend fun queryAllTopic():GenericResponse<TopicListEntry>{
-        return  appHttpService.queryAllTopics()
+    
+    suspend fun queryAllTopic(language: String? = null): GenericResponse<TopicListEntry> {
+        return appHttpService.queryAllTopics(language)
     }
 
-    suspend fun editTopic(type:String,topic:String):GenericResponse<CommonResponseEntry>{
-        return appHttpService.editTopic(type,topic)
+    suspend fun editTopic(type: String, topic: String, language: String? = null): GenericResponse<CommonResponseEntry> {
+        return appHttpService.editTopic(type, topic, language)
+    }
+
+    suspend fun getTrendingTopics(language: String? = null): GenericResponse<TopicListEntry> {
+        return appHttpService.getTrendingTopics(language)
     }
 }

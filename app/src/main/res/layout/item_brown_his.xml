@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:textSize="17sp"
         android:textColor="@color/colorTextDeep"
-        android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
         android:id="@+id/news_title_tv"

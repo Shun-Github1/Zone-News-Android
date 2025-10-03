@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/colorSurface">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -23,26 +23,15 @@
 
             <!-- Brand block -->
             <ImageView
-                android:id="@+id/logo_iv"
-                android:layout_width="84dp"
-                android:layout_height="84dp"
+                android:layout_width="200dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@null"
                 android:src="@mipmap/pg_login_logo" />
 
-            <TextView
-                android:id="@+id/app_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="8dp"
-                android:text="@string/app_name"
-                android:textColor="@color/main_color"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+
 
             <TextView
-                android:id="@+id/tagline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -62,7 +51,7 @@
                 android:textStyle="bold" />
 
             <com.hjq.shape.view.ShapeEditText
-                android:id="@+id/email_et"
+                android:id="@+id/emailEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -89,7 +78,7 @@
                 android:textStyle="bold" />
 
             <com.hjq.shape.view.ShapeEditText
-                android:id="@+id/pass_et"
+                android:id="@+id/passEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -107,7 +96,7 @@
                 app:shape_solidColor="@color/light_gray" />
 
             <com.hjq.shape.view.ShapeButton
-                android:id="@+id/login_btn"
+                android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -153,7 +142,7 @@
 
             <!-- Social: Google -->
             <com.hjq.shape.layout.ShapeRelativeLayout
-                android:id="@+id/google_login_layout"
+                android:id="@+id/googleLoginLayout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
@@ -223,16 +212,10 @@
                 </LinearLayout>
             </com.hjq.shape.layout.ShapeRelativeLayout>
 
-            <!-- Hidden native Facebook LoginButton to keep SDK flow -->
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button"
-                android:layout_width="1dp"
-                android:layout_height="1dp"
-                android:visibility="gone" />
 
             <!-- Footer link -->
             <com.hjq.shape.view.ShapeTextView
-                android:id="@+id/register_tv"
+                android:id="@+id/registerTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

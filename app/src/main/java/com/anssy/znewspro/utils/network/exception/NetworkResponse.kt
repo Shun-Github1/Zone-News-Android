@@ -56,7 +56,14 @@ sealed class NetworkResponse<out T : Any, out U : Any> {
                         val errorBody = when {
                             error == null -> null
                             error.contentLength() == 0L -> null
-                            else -> NetError(code, error.toString(), null)
+                            else -> {
+                                val errorString = try {
+                                    error.string()
+                                } catch (e: Exception) {
+                                    error.toString()
+                                }
+                                NetError(code, errorString, null)
+                            }
                         }
                         if (errorBody != null) {
                             callback.onResponse(

@@ -35,15 +35,15 @@ class PublisherDistributionView @JvmOverloads constructor(
 	private val cornerRadius: Float = dp(8f)
 	private val leftPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
 		style = Paint.Style.FILL
-		color = ContextCompat.getColor(context, R.color.colorTextSmall) // #999999
+		color = ContextCompat.getColor(context, R.color.publisher_bias_conservative_graph) // #9CA3AF
 	}
 	private val rightPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
 		style = Paint.Style.FILL
-		color = ContextCompat.getColor(context, R.color.c_color) // close to #9AEDDD container
+		color = ContextCompat.getColor(context, R.color.publisher_bias_progressive_bg)
 	}
 	private val separatorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
 		style = Paint.Style.FILL
-		color = ContextCompat.getColor(context, R.color.white)
+		color = ContextCompat.getColor(context, R.color.separator)
 	}
 
 	fun setData(d: Data) {
@@ -130,7 +130,7 @@ class PublisherDistributionView @JvmOverloads constructor(
 }
 
 internal class CircleOutlineProvider : android.view.ViewOutlineProvider() {
-	override fun getOutline(view: View, outline: android.graphics.Outline) {
+	override fun getOutline(view: View, outline: Outline) {
 		outline.setOval(0, 0, view.width, view.height)
 	}
 }

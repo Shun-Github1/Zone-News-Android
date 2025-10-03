@@ -7,14 +7,17 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.text.Editable
 import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
+import com.anssy.znewspro.R
 import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -64,8 +67,8 @@ object Utils {
         try {
             val df =
                 SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-            start = df.parse(startDate).time
-            end = df.parse(endDate).time
+            start = df.parse(startDate ?: "")?.time ?: 0
+            end = df.parse(endDate ?: "")?.time ?: 0
         } catch (e: Exception) {
 // TODO: handle exception
         }
@@ -143,24 +146,41 @@ object Utils {
     @JvmStatic
     fun hideSoftMethod(context: Context) {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        @Suppress("DEPRECATION")
         imm.toggleSoftInput(0, 2)
     }
     @JvmStatic
     fun getTime(date: Date?): String {
-        return SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(date)
+        return if (date != null) {
+            SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(date)
+        } else {
+            ""
+        }
     }
 
     fun getYearDate(date: Date?): String {
-        return SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
+        return if (date != null) {
+            SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
+        } else {
+            ""
+        }
     }
 
     fun getDayDate(date: Date?): String {
-        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
+        return if (date != null) {
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
+        } else {
+            ""
+        }
     }
 
 
     fun getRealMintuteDate(date: Date?): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date)
+        return if (date != null) {
+            SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(date)
+        } else {
+            ""
+        }
     }
 
     fun getWeek(time: String?): String {
@@ -168,7 +188,7 @@ object Utils {
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val c = Calendar.getInstance()
         try {
-            c.time = format.parse(time)
+            c.time = format.parse(time ?: "") ?: return ""
         } catch (e: ParseException) {
             e.printStackTrace()
         }
@@ -206,16 +226,16 @@ object Utils {
         val betweenDays: Int
         val startTime = strToDateLong(startTimeStr)
         val endTime = strToDateLong(endTimeStr)
-        val start = startTime.time
-        val end = endTime.time
+        val start = startTime?.time ?: 0
+        val end = endTime?.time ?: 0
         betweenDays = ((end - start) / (24 * 3600 * 1000)).toInt()
         return betweenDays
     }
 
-    internal fun strToDateLong(strDate: String?): Date {
+    internal fun strToDateLong(strDate: String?): Date? {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val pos = ParsePosition(0)
-        return formatter.parse(strDate, pos)
+        return formatter.parse(strDate ?: "", pos)
     }
 
     fun getSpaceTime(millisecond: Long): String {
@@ -237,12 +257,38 @@ object Utils {
         }
     }
 
+    /**
+     * Get multilingual time display string
+     */
+    fun getMultilingualSpaceTime(context: Context, millisecond: Long): String {
+        val spaceSecond = java.lang.Long.valueOf(
+            (java.lang.Long.valueOf(Calendar.getInstance().timeInMillis)
+                .toLong() - millisecond) / 1000
+        )
+        if (spaceSecond.toLong() >= 0 && spaceSecond.toLong() < 60) {
+            return context.getString(R.string.time_moments_ago)
+        }
+        return if (spaceSecond.toLong() / 60 > 0 && spaceSecond.toLong() / 60 < 60) {
+            context.getString(R.string.time_minutes_ago, spaceSecond.toLong() / 60)
+        } else if (spaceSecond.toLong() / 3600 > 0 && spaceSecond.toLong() / 3600 < 24) {
+            context.getString(R.string.time_hours_ago, spaceSecond.toLong() / 3600)
+        } else if (spaceSecond.toLong() / 86400 <= 0 || spaceSecond.toLong() / 86400 >= 3) {
+            getDateTimeFromMillisecond(millisecond)
+        } else {
+            context.getString(R.string.time_days_ago, spaceSecond.toLong() / 86400)
+        }
+    }
+
     private fun getDateTimeFromMillisecond(millisecond: Long): String {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(millisecond))
     }
 
     fun getFormatTime(date: Date?): String {
-        return SimpleDateFormat("yyyy年MM月", Locale.getDefault()).format(date)
+        return if (date != null) {
+            SimpleDateFormat("yyyy年MM月", Locale.getDefault()).format(date)
+        } else {
+            ""
+        }
     }
 
     fun get_coordinate(latitude: Double, longitude: Double, altitude: Double): DoubleArray {
@@ -253,7 +299,7 @@ object Utils {
         val z: Double
         val f = 1 / 298.257223563
         val r = 6378137.0
-        val b = r * (1 - f)
+        r * (1 - f)
         val e = Math.sqrt(2 * f - f * f)
         val N = r / Math.sqrt(1 - e * e * Math.sin(B) * Math.sin(B))
         x = (N + altitude) * Math.cos(B) * Math.cos(L)
@@ -263,7 +309,11 @@ object Utils {
     }
     @JvmStatic
     fun getSecondTime(date: Date?): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(date)
+        return if (date != null) {
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(date)
+        } else {
+            ""
+        }
     }
 
     fun isDateOneBigger(str1: String?, str2: String?): Boolean {
@@ -271,8 +321,8 @@ object Utils {
         var dt1: Date? = null
         var dt2: Date? = null
         try {
-            dt1 = sdf.parse(str1)
-            dt2 = sdf.parse(str2)
+            dt1 = sdf.parse(str1 ?: "")
+            dt2 = sdf.parse(str2 ?: "")
         } catch (e: ParseException) {
             e.printStackTrace()
         }
@@ -316,10 +366,13 @@ object Utils {
 
     fun getVersionCode(mContext: Context): Long {
         try {
-            return mContext.packageManager.getPackageInfo(
-                mContext.packageName,
-                0
-            ).versionCode.toLong()
+            val packageInfo = mContext.packageManager.getPackageInfo(mContext.packageName, 0)
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                packageInfo.longVersionCode
+            } else {
+                @Suppress("DEPRECATION")
+                packageInfo.versionCode.toLong()
+            }
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
             return 0L
@@ -338,19 +391,22 @@ object Utils {
         return ali.replace("(\\d{4})\\d{9}(\\d{3})".toRegex(), "$1****$2")
     }
 
+    /**
+     * Check if the user is currently logged in
+     * @param context The application context
+     * @return true if user is logged in, false otherwise
+     */
+    fun isUserLoggedIn(context: Context): Boolean {
+        return SharedPreferenceUtils.isUserLoggedIn(context)
+    }
+
     fun toWeb(url: String?, context: Context) {
-        val intent = Intent()
-        intent.setAction("android.intent.action.VIEW")
-        intent.setData(Uri.parse(url))
-
-        //intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
-
     }
 
     fun dialPhoneNumber(context: Context, phoneNumber: String) {
-        val intent = Intent("android.intent.action.DIAL")
-        intent.data = Uri.parse("tel:$phoneNumber")
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
         }
@@ -360,10 +416,9 @@ object Utils {
         get() = Calendar.getInstance()[2] + 1
 
     fun toSelfSetting(context: Context) {
-        val mIntent = Intent()
-        mIntent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
-        mIntent.data = Uri.fromParts("package", context.packageName, null)
-        context.startActivity(mIntent)
+        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, 
+            Uri.fromParts("package", context.packageName, null))
+        context.startActivity(intent)
     }
 
     fun isLogin(context: Context?): Boolean {
@@ -371,10 +426,7 @@ object Utils {
     }
     @JvmStatic
     fun createJsonRequestBody(json: String): RequestBody {
-        return RequestBody.create(
-            "application/json; charset=utf-8".toMediaTypeOrNull(),
-            json
-        )
+        return json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
     }
 
     /**
@@ -399,8 +451,8 @@ object Utils {
         var day: Long = 0
         try {
             // 获得两个时间的毫秒时间差异
-            diff = (sd.parse(endTime).time
-                    - sd.parse(startTime).time)
+            diff = ((sd.parse(endTime ?: "")?.time ?: 0)
+                    - (sd.parse(startTime ?: "")?.time ?: 0))
             day = diff / nd // 计算差多少天
             val hour = diff % nd / nh // 计算差多少小时
             val min = diff % nd % nh / nm // 计算差多少分钟

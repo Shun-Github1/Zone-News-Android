@@ -41,8 +41,7 @@ public class ExceptionHandle {
     public static ResponseThrowable handleException(Throwable throwable) {
         //返回时抛出异常
         ResponseThrowable responseThrowable;
-        if (throwable instanceof HttpException) {
-            HttpException httpException = (HttpException) throwable;
+        if (throwable instanceof HttpException httpException) {
             responseThrowable = new ResponseThrowable(throwable, ERROR.HTTP_ERROR);
             switch (httpException.code()) {
                 case UNAUTHORIZED:
@@ -74,9 +73,8 @@ public class ExceptionHandle {
                     break;
             }
             return responseThrowable;
-        } else if (throwable instanceof ServerException) {
+        } else if (throwable instanceof ServerException resultException) {
             //服务器异常
-            ServerException resultException = (ServerException) throwable;
             responseThrowable = new ResponseThrowable(resultException, resultException.code);
             responseThrowable.message = resultException.message;
             return responseThrowable;

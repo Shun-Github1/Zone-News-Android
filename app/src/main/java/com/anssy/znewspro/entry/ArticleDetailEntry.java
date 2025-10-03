@@ -44,7 +44,7 @@ public class ArticleDetailEntry  {
         private List<ArticlesDTO> articles;
         private CoverageDTO coverage;
         private String date;
-        private String description;
+        private DescriptionDTO description;
         private Boolean liked;
         private MetricsDTO metrics;
         private Integer nSources;
@@ -89,11 +89,11 @@ public class ArticleDetailEntry  {
             this.date = date;
         }
 
-        public String getDescription() {
+        public DescriptionDTO getDescription() {
             return description;
         }
 
-        public void setDescription(String description) {
+        public void setDescription(DescriptionDTO description) {
             this.description = description;
         }
 
@@ -315,7 +315,9 @@ public class ArticleDetailEntry  {
             private String publisherIcon;
             private String publisherName;
             private String publisherRegion;
-            private String publisherStance;
+            private PublisherStanceDTO publisherStance;
+            private Integer bias;
+            private Integer mediaSignificance;
             public String getArticleURL() {
                 return articleURL;
             }
@@ -364,12 +366,49 @@ public class ArticleDetailEntry  {
                 this.publisherRegion = publisherRegion;
             }
 
-            public String getPublisherStance() {
+            public PublisherStanceDTO getPublisherStance() {
                 return publisherStance;
             }
 
-            public void setPublisherStance(String publisherStance) {
+            public void setPublisherStance(PublisherStanceDTO publisherStance) {
                 this.publisherStance = publisherStance;
+            }
+
+            public Integer getBias() {
+                return bias;
+            }
+
+            public void setBias(Integer bias) {
+                this.bias = bias;
+            }
+
+            public Integer getMediaSignificance() {
+                return mediaSignificance;
+            }
+
+            public void setMediaSignificance(Integer mediaSignificance) {
+                this.mediaSignificance = mediaSignificance;
+            }
+        }
+
+        public static class PublisherStanceDTO {
+            private String displayName;
+            private String tag;
+
+            public String getDisplayName() {
+                return displayName;
+            }
+
+            public void setDisplayName(String displayName) {
+                this.displayName = displayName;
+            }
+
+            public String getTag() {
+                return tag;
+            }
+
+            public void setTag(String tag) {
+                this.tag = tag;
             }
         }
 
@@ -505,6 +544,27 @@ public class ArticleDetailEntry  {
                 public void setSubjectivity(Double subjectivity) {
                     this.subjectivity = subjectivity;
                 }
+            }
+        }
+
+        public static class DescriptionDTO {
+            private String synopsis;
+            private String implications;
+
+            public String getSynopsis() {
+                return synopsis;
+            }
+
+            public void setSynopsis(String synopsis) {
+                this.synopsis = synopsis;
+            }
+
+            public String getImplications() {
+                return implications;
+            }
+
+            public void setImplications(String implications) {
+                this.implications = implications;
             }
         }
     }

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.util.TypedValue;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * 作者：chs on 2016/9/8 10:02
@@ -76,7 +77,7 @@ public class CalculateUtil {
     public static float numMathMul(float d1, float d2) {
         BigDecimal b1 = new BigDecimal(d1);
         BigDecimal b2 = new BigDecimal(d2);
-        float res = b1.multiply(b2).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+        float res = b1.multiply(b2).setScale(1, RoundingMode.HALF_UP).floatValue();
         return res;
     }
     public static BigDecimal add(double v1, double v2){
@@ -101,7 +102,7 @@ public class CalculateUtil {
     public static BigDecimal div(double v1, double v2){
         BigDecimal b1 = new BigDecimal(Double.toString(v1));
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.divide(b2,2, BigDecimal.ROUND_HALF_UP);//四舍五入,保留2位小数
+        return b1.divide(b2,2, RoundingMode.HALF_UP);//四舍五入,保留2位小数
         //除不尽的情况
     }
 
@@ -151,7 +152,7 @@ public class CalculateUtil {
 
         BigDecimal b = new BigDecimal(Double.toString(v));
         BigDecimal ne = new BigDecimal("1");
-        return b.divide(ne, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return b.divide(ne, scale, RoundingMode.HALF_UP).doubleValue();
     }
 
     public static double pers = 1048576; //1024*1024
@@ -160,5 +161,65 @@ public class CalculateUtil {
     public static double sizeFormatNum2String(long size) {
 
         return round((double)size/pers,2);
+    }
+
+    /**
+     * Convert sentiment score to a descriptive label resource id for localization
+     * @param sentimentScore The sentiment score in range [-1, 1]
+     * @return String resource id for the sentiment label
+     */
+    public static int getSentimentLabelResId(double sentimentScore) {
+        if (sentimentScore >= 0.8) {
+            return com.anssy.znewspro.R.string.sentiment_very_positive;
+        } else if (sentimentScore >= 0.3) {
+            return com.anssy.znewspro.R.string.sentiment_positive;
+        } else if (sentimentScore >= 0.1) {
+            return com.anssy.znewspro.R.string.sentiment_slightly_positive;
+        } else if (sentimentScore >= -0.1) {
+            return com.anssy.znewspro.R.string.sentiment_neutral;
+        } else if (sentimentScore >= -0.3) {
+            return com.anssy.znewspro.R.string.sentiment_slightly_negative;
+        } else if (sentimentScore >= -0.8) {
+            return com.anssy.znewspro.R.string.sentiment_negative;
+        } else {
+            return com.anssy.znewspro.R.string.sentiment_very_negative;
+        }
+    }
+
+    /**
+     * Deprecated: Use getSentimentLabelResId and fetch string via Resources for localization.
+     */
+    @Deprecated
+    public static String getSentimentLabel(double sentimentScore) {
+        if (sentimentScore >= 0.8) {
+            return "Very Positive";
+        } else if (sentimentScore >= 0.3) {
+            return "Positive";
+        } else if (sentimentScore >= 0.1) {
+            return "Slightly Positive";
+        } else if (sentimentScore >= -0.1) {
+            return "Neutral";
+        } else if (sentimentScore >= -0.3) {
+            return "Slightly Negative";
+        } else if (sentimentScore >= -0.8) {
+            return "Negative";
+        } else {
+            return "Very Negative";
+        }
+    }
+
+    /**
+     * Get color resource name for sentiment text based on score
+     * @param sentimentScore The sentiment score in range [-1, 1]
+     * @return Color resource name for the sentiment
+     */
+    public static String getSentimentColorName(double sentimentScore) {
+        if (sentimentScore > 0) {
+            return "score_positive"; // Positive color (teal)
+        } else if (sentimentScore < 0) {
+            return "score_negative"; // Negative color (dark red)
+        } else {
+            return "colorTextSmall"; // Neutral color (default text color)
+        }
     }
 }

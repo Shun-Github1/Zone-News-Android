@@ -2,6 +2,12 @@ package com.anssy.znewspro.utils.network
 
 
 import android.content.Context
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+import okhttp3.OkHttpClient
+import java.security.SecureRandom
 
 import com.anssy.znewspro.utils.Constants
 import com.anssy.znewspro.net.AppHttpService
@@ -13,7 +19,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -24,12 +29,26 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    // Custom Trust Manager to handle SSL certificate issues
+    private val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+        override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+        override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+    })
+
+    // SSL Context that accepts all certificates
+    private val sslContext = SSLContext.getInstance("SSL").apply {
+        init(null, trustAllCerts, SecureRandom())
+    }
+
     // 普通用户的 OkHttpClient
     @Provides
     @Singleton
     @Named("user")
     fun provideUserOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
         return OkHttpClient.Builder()
+            .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
+            .hostnameVerifier { _, _ -> true } // Accept all hostnames
             .addInterceptor { chain ->
                 val tokens = SharedPreferenceUtils.getString(context,"token")
                 val token = tokens ?: ""
@@ -52,6 +71,8 @@ object NetworkModule {
     fun provideMerchantOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
 
         return OkHttpClient.Builder()
+            .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
+            .hostnameVerifier { _, _ -> true } // Accept all hostnames
             .addInterceptor { chain ->
                 val token = SharedPreferenceUtils.getString(context,"token")
                 val rtoken = token ?: ""

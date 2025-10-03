@@ -9,14 +9,17 @@ import android.widget.Toast
 @SuppressLint("StaticFieldLeak")
 object ToastUtils {
     private var toast: Toast? = null
+    @Suppress("DEPRECATION")
     private var view: View? = null
     private fun getToast(context: Context) {
         if (toast == null) {
             toast = Toast(context)
         }
         if (view == null) {
+            @Suppress("DEPRECATION")
             view = Toast.makeText(context, "", Toast.LENGTH_SHORT).view
         }
+        @Suppress("DEPRECATION")
         toast!!.view = view
     }
     @JvmStatic

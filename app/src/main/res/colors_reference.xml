@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MARK: - Semantic Colors (Primary App Colors) -->
+    
+    <!-- Brand color - teal with accessibility improvements -->
+    <color name="brand">#00A9A9</color>
+    <color name="brand_dark">#00CCCC</color>
+    
+    <!-- Secondary brand color - blue variants -->
+    <color name="brand_secondary">#37508D</color>
+    <color name="brand_secondary_dark">#6699FF</color>
+    
+    <!-- MARK: - Background Colors -->
+    
+    <!-- Primary background color -->
+    <color name="background">#FFFFFF</color>
+    <color name="background_dark">#1A1C1C</color>
+    
+    <!-- Secondary background color - for cards and elevated surfaces -->
+    <color name="background_secondary">#F2F2F2</color>
+    <color name="background_secondary_dark">#262626</color>
+    
+    <!-- Tertiary background color - for subtle backgrounds -->
+    <color name="background_tertiary">#E6E6E6</color>
+    <color name="background_tertiary_dark">#333333</color>
+    
+    <!-- MARK: - Text Colors -->
+    
+    <!-- Primary text color - highest contrast for main content -->
+    <color name="text_primary">#1C2526</color>
+    <color name="text_primary_dark">#E0E0E0</color>
+    
+    <!-- Secondary text color - medium contrast for secondary content -->
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_secondary_dark">#9CA3AF</color>
+    
+    <!-- Tertiary text color - lowest contrast for tertiary content -->
+    <color name="text_tertiary">#9CA3AF</color>
+    <color name="text_tertiary_dark">#6B7280</color>
+    
+    <!-- MARK: - UI Element Colors -->
+    
+    <!-- Separator color - for dividers and borders -->
+    <color name="separator">#E5E7EB</color>
+    <color name="separator_dark">#374151</color>
+    
+    <!-- Overlay color - for overlays and modals -->
+    <color name="overlay">#000000</color>
+    <color name="overlay_alpha_30">#4D000000</color>
+    <color name="overlay_alpha_50">#80000000</color>
+    
+    <!-- MARK: - Status Colors -->
+    
+    <!-- Success color - for positive actions and states -->
+    <color name="success">#22B14C</color>
+    <color name="success_dark">#33CC66</color>
+    
+    <!-- Warning color - for warnings and alerts -->
+    <color name="warning">#F59E0B</color>
+    <color name="warning_dark">#FFCC00</color>
+    
+    <!-- Error color - for errors and destructive actions -->
+    <color name="error">#DC2626</color>
+    <color name="error_dark">#FF6666</color>
+    
+    <!-- MARK: - Page-Specific Colors -->
+    
+    <!-- Profile page background color -->
+    <color name="profile_background">#F5F5F5</color>
+    <color name="profile_background_dark">#1A1C1C</color>
+    
+    <!-- Profile page top bar background color -->
+    <color name="profile_top_bar_background">#FFFFFF</color>
+    <color name="profile_top_bar_background_dark">#1A1C1C</color>
+    
+    <!-- Profile page card background color -->
+    <color name="profile_card_background">#FFFFFF</color>
+    <color name="profile_card_background_dark">#262626</color>
+    
+    <!-- News detail page card background color -->
+    <color name="news_detail_card_background">#FFFFFF</color>
+    <color name="news_detail_card_background_dark">#262626</color>
+    
+    <!-- MARK: - Additional Colors for Kotlin Files -->
+    
+    <!-- Link color for text links -->
+    <color name="link_color">#37508D</color>
+    <color name="link_color_dark">#6699FF</color>
+    
+    <!-- Subjectivity score colors -->
+    <color name="subjectivity_high">#6B7280</color>
+    <color name="subjectivity_high_dark">#9CA3AF</color>
+    <color name="subjectivity_medium">#9AEDDD</color>
+    <color name="subjectivity_medium_dark">#80CDC4</color>
+    <color name="subjectivity_low">#00A9A9</color>
+    <color name="subjectivity_low_dark">#00CCCC</color>
+    
+    <!-- Subjectivity background colors -->
+    <color name="subjectivity_bg_high">#2E3D3A</color>
+    <color name="subjectivity_bg_high_dark">#374151</color>
+    <color name="subjectivity_bg_medium">#3D776C</color>
+    <color name="subjectivity_bg_medium_dark">#2C2C2C</color>
+    <color name="subjectivity_bg_low">#9AEDDD</color>
+    <color name="subjectivity_bg_low_dark">#80CDC4</color>
+    
+    <!-- Score colors -->
+    <color name="score_negative">#7F2538</color>
+    <color name="score_negative_dark">#DC2626</color>
+</resources>

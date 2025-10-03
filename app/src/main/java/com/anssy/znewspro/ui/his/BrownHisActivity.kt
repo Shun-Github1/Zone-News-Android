@@ -42,7 +42,9 @@ class BrownHisActivity:BaseActivity() {
     private var mList = ArrayList<ViewHisEntry.DataDTO.ArticlesDTO>()
     private lateinit var mAdapter:CommonAdapter<ViewHisEntry.DataDTO.ArticlesDTO>
     private fun initView() {
-        mViewBinding.topLayout.titleTv.text = "${getString(R.string.history)}"
+        // Setup MaterialToolbar with navigation and title
+        setupToolbar()
+        
         mViewBinding.hisRecycler.layoutManager = LinearLayoutManager(mContext,RecyclerView.VERTICAL,false)
         mAdapter = object : CommonAdapter<ViewHisEntry.DataDTO.ArticlesDTO>(this, R.layout.item_brown_his,mList){
             override fun convert(holder: ViewHolder, t: ViewHisEntry.DataDTO.ArticlesDTO, position: Int) {
@@ -61,6 +63,12 @@ class BrownHisActivity:BaseActivity() {
 
         }
         mViewBinding.hisRecycler.adapter = mAdapter
+    }
+
+    private fun setupToolbar() {
+        val toolbar = mViewBinding.topLayout.toolbar
+        toolbar.title = getString(R.string.history)
+        toolbar.setNavigationOnClickListener { finish() }
     }
 
     @SuppressLint("NotifyDataSetChanged")

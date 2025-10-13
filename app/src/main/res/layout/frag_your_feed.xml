@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/smartRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            
+            <!-- Currently sorted by indicator -->
+            <LinearLayout
+                android:id="@+id/sort_indicator_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp">
+                
+                <TextView
+                    android:id="@+id/sort_label_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/currently_sorted_by"
+                    android:textColor="@color/colorTextMiddle"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inter_regular" />
+                    
+                <LinearLayout
+                    android:id="@+id/sort_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/tag_chip_background"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+                    
+                    <ImageView
+                        android:id="@+id/sort_info_icon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="6dp"
+                        android:src="@drawable/ic_clock_24"
+                        android:contentDescription="@null"
+                        android:tint="@color/colorTextMiddle" />
+                    
+                    <TextView
+                        android:id="@+id/sort_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/latest_sort"
+                        android:textColor="@color/colorTextDeep"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter_regular" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Active tags indicator -->
+            <LinearLayout
+                android:id="@+id/active_tags_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp">
+                
+                <TextView
+                    android:id="@+id/active_tags_label_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/active_tags"
+                    android:textColor="@color/colorTextMiddle"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inter_regular" />
+                    
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/active_tags_chips_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:flexDirection="row"
+                    app:justifyContent="flex_start"
+                    app:alignItems="flex_start"
+                    android:layout_marginTop="6dp">
+                    <!-- Chips added dynamically -->
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+
+            <!-- News RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homeRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+        
+    </androidx.core.widget.NestedScrollView>
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+

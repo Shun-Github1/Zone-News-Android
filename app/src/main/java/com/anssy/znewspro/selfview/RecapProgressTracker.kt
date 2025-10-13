@@ -37,8 +37,12 @@ class RecapProgressTracker @JvmOverloads constructor(
     private val lineWidth = dpToPx(1.5f)
     private val lineWidthProgress = dpToPx(2f)
     private val textSize = dpToPx(10f)
-    private val itemSpacing = dpToPx(120f)
-    private val itemSpacingSelected = dpToPx(120f) // Keep same spacing to prevent shifting
+    
+    // Fixed vertical spacing
+    private val textBelowCircleSpacing = dpToPx(20f)
+    private val lineBelowTextSpacing = dpToPx(15f)
+    private val lineLength = dpToPx(60f)
+    private val checkpointSpacing = dpToPx(35f) // Space between line end and next circle
     
     // Colors
     private val brandColor = ContextCompat.getColor(context, R.color.main_color)
@@ -99,12 +103,9 @@ class RecapProgressTracker @JvmOverloads constructor(
         
         RecapCheckpoint.values().forEachIndexed { index, checkpoint ->
             val isSelected = checkpoint == selectedCheckpoint
-            val currentSpacing = itemSpacing // Use consistent spacing
             
-            // Draw circle with equal spacing using padding
+            // 1. Draw circle
             val radius = if (isSelected) circleRadiusSelected else circleRadius
-            val maxRadius = circleRadiusSelected // Use the larger radius for consistent spacing
-            val padding = maxRadius - radius // Calculate padding to center smaller circles
             
             if (isSelected) {
                 circlePaint.color = brandColor
@@ -115,31 +116,36 @@ class RecapProgressTracker @JvmOverloads constructor(
             circleStrokePaint.alpha = if (isSelected) 255 else 128
             canvas.drawCircle(centerX, currentY, radius, circleStrokePaint)
             
-            // Draw label
+            // Move down by circle radius + spacing
+            currentY += radius + textBelowCircleSpacing
+            
+            // 2. Draw label text
             val label = checkpoint.getTitle(context)
             textPaint.color = if (isSelected) brandColor else textSecondaryColor
-            textPaint.textSize = textSize * 1.05f // Always use selected state font size
+            textPaint.textSize = textSize * 1.05f
             textPaint.isFakeBoldText = isSelected
+            canvas.drawText(label, centerX, currentY, textPaint)
             
-            // Draw text below circle (positioned relative to the max circle area)
-            val textY = currentY + maxRadius + dpToPx(20f)
-            canvas.drawText(label, centerX, textY, textPaint)
+            // Move down by text spacing
+            currentY += lineBelowTextSpacing
             
-            // Draw connecting line (for all items, including monthly)
-            val lineStartY = textY + dpToPx(15f)
-            val lineEndY = currentY + currentSpacing - maxRadius - dpToPx(15f) // Fixed end position relative to max circle
-            val lineHeight = lineEndY - lineStartY
+            // 3. Draw connecting line (identical for all checkpoints including monthly)
+            val lineStartY = currentY
+            val lineEndY = currentY + lineLength
             
             // Background line
             canvas.drawLine(centerX, lineStartY, centerX, lineEndY, linePaint)
             
             // Progress line (for selected checkpoint)
             if (isSelected && scrollProgress > 0f) {
-                val progressHeight = lineHeight * scrollProgress
+                val progressHeight = lineLength * scrollProgress
                 canvas.drawLine(centerX, lineStartY, centerX, lineStartY + progressHeight, lineProgressPaint)
             }
             
-            currentY += currentSpacing
+            // Move down by line length + checkpoint spacing for next checkpoint
+            if (index < RecapCheckpoint.values().size - 1) {
+                currentY += lineLength + checkpointSpacing - radius
+            }
         }
     }
     
@@ -173,28 +179,28 @@ class RecapProgressTracker @JvmOverloads constructor(
     }
     
     private fun handleTap(y: Float) {
-        val centerX = width / 2f
         val totalHeight = calculateTotalHeight()
         val startY = (height - totalHeight) / 2f
         
         var currentY = startY
         
-        RecapCheckpoint.values().forEach { checkpoint ->
+        RecapCheckpoint.values().forEachIndexed { index, checkpoint ->
             val isSelected = checkpoint == selectedCheckpoint
-            val currentSpacing = itemSpacing // Use consistent spacing
             val radius = if (isSelected) circleRadiusSelected else circleRadius
-            val maxRadius = circleRadiusSelected // Use the larger radius for consistent spacing
             
-            // Check if tap is within this checkpoint's region (circle + text area)
-            val tapThreshold = dpToPx(40f) // Larger tap area
-            if (y >= currentY - tapThreshold && y <= currentY + tapThreshold) {
+            // Touch area covers only circle and text (not the connecting line)
+            val regionStart = currentY - radius - dpToPx(5f) // Small padding above circle
+            val regionEnd = currentY + radius + textBelowCircleSpacing + dpToPx(5f) // Small padding below text
+            
+            if (y >= regionStart && y <= regionEnd) {
                 HapticFeedbackHelper.performNavigationHaptic(this)
                 setSelectedCheckpoint(checkpoint)
                 onCheckpointSelectedListener?.invoke(checkpoint)
                 return
             }
             
-            currentY += currentSpacing
+            // Move currentY to next checkpoint circle center
+            currentY += radius + textBelowCircleSpacing + lineBelowTextSpacing + lineLength + checkpointSpacing - radius
         }
     }
     
@@ -233,8 +239,12 @@ class RecapProgressTracker @JvmOverloads constructor(
     }
     
     private fun calculateTotalHeight(): Float {
-        // Calculate height for all checkpoints plus the extra progress line under monthly
-        return RecapCheckpoint.values().size * itemSpacing + dpToPx(60f) // Extra space for monthly progress line
+        // Calculate total height based on vertical hierarchy:
+        // For each checkpoint: radius + textBelowCircleSpacing + text height + lineBelowTextSpacing + lineLength + checkpointSpacing
+        // Simplified: (radius + textBelowCircleSpacing + lineBelowTextSpacing + lineLength + checkpointSpacing) * 3 checkpoints
+        val checkpointCount = RecapCheckpoint.values().size
+        val singleCheckpointHeight = circleRadiusSelected + textBelowCircleSpacing + lineBelowTextSpacing + lineLength + checkpointSpacing
+        return singleCheckpointHeight * checkpointCount + dpToPx(30f) // Extra space for final progress line
     }
     
     fun setSelectedCheckpoint(checkpoint: RecapCheckpoint) {

@@ -39,25 +39,33 @@ class RecapSectionAdapter(
             // Set header
             headerText.text = section.header
             
-            // Set header color based on checkpoint
+            // Set header color based on checkpoint (all use brand primary color)
             val headerColor = when (section.checkpoint) {
                 RecapCheckpoint.DAILY -> itemView.context.getColor(R.color.main_color)
-                RecapCheckpoint.WEEKLY -> itemView.context.getColor(R.color.colorTextDeep)
-                RecapCheckpoint.MONTHLY -> itemView.context.getColor(R.color.colorTextDeep)
+                RecapCheckpoint.WEEKLY -> itemView.context.getColor(R.color.main_color)
+                RecapCheckpoint.MONTHLY -> itemView.context.getColor(R.color.main_color)
             }
             headerText.setTextColor(headerColor)
+            
+            // Set header bottom margin based on checkpoint
+            val headerLayoutParams = headerText.layoutParams as ViewGroup.MarginLayoutParams
+            if (section.checkpoint == RecapCheckpoint.DAILY) {
+                // Add 18dp spacing for daily section (4dp existing + 14dp = 18dp total)
+                val dpToPx = (20 * itemView.context.resources.displayMetrics.density).toInt()
+                headerLayoutParams.bottomMargin = dpToPx
+            } else {
+                // Keep original 4dp for weekly and monthly
+                val dpToPx = (4 * itemView.context.resources.displayMetrics.density).toInt()
+                headerLayoutParams.bottomMargin = dpToPx
+            }
+            headerText.layoutParams = headerLayoutParams
             
             // Set date range
             if (section.dateRange != null && section.dateRange.isNotEmpty()) {
                 dateRangeText.visibility = View.VISIBLE
                 dateRangeText.text = section.dateRange
             } else {
-                // For daily section (no date range), add consistent spacing
                 dateRangeText.visibility = View.GONE
-                // Add bottom margin to header to match the spacing of date range
-                val layoutParams = headerText.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.bottomMargin = itemView.context.resources.getDimensionPixelSize(R.dimen.recap_header_bottom_margin)
-                headerText.layoutParams = layoutParams
             }
             
             // Clear existing bullet points

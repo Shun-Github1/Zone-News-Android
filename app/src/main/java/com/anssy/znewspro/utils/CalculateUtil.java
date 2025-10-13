@@ -164,8 +164,8 @@ public class CalculateUtil {
     }
 
     /**
-     * Convert sentiment score to a descriptive label resource id for localization
-     * @param sentimentScore The sentiment score in range [-1, 1]
+     * Convert media sentiment to a descriptive label resource id for localization
+     * @param sentimentScore The media sentiment in range [-1, 1]
      * @return String resource id for the sentiment label
      */
     public static int getSentimentLabelResId(double sentimentScore) {
@@ -210,7 +210,7 @@ public class CalculateUtil {
 
     /**
      * Get color resource name for sentiment text based on score
-     * @param sentimentScore The sentiment score in range [-1, 1]
+     * @param sentimentScore The media sentiment in range [-1, 1]
      * @return Color resource name for the sentiment
      */
     public static String getSentimentColorName(double sentimentScore) {

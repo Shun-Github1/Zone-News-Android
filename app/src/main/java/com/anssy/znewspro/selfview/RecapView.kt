@@ -138,6 +138,9 @@ class RecapView @JvmOverloads constructor(
         val position = sectionPositions[checkpoint] ?: return
         val layoutManager = binding.recapRecyclerView.layoutManager as? LinearLayoutManager
         
+        // Stop any ongoing scroll
+        binding.recapRecyclerView.stopScroll()
+        
         layoutManager?.scrollToPositionWithOffset(position, 0)
     }
     

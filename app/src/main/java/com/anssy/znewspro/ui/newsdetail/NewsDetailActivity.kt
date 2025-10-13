@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewConfiguration
+import android.widget.FrameLayout
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
@@ -67,6 +68,16 @@ class NewsDetailActivity : BaseActivity() {
     
     // Gesture detection
     private lateinit var gestureDetector: GestureDetector
+    // Timeline
+    private var isProUser: Boolean = true
+    private lateinit var timelineAdapter: TimelineAdapter
+    data class TimelineArticle(
+        val id: String,
+        val title: String,
+        val date: String,
+        val articleID: String,
+        val isCurrent: Boolean = false
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewBinding = ActivityNewsDetailBinding.inflate(layoutInflater)
@@ -86,6 +97,7 @@ class NewsDetailActivity : BaseActivity() {
         initModel()
         setupFloatingBar()
         setupGestureDetection()
+        setupTimelineStatic()
         mViewBinding.feedBackLayout.setOnClickListener {
                 showFeedBackWindow()
         }
@@ -163,6 +175,8 @@ class NewsDetailActivity : BaseActivity() {
             if (it.code == Constants.SUCCESS_CODE) {
                 completeView(it.data)
                 addHis()
+                // After loading, refresh timeline current item title/date
+                centerCurrentTimelineItem(it.data)
             } else {
                 ToastUtils.showShortToast(mContext!!, it.msg)
             }
@@ -307,6 +321,151 @@ class NewsDetailActivity : BaseActivity() {
 
         setupPublisherArticles(articleDetailEntry)
 	}
+
+    private fun setupTimelineStatic() {
+        // Info button
+        findViewById<ImageView>(R.id.timeline_info_btn)?.setOnClickListener { anchor ->
+            val content = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(dp(16f).toInt(), dp(12f).toInt(), dp(16f).toInt(), dp(12f).toInt())
+                addView(TextView(this@NewsDetailActivity).apply {
+                    text = getString(R.string.timeline_info_description)
+                    setTextColor(ContextCompat.getColor(this@NewsDetailActivity, R.color.colorTextSmall))
+                    textSize = 14f
+                })
+            }
+            showTimelineInfoPopup(anchor, content)
+        }
+
+        val list = findViewById<RecyclerView>(R.id.timeline_list)
+        val layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        list.layoutManager = layoutManager
+        list.clipToPadding = false
+        // Add side padding so middle item can center; half screen minus item half width (100dp)
+        val screenWidth = resources.displayMetrics.widthPixels
+        val side = (screenWidth / 2f - dp(100f)).toInt()
+        list.setPadding(side, 0, side, 0)
+
+        timelineAdapter = TimelineAdapter(isProUser) { article ->
+            if (!isProUser) {
+                ToastUtils.showShortToast(this, getString(R.string.open_in_browser))
+                return@TimelineAdapter
+            }
+            // Navigate to related article if not current
+            if (!article.isCurrent) {
+                // Open web page or perform navigation per app behavior
+                ToastUtils.showShortToast(this, getString(R.string.open_in_browser))
+            }
+        }
+        list.adapter = timelineAdapter
+
+        // Mock timeline data: 3 before, current, 3 after
+        val mock = buildMockTimeline()
+        timelineAdapter.submitList(mock)
+
+        // Scroll to current center
+        list.post {
+            val currentIndex = mock.indexOfFirst { it.isCurrent }.let { if (it < 0) 3 else it }
+            (list.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(currentIndex, 0)
+        }
+    }
+
+    private fun buildMockTimeline(): List<TimelineArticle> {
+        val current = mArticleDetailEntry
+        val base = listOf(
+            TimelineArticle("timeline-1", getString(R.string.timeline_mock_article1_title), "2024-01-10 09:00:00", "timeline-1"),
+            TimelineArticle("timeline-2", getString(R.string.timeline_mock_article2_title), "2024-01-12 14:30:00", "timeline-2"),
+            TimelineArticle("timeline-3", getString(R.string.timeline_mock_article3_title), "2024-01-14 11:15:00", "timeline-3"),
+            TimelineArticle(current?.articleID ?: articleId, current?.title ?: (getString(R.string.details)), current?.date ?: "2024-01-15 10:00:00", current?.articleID ?: articleId, true),
+            TimelineArticle("timeline-5", getString(R.string.timeline_mock_article5_title), "2024-01-16 16:45:00", "timeline-5"),
+            TimelineArticle("timeline-6", getString(R.string.timeline_mock_article6_title), "2024-01-18 10:20:00", "timeline-6"),
+            TimelineArticle("timeline-7", getString(R.string.timeline_mock_article7_title), "2024-01-20 13:00:00", "timeline-7")
+        )
+        return base
+    }
+
+    private fun centerCurrentTimelineItem(data: ArticleDetailEntry.DataDTO) {
+        val list = findViewById<RecyclerView>(R.id.timeline_list)
+        val currentIndex = 3
+        (list.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(currentIndex, 0)
+        // Update center item data
+        val updated = buildMockTimeline().toMutableList()
+        updated[3] = TimelineArticle(data.articleID, data.title ?: getString(R.string.details), data.date ?: "", data.articleID, true)
+        timelineAdapter.submitList(updated)
+    }
+
+    private class TimelineAdapter(
+        private val isProUser: Boolean,
+        private val onItemClick: (TimelineArticle) -> Unit
+    ) : RecyclerView.Adapter<TimelineAdapter.VH>() {
+        private val items = mutableListOf<TimelineArticle>()
+
+        fun submitList(list: List<TimelineArticle>) {
+            items.clear()
+            items.addAll(list)
+            notifyDataSetChanged()
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+            val v = android.view.LayoutInflater.from(parent.context).inflate(R.layout.item_timeline_article, parent, false)
+            return VH(v)
+        }
+
+        override fun getItemCount(): Int = items.size
+
+        override fun onBindViewHolder(holder: VH, position: Int) {
+            val item = items[position]
+            holder.bind(item, isProUser, onItemClick)
+        }
+
+        class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            private val title: TextView = itemView.findViewById(R.id.timeline_item_title)
+            private val date: TextView = itemView.findViewById(R.id.timeline_item_date)
+            private val circle: View = itemView.findViewById(R.id.timeline_item_circle)
+            private val circleBg: View = itemView.findViewById(R.id.timeline_item_circle_bg)
+
+            fun bind(item: TimelineArticle, isPro: Boolean, onClick: (TimelineArticle) -> Unit) {
+                title.text = item.title
+                title.alpha = if (isPro) 1f else 0.35f
+                // Lock icon overlay for current non-pro could be added via drawable, keep minimal per spec
+
+                // Dot styling
+                val lpBg = circleBg.layoutParams
+                lpBg.width = if (item.isCurrent) dp(itemView, 20f) else dp(itemView, 16f)
+                lpBg.height = if (item.isCurrent) dp(itemView, 20f) else dp(itemView, 16f)
+                circleBg.layoutParams = lpBg
+                val lp = circle.layoutParams
+                lp.width = if (item.isCurrent) dp(itemView, 14f) else dp(itemView, 10f)
+                lp.height = if (item.isCurrent) dp(itemView, 14f) else dp(itemView, 10f)
+                circle.layoutParams = lp
+                circle.setBackgroundResource(if (item.isCurrent) R.drawable.timeline_circle else R.drawable.timeline_circle_gray)
+
+                // Position the larger circle (current article) slightly higher to align centers
+                val circleContainer = circle.parent as FrameLayout
+                val containerLp = circleContainer.layoutParams as LinearLayout.LayoutParams
+                containerLp.topMargin = if (item.isCurrent) dp(itemView, -3f) else dp(itemView, 0f)
+                circleContainer.layoutParams = containerLp
+
+                // Date format MMM d
+                date.text = formatDisplayDate(item.date)
+
+                itemView.setOnClickListener { onClick(item) }
+            }
+
+            private fun dp(view: View, v: Float): Int = (v * view.resources.displayMetrics.density).toInt()
+
+            private fun formatDisplayDate(src: String): String {
+                return try {
+                    val f = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US)
+                    val d = f.parse(src)
+                    val out = java.text.SimpleDateFormat("MMM d", java.util.Locale.US)
+                    out.format(d!!)
+                } catch (e: Exception) {
+                    src
+                }
+            }
+        }
+    }
 
     private fun setupPublisherArticles(data: ArticleDetailEntry.DataDTO) {
         val listRv = findViewById<RecyclerView>(R.id.publisher_articles_list)
@@ -759,6 +918,35 @@ class NewsDetailActivity : BaseActivity() {
     }
 
     private fun dp(v: Float): Float = v * resources.displayMetrics.density
+    
+    /**
+     * Show timeline info popup with alignment matching other cards
+     */
+    private fun showTimelineInfoPopup(anchor: View, content: LinearLayout) {
+        // Calculate popup width to match card content area (screen width minus card margins)
+        val screenWidth = resources.displayMetrics.widthPixels
+        val cardMargin = dp(20f).toInt() * 2 // 12dp margin on each side
+        val popupWidth = screenWidth - cardMargin
+        
+        val popup = android.widget.PopupWindow(content, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popup.isOutsideTouchable = true
+        popup.isFocusable = true
+        popup.elevation = dp(4f)
+        popup.setBackgroundDrawable(android.graphics.drawable.GradientDrawable().apply {
+            cornerRadius = dp(12f)
+            setColor(androidx.core.content.ContextCompat.getColor(this@NewsDetailActivity, R.color.profile_card_bg))
+        })
+        
+        // Align popup to match card content area (12dp from screen edge)
+        val xoff = dp(20f).toInt() - anchor.left
+        
+        // Align the BOTTOM of the popup with the icon's UPPER edge
+        content.measure(View.MeasureSpec.makeMeasureSpec(popupWidth, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
+        val popupHeight = content.measuredHeight
+        val yoff = -(popupHeight + anchor.height + dp(6f).toInt())
+        
+        popup.showAsDropDown(anchor, xoff, yoff)
+    }
     
     /**
      * Setup gesture detection for back navigation and scroll stop detection

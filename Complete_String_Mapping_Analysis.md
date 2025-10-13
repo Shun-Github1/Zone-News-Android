@@ -38,7 +38,7 @@ This document provides a comprehensive mapping of every string used in both iOS 
 ### English
 | iOS Key | iOS Value | Android Key | Android Value | Status |
 |---------|-----------|-------------|---------------|--------|
-| `sentiment.score.label` | "Sentiment Score: %@" | `sentiment_score_label` | "Sentiment: %1$s" | ❌ MISMATCH |
+| `sentiment.score.label` | "Media Sentiment: %@" | `sentiment_score_label` | "Media Sentiment: %1$s" | ✅ MATCH |
 | `sentiment.positive` | "Positive" | `sentiment_positive` | "Positive" | ✅ MATCH |
 | `sentiment.negative` | "Negative" | `sentiment_negative` | "Negative" | ✅ MATCH |
 | `sentiment.neutral` | "Neutral" | `sentiment_neutral` | "Neutral" | ✅ MATCH |
@@ -403,7 +403,7 @@ This document provides a comprehensive mapping of every string used in both iOS 
 ### Critical Mismatches Requiring Updates:
 
 #### English Strings:
-1. `sentiment_score_label`: "Sentiment: %1$s" → "Sentiment Score: %1$s"
+1. `sentiment_score_label`: "Media Sentiment: %1$s" (already updated to match iOS)
 2. `publisher_name`: "Publisher Name" → "Media Name"
 3. `publisher_bias`: "Publisher Bias" → "Media Bias"
 4. `publisher_region`: "Publisher Region" → "Media Region"
@@ -460,7 +460,7 @@ This comprehensive analysis reveals **67 total mismatches** across all three lan
 
 The most critical areas requiring attention are:
 1. Main tab navigation translations
-2. Sentiment score labeling
+2. Media sentiment labeling
 3. Sort option terminology
 4. Publisher/Media naming conventions
 5. Button and action labels

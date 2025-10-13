@@ -401,6 +401,27 @@ class HomeChildFrag : BaseFragment() {
                 .centerCrop().error(R.drawable.ease_default_image).into(mBannerIv)
             mTitleTv.text = data.title
             mTransTv.text = data.description
+            
+            // Add long press listener for sharing with shrink animation
+            itemView.setOnLongClickListener {
+                // Animate shrink effect
+                itemView.animate()
+                    .scaleX(0.95f)
+                    .scaleY(0.95f)
+                    .setDuration(150)
+                    .withEndAction {
+                        // Restore original size after animation
+                        itemView.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setDuration(300)
+                            .start()
+                    }
+                    .start()
+                
+                shareHeadline(data)
+                true
+            }
         }
     }
 
@@ -413,6 +434,24 @@ class HomeChildFrag : BaseFragment() {
             if (!article.articleURL.isNullOrEmpty()) {
                 append("\n\n")
                 append(article.articleURL)
+            }
+        }
+        
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.app_name)))
+    }
+
+    /**
+     * Share headline functionality
+     */
+    private fun shareHeadline(headline: HomeDataListEntry.DataDTO.HeadlinesDTO) {
+        val shareText = buildString {
+            append(headline.title)
+            if (!headline.articleURL.isNullOrEmpty()) {
+                append("\n\n")
+                append(headline.articleURL)
             }
         }
         

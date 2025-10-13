@@ -327,6 +327,77 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.card.MaterialCardView>
 
+           <!-- Timeline (edge-to-edge, wider than page, horizontally scrollable) -->
+           <LinearLayout
+               android:id="@+id/timeline_container"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:paddingTop="16dp"
+               android:paddingBottom="8dp">
+
+               <!-- Header aligned with other sections -->
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:paddingStart="36dp"
+                   android:paddingEnd="12dp">
+
+                   <TextView
+                       android:id="@+id/timeline_title"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Timeline"
+                       android:textColor="@color/colorTextDeep"
+                       android:textSize="16sp"
+                       android:textStyle="bold" />
+
+                   <ImageView
+                       android:id="@+id/timeline_info_btn"
+                       android:layout_width="18dp"
+                       android:layout_height="18dp"
+                       android:layout_marginStart="8dp"
+                       android:contentDescription="@null"
+                       android:src="@drawable/ic_info_outline_18"
+                       android:tint="@color/colorTextSmall" />
+
+                   <View
+                       android:layout_width="0dp"
+                       android:layout_height="1dp"
+                       android:layout_weight="1"/>
+               </LinearLayout>
+
+               <!-- Edge-to-edge scroller with background line -->
+               <FrameLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="120dp"
+                   android:layout_marginTop="20dp"
+                   android:paddingStart="0dp"
+                   android:paddingEnd="0dp">
+
+                   <!-- Continuous horizontal line across full width, positioned to pass through dots -->
+                   <View
+                       android:id="@+id/timeline_line"
+                       android:layout_width="match_parent"
+                       android:layout_height="3dp"
+                       android:layout_gravity="top"
+                       android:layout_marginTop="66dp"
+                       android:background="@color/colorTextSmall" />
+
+                   <androidx.recyclerview.widget.RecyclerView
+                       android:id="@+id/timeline_list"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:overScrollMode="never"
+                       android:clipToPadding="false"
+                       android:fadingEdgeLength="32dp"
+                       android:requiresFadingEdge="horizontal"
+                       android:scrollbarStyle="outsideOverlay"/>
+               </FrameLayout>
+           </LinearLayout>
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

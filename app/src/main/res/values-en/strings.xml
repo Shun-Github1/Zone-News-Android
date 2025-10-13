@@ -214,10 +214,10 @@
     <string name="low_objectivity">Low objectivity</string>
     <string name="medium_objectivity">Medium objectivity</string>
     <string name="high_objectivity">High objectivity</string>
-    <string name="sentiment_analysis_description">Sentiment analysis evaluates emotional tone in text using AI algorithms.\nVisit our webpage for detailed information.</string>
+    <string name="sentiment_analysis_description">The overall tone of reporting on this event, based on text analysis of articles.\nFor more details, visit our webpage.</string>
     <string name="our_webpage">our webpage</string>
-    <string name="publisher_distribution_description">Publisher distribution shows political bias representation across news sources.\nVisit our webpage for detailed information.</string>
-    <string name="subjectivity_algorithm_description">Determined by a stolen algorithm from a…\nVisit our webpage for detailed information.</string>
+    <string name="publisher_distribution_description">Map of media reporting patterns: X-axis - media bias, Y-axis - timing of reporting, size of circles - accessed media significance.\nFor more details, visit our webpage.</string>
+    <string name="subjectivity_algorithm_description">How subjective media reporting on this event is, based on text analysis of articles.\nFor more details, visit our webpage.</string>
     <string name="ok">OK</string>
     <string name="news_type">news</string>
     <string name="fragment_special">special</string>
@@ -260,23 +260,53 @@
     <string name="bullet_point">·</string>
     <string name="time_placeholder">3 minutes ago</string>
 
+    <!-- Timeline strings -->
+    <string name="timeline_info_description">Shows related events before and after the story. Swipe left or right to browse timeline.</string>
+    <string name="timeline_info_scroll_hint">Swipe left or right to browse timeline.</string>
+    <string name="timeline_mock_article1_title">Mock article 1</string>
+    <string name="timeline_mock_article2_title">Mock article 2</string>
+    <string name="timeline_mock_article3_title">Mock article 3</string>
+    <string name="timeline_mock_article5_title">Mock article 5</string>
+    <string name="timeline_mock_article6_title">Mock article 6</string>
+    <string name="timeline_mock_article7_title">Mock article 7</string>
+
     <!-- About screen strings -->
     <string name="about_app_name">Zone News</string>
     <string name="about_version">Version 1.0.0</string>
     <string name="about_heading">About Zone News</string>
-    <string name="about_desc_1">Zone News is your comprehensive source for the latest news from around the world. We provide balanced, accurate, and timely reporting on politics, technology, sports, and more.</string>
-    <string name="about_desc_2">Our mission is to keep you informed with quality journalism and diverse perspectives on the stories that matter most.</string>
+    <string name="about_desc_1">Zone News is the multidimensional news platform of the future, allowing you to collate information from dozens of sources across time and space with ease. We provide balanced, accurate and timely reports on politics, technology, sports, and more, across Hong Kong, China and beyond.</string>
+    <string name="about_desc_2">Our mission is information: bringing you the stories that matter in a scientific and transparent matter. We seek to pop information bubbles through concise, comprehensive and convenient reporting, showcasing multiple perspectives of every event.</string>
     <string name="about_features">Features</string>
-    <string name="feature_global_coverage">Global Coverage</string>
-    <string name="feature_global_coverage_desc">News from Hong Kong, China, and around the world</string>
-    <string name="feature_personalized">Personalized Recommendations</string>
-    <string name="feature_personalized_desc">Articles tailored to your interests and reading history</string>
-    <string name="feature_search">Powerful Search</string>
-    <string name="feature_search_desc">Find specific news articles and topics quickly</string>
-    <string name="feature_analysis">Coverage Analysis</string>
-    <string name="feature_analysis_desc">Understand different perspectives on important stories</string>
-    <string name="feature_history">Reading History</string>
-    <string name="feature_history_desc">Keep track of articles you have read</string>
+    <string name="feature_ai_context">AI Context</string>
+    <string name="feature_ai_context_desc">The full backstory of every news event</string>
+    <string name="feature_article_list">Article List</string>
+    <string name="feature_article_list_desc">Comprehensive article listings with sorting</string>
+    <string name="feature_custom_tags">Custom Tags</string>
+    <string name="feature_custom_tags_desc">Follow topics of interest with custom news tags</string>
+    <string name="feature_in_app_browser">In-app Browser</string>
+    <string name="feature_in_app_browser_desc">Full articles in-the-app in your language of choice</string>
+    <string name="feature_levity_mode">Levity Mode</string>
+    <string name="feature_levity_mode_desc">Positive news only</string>
+    <string name="feature_media_bias_tags">Media Bias &amp; Stance Tags</string>
+    <string name="feature_media_bias_tags_desc">Media labels for easy assessment of potential bias</string>
+    <string name="feature_media_distribution">Media Distribution</string>
+    <string name="feature_media_distribution_desc">Understand different perspectives on important stories</string>
+    <string name="feature_media_sentiment">Media Sentiment</string>
+    <string name="feature_media_sentiment_desc">The overall tone of reporting, based on text analysis</string>
+    <string name="feature_recap">Recap</string>
+    <string name="feature_recap_desc">Daily, weekly, or monthly news reviews</string>
+    <string name="feature_significance">Significance</string>
+    <string name="feature_significance_desc">DALY (life-years) and economic impact analysis</string>
+    <string name="feature_subjectivity_score">Subjectivity Score</string>
+    <string name="feature_subjectivity_score_desc">Subjectivity of media reporting, based on text analysis</string>
+    <string name="feature_summary">Summary</string>
+    <string name="feature_summary_desc">The key information of the event, the facts and implications</string>
+    <string name="feature_timeline">Timeline</string>
+    <string name="feature_timeline_desc">Related events before and after the story in a timeline</string>
+    <string name="feature_widgets">Widgets</string>
+    <string name="feature_widgets_desc">Home screen widgets in several designs</string>
+    <string name="feature_your_feed">Your Feed</string>
+    <string name="feature_your_feed_desc">Personalized feed with fixed and customizable tags</string>
     <string name="contact_us">Contact Us</string>
     <string name="contact_email">support@znews.com</string>
     <string name="contact_website">www.znews.com</string>
@@ -287,7 +317,7 @@
     
     <!-- News card strings -->
     <string name="reports_count">%1$d reports</string>
-    <string name="sentiment_score_label">Sentiment: %1$s</string>
+    <string name="sentiment_score_label">Media Sentiment: %1$s</string>
     <string name="sentiment_positive">Positive</string>
     <string name="sentiment_negative">Negative</string>
     <string name="sentiment_neutral">Neutral</string>

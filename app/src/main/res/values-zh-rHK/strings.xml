@@ -207,10 +207,10 @@
     <string name="low_objectivity">低客觀性</string>
     <string name="medium_objectivity">中等客觀性</string>
     <string name="high_objectivity">高客觀性</string>
-    <string name="sentiment_analysis_description">情感分析使用AI算法評估文本的情感基調。\n訪問我們的網頁獲取詳細信息。</string>
+    <string name="sentiment_analysis_description">媒體對此事件報導的總體情緒。分數基於文本分析結果。\n請訪問我們的網頁以了解更多。</string>
     <string name="our_webpage">我們的網頁</string>
-    <string name="publisher_distribution_description">發布者分佈顯示新聞來源的政治偏見代表性。\n訪問我們的網頁獲取詳細信息。</string>
-    <string name="subjectivity_algorithm_description">由被盜算法確定…\n訪問我們的網頁獲取詳細信息。</string>
+    <string name="publisher_distribution_description">媒體報導模式具象圖：X軸 - 媒體偏見、Y軸 - 報導時機、圓點大小 - 媒體影響力。\n請訪問我們的網頁以了解更多。</string>
+    <string name="subjectivity_algorithm_description">媒體報導的整體主觀程度。分數基於文本分析結果。\n請訪問我們的網頁以了解更多。</string>
     <string name="ok">確定</string>
     <string name="news_type">新聞</string>
     <string name="fragment_special">專題</string>
@@ -253,23 +253,53 @@
     <string name="bullet_point">·</string>
     <string name="time_placeholder">3分鐘前</string>
 
+    <!-- Timeline strings -->
+    <string name="timeline_info_description">此新聞事件的前文後理。左右滑動可瀏覽時間軸。</string>
+    <string name="timeline_info_scroll_hint">左右滑動可瀏覽時間軸。</string>
+    <string name="timeline_mock_article1_title">模擬文章 1</string>
+    <string name="timeline_mock_article2_title">模擬文章 2</string>
+    <string name="timeline_mock_article3_title">模擬文章 3</string>
+    <string name="timeline_mock_article5_title">模擬文章 5</string>
+    <string name="timeline_mock_article6_title">模擬文章 6</string>
+    <string name="timeline_mock_article7_title">模擬文章 7</string>
+
     <!-- About screen strings -->
     <string name="about_app_name">Zone News</string>
     <string name="about_version">版本 1.0.0</string>
     <string name="about_heading">關於 Zone News</string>
-    <string name="about_desc_1">Zone News 是您獲取世界各地最新新聞的綜合來源。我們提供政治、技術、體育等方面的平衡、準確和及時的報導。</string>
-    <string name="about_desc_2">我們的使命是通過優質新聞和多元化視角讓您了解最重要的故事。</string>
+    <string name="about_desc_1">Zone 新聞是面向未來的多維新聞平台，讓您輕鬆整合來自數十個資訊來源、跨越時空的資訊。我們立足香港與中國，輻射全球，為您提供涵蓋政治、科技、體育等領域的均衡、準確、及時的報導。</string>
+    <string name="about_desc_2">我們的使命是資訊傳遞：以科學透明的方式，為您呈現值得關注的重要故事。透過簡潔、全面、便捷的新聞報導，我們致力於打破資訊繭房，呈現每個事件的多維視角。</string>
     <string name="about_features">功能特色</string>
-    <string name="feature_global_coverage">全球覆蓋</string>
-    <string name="feature_global_coverage_desc">來自香港、中國和世界各地的新聞</string>
-    <string name="feature_personalized">個人化推薦</string>
-    <string name="feature_personalized_desc">根據您的興趣和閱讀歷史定制的文章</string>
-    <string name="feature_search">強大搜尋</string>
-    <string name="feature_search_desc">快速找到特定的新聞文章和主題</string>
-    <string name="feature_analysis">覆蓋分析</string>
-    <string name="feature_analysis_desc">了解重要故事的不同視角</string>
-    <string name="feature_history">閱讀歷史</string>
-    <string name="feature_history_desc">追蹤您已閱讀的文章</string>
+    <string name="feature_ai_context">AI 背景</string>
+    <string name="feature_ai_context_desc">每個新聞事件的完整背景故事</string>
+    <string name="feature_article_list">文章列表</string>
+    <string name="feature_article_list_desc">具有排序功能的綜合文章列表</string>
+    <string name="feature_custom_tags">自定義標籤</string>
+    <string name="feature_custom_tags_desc">使用自定義新聞標籤追蹤感興趣的主題</string>
+    <string name="feature_in_app_browser">應用內瀏覽器</string>
+    <string name="feature_in_app_browser_desc">以您選擇的語言在應用內閱讀完整文章</string>
+    <string name="feature_levity_mode">輕鬆模式</string>
+    <string name="feature_levity_mode_desc">僅顯示正面新聞</string>
+    <string name="feature_media_bias_tags">媒體偏見與立場標籤</string>
+    <string name="feature_media_bias_tags_desc">媒體標籤，便於評估潛在偏見</string>
+    <string name="feature_media_distribution">媒體分佈</string>
+    <string name="feature_media_distribution_desc">了解重要新聞的不同觀點</string>
+    <string name="feature_media_sentiment">媒體情緒</string>
+    <string name="feature_media_sentiment_desc">基於文本分析的報導整體基調</string>
+    <string name="feature_recap">回顧</string>
+    <string name="feature_recap_desc">每日、每週或每月新聞回顧</string>
+    <string name="feature_significance">重要性</string>
+    <string name="feature_significance_desc">DALY（生命年）和經濟影響分析</string>
+    <string name="feature_subjectivity_score">主觀性評分</string>
+    <string name="feature_subjectivity_score_desc">基於文本分析的媒體報導主觀性</string>
+    <string name="feature_summary">摘要</string>
+    <string name="feature_summary_desc">事件的關鍵信息、事實和影響</string>
+    <string name="feature_timeline">時間軸</string>
+    <string name="feature_timeline_desc">故事前後相關事件的時間軸</string>
+    <string name="feature_widgets">小工具</string>
+    <string name="feature_widgets_desc">多種設計的主螢幕小工具</string>
+    <string name="feature_your_feed">您的動態</string>
+    <string name="feature_your_feed_desc">具有固定和可自定義標籤的個人化動態</string>
     <string name="contact_us">聯絡我們</string>
     <string name="contact_email">support@znews.com</string>
     <string name="contact_website">www.znews.com</string>
@@ -280,8 +310,8 @@
     
     <!-- News card strings -->
     <string name="reports_count">%1$d 份報告</string>
-    <string name="sentiment_score_label">文本情感數值：%1$s</string>
-    <string name="sentiment_score">情緒分數</string>
+    <string name="sentiment_score_label">媒體情感：%1$s</string>
+    <string name="sentiment_score">媒體情感</string>
     <string name="publisher_distribution">媒體分佈</string>
     <string name="subjectivity_score">主觀性評分</string>
     <string name="publisher_articles">文章列表</string>

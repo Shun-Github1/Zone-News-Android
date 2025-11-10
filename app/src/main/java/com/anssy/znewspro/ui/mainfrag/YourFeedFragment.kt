@@ -27,6 +27,7 @@ import com.anssy.znewspro.entry.SearchListEntry
 import com.anssy.znewspro.entry.TopicListEntry
 import com.anssy.znewspro.model.PersonRecommendModel
 import com.anssy.znewspro.model.TopicModel
+import com.anssy.znewspro.selfview.NewNestedScrollView
 import com.anssy.znewspro.selfview.popup.SortPopupWindow
 import com.anssy.znewspro.ui.MainActivity
 import com.anssy.znewspro.ui.newsdetail.NewsDetailActivity
@@ -190,6 +191,8 @@ class YourFeedFragment : Fragment() {
             }
         }
         binding.homeRecycler.adapter = mAdapter
+        
+        // Add RecyclerView scroll listener
         binding.homeRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -208,6 +211,35 @@ class YourFeedFragment : Fragment() {
                     activity?.scheduleBottomBarAutoShow()
                 } else {
                     activity?.cancelBottomBarAutoShow()
+                }
+            }
+        })
+        
+        // Add NestedScrollView scroll listener for better scroll detection
+        binding.nestedScrollView.addScrollChangeListener(object : NewNestedScrollView.AddScrollChangeListener {
+            override fun onScrollChange(scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                val activity = requireActivity() as? MainActivity
+                if (scrollY > oldScrollY) {
+                    // Scrolling down
+                    activity?.hideBottomBar()
+                } else if (scrollY < oldScrollY) {
+                    // Scrolling up
+                    activity?.showBottomBar()
+                }
+            }
+            
+            override fun onScrollState(state: NewNestedScrollView.ScrollState?) {
+                val activity = requireActivity() as? MainActivity
+                when (state) {
+                    NewNestedScrollView.ScrollState.IDLE -> {
+                        // When scroll stops, schedule auto-show
+                        activity?.scheduleBottomBarAutoShow()
+                    }
+                    NewNestedScrollView.ScrollState.DRAG, NewNestedScrollView.ScrollState.SCROLLING -> {
+                        // While scrolling, cancel auto-show
+                        activity?.cancelBottomBarAutoShow()
+                    }
+                    else -> {}
                 }
             }
         })
@@ -494,4 +526,5 @@ class YourFeedFragment : Fragment() {
         _binding = null
     }
 }
+
 

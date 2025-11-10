@@ -19,3 +19,4 @@ class PersonalPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
     }
 }
 
+

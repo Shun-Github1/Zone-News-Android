@@ -51,6 +51,14 @@ class NewsDetailModel @Inject constructor(
             if (result.isSuccess) {
                 _newsDetailEntry.value = result.getOrNull()!!
             } else {
+                // Log the actual exception to help debug
+                val exception = result.exceptionOrNull()
+                Log.e("NewsDetailModel", "Error fetching article detail for ID: $id", exception)
+                exception?.let {
+                    Log.e("NewsDetailModel", "Exception type: ${it.javaClass.name}")
+                    Log.e("NewsDetailModel", "Exception message: ${it.message}")
+                    it.printStackTrace()
+                }
                 val articleDetailEntry = ArticleDetailEntry()
                 articleDetailEntry.code = 1000
                 articleDetailEntry.msg = getString(R.string.server_error_message)

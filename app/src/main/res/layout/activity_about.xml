@@ -71,7 +71,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/about_app_name"
                     android:textSize="26sp"
-                    android:textStyle="bold"
                     android:textColor="@color/colorTextDeep"
                     android:layout_marginTop="16dp" />
 
@@ -160,8 +159,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_ai_context"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -195,8 +193,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_article_list"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -230,8 +227,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_custom_tags"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -265,8 +261,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_in_app_browser"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -300,8 +295,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_levity_mode"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -335,8 +329,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_bias_tags"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -370,8 +363,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_distribution"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -405,8 +397,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_sentiment"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -440,8 +431,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_recap"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -475,8 +465,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_significance"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -510,8 +499,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_subjectivity_score"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -545,8 +533,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_summary"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -580,8 +567,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_timeline"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -615,8 +601,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_widgets"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -650,8 +635,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_your_feed"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

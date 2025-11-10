@@ -21,6 +21,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import com.anssy.znewspro.entry.ArticleDetailEntry
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -87,16 +92,31 @@ object NetworkModule {
             .build()
     }
 
+    // Custom Gson instance with PublisherStance deserializer
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return GsonBuilder()
+            .registerTypeAdapter(
+                  ArticleDetailEntry.DataDTO.PublisherStanceDTO::class.java,
+                PublisherStanceDeserializer()
+            )
+            .create()
+    }
+
     // 普通用户的 Retrofit
     @Provides
     @Singleton
     @Named("user")
-    fun provideUserRetrofit(@Named("user") okHttpClient: OkHttpClient): Retrofit {
+    fun provideUserRetrofit(
+        @Named("user") okHttpClient: OkHttpClient,
+        gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.COMMON_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
@@ -104,11 +124,14 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("merchant")
-    fun provideMerchantRetrofit(@Named("merchant") okHttpClient: OkHttpClient): Retrofit {
+    fun provideMerchantRetrofit(
+        @Named("merchant") okHttpClient: OkHttpClient,
+        gson: Gson
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.COMMON_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

@@ -118,6 +118,29 @@ class RecapView @JvmOverloads constructor(
                 
                 // Update progress based on scroll position
                 updateProgressIndicator()
+                
+                // Hide/show bottom bar based on scroll direction
+                val activity = (context as? android.app.Activity)
+                if (activity is com.anssy.znewspro.ui.MainActivity) {
+                    if (dy > 0) {
+                        activity.hideBottomBar()
+                    } else if (dy < 0) {
+                        activity.showBottomBar()
+                    }
+                }
+            }
+            
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                
+                val activity = (context as? android.app.Activity)
+                if (activity is com.anssy.znewspro.ui.MainActivity) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        activity.scheduleBottomBarAutoShow()
+                    } else {
+                        activity.cancelBottomBarAutoShow()
+                    }
+                }
             }
         })
     }

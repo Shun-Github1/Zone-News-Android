@@ -3,8 +3,8 @@
     <!-- MARK: - Semantic Colors (Primary App Colors) -->
     
     <!-- Brand color - teal with accessibility improvements -->
-    <color name="brand">#00A9A9</color>
-    <color name="brand_dark">#00CCCC</color>
+    <color name="brand">#239B98</color>
+    <color name="brand_dark">#239B98</color>
     
     <!-- Secondary brand color - blue variants -->
     <color name="brand_secondary">#37508D</color>
@@ -92,8 +92,8 @@
     <color name="subjectivity_high_dark">#9CA3AF</color>
     <color name="subjectivity_medium">#9AEDDD</color>
     <color name="subjectivity_medium_dark">#80CDC4</color>
-    <color name="subjectivity_low">#00A9A9</color>
-    <color name="subjectivity_low_dark">#00CCCC</color>
+    <color name="subjectivity_low">#239B98</color>
+    <color name="subjectivity_low_dark">#239B98</color>
     
     <!-- Subjectivity background colors -->
     <color name="subjectivity_bg_high">#2E3D3A</color>

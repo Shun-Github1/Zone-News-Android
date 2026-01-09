@@ -14,16 +14,11 @@ import javax.inject.Inject
 
 class HomeRepository @Inject constructor(private val appHttpService: AppHttpService) {
     suspend fun queryHomeData(
-        tag: String, 
-        pageNo: Int, 
-        pageSize: Int, 
+        tag: String? = null, 
+        pageNo: Int? = null, 
+        pageSize: Int? = null, 
         language: String? = null
     ): HomeDataListEntry {
-        val jsonObject = JSONObject()
-        jsonObject.put("tag", tag)
-        jsonObject.put("offset", pageNo)
-        jsonObject.put("limit", pageSize)
-
-        return appHttpService.getHomeData(Utils.createJsonRequestBody(jsonObject.toString()), language)
+        return appHttpService.getHomeData(tag, pageNo, pageSize, language)
     }
 }

@@ -33,4 +33,12 @@ class MyRepository @Inject constructor(private val appHttpService: AppHttpServic
     suspend fun deleteCollect(articleId: String): GenericResponse<CommonResponseEntry> {
         return appHttpService.deleteCollect(articleId)
     }
+
+    suspend fun redeemCode(requestBody: okhttp3.RequestBody): GenericResponse<CommonResponseEntry> {
+        return appHttpService.redeemCode(requestBody)
+    }
+
+    suspend fun cancelSubscription(): GenericResponse<CommonResponseEntry> {
+        return appHttpService.cancelSubscription()
+    }
 }

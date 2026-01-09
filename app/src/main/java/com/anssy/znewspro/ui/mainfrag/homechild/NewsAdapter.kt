@@ -1,5 +1,6 @@
 package com.anssy.znewspro.ui.mainfrag.homechild
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,8 +22,7 @@ import com.anssy.znewspro.ui.newsdetail.NewsDetailActivity
 import com.anssy.znewspro.utils.CalculateUtil
 import com.anssy.znewspro.utils.Utils
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.Locale
+import kotlin.math.abs
 
 class NewsAdapter(
     private val context: android.content.Context,
@@ -32,14 +33,12 @@ class NewsAdapter(
     companion object {
         private const val VIEW_TYPE_NORMAL = 0
         private const val VIEW_TYPE_BIG = 1
-        private const val BIG_CARD_INTERVAL = 6 // Show big card every 6 cards
-        private const val BIG_CARD_OFFSET = 5 // Show big card at position 5 (6th card: 0,1,2,3,4,5)
+        private const val BIG_CARD_INTERVAL = 5 // Show big card every 5 cards (4 normal + 1 big)
+        private const val BIG_CARD_OFFSET = 4 // Show big card at position 4 (5th card: 0,1,2,3,4)
     }
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-
     override fun getItemViewType(position: Int): Int {
-        // Show big card at positions 5, 11, 17, 23, etc. (6th card in each cycle)
+        // Show big card at positions 4, 9, 14, 19, etc. (one every 4 normal cards)
         return if ((position - BIG_CARD_OFFSET) % BIG_CARD_INTERVAL == 0 && position >= BIG_CARD_OFFSET) VIEW_TYPE_BIG else VIEW_TYPE_NORMAL
     }
 
@@ -69,6 +68,65 @@ class NewsAdapter(
 
     override fun getItemCount(): Int = newsList.size
 
+    /**
+     * Animate sentiment bar from startWidth to endWidth over 720ms with LinearInterpolator
+     */
+    private fun animateSentimentBar(
+        highlightView: View,
+        halfWidth: Int,
+        score: Double,
+        startWidth: Float,
+        endWidth: Float
+    ) {
+        // Cancel any previous animations
+        highlightView.clearAnimation()
+        
+        val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+        
+        // Clamp score between -1.0 and 1.0
+        val clampedScore = when {
+            score > 1.0 -> 1.0
+            score < -1.0 -> -1.0
+            else -> score
+        }
+        
+        // View should be GONE with width=1px from previous step
+        // Change from GONE to INVISIBLE, keeping width at 1px initially
+        highlightView.visibility = View.INVISIBLE
+        lp.width = startWidth.toInt()  // Start from 1px (or whatever startWidth is)
+        lp.marginStart = halfWidth
+        highlightView.layoutParams = lp
+        
+        // Post to ensure layout is complete before starting animation
+        highlightView.post {
+            // Make visible and start animation from 1px to target width
+            highlightView.visibility = View.VISIBLE
+            
+            // Animate using ValueAnimator over 720ms with LinearInterpolator (provides smooth counting effect)
+            ValueAnimator.ofFloat(startWidth, endWidth).apply {
+                duration = 720L
+                interpolator = LinearInterpolator()
+                addUpdateListener { animator ->
+                    val animatedValue = animator.animatedValue as Float
+                    val animatedDistance = animatedValue.toInt()
+                    
+                    if (animatedDistance > 0) {
+                        lp.width = animatedDistance
+                        // For positive: marginStart = half (extends right from center)
+                        // For negative: marginStart = half - distance (extends left from center)
+                        lp.marginStart = if (clampedScore > 0) {
+                            halfWidth
+                        } else {
+                            halfWidth - animatedDistance
+                        }
+                        highlightView.layoutParams = lp
+                    }
+                }
+                start()
+            }
+        }
+    }
+
     inner class NormalCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val placeTv: TextView = itemView.findViewById(R.id.place_tv)
         private val tagTv: TextView = itemView.findViewById(R.id.tag_tv)
@@ -82,6 +140,16 @@ class NewsAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(article: HomeDataListEntry.DataDTO.ArticlesDTO) {
+            // IMMEDIATELY reset sentiment bar to prevent flash from recycled views
+            // Use View.GONE instead of INVISIBLE to prevent any layout space allocation
+            // and set width to 1px (not 0) to avoid MATCH_CONSTRAINT behavior
+            highlightView.clearAnimation()
+            highlightView.visibility = View.GONE
+            val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
+            lpReset.width = 1  // Use 1px instead of 0 to avoid ConstraintLayout MATCH_CONSTRAINT behavior
+            lpReset.marginStart = 0
+            highlightView.layoutParams = lpReset
+            
             placeTv.text = article.region
             val sentimentText = context.getString(CalculateUtil.getSentimentLabelResId(article.metrics.sentiment))
             val sentimentScore = article.metrics.sentiment
@@ -101,45 +169,51 @@ class NewsAdapter(
             
             tagTv.text = article.sector
             titleTv.text = article.title
-            Glide.with(context).load(article.pictureURL).error(R.drawable.ease_default_image)
+            Glide.with(context).load(article.pictureURL).error(R.drawable.ic_image_not_supported_24)
                 .into(newsIv)
 
-            try {
-                val parse = dateFormat.parse(article.date)
-                timeTv.text = Utils.getMultilingualSpaceTime(context, parse!!.time)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            // Format date using backend date string directly
+            timeTv.text = Utils.formatBackendDate(context, article.date)
             
             countTv.text = context.getString(R.string.reports_count, article.nSources)
             
-            // Set up sentiment progress bar
+            // Set up sentiment progress bar with animation
             trackView.post {
                 val totalWidth = trackView.width
                 val half = totalWidth / 2
                 val score = CalculateUtil.round(article.metrics.sentiment, 2)
-                val distance = (kotlin.math.abs(score) * half).toInt()
+                val targetDistance = (abs(score) * half).toInt()
                 val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
-                if (distance <= 0) {
-                    // Avoid width==0 which equals MATCH_CONSTRAINT in ConstraintLayout
-                    highlightView.visibility = View.INVISIBLE
+                
+                if (targetDistance <= 0) {
+                    // Keep view GONE for zero distance
+                    highlightView.visibility = View.GONE
                     lp.width = 1
                     lp.marginStart = half
+                    highlightView.layoutParams = lp
                 } else {
-                    highlightView.visibility = View.VISIBLE
-                    lp.width = distance
-                    lp.marginStart = if (score > 0) half else (half - distance)
+                    // Ensure view is GONE and width is 1px before setting up animation
+                    highlightView.clearAnimation()
+                    highlightView.visibility = View.GONE
+                    lp.width = 1  // Use 1px to avoid MATCH_CONSTRAINT, will animate from here
+                    lp.marginStart = half
+                    highlightView.setBackgroundResource(
+                        if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
+                    )
+                    highlightView.layoutParams = lp
+                    
+                    // Wait one frame to ensure GONE state is applied
+                    highlightView.post {
+                        animateSentimentBar(highlightView, half, score, 1f, targetDistance.toFloat())
+                    }
                 }
-                highlightView.layoutParams = lp
-                highlightView.setBackgroundResource(
-                    if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
-                )
             }
 
             // Set click listeners
             itemView.setOnClickListener {
                 val intent = Intent(context, NewsDetailActivity::class.java)
                 intent.putExtra("id", article.articleID)
+                intent.putExtra("source_fragment", "home")
                 context.startActivity(intent)
             }
 
@@ -179,6 +253,16 @@ class NewsAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(article: HomeDataListEntry.DataDTO.ArticlesDTO) {
+            // IMMEDIATELY reset sentiment bar state to prevent flash from recycled views
+            // Use View.GONE instead of INVISIBLE to prevent any layout space allocation
+            // and set width to 1px (not 0) to avoid MATCH_CONSTRAINT behavior
+            val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
+            highlightView.clearAnimation()
+            highlightView.visibility = View.GONE
+            lpReset.width = 1  // Use 1px instead of 0 to avoid ConstraintLayout MATCH_CONSTRAINT behavior
+            lpReset.marginStart = 0
+            highlightView.layoutParams = lpReset
+            
             placeTv.text = article.region
             val sentimentText = context.getString(CalculateUtil.getSentimentLabelResId(article.metrics.sentiment))
             val sentimentScore = article.metrics.sentiment
@@ -198,39 +282,44 @@ class NewsAdapter(
             
             tagTv.text = article.sector
             titleTv.text = article.title
-            Glide.with(context).load(article.pictureURL).error(R.drawable.ease_default_image)
+            Glide.with(context).load(article.pictureURL).error(R.drawable.ic_image_not_supported_24)
                 .into(featuredImage)
 
-            try {
-                val parse = dateFormat.parse(article.date)
-                timeTv.text = Utils.getMultilingualSpaceTime(context, parse!!.time)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            // Format date using backend date string directly
+            timeTv.text = Utils.formatBackendDate(context, article.date)
             
             countTv.text = context.getString(R.string.reports_count, article.nSources)
             
-            // Set up sentiment progress bar
+            // Set up sentiment progress bar with animation
             trackView.post {
                 val totalWidth = trackView.width
                 val half = totalWidth / 2
                 val score = CalculateUtil.round(article.metrics.sentiment, 2)
-                val distance = (kotlin.math.abs(score) * half).toInt()
+                val targetDistance = (abs(score) * half).toInt()
                 val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
-                if (distance <= 0) {
-                    // Avoid width==0 which equals MATCH_CONSTRAINT in ConstraintLayout
-                    highlightView.visibility = View.INVISIBLE
+                
+                if (targetDistance <= 0) {
+                    // Keep view GONE for zero distance
+                    highlightView.visibility = View.GONE
                     lp.width = 1
                     lp.marginStart = half
+                    highlightView.layoutParams = lp
                 } else {
-                    highlightView.visibility = View.VISIBLE
-                    lp.width = distance
-                    lp.marginStart = if (score > 0) half else (half - distance)
+                    // Ensure view is GONE and width is 1px before setting up animation
+                    highlightView.clearAnimation()
+                    highlightView.visibility = View.GONE
+                    lp.width = 1  // Use 1px to avoid MATCH_CONSTRAINT, will animate from here
+                    lp.marginStart = half
+                    highlightView.setBackgroundResource(
+                        if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
+                    )
+                    highlightView.layoutParams = lp
+                    
+                    // Wait one frame to ensure GONE state is applied
+                    highlightView.post {
+                        animateSentimentBar(highlightView, half, score, 1f, targetDistance.toFloat())
+                    }
                 }
-                highlightView.layoutParams = lp
-                highlightView.setBackgroundResource(
-                    if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
-                )
             }
 
             // Show recommended hint for big cards (optional)
@@ -240,6 +329,7 @@ class NewsAdapter(
             itemView.setOnClickListener {
                 val intent = Intent(context, NewsDetailActivity::class.java)
                 intent.putExtra("id", article.articleID)
+                intent.putExtra("source_fragment", "home")
                 context.startActivity(intent)
             }
 

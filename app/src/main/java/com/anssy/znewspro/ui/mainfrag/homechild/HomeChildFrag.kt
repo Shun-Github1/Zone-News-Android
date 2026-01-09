@@ -1,5 +1,7 @@
 package com.anssy.znewspro.ui.mainfrag.homechild
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +10,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.PathInterpolator
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
@@ -80,6 +84,9 @@ class HomeChildFrag : BaseFragment() {
         if (mViewBinding.homeBanner.visibility == View.VISIBLE) {
             mViewBinding.homeBanner.startLoop()
         }
+        // Reset button refresh flag when fragment becomes visible
+        // This prevents wave animation from triggering when switching tabs
+        isButtonRefresh = false
     }
 
     private lateinit var mBannerAdapter: HomeAdapter
@@ -101,7 +108,8 @@ class HomeChildFrag : BaseFragment() {
         mViewBinding.homeBanner.setOnPageClickListener {
             val headlinesDTO = mBannerList.get(it)
             val intent = Intent(mContext, NewsDetailActivity::class.java)
-            intent.putExtra("id",headlinesDTO.articleID)
+            intent.putExtra("id", headlinesDTO.articleID)
+            intent.putExtra("source_fragment", "home")
             startActivity(intent)
         }
         if (showBanner) {
@@ -253,6 +261,8 @@ class HomeChildFrag : BaseFragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initModel() {
+        // Reset button refresh flag on initial load to prevent animation on first data load
+        isButtonRefresh = false
         mHomeModel.getHomeDataList(mCurrentType, pageNo, pageSize)
         mHomeModel.homeDataList.observe(viewLifecycleOwner) {
             if (it.code == Constants.SUCCESS_CODE) {
@@ -276,6 +286,13 @@ class HomeChildFrag : BaseFragment() {
                 }
                 if (refresh){
                     mAdapter.notifyDataSetChanged()
+                    // Trigger wave animation after data is refreshed (only for button refresh, not pull-to-refresh or tab switch)
+                    // Check if fragment is currently visible to prevent animation when switching tabs
+                    if (isButtonRefresh && isResumed && isVisible) {
+                        mViewBinding.homeRecycler.post {
+                            triggerWaveAnimation()
+                        }
+                    }
                 }else{
                     mAdapter.notifyItemRangeInserted(lastPosition,it.data.articles.size)
                 }
@@ -366,6 +383,59 @@ class HomeChildFrag : BaseFragment() {
     }
     
     /**
+     * Trigger wave animation for news cards when reloaded via bottom bar
+     * Each card animates down 20dp over 180ms (smooth easeOut), then back to 0px over 320ms (smooth easeInOut)
+     * Stagger delay: cardIndex * 40ms for tighter wave effect
+     */
+    private fun triggerWaveAnimation() {
+        val recyclerView = mViewBinding.homeRecycler
+        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+        
+        // Convert 20dp to pixels
+        val density = resources.displayMetrics.density
+        val offsetPx = 20f * density
+        
+        // Smooth interpolators for more natural motion
+        // FastOutSlowIn curve: (0.4f, 0f, 0.2f, 1f) - smooth deceleration
+        val smoothEaseOut = PathInterpolator(0.4f, 0f, 0.2f, 1f)
+        // Standard easeInOut curve: (0.4f, 0f, 0.6f, 1f) - smooth acceleration and deceleration
+        val smoothEaseInOut = PathInterpolator(0.4f, 0f, 0.6f, 1f)
+        
+        // Reset all card offsets to 0 before animating
+        for (i in 0 until layoutManager.childCount) {
+            val child = layoutManager.getChildAt(i)
+            child?.translationY = 0f
+        }
+        
+        // Animate each visible card with stagger delay
+        for (i in 0 until layoutManager.childCount) {
+            val child = layoutManager.getChildAt(i) ?: continue
+            val cardIndex = i
+            val delay = cardIndex * 40L // 40ms stagger per card for tighter wave
+            
+            // Stage 1: Animate down by 20dp over 180ms with smooth easeOut
+            val stage1 = ObjectAnimator.ofFloat(child, "translationY", 0f, offsetPx).apply {
+                duration = 180
+                interpolator = smoothEaseOut
+            }
+            
+            // Stage 2: Animate back to 0px over 320ms with smooth easeInOut
+            val stage2 = ObjectAnimator.ofFloat(child, "translationY", offsetPx, 0f).apply {
+                duration = 320
+                interpolator = smoothEaseInOut
+                startDelay = 180 // Start after stage 1 completes
+            }
+            
+            // Combine both stages
+            AnimatorSet().apply {
+                playSequentially(stage1, stage2)
+                startDelay = delay
+                start()
+            }
+        }
+    }
+    
+    /**
      * Finish refresh animation with minimum duration to prevent abrupt ending
      */
     private fun finishRefreshWithMinimumDuration(success: Boolean) {
@@ -398,7 +468,7 @@ class HomeChildFrag : BaseFragment() {
             pageSize: Int
         ) {
             Glide.with(mContext!!).load(data.pictureURL)
-                .centerCrop().error(R.drawable.ease_default_image).into(mBannerIv)
+                .centerCrop().error(R.drawable.ic_image_not_supported_24).into(mBannerIv)
             mTitleTv.text = data.title
             mTransTv.text = data.description
             

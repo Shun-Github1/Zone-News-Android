@@ -131,7 +131,100 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:21.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:16.2.0'
     implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如4.0.3
+    // BlurView for liquid glass effect
+    implementation 'com.github.Dimezis:BlurView:version-2.0.3'
 
 
 }
 //    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+
+// Task to print debug key hashes
+task printDebugKeyHashes {
+    doLast {
+        def signingConfig = android.signingConfigs.debug
+        def keystoreFile = signingConfig.storeFile
+        def keystorePassword = signingConfig.storePassword
+        def keyAlias = signingConfig.keyAlias
+        def keyPassword = signingConfig.keyPassword
+        
+        println "\n=========================================="
+        println "DEBUG KEY HASHES"
+        println "=========================================="
+        println "Keystore: ${keystoreFile.absolutePath}"
+        println "Key Alias: ${keyAlias}"
+        println ""
+        
+        def keytool = "${System.getProperty('java.home')}/bin/keytool"
+        def command = [
+            keytool,
+            "-list",
+            "-v",
+            "-keystore", keystoreFile.absolutePath,
+            "-alias", keyAlias,
+            "-storepass", keystorePassword,
+            "-keypass", keyPassword
+        ]
+        
+        def process = command.execute()
+        process.waitFor()
+        
+        def output = process.text
+        println output
+        
+        // Extract SHA-1 and SHA-256 from output
+        def sha1Match = output =~ /SHA1:\s*([A-F0-9:]+)/
+        def sha256Match = output =~ /SHA256:\s*([A-F0-9:]+)/
+        
+        println "\n=========================================="
+        println "EXTRACTED HASHES (for Firebase/Google):"
+        println "=========================================="
+        if (sha1Match) {
+            def sha1 = sha1Match[0][1].replaceAll(":", "").toLowerCase()
+            println "SHA-1: ${sha1}"
+        }
+        if (sha256Match) {
+            def sha256 = sha256Match[0][1].replaceAll(":", "").toLowerCase()
+            println "SHA-256: ${sha256}"
+        }
+        println "=========================================="
+        
+        // Get Facebook key hash (base64 encoded SHA-1 of certificate, 28 characters)
+        println "\n=========================================="
+        println "FACEBOOK KEY HASH (28 characters):"
+        println "=========================================="
+        
+        // Export certificate to temporary file
+        def tempCertFile = File.createTempFile("fb_cert", ".der")
+        tempCertFile.deleteOnExit()
+        
+        def exportCommand = [
+            keytool,
+            "-exportcert",
+            "-alias", keyAlias,
+            "-keystore", keystoreFile.absolutePath,
+            "-storepass", keystorePassword,
+            "-file", tempCertFile.absolutePath
+        ]
+        
+        def exportProcess = exportCommand.execute()
+        exportProcess.waitFor()
+        
+        if (exportProcess.exitValue() == 0 && tempCertFile.exists()) {
+            // Read certificate bytes
+            def certBytes = tempCertFile.readBytes()
+            
+            // Calculate SHA-1 hash of certificate
+            def md = java.security.MessageDigest.getInstance("SHA-1")
+            def sha1Bytes = md.digest(certBytes)
+            
+            // Convert to base64 (Facebook format)
+            def base64Hash = sha1Bytes.encodeBase64().toString().trim()
+            println "Facebook Key Hash: ${base64Hash}"
+            println "Length: ${base64Hash.length()} characters"
+        } else {
+            println "Error: Could not export certificate"
+            println "Exit code: ${exportProcess.exitValue()}"
+        }
+        println "==========================================\n"
+    }
+}

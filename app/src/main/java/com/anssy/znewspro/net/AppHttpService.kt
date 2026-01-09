@@ -10,12 +10,12 @@ import com.anssy.znewspro.entry.SearchListEntry
 import com.anssy.znewspro.entry.TopicListEntry
 import com.anssy.znewspro.entry.ViewHisEntry
 import com.anssy.znewspro.entry.PublisherRegionEntry
-import com.anssy.znewspro.entry.AboutUsEntry
 import com.anssy.znewspro.utils.network.exception.GenericResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -26,9 +26,11 @@ interface AppHttpService {
         @Body requestBody: RequestBody
     ): GenericResponse<LoginEntry> //登录App
 
-    @POST("feed")
+    @GET("feed")
     suspend fun getHomeData(
-        @Body requestBody: RequestBody,
+        @Query("tag") tag: String? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("limit") limit: Int? = null,
         @Query("lang") language: String? = null
     ): HomeDataListEntry //首页数据
 
@@ -40,14 +42,28 @@ interface AppHttpService {
     @GET("search")
     suspend fun searchNewsByTitle(
         @Query("q") title: String,
-        @Query("lang") language: String? = null
+        @Query("lang") language: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("sortby") sortBy: String? = null
     ): GenericResponse<SearchListEntry>//搜索列表
+
+    @GET("profile/sectors")
+    suspend fun getSectors(
+        @Query("lang") language: String? = null
+    ): GenericResponse<TopicListEntry> //获取所有行业板块
+
+    @GET("profile/listtopics")
+    suspend fun getRegions(
+        @Query("lang") language: String? = null,
+        @Query("type") type: String? = "regions"
+    ): GenericResponse<TopicListEntry> //获取所有地区 (topic regions for topic selection menu, uses listtopics with type=regions)
 
     @GET("article/{id}")
     suspend fun queryArticleDetail(
         @Path("id") articleId: String,
         @Query("lang") language: String? = null
-    ): ArticleDetailEntry //新闻详情
+    ): GenericResponse<ArticleDetailEntry> //新闻详情
 
     @POST("article/{id}/feedback")
     suspend fun addFeedBack(
@@ -58,8 +74,8 @@ interface AppHttpService {
     @POST("profile/saveadd")
     suspend fun collectNews(@Query("articleID") id: String): GenericResponse<CommonResponseEntry>//收藏
 
-    @POST("track/action")
-    suspend fun saveNewsHis(@Query("articleID") id: String): GenericResponse<CommonResponseEntry>//添加记录
+    @POST("profile/reading-history")
+    suspend fun saveNewsHis(@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry>//添加记录
 
     @POST("profile/saved/delete")
     suspend fun deleteCollect(@Query("articleID") id: String): GenericResponse<CommonResponseEntry> //取消收藏
@@ -67,7 +83,7 @@ interface AppHttpService {
     @POST("profile/history/delete")
     suspend fun deleteHistory(@Query("articleID") id: String): GenericResponse<CommonResponseEntry> //删除浏览历史
 
-    @POST("feed/personal")
+    @GET("feed/personal")
     suspend fun queryPersonRecommend(
         @Query("offset") pageNo: Int,
         @Query("limit") pageSize: Int,
@@ -77,8 +93,9 @@ interface AppHttpService {
 
     @GET("feed/trending-topics")
     suspend fun getTrendingTopics(
-        @Query("lang") language: String? = null
-    ): GenericResponse<TopicListEntry> //获取热门话题
+        @Query("lang") language: String? = null,
+        @Query("all") all: Boolean? = null
+    ): GenericResponse<TopicListEntry> //获取热门话题 (all=true for all topics, all=false or null for 3-6 topics)
 
     @GET("profile/topics")
     suspend fun queryMyTopics(
@@ -90,7 +107,7 @@ interface AppHttpService {
         @Query("lang") language: String? = null
     ): GenericResponse<TopicListEntry>//获取所有主题
 
-    @GET("profile/edittopic")
+    @POST("profile/edittopic")
     suspend fun editTopic(
         @Query("action") actionType: String,
         @Query("topic") topic: String,
@@ -128,8 +145,24 @@ interface AppHttpService {
     @POST("auth/register")
     suspend fun registerApp(@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry> //注册
 
-    @GET("info/aboutus")
-    suspend fun getAboutUs(
+    @POST("auth/firebase")
+    suspend fun loginWithFirebase(@Body requestBody: RequestBody): GenericResponse<LoginEntry> //Firebase登录 (Google, Facebook, Apple)
+
+    @GET("auth/refresh-token")
+    suspend fun refreshToken(): GenericResponse<CommonResponseEntry> //刷新JWT Token
+
+    @PUT("profile/language")
+    suspend fun changeLanguage(@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry> //更改语言
+
+    @POST("profile/redeem")
+    suspend fun redeemCode(@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry> //兑换Zone News Pro代码
+
+    @POST("profile/cancelsubscription")
+    suspend fun cancelSubscription(): GenericResponse<CommonResponseEntry> //取消Pro订阅
+
+    @GET("info/publisher/{id}")
+    suspend fun getPublisherInfo(
+        @Path("id") publisherId: Int,
         @Query("lang") language: String? = null
-    ): GenericResponse<AboutUsEntry> //关于我们
+    ): GenericResponse<CommonResponseEntry> //获取发布者信息
 }

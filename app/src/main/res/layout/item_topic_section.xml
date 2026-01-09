@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Section Header Container - appears ABOVE and OUTSIDE the card -->
+    <RelativeLayout
+        android:id="@+id/section_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone">
+        
+        <!-- Section Header Text - aligned with menu icons (20dp paddingStart to match topic row) -->
+        <TextView
+            android:id="@+id/section_header_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/section_sectors"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorTextSecondary"
+            android:paddingStart="20dp" />
+        
+        <!-- Clear Button - right-edge aligned with selected state circle indicator (20dp from right) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/section_clear_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:text="@string/clear_all"
+            android:textColor="@color/colorRed"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            android:fontFamily="@font/custom"
+            android:minWidth="0dp"
+            android:visibility="gone"
+            app:rippleColor="@color/colorRed" />
+            
+    </RelativeLayout>
+
+    <!-- Card container for topics -->
+    <LinearLayout
+        android:id="@+id/card_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/topic_list_background"
+        android:visibility="gone">
+
+        <!-- Topics will be added dynamically here -->
+
+    </LinearLayout>
+
+</LinearLayout>
+

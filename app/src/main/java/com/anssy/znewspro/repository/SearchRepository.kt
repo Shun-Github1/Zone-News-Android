@@ -16,7 +16,13 @@ class SearchRepository @Inject constructor(private val appHttpService: AppHttpSe
         return appHttpService.querySearchList(language)
     }
 
-    suspend fun queryNewsByTitle(title: String, language: String? = null): GenericResponse<SearchListEntry> {
-        return appHttpService.searchNewsByTitle(title, language)
+    suspend fun queryNewsByTitle(
+        title: String,
+        language: String? = null,
+        page: Int? = null,
+        limit: Int? = null,
+        sortBy: String? = null
+    ): GenericResponse<SearchListEntry> {
+        return appHttpService.searchNewsByTitle(title, language, page, limit, sortBy)
     }
 }

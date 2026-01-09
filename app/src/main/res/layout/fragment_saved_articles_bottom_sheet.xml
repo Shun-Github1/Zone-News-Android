@@ -18,6 +18,7 @@
         <!-- Close button on the left with brand color -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/closeButton"
+            style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -32,6 +33,7 @@
         <!-- Clear All button on the right in red -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/clearAllButton"
+            style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -47,22 +49,12 @@
 
     </RelativeLayout>
 
-    <!-- Large Header -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/saved_articles"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorTextDeep"
-        android:gravity="start"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp" />
-
-    <!-- Content area -->
+    <!-- Content Container with Header Overlay -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="400dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="0dp">
 
@@ -93,7 +85,8 @@
         <LinearLayout
             android:id="@+id/emptyView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="vertical"
             android:gravity="center"
             android:visibility="gone"
@@ -131,7 +124,28 @@
             android:id="@+id/newsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:paddingTop="76dp"
+            android:clipToPadding="false" />
+
+        <!-- Large Header with Fade Background - overlays scrollable content -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:background="@drawable/bottom_sheet_scroll_fade_top"
+            android:elevation="2dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/saved_articles"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextDeep"
+                android:gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp" />
+        </FrameLayout>
 
     </FrameLayout>
 

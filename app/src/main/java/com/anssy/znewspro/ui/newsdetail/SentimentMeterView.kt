@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.content.ContextCompat
 import com.anssy.znewspro.R
 import kotlin.math.abs
@@ -52,6 +53,7 @@ class SentimentMeterView @JvmOverloads constructor(
 
 	private var targetSentiment: Double = 0.0
 	private var animatedSentiment: Float = 0f
+	private var hasAnimated: Boolean = false
 
 	fun setSentiment(value: Double) {
 		val clamped = when {
@@ -63,6 +65,31 @@ class SentimentMeterView @JvmOverloads constructor(
 		targetSentiment = clamped
 		ValueAnimator.ofFloat(start, clamped.toFloat()).apply {
 			duration = 600
+			addUpdateListener {
+				animatedSentiment = it.animatedValue as Float
+				invalidate()
+			}
+			start()
+		}
+	}
+
+	fun setSentimentWithAnimationFromZero(value: Double) {
+		if (hasAnimated) {
+			// Already animated, just set normally
+			setSentiment(value)
+			return
+		}
+		val clamped = when {
+			value > 1.0 -> 1.0
+			value < -1.0 -> -1.0
+			else -> value
+		}
+		targetSentiment = clamped
+		animatedSentiment = 0f
+		hasAnimated = true
+		ValueAnimator.ofFloat(0f, clamped.toFloat()).apply {
+			duration = 800
+			interpolator = AccelerateDecelerateInterpolator()
 			addUpdateListener {
 				animatedSentiment = it.animatedValue as Float
 				invalidate()

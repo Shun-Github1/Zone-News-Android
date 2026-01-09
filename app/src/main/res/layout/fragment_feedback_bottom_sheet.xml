@@ -117,9 +117,8 @@
                     android:hint="@string/ios_feedback_placeholder"
                     android:textColor="@color/colorTextDeep"
                     android:textColorHint="@color/colorTextHint"
-                    android:textSize="17sp"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="4dp" />
+            android:textSize="17sp"
+            android:fontFamily="sans-serif" />
 
             </FrameLayout>
 

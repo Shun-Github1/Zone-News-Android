@@ -54,12 +54,13 @@ class MyCollectListActivity:BaseActivity() {
                 val newsIv: ImageView = holder.getView(R.id.news_iv)
                 val titleTv: TextView = holder.getView(R.id.news_title_tv)
                 val timeTv: TextView = holder.getView(R.id.news_time_tv)
-                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ease_default_image).into(newsIv)
+                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ic_image_not_supported_24).into(newsIv)
                 titleTv.text = t.title
                 timeTv.text = t.date
                 holder.convertView.setOnClickListener {
                     val intent = Intent(mContext, NewsDetailActivity::class.java)
-                    intent.putExtra("id",t.articleID)
+                    intent.putExtra("id", t.articleID)
+                    intent.putExtra("source_fragment", "my")
                     startActivity(intent)
                 }
             }

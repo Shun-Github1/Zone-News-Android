@@ -111,17 +111,42 @@ public class SortPopupWindow extends BasePopupWindow {
 
     @Override
     public void showPopupWindow(View anchorView) {
-        // Align popup's right edge with anchor's right edge, then add 16dp margin from screen edge
+        // Align popup's top with anchor's top (overlap)
+        // Set horizontal offset to 0
+        setOffsetX(0);
+        
+        // Calculate vertical offset to align top of popup with top of anchor
+        // BasePopupWindow by default aligns bottom of popup with bottom of anchor
+        // We need to move it up by the height of the anchor
         float density = anchorView.getContext().getResources().getDisplayMetrics().density;
-        int popupWidth = (int) (216 * density);
+        int anchorHeight = anchorView.getHeight();
+        
+        // Measure popup height
+        View contentView = getContentView();
+        contentView.measure(
+            android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED),
+            android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED)
+        );
+        int popupHeight = contentView.getMeasuredHeight();
+        
+        // Offset Y: move up by anchor height to align tops
+        // Negative value moves up
+        setOffsetY(-anchorHeight);
+        
+        // Make popup width match the anchor width
         int anchorWidth = anchorView.getWidth();
-        int rightMargin = (int) (4 * density);
-        
-        // Move popup left so its right edge is 16dp from screen edge
-        setOffsetX(anchorWidth - popupWidth - rightMargin);
-        
-        // Add 2dp spacing between the menu and button
-        setOffsetY((int) (2 * density));
+        if (anchorWidth > 0) {
+            int contentWidth = contentView.getMeasuredWidth();
+            
+            // Set popup width to be at least as wide as the anchor
+            if (contentWidth < anchorWidth) {
+                android.view.ViewGroup.LayoutParams params = contentView.getLayoutParams();
+                if (params != null) {
+                    params.width = anchorWidth;
+                    contentView.setLayoutParams(params);
+                }
+            }
+        }
         
         super.showPopupWindow(anchorView);
     }

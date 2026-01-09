@@ -2,6 +2,7 @@ package com.anssy.znewspro.ui.newsdetail
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.GestureDetector
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.ViewGroup
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
@@ -20,6 +22,7 @@ import android.view.animation.Interpolator
 import android.view.animation.Transformation
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,17 +36,29 @@ import com.anssy.znewspro.R
 import com.anssy.znewspro.base.BaseActivity
 import com.anssy.znewspro.databinding.ActivityNewsDetailBinding
 import com.anssy.znewspro.entry.ArticleDetailEntry
+import com.anssy.znewspro.entry.ViewHisEntry
+import com.anssy.znewspro.model.MyModel
 import com.anssy.znewspro.model.NewsDetailModel
 
 import com.anssy.znewspro.utils.ToastUtils
 import com.anssy.znewspro.utils.HapticFeedbackHelper
+import com.anssy.znewspro.utils.Utils
+import com.anssy.znewspro.utils.SharedPreferenceUtils
 import com.bumptech.glide.Glide
 
 import com.google.android.material.card.MaterialCardView
 import com.anssy.znewspro.utils.SystemDialogUtils
 import com.anssy.znewspro.selfview.popup.PublisherArticlesSortPopupWindow
+import com.anssy.znewspro.selfview.popup.NewsDetailSettingsPopupWindow
 import com.anssy.znewspro.utils.SwipeGestureHelper
+import com.anssy.znewspro.utils.ThemeManager
+import com.anssy.znewspro.utils.LanguageManager
+import com.anssy.znewspro.utils.Language
+import androidx.core.os.ConfigurationCompat
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 /**
@@ -53,13 +68,19 @@ import kotlinx.coroutines.launch
  */
 class NewsDetailActivity : BaseActivity() {
     private val newsDetailModel:NewsDetailModel by viewModels ()
+    private val myModel: MyModel by viewModels()
+    @Inject lateinit var languageManager: LanguageManager
     private lateinit var mViewBinding: ActivityNewsDetailBinding
 
+    // Track saved state based on saved articles list from backend
+    private var savedArticleIds: Set<String> = emptySet()
+    private var isArticleSaved: Boolean = false
     
     // Floating bar control
-    private var mBottomView: MaterialCardView? = null
+    private var mBottomView: FrameLayout? = null
     private var isBottomBarHidden: Boolean = false
     private val autoShowRunnable = Runnable { showBottomBar() }
+    private var isBottomBarInitialized: Boolean = false
     
     // Publisher articles sorting
     private var currentSortOption = PublisherArticlesSortPopupWindow.SortOption.PUBLISHER_NAME
@@ -78,6 +99,22 @@ class NewsDetailActivity : BaseActivity() {
         val articleID: String,
         val isCurrent: Boolean = false
     )
+    
+    // Card collapse/expand state
+    private val cardCollapsedState = mutableMapOf<String, Boolean>()
+    
+    // Card order management
+    private val cardIds = listOf("sentiment", "publisher", "subjectivity", "timeline")
+    private val defaultCardOrder = listOf("sentiment", "publisher", "subjectivity", "timeline")
+    
+    // Summary language preference
+    private var currentSummaryLanguage: String = Constants.LANGUAGE_ENGLISH_UK
+    
+    // Sentiment animation tracking
+    private var sentimentValue: Double = 0.0
+    private var hasSentimentCardAnimated: Boolean = false
+    private var sentimentCardPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewBinding = ActivityNewsDetailBinding.inflate(layoutInflater)
@@ -92,9 +129,13 @@ class NewsDetailActivity : BaseActivity() {
         val incomingId = intent.getStringExtra("id")
         articleId = if (!incomingId.isNullOrBlank() && incomingId != getString(R.string.null_string)) incomingId else ""
 
+        // Load saved summary language preference
+        loadSummaryLanguagePreference()
+
         mBottomView = mViewBinding.newsDetailBottomCard
 		setupToolbar()
         initModel()
+        setupBottomBarBlur()
         setupFloatingBar()
         setupGestureDetection()
         setupTimelineStatic()
@@ -104,6 +145,11 @@ class NewsDetailActivity : BaseActivity() {
 		mViewBinding.generateContextBtn.setOnClickListener {
 			// Placeholder for future context generation
 		}
+        
+        // Setup settings button
+        mViewBinding.settingsButtonLayout.setOnClickListener {
+            showSettingsPopup(it)
+        }
         
         // Setup info button click listeners
         mViewBinding.sentimentInfoBtn.setOnClickListener { 
@@ -124,6 +170,13 @@ class NewsDetailActivity : BaseActivity() {
             updateSortIndicator()
             applyCurrentSort()
         }
+        
+        // Load collapsed states before setting up controls
+        loadCardCollapsedStates()
+        // Setup card collapse/expand and drag functionality
+        setupCardControls()
+        // Initialize and apply card order
+        applyCardOrder()
 	}
 
 	private fun setupToolbar() {
@@ -144,7 +197,8 @@ class NewsDetailActivity : BaseActivity() {
 				}
 				R.id.action_save -> {
 					if (mArticleDetailEntry == null) return@setOnMenuItemClickListener true
-					if (mArticleDetailEntry!!.liked) {
+					// Use local isArticleSaved state which is determined from saved articles list
+					if (isArticleSaved) {
 						newsDetailModel.deleteCollect(articleId)
 					} else {
 						newsDetailModel.collectHis(articleId)
@@ -170,7 +224,26 @@ class NewsDetailActivity : BaseActivity() {
      *获取数据
      */
     private fun initModel(){
-        newsDetailModel.queryNewsDetail(articleId)
+        // Initialize save button as unsaved (default state before we know the actual state)
+        initSaveButtonAsUnsaved()
+        
+        // Fetch saved articles list to determine actual saved state
+        myModel.queryMyCollect()
+        
+        // Observe saved articles list from backend
+        myModel.myCollectEntry.observe(this) { response ->
+            if (response != null && response.code == Constants.SUCCESS_CODE && response.data?.articles != null) {
+                // Build set of saved article IDs
+                savedArticleIds = response.data.articles.mapNotNull { it.articleID }.toSet()
+                // Check if current article is in the saved list
+                isArticleSaved = savedArticleIds.contains(articleId)
+                // Update button state based on actual saved status
+                updateSaveButtonState(isArticleSaved)
+            }
+            // If the request fails or returns empty, keep button as unsaved (default)
+        }
+        
+        newsDetailModel.queryNewsDetail(articleId, currentSummaryLanguage)
         newsDetailModel.newsDetailEntry.observe(this) {
             if (it.code == Constants.SUCCESS_CODE) {
                 completeView(it.data)
@@ -207,11 +280,8 @@ class NewsDetailActivity : BaseActivity() {
             if (it!=null){
                 if (it.code== Constants.SUCCESS_CODE){
                     ToastUtils.showShortToast(mContext!!,getString(R.string.collect_success_toast))
-                    mArticleDetailEntry!!.liked = true
-					val saveItem = mViewBinding.topAppBar.menu.findItem(R.id.action_save)
-					// Article is now saved - show filled icon
-					saveItem.setIcon(R.drawable.ic_bookmark_filled_24)
-					saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary))
+                    isArticleSaved = true
+                    updateSaveButtonState(true)
                 }else{
                     if (it.code==1000){
                         SystemDialogUtils.showErrorMessage(this, getString(R.string.server_error_message))
@@ -225,11 +295,8 @@ class NewsDetailActivity : BaseActivity() {
             if (it!=null){
                 if (it.code== Constants.SUCCESS_CODE){
                     ToastUtils.showShortToast(mContext!!,getString(R.string.uncollect_success_toast))
-                    mArticleDetailEntry!!.liked = false
-					val saveItem = mViewBinding.topAppBar.menu.findItem(R.id.action_save)
-					// Article is now unsaved - show outline icon
-					saveItem.setIcon(R.drawable.ic_bookmark_outline_24)
-					saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorTextDeep))
+                    isArticleSaved = false
+                    updateSaveButtonState(false)
                 }else{
                     if (it.code==1000){
                         SystemDialogUtils.showErrorMessage(this, getString(R.string.server_error_message))
@@ -241,11 +308,34 @@ class NewsDetailActivity : BaseActivity() {
         }
 
     }
+    
+    /**
+     * Initialize save button as unsaved (default state)
+     */
+    private fun initSaveButtonAsUnsaved() {
+        val saveItem = mViewBinding.topAppBar.menu.findItem(R.id.action_save)
+        saveItem.setIcon(R.drawable.ic_bookmark_outline_24)
+        saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorTextDeep))
+    }
+    
+    /**
+     * Update save button state based on whether article is saved
+     */
+    private fun updateSaveButtonState(isSaved: Boolean) {
+        val saveItem = mViewBinding.topAppBar.menu.findItem(R.id.action_save)
+        if (isSaved) {
+            saveItem.setIcon(R.drawable.ic_bookmark_filled_24)
+            saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary))
+        } else {
+            saveItem.setIcon(R.drawable.ic_bookmark_outline_24)
+            saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorTextDeep))
+        }
+    }
     private var mArticleDetailEntry: ArticleDetailEntry.DataDTO?=null
     @SuppressLint("NotifyDataSetChanged")
     private fun completeView(articleDetailEntry: ArticleDetailEntry.DataDTO){
         mArticleDetailEntry = articleDetailEntry
-        Glide.with(mContext!!).load(articleDetailEntry.pictureURL).error(R.drawable.ease_default_image)
+        Glide.with(mContext!!).load(articleDetailEntry.pictureURL).error(R.drawable.ic_image_not_supported_24)
             .into(mViewBinding.newsIv)
         mViewBinding.newsTitleTv.text = articleDetailEntry.title
         
@@ -259,41 +349,37 @@ class NewsDetailActivity : BaseActivity() {
             // Handle synopsis section
             if (!description.synopsis.isNullOrEmpty()) {
                 mViewBinding.newsSynopsisTv.text = description.synopsis
-                mViewBinding.synopsisContainer.visibility = View.VISIBLE
+                mViewBinding.newsSynopsisTv.visibility = View.VISIBLE
                 android.util.Log.d("NewsDetail", "Synopsis displayed")
             } else {
-                mViewBinding.synopsisContainer.visibility = View.GONE
+                mViewBinding.newsSynopsisTv.visibility = View.GONE
                 android.util.Log.d("NewsDetail", "Synopsis hidden - empty or null")
             }
             
             // Handle implications section
             if (!description.implications.isNullOrEmpty()) {
                 mViewBinding.newsImplicationsTv.text = description.implications
-                mViewBinding.implicationsContainer.visibility = View.VISIBLE
+                mViewBinding.newsImplicationsTv.visibility = View.VISIBLE
                 android.util.Log.d("NewsDetail", "Implications displayed")
             } else {
-                mViewBinding.implicationsContainer.visibility = View.GONE
+                mViewBinding.newsImplicationsTv.visibility = View.GONE
                 android.util.Log.d("NewsDetail", "Implications hidden - empty or null")
             }
         } ?: run {
             // Fallback for null description
             android.util.Log.d("NewsDetail", "Description is null")
-            mViewBinding.synopsisContainer.visibility = View.GONE
-            mViewBinding.implicationsContainer.visibility = View.GONE
+            mViewBinding.newsSynopsisTv.visibility = View.GONE
+            mViewBinding.newsImplicationsTv.visibility = View.GONE
         }
-		// Update toolbar save icon state
-		val saveItem = mViewBinding.topAppBar.menu.findItem(R.id.action_save)
-		if (articleDetailEntry.liked){
-			// Article is saved - show filled icon
-			saveItem.setIcon(R.drawable.ic_bookmark_filled_24)
-			saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary))
-		}else{
-			// Article is not saved - show outline icon
-			saveItem.setIcon(R.drawable.ic_bookmark_outline_24)
-			saveItem.iconTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorTextDeep))
-		}
-		// Sentiment meter
-		mViewBinding.sentimentMeter.setSentiment(articleDetailEntry.metrics.sentiment)
+		// Note: Save button state is now determined by the saved articles list fetched in initModel()
+		// The button state is managed by isArticleSaved and updateSaveButtonState()
+		
+		// Sentiment meter - store value for animation when card becomes visible
+		sentimentValue = articleDetailEntry.metrics.sentiment
+		hasSentimentCardAnimated = false
+		// Initialize sentiment meter to 0, will animate when card becomes visible
+		mViewBinding.sentimentMeter.setSentiment(0.0)
+        startSentimentCardVisibilityWatcher()
 		// Subjectivity score
 		findViewById<SubjectivityScoreView>(R.id.subjectivity_score).setSubjectivity(articleDetailEntry.metrics.subjectivity)
 		// Publisher distribution
@@ -446,24 +532,13 @@ class NewsDetailActivity : BaseActivity() {
                 containerLp.topMargin = if (item.isCurrent) dp(itemView, -3f) else dp(itemView, 0f)
                 circleContainer.layoutParams = containerLp
 
-                // Date format MMM d
-                date.text = formatDisplayDate(item.date)
+                // Use relative time format (e.g., "2 days ago")
+                date.text = Utils.formatBackendDate(itemView.context, item.date)
 
                 itemView.setOnClickListener { onClick(item) }
             }
 
             private fun dp(view: View, v: Float): Int = (v * view.resources.displayMetrics.density).toInt()
-
-            private fun formatDisplayDate(src: String): String {
-                return try {
-                    val f = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US)
-                    val d = f.parse(src)
-                    val out = java.text.SimpleDateFormat("MMM d", java.util.Locale.US)
-                    out.format(d!!)
-                } catch (e: Exception) {
-                    src
-                }
-            }
         }
     }
 
@@ -487,11 +562,12 @@ class NewsDetailActivity : BaseActivity() {
                 val biasTv = holder.getView<TextView>(R.id.article_publisher_bias)
                 val titleTv = holder.getView<TextView>(R.id.article_title)
                 
-                Glide.with(this@NewsDetailActivity).load(t.publisherIcon).error(R.drawable.ease_default_image).into(iconIv)
+                Glide.with(this@NewsDetailActivity).load(t.publisherIcon).error(R.drawable.ic_image_not_supported_24).into(iconIv)
                 nameTv.text = if (t.publisherName.isNullOrEmpty()) getString(R.string.about) else t.publisherName
                 
-                // Setup publisher bias tag
-                if (t.publisherStance != null && !t.publisherStance.tag.isNullOrEmpty()) {
+                // Setup publisher bias tag - only show if report patterns is enabled
+                val reportPatternsEnabled = com.anssy.znewspro.utils.SharedPreferenceUtils.getBoolean(this@NewsDetailActivity, "report_patterns_enabled")
+                if (reportPatternsEnabled && t.publisherStance != null && !t.publisherStance.tag.isNullOrEmpty()) {
                     biasTv.visibility = View.VISIBLE
                     biasTv.text = getPublisherBiasText(t.publisherStance.tag)
                     biasTv.setTextColor(getPublisherBiasTextColor(t.publisherStance.tag))
@@ -515,12 +591,7 @@ class NewsDetailActivity : BaseActivity() {
                     }
                     val link = ensureHttpUrl(linkRaw ?: "")
                     if (link.isNotEmpty()) {
-                        val intent = Intent(this@NewsDetailActivity, com.anssy.znewspro.ui.web.WebActivity::class.java)
-                        intent.putExtra(getString(R.string.url_key), link)
-                        intent.putExtra(getString(R.string.type_key), getString(R.string.news_type))
-                        intent.putExtra(getString(R.string.publisher_icon_key), t.publisherIcon)
-                        intent.putExtra(getString(R.string.publisher_name_key), t.publisherName)
-                        startActivity(intent)
+                        openArticleLink(link, t.publisherIcon, t.publisherName)
                     } else {
                         ToastUtils.showShortToast(this@NewsDetailActivity, getString(R.string.open_in_browser))
                     }
@@ -553,6 +624,31 @@ class NewsDetailActivity : BaseActivity() {
         })
     }
 
+    /**
+     * Open article link based on user preference (in-app browser or external browser)
+     */
+    private fun openArticleLink(url: String, publisherIcon: String?, publisherName: String?) {
+        val articleOpeningMethod = SharedPreferenceUtils.getString(this, "article_opening_method")
+        
+        if (articleOpeningMethod == "external") {
+            // Open in external browser or app
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+                startActivity(intent)
+            } catch (e: Exception) {
+                ToastUtils.showShortToast(this, getString(R.string.open_in_browser))
+            }
+        } else {
+            // Default: Open in in-app browser (WebActivity)
+            val intent = Intent(this, com.anssy.znewspro.ui.web.WebActivity::class.java)
+            intent.putExtra(getString(R.string.url_key), url)
+            intent.putExtra(getString(R.string.type_key), getString(R.string.news_type))
+            intent.putExtra(getString(R.string.publisher_icon_key), publisherIcon)
+            intent.putExtra(getString(R.string.publisher_name_key), publisherName)
+            startActivity(intent)
+        }
+    }
+    
     private fun ensureHttpUrl(url: String): String {
         if (url.isEmpty()) return url
         val trimmed = url.trim()
@@ -602,41 +698,123 @@ class NewsDetailActivity : BaseActivity() {
     }
     
     /**
+     * Setup blur effect for bottom navigation bar to achieve liquid glass appearance
+     */
+    private fun setupBottomBarBlur() {
+        val blurView = mViewBinding.newsDetailBottomBlurView ?: return
+        val rootView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
+        val glassOverlay = findViewById<View>(R.id.newsDetailBottomGlassOverlay)
+        val cardView = mBottomView
+        
+        // Ensure FrameLayout is transparent
+        cardView?.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        
+        // Setup fully rounded corners outline for clipping and elevation for shadow (pill-shaped)
+        cardView?.post {
+            val cornerRadiusPx = (28 * resources.displayMetrics.density).toInt()
+            cardView?.outlineProvider = object : android.view.ViewOutlineProvider() {
+                override fun getOutline(view: android.view.View, outline: android.graphics.Outline) {
+                    outline.setRoundRect(0, 0, view.width, view.height, cornerRadiusPx.toFloat())
+                }
+            }
+            cardView?.clipToOutline = true
+            
+            // Add subtle elevation for shadow effect (2dp for slight shadow)
+            cardView?.elevation = 2 * resources.displayMetrics.density
+        }
+        
+        // Set rounded background drawable on BlurView for proper clipping
+        blurView.setBackgroundResource(R.drawable.bottom_nav_rounded_background)
+        
+        // Configure blur view to blur content behind the navigation bar
+        blurView.setupWith(rootView, RenderScriptBlur(this))
+            .setBlurRadius(20f) // Blur radius for frosted glass effect
+            .setBlurAutoUpdate(true) // Automatically update blur when content changes
+        
+        // Set translucent background drawable on the overlay view based on theme
+        // Using drawable instead of solid color to ensure rounded corners work properly
+        val glassOverlayDrawable = if (ThemeManager.isDarkModeActive(this)) {
+            ContextCompat.getDrawable(this, R.drawable.bottom_nav_glass_overlay_dark)
+        } else {
+            ContextCompat.getDrawable(this, R.drawable.bottom_nav_glass_overlay_light)
+        }
+        
+        // Apply translucent background drawable to overlay view for liquid glass effect
+        glassOverlay?.background = glassOverlayDrawable
+    }
+    
+    /**
      * Setup floating bar functionality
      */
     private fun setupFloatingBar() {
-        // Setup radio button click listeners
-        mViewBinding.newsDetailRg.setOnCheckedChangeListener { _, checkedId ->
-            // Provide haptic feedback for bottom bar navigation
-            HapticFeedbackHelper.performNavigationHaptic(mViewBinding.newsDetailRg)
-            
-            when (checkedId) {
-                R.id.news_detail_home_rb -> {
-                    // Navigate to home
-                    finish()
-                }
-                R.id.news_detail_special_rb -> {
-                    // Navigate to person recommend
-                    val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
-                    intent.putExtra("fragment", "special")
-                    startActivity(intent)
-                    finish()
-                }
-                R.id.news_detail_my_rb -> {
-                    // Navigate to profile
-                    val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
-                    intent.putExtra("fragment", "my")
-                    startActivity(intent)
-                    finish()
-                }
-                R.id.news_detail_search_rb -> {
-                    // Navigate to search
-                    val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
-                    intent.putExtra("fragment", "search")
-                    startActivity(intent)
-                    finish()
-                }
+        // Clear any initial selection to prevent immediate navigation
+        mViewBinding.newsDetailRg.clearCheck()
+        
+        // Note: Navigation is handled by individual click listeners below
+        // This allows clicking the already-selected button to act as a back button
+        
+        // Mark as initialized and set initial checked state after layout settles
+        mViewBinding.newsDetailRg.post {
+            // Check which page the user came from (default to home)
+            val sourceFragment = intent.getStringExtra("source_fragment") ?: "home"
+            val radioButtonId = when (sourceFragment) {
+                "special" -> R.id.news_detail_special_rb
+                "my" -> R.id.news_detail_my_rb
+                "search" -> R.id.news_detail_search_rb
+                else -> R.id.news_detail_home_rb
             }
+            
+            // Set the appropriate radio button as checked (won't trigger navigation yet)
+            mViewBinding.newsDetailRg.check(radioButtonId)
+            
+            // Update tab backgrounds for the selected state
+            updateTabBackgrounds()
+            
+            // Now mark as initialized - future changes will trigger navigation
+            isBottomBarInitialized = true
+        }
+        
+        // Add click listeners to handle navigation
+        // Home button always goes to home, other buttons go to their respective pages
+        // Use fade animations for consistent navigation
+        mViewBinding.newsDetailRg.findViewById<RadioButton>(R.id.news_detail_home_rb).setOnClickListener { view ->
+            if (!isBottomBarInitialized) return@setOnClickListener
+            HapticFeedbackHelper.performNavigationHaptic(view)
+            val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
+            intent.putExtra("fragment", "home")
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
+        }
+        
+        mViewBinding.newsDetailRg.findViewById<RadioButton>(R.id.news_detail_special_rb).setOnClickListener { view ->
+            if (!isBottomBarInitialized) return@setOnClickListener
+            HapticFeedbackHelper.performNavigationHaptic(view)
+            val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
+            intent.putExtra("fragment", "special")
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
+        }
+        
+        mViewBinding.newsDetailRg.findViewById<RadioButton>(R.id.news_detail_my_rb).setOnClickListener { view ->
+            if (!isBottomBarInitialized) return@setOnClickListener
+            HapticFeedbackHelper.performNavigationHaptic(view)
+            val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
+            intent.putExtra("fragment", "my")
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
+        }
+        
+        mViewBinding.newsDetailRg.findViewById<RadioButton>(R.id.news_detail_search_rb).setOnClickListener { view ->
+            if (!isBottomBarInitialized) return@setOnClickListener
+            HapticFeedbackHelper.performNavigationHaptic(view)
+            val intent = Intent(this, com.anssy.znewspro.ui.MainActivity::class.java)
+            intent.putExtra("fragment", "search")
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
         }
         
         // Setup scroll listener for the NestedScrollView
@@ -668,6 +846,80 @@ class NewsDetailActivity : BaseActivity() {
         
         // Schedule initial auto-show of bottom bar
         scheduleBottomBarAutoShow()
+    }
+    
+    /**
+     * Start a one-time watcher that triggers the sentiment animation as soon as the card is visible.
+     * Uses pre-draw callbacks so it works both when initially on-screen and when scrolled into view.
+     */
+    private fun startSentimentCardVisibilityWatcher() {
+        val sentimentCard = mViewBinding.sentimentCard
+        val observer = sentimentCard.viewTreeObserver
+
+        // Clear any previous listener before adding a new one
+        sentimentCardPreDrawListener?.let { existing ->
+            observer.takeIf { it.isAlive }?.removeOnPreDrawListener(existing)
+        }
+
+        sentimentCardPreDrawListener = object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                if (hasSentimentCardAnimated) {
+                    sentimentCard.viewTreeObserver.takeIf { it.isAlive }?.removeOnPreDrawListener(this)
+                    sentimentCardPreDrawListener = null
+                    return true
+                }
+
+                if (isSentimentCardVisible()) {
+                    animateSentimentCard()
+                    sentimentCard.viewTreeObserver.takeIf { it.isAlive }?.removeOnPreDrawListener(this)
+                    sentimentCardPreDrawListener = null
+                }
+                return true
+            }
+        }
+
+        observer.takeIf { it.isAlive }?.addOnPreDrawListener(sentimentCardPreDrawListener)
+    }
+
+    private fun isSentimentCardVisible(): Boolean {
+        val sentimentCard = mViewBinding.sentimentCard
+        if (!sentimentCard.isShown) return false
+        val visibleRect = Rect()
+        return sentimentCard.getGlobalVisibleRect(visibleRect)
+    }
+
+    private fun animateSentimentCard() {
+        if (hasSentimentCardAnimated) return
+        hasSentimentCardAnimated = true
+        mViewBinding.sentimentMeter.setSentimentWithAnimationFromZero(sentimentValue)
+    }
+    
+    /**
+     * Update RadioButton backgrounds to show selected tab highlight
+     */
+    private fun updateTabBackgrounds() {
+        val isDarkMode = ThemeManager.isDarkModeActive(this)
+        val selectedDrawable = if (isDarkMode) {
+            ContextCompat.getDrawable(this, R.drawable.bottom_nav_tab_selected_dark)
+        } else {
+            ContextCompat.getDrawable(this, R.drawable.bottom_nav_tab_selected_light)
+        }
+        
+        val radioGroup = mViewBinding.newsDetailRg
+        val radioButtons = listOf(
+            radioGroup.findViewById<RadioButton>(R.id.news_detail_home_rb),
+            radioGroup.findViewById<RadioButton>(R.id.news_detail_special_rb),
+            radioGroup.findViewById<RadioButton>(R.id.news_detail_my_rb),
+            radioGroup.findViewById<RadioButton>(R.id.news_detail_search_rb)
+        )
+        
+        radioButtons.forEach { radioButton ->
+            radioButton?.background = if (radioButton?.isChecked == true) {
+                selectedDrawable
+            } else {
+                null // Transparent background for unselected tabs
+            }
+        }
     }
     
     /**
@@ -888,6 +1140,99 @@ class NewsDetailActivity : BaseActivity() {
             addView(tv)
         }
         showInfoPopup(anchor, content)
+    }
+
+    /**
+     * Show settings popup
+     */
+    private fun showSettingsPopup(anchor: View) {
+        val popup = NewsDetailSettingsPopupWindow(this, object : NewsDetailSettingsPopupWindow.Callback {
+            override fun onOptionSelected(option: NewsDetailSettingsPopupWindow.SettingOption) {
+                when (option) {
+                    NewsDetailSettingsPopupWindow.SettingOption.ENGLISH -> {
+                        currentSummaryLanguage = Constants.LANGUAGE_ENGLISH_UK
+                        saveSummaryLanguagePreference(currentSummaryLanguage)
+                        // Reload article with new language
+                        newsDetailModel.queryNewsDetail(articleId, currentSummaryLanguage)
+                    }
+                    NewsDetailSettingsPopupWindow.SettingOption.TRADITIONAL_CHINESE -> {
+                        currentSummaryLanguage = Constants.LANGUAGE_TRADITIONAL_CHINESE
+                        saveSummaryLanguagePreference(currentSummaryLanguage)
+                        // Reload article with new language
+                        newsDetailModel.queryNewsDetail(articleId, currentSummaryLanguage)
+                    }
+                    NewsDetailSettingsPopupWindow.SettingOption.SIMPLIFIED_CHINESE -> {
+                        currentSummaryLanguage = Constants.LANGUAGE_SIMPLIFIED_CHINESE
+                        saveSummaryLanguagePreference(currentSummaryLanguage)
+                        // Reload article with new language
+                        newsDetailModel.queryNewsDetail(articleId, currentSummaryLanguage)
+                    }
+                    else -> {
+                        // STRAIGHTFORWARD and NUANCED options are placeholders for future functionality
+                    }
+                }
+            }
+        })
+        // Set current language selection
+        val currentLanguageOption = when (currentSummaryLanguage) {
+            Constants.LANGUAGE_ENGLISH_UK -> NewsDetailSettingsPopupWindow.SettingOption.ENGLISH
+            Constants.LANGUAGE_TRADITIONAL_CHINESE -> NewsDetailSettingsPopupWindow.SettingOption.TRADITIONAL_CHINESE
+            Constants.LANGUAGE_SIMPLIFIED_CHINESE -> NewsDetailSettingsPopupWindow.SettingOption.SIMPLIFIED_CHINESE
+            else -> NewsDetailSettingsPopupWindow.SettingOption.ENGLISH
+        }
+        popup.setCurrentLanguage(currentLanguageOption)
+        popup.showPopupWindow(anchor)
+    }
+    
+    /**
+     * Load saved summary language preference
+     * If user has set a preference, use it. Otherwise, detect and match the current app language.
+     */
+    private fun loadSummaryLanguagePreference() {
+        val savedLanguage = com.anssy.znewspro.utils.SharedPreferenceUtils.getString(this, "news_detail_summary_language")
+        currentSummaryLanguage = if (savedLanguage.isNotEmpty()) {
+            // User has set a preference, use it
+            savedLanguage
+        } else {
+            // No preference saved, detect and match current app language
+            // Use LanguageManager if injected, otherwise detect directly
+            if (::languageManager.isInitialized) {
+                languageManager.getCurrentLanguageCode()
+            } else {
+                // Fallback: detect language directly using the same logic as LanguageManager
+                getCurrentLanguageCodeDirectly()
+            }
+        }
+    }
+    
+    /**
+     * Get current language code directly without LanguageManager injection
+     * Uses the same logic as LanguageManager.getCurrentLanguageCode()
+     */
+    private fun getCurrentLanguageCodeDirectly(): String {
+        val locale = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            ConfigurationCompat.getLocales(resources.configuration)[0]
+        } else {
+            @Suppress("DEPRECATION")
+            resources.configuration.locale
+        }
+
+        // Use full language tag if possible (e.g. zh-HK, zh-TW, en-US)
+        val localeTag = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            locale?.toLanguageTag() ?: "en"
+        } else {
+            val language = locale?.language ?: "en"
+            val country = try { locale?.country } catch (_: Throwable) { null }
+            if (!country.isNullOrEmpty()) "$language-$country" else language
+        }
+        return Language.getBackendCode(localeTag)
+    }
+    
+    /**
+     * Save summary language preference
+     */
+    private fun saveSummaryLanguagePreference(language: String) {
+        com.anssy.znewspro.utils.SharedPreferenceUtils.saveString(this, "news_detail_summary_language", language)
     }
 
     /**
@@ -1115,11 +1460,12 @@ class NewsDetailActivity : BaseActivity() {
                     val biasTv = holder.getView<TextView>(R.id.article_publisher_bias)
                     val titleTv = holder.getView<TextView>(R.id.article_title)
                     
-                    Glide.with(this@NewsDetailActivity).load(t.publisherIcon).error(R.drawable.ease_default_image).into(iconIv)
+                    Glide.with(this@NewsDetailActivity).load(t.publisherIcon).error(R.drawable.ic_image_not_supported_24).into(iconIv)
                     nameTv.text = if (t.publisherName.isNullOrEmpty()) getString(R.string.about) else t.publisherName
                     
-                    // Setup publisher bias tag
-                    if (t.publisherStance != null && !t.publisherStance.tag.isNullOrEmpty()) {
+                    // Setup publisher bias tag - only show if report patterns is enabled
+                    val reportPatternsEnabled = com.anssy.znewspro.utils.SharedPreferenceUtils.getBoolean(this@NewsDetailActivity, "report_patterns_enabled")
+                    if (reportPatternsEnabled && t.publisherStance != null && !t.publisherStance.tag.isNullOrEmpty()) {
                         biasTv.visibility = View.VISIBLE
                         biasTv.text = getPublisherBiasText(t.publisherStance.tag)
                         biasTv.setTextColor(getPublisherBiasTextColor(t.publisherStance.tag))
@@ -1143,12 +1489,7 @@ class NewsDetailActivity : BaseActivity() {
                         }
                         val link = ensureHttpUrl(linkRaw ?: "")
                         if (link.isNotEmpty()) {
-                            val intent = Intent(this@NewsDetailActivity, com.anssy.znewspro.ui.web.WebActivity::class.java)
-                            intent.putExtra(getString(R.string.url_key), link)
-                            intent.putExtra(getString(R.string.type_key), getString(R.string.news_type))
-                            intent.putExtra(getString(R.string.publisher_icon_key), t.publisherIcon)
-                            intent.putExtra(getString(R.string.publisher_name_key), t.publisherName)
-                            startActivity(intent)
+                            openArticleLink(link, t.publisherIcon, t.publisherName)
                         }
                     }
                 }
@@ -1184,6 +1525,402 @@ class NewsDetailActivity : BaseActivity() {
                 }.let { if (isAscending) it else it.reversed() })
             }
         }
+    }
+    
+    private fun setupCardControls() {
+        // Setup chevron buttons for collapse/expand
+        setupChevronButton("sentiment", R.id.sentiment_chevron_btn, R.id.sentiment_content_container)
+        setupChevronButton("publisher", R.id.publisher_chevron_btn, R.id.publisher_content_container)
+        setupSubjectivityChevronButton()
+        setupChevronButton("timeline", R.id.timeline_chevron_btn, R.id.timeline_content_container)
+        
+        // Setup menu buttons for drag and drop
+        setupMenuButton("sentiment", R.id.sentiment_menu_btn, R.id.sentiment_card)
+        setupMenuButton("publisher", R.id.publisher_menu_btn, R.id.publisher_card)
+        setupSubjectivityMenuButton()
+        setupMenuButton("timeline", R.id.timeline_menu_btn, R.id.timeline_container)
+    }
+    
+    
+    private fun applyCardOrderToViews(order: List<String>) {
+        val scrollView = findViewById<androidx.core.widget.NestedScrollView>(R.id.newsDetailScrollView)
+        val cardsContainer = scrollView?.getChildAt(0) as? LinearLayout
+        if (cardsContainer == null) return
+        
+        val cardViews = mapOf(
+            "sentiment" to findViewById<View>(R.id.sentiment_card),
+            "publisher" to findViewById<View>(R.id.publisher_card),
+            "subjectivity" to findViewById<View>(R.id.subjectivity_card),
+            "timeline" to findViewById<View>(R.id.timeline_container)
+        )
+        
+        // Find current positions
+        val currentIndices = mutableMapOf<String, Int>()
+        for (i in 0 until cardsContainer.childCount) {
+            val child = cardsContainer.getChildAt(i)
+            cardViews.forEach { (id, view) ->
+                if (view == child) {
+                    currentIndices[id] = i
+                }
+            }
+        }
+        
+        if (currentIndices.isNotEmpty()) {
+            val firstCardIndex = currentIndices.values.minOrNull() ?: 0
+            val viewsToReorder = mutableMapOf<String, View>()
+            cardViews.forEach { (id, view) ->
+                if (currentIndices.containsKey(id)) {
+                    viewsToReorder[id] = view
+                }
+            }
+            
+            // Remove all card views in reverse order
+            currentIndices.toList().sortedByDescending { it.second }.forEach { (_, index) ->
+                cardsContainer.removeViewAt(index)
+            }
+            
+            // Add back in new order
+            order.forEachIndexed { orderIndex, cardId ->
+                val view = viewsToReorder[cardId]
+                if (view != null) {
+                    cardsContainer.addView(view, firstCardIndex + orderIndex)
+                }
+            }
+        }
+    }
+    
+    private fun setupSubjectivityChevronButton() {
+        val subjectivityView = findViewById<SubjectivityScoreView>(R.id.subjectivity_score)
+        val chevronBtn = subjectivityView?.findViewById<ImageView>(R.id.chevron_btn)
+        val contentContainer = subjectivityView?.findViewById<LinearLayout>(R.id.content_container)
+        
+        if (chevronBtn != null && contentContainer != null) {
+            val isCollapsed = cardCollapsedState["subjectivity"] ?: false
+            updateChevronIcon(chevronBtn, isCollapsed)
+            contentContainer.visibility = if (isCollapsed) View.GONE else View.VISIBLE
+            
+            chevronBtn.setOnClickListener {
+                val currentlyCollapsed = cardCollapsedState["subjectivity"] ?: false
+                val newCollapsedState = !currentlyCollapsed
+                cardCollapsedState["subjectivity"] = newCollapsedState
+                saveCardCollapsedState("subjectivity", newCollapsedState)
+                
+                if (newCollapsedState) {
+                    collapseView(contentContainer)
+                } else {
+                    expandView(contentContainer)
+                }
+                updateChevronIcon(chevronBtn, newCollapsedState)
+            }
+        }
+    }
+    
+    private fun setupSubjectivityMenuButton() {
+        val subjectivityView = findViewById<SubjectivityScoreView>(R.id.subjectivity_score)
+        val menuBtn = subjectivityView?.findViewById<ImageView>(R.id.menu_btn)
+        val cardView = findViewById<View>(R.id.subjectivity_card)
+        
+        if (menuBtn != null && cardView != null) {
+            var isDragging = false
+            
+            menuBtn.setOnLongClickListener { view ->
+                isDragging = true
+                menuBtn.setColorFilter(ContextCompat.getColor(this, R.color.brand_primary))
+                
+                // Make card fully transparent to prevent judder - drag shadow provides visual feedback
+                cardView.alpha = 0f
+                
+                val shadowBuilder = createTopRightDragShadow(cardView, menuBtn)
+                val item = android.content.ClipData.Item("subjectivity")
+                val dragData = android.content.ClipData("subjectivity", arrayOf("text/plain"), item)
+                cardView.startDragAndDrop(dragData, shadowBuilder, cardView, 0)
+                
+                true
+            }
+            
+            cardView.setOnDragListener(createDragListener("subjectivity", menuBtn) { isDragging = false })
+        }
+    }
+    
+    private fun setupChevronButton(cardId: String, chevronBtnId: Int, contentContainerId: Int) {
+        val chevronBtn = findViewById<ImageView>(chevronBtnId)
+        val contentContainer = findViewById<View>(contentContainerId)
+        
+        if (chevronBtn != null && contentContainer != null) {
+            // Initialize state - all cards expanded by default
+            val isCollapsed = cardCollapsedState[cardId] ?: false
+            updateChevronIcon(chevronBtn, isCollapsed)
+            contentContainer.visibility = if (isCollapsed) View.GONE else View.VISIBLE
+            
+            chevronBtn.setOnClickListener {
+                val currentlyCollapsed = cardCollapsedState[cardId] ?: false
+                val newCollapsedState = !currentlyCollapsed
+                cardCollapsedState[cardId] = newCollapsedState
+                saveCardCollapsedState(cardId, newCollapsedState)
+                
+                if (newCollapsedState) {
+                    collapseView(contentContainer)
+                } else {
+                    expandView(contentContainer)
+                }
+                updateChevronIcon(chevronBtn, newCollapsedState)
+            }
+        }
+    }
+    
+    private fun setupMenuButton(cardId: String, menuBtnId: Int, cardViewId: Int) {
+        val menuBtn = findViewById<ImageView>(menuBtnId)
+        val cardView = findViewById<View>(cardViewId)
+        
+        if (menuBtn != null && cardView != null) {
+            var isDragging = false
+            var dragStartY = 0f
+            
+            menuBtn.setOnLongClickListener { view ->
+                isDragging = true
+                menuBtn.setColorFilter(ContextCompat.getColor(this, R.color.brand_primary))
+                
+                // Make card fully transparent to prevent judder - drag shadow provides visual feedback
+                cardView.alpha = 0f
+                
+                val shadowBuilder = createTopRightDragShadow(cardView, menuBtn)
+                val item = android.content.ClipData.Item(cardId)
+                val dragData = android.content.ClipData(cardId, arrayOf("text/plain"), item)
+                cardView.startDragAndDrop(dragData, shadowBuilder, cardView, 0)
+                
+                true
+            }
+            
+            cardView.setOnDragListener(createDragListener(cardId, menuBtn) { isDragging = false })
+        }
+    }
+    
+    private fun createTopRightDragShadow(cardView: View, menuBtn: ImageView): View.DragShadowBuilder {
+        return object : View.DragShadowBuilder(cardView) {
+            override fun onProvideShadowMetrics(outShadowSize: android.graphics.Point, outShadowTouchPoint: android.graphics.Point) {
+                // Get shadow size from the card
+                val shadowWidth = cardView.width
+                val shadowHeight = cardView.height
+                outShadowSize.set(shadowWidth, shadowHeight)
+                
+                // Get the menu button's position relative to the card using getLocationInWindow
+                // This gives us more accurate positioning within the activity's window
+                val menuBtnLocation = IntArray(2)
+                menuBtn.getLocationInWindow(menuBtnLocation)
+                val cardLocation = IntArray(2)
+                cardView.getLocationInWindow(cardLocation)
+                
+                // Calculate the menu button's center point relative to the card's top-left corner
+                // This will align the touch point with the center of the menu button where the user's finger is
+                val menuBtnCenterX = menuBtnLocation[0] + (menuBtn.width / 2) - cardLocation[0]
+                val menuBtnCenterY = menuBtnLocation[1] + (menuBtn.height / 2) - cardLocation[1]
+                
+                // Set touch point to the menu button's center
+                // This ensures the button appears exactly where the user's finger is when they long press
+                outShadowTouchPoint.set(menuBtnCenterX, menuBtnCenterY)
+            }
+        }
+    }
+    
+    private fun createDragListener(cardId: String, menuBtn: ImageView, onDragEnd: () -> Unit): View.OnDragListener {
+        return View.OnDragListener { view, event ->
+            when (event.action) {
+                android.view.DragEvent.ACTION_DRAG_STARTED -> {
+                    val draggedCardId = event.clipDescription?.label?.toString()
+                    if (draggedCardId == cardId) {
+                        // Card is already hidden to prevent judder
+                        // Don't provide haptic here - system long press already did
+                        true
+                    } else {
+                        // Other cards can accept drops
+                        true
+                    }
+                }
+                android.view.DragEvent.ACTION_DRAG_LOCATION -> {
+                    val draggedCardId = event.clipDescription?.label?.toString()
+                    if (draggedCardId != null && draggedCardId != cardId) {
+                        // Determine if hovering over top or bottom half
+                        val y = event.y
+                        val cardHeight = view.height
+                        val isTopHalf = y < cardHeight / 2f
+                        
+                        // Visual feedback: slightly different alpha for top vs bottom
+                        view.alpha = if (isTopHalf) 0.8f else 0.7f
+                    }
+                    true
+                }
+                android.view.DragEvent.ACTION_DRAG_ENTERED -> {
+                    val draggedCardId = event.clipDescription?.label?.toString()
+                    if (draggedCardId != null && draggedCardId != cardId) {
+                        // Highlight drop target - default to top half
+                        view.alpha = 0.8f
+                    }
+                    true
+                }
+                android.view.DragEvent.ACTION_DRAG_EXITED -> {
+                    val draggedCardId = event.clipDescription?.label?.toString()
+                    if (draggedCardId != null && draggedCardId != cardId) {
+                        view.alpha = 1.0f
+                    }
+                    true
+                }
+                android.view.DragEvent.ACTION_DROP -> {
+                    val draggedCardId = event.clipData?.getItemAt(0)?.text?.toString()
+                    if (draggedCardId != null && draggedCardId != cardId) {
+                        // Determine if dropped on top or bottom half
+                        val y = event.y
+                        val cardHeight = view.height
+                        val isTopHalf = y < cardHeight / 2f
+                        
+                        // Reorder based on which half was targeted
+                        reorderCards(draggedCardId, cardId, isTopHalf)
+                    }
+                    view.alpha = 1.0f
+                    menuBtn.clearColorFilter()
+                    onDragEnd()
+                    true
+                }
+                android.view.DragEvent.ACTION_DRAG_ENDED -> {
+                    val draggedCardId = event.clipDescription?.label?.toString()
+                    if (draggedCardId == cardId) {
+                        // Restore card alpha after drag ends
+                        view.alpha = 1.0f
+                    } else {
+                        view.alpha = 1.0f
+                    }
+                    menuBtn.clearColorFilter()
+                    onDragEnd()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+    
+    private fun reorderCards(draggedCardId: String, targetCardId: String, insertBefore: Boolean = true) {
+        val cardOrder = loadCardOrder()
+        val draggedIndex = cardOrder.indexOf(draggedCardId)
+        val targetIndex = cardOrder.indexOf(targetCardId)
+        
+        if (draggedIndex == -1 || targetIndex == -1 || draggedIndex == targetIndex) return
+        
+        // Remove dragged card from order
+        cardOrder.removeAt(draggedIndex)
+        
+        // Calculate insertion index based on whether inserting before or after target
+        val newTargetIndex = if (insertBefore) {
+            // Insert before target card
+            if (targetIndex > draggedIndex) targetIndex - 1 else targetIndex
+        } else {
+            // Insert after target card
+            if (targetIndex > draggedIndex) targetIndex else targetIndex + 1
+        }
+        
+        // Ensure index is within bounds
+        val insertIndex = newTargetIndex.coerceIn(0, cardOrder.size)
+        cardOrder.add(insertIndex, draggedCardId)
+        
+        applyCardOrderToViews(cardOrder)
+        saveCardOrder(cardOrder)
+    }
+    
+    private fun updateChevronIcon(chevronBtn: ImageView, isCollapsed: Boolean) {
+        val iconRes = if (isCollapsed) R.drawable.ic_chevron_up_24 else R.drawable.ic_chevron_down_24
+        chevronBtn.setImageResource(iconRes)
+        chevronBtn.setColorFilter(ContextCompat.getColor(this, R.color.colorTextMiddle))
+    }
+    
+    private fun collapseView(view: View) {
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec((view.parent as View).width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val initialHeight = view.measuredHeight
+        
+        val animator = android.animation.ValueAnimator.ofInt(initialHeight, 0)
+        animator.duration = 300
+        animator.interpolator = easeInOutQuart
+        animator.addUpdateListener { animation ->
+            val height = animation.animatedValue as Int
+            view.layoutParams.height = height
+            view.requestLayout()
+        }
+        animator.addListener(object : android.animation.AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                view.visibility = View.GONE
+                view.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            }
+        })
+        animator.start()
+    }
+    
+    private fun expandView(view: View) {
+        view.visibility = View.VISIBLE
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec((view.parent as View).width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val targetHeight = view.measuredHeight
+        
+        view.layoutParams.height = 0
+        val animator = android.animation.ValueAnimator.ofInt(0, targetHeight)
+        animator.duration = 300
+        animator.interpolator = easeInOutQuart
+        animator.addUpdateListener { animation ->
+            val height = animation.animatedValue as Int
+            view.layoutParams.height = height
+            view.requestLayout()
+        }
+        animator.addListener(object : android.animation.AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                view.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            }
+        })
+        animator.start()
+    }
+    
+    override fun onDestroy() {
+        sentimentCardPreDrawListener?.let {
+            mViewBinding.sentimentCard.viewTreeObserver.takeIf { observer -> observer.isAlive }?.removeOnPreDrawListener(it)
+        }
+        sentimentCardPreDrawListener = null
+        super.onDestroy()
+    }
+    
+    private fun loadCardOrder(): MutableList<String> {
+        val savedOrder = com.anssy.znewspro.utils.SharedPreferenceUtils.getString(this, "news_detail_card_order")
+        return if (savedOrder.isNotEmpty()) {
+            savedOrder.split(",").toMutableList()
+        } else {
+            defaultCardOrder.toMutableList()
+        }
+    }
+    
+    private fun saveCardOrder(order: List<String>) {
+        com.anssy.znewspro.utils.SharedPreferenceUtils.saveString(this, "news_detail_card_order", order.joinToString(","))
+    }
+    
+    private fun loadCardCollapsedStates() {
+        cardIds.forEach { cardId ->
+            val isCollapsed = com.anssy.znewspro.utils.SharedPreferenceUtils.getBoolean(this, "news_detail_card_collapsed_$cardId")
+            cardCollapsedState[cardId] = isCollapsed
+        }
+    }
+    
+    private fun saveCardCollapsedState(cardId: String, isCollapsed: Boolean) {
+        com.anssy.znewspro.utils.SharedPreferenceUtils.saveBoolean(this, "news_detail_card_collapsed_$cardId", isCollapsed)
+    }
+    
+    private fun applyCardOrder() {
+        val savedOrder = com.anssy.znewspro.utils.SharedPreferenceUtils.getString(this, "news_detail_card_order")
+        val order = if (savedOrder.isNotEmpty()) {
+            savedOrder.split(",")
+        } else {
+            saveCardOrder(defaultCardOrder)
+            defaultCardOrder
+        }
+        
+        applyCardOrderToViews(order)
     }
 
 }

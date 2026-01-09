@@ -7,48 +7,301 @@
     android:background="@color/profile_page_bg"
     android:fitsSystemWindows="true">
 
-    <!-- Toolbar -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <!-- Top Bar with Select Topics header in center -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        app:navigationIcon="@drawable/ic_arrow_back_ios"
-        app:navigationIconTint="@color/brand_primary"
-        app:title="@string/select_topics"
-        app:titleTextColor="@color/colorTextDeep"
-        app:titleTextAppearance="@style/ProfileHeadingStyle"
-        app:titleCentered="true"
-        app:menu="@menu/menu_topic_selection" />
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:elevation="1dp">
 
-    <!-- Scrollable Content -->
-    <ScrollView
+        <!-- Close button on the left with brand color -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/closeButton"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/close"
+            android:textColor="@color/main_color"
+            android:textSize="14sp"
+            android:minWidth="0dp" />
+
+        <!-- Select Topics header in center -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/select_topics"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorTextDeep" />
+
+        <!-- Clear All button on the right in red -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearAllButton"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/clear_all"
+            android:textColor="@color/colorRed"
+            android:textSize="14sp"
+            android:minWidth="0dp"
+            android:visibility="gone"
+            app:rippleColor="@color/colorRed" />
+
+    </RelativeLayout>
+
+    <!-- Search Bar - using card background color -->
+    <com.hjq.shape.layout.ShapeRelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        app:shape_radius="12dp"
+        app:shape_solidColor="@color/profile_card_bg"
+        app:shape_strokeSize="0dp">
+        
+        <ImageView
+            android:id="@+id/search_iv"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_search"
+            android:contentDescription="@null"
+            app:tint="@color/colorTextMiddle"/>
+        
+        <EditText
+            android:id="@+id/search_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/search_iv"
+            android:layout_toStartOf="@id/clear_search_button"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:hint="@string/search_topics"
+            android:importantForAutofill="no"
+            android:includeFontPadding="false"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDeep"
+            android:textColorHint="@color/colorTextHint"/>
+        
+        <ImageView
+            android:id="@+id/clear_search_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_close_circle_24"
+            android:contentDescription="@string/dialog_button_cancel"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"/>
+    </com.hjq.shape.layout.ShapeRelativeLayout>
+
+    <!-- Horizontal Toggle Tabs - width aligned with section headers (36dp from left/right) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="8dp">
+
+        <!-- Background for the toggle container -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_gravity="top"
+            android:background="@drawable/topic_toggle_background" />
+
+        <!-- Sliding indicator that animates behind selected tab -->
+        <View
+            android:id="@+id/topicToggleIndicator"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_gravity="top"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="invisible" />
+
+        <RadioGroup
+            android:id="@+id/tabToggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:background="@android:color/transparent">
+
+            <RadioButton
+                android:id="@+id/tab_all"
+                style="@style/TopicTabStyle"
+                android:text="@string/topic_tab_all"
+                android:checked="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp" />
+
+            <RadioButton
+                android:id="@+id/tab_sectors"
+                style="@style/TopicTabStyle"
+                android:text="@string/topic_tab_sectors"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp" />
+
+            <RadioButton
+                android:id="@+id/tab_regions"
+                style="@style/TopicTabStyle"
+                android:text="@string/topic_tab_regions"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp" />
+
+            <RadioButton
+                android:id="@+id/tab_trending"
+                style="@style/TopicTabStyle"
+                android:text="@string/topic_tab_trending"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp" />
+
+            <RadioButton
+                android:id="@+id/tab_custom"
+                style="@style/TopicTabStyle"
+                android:text="@string/topic_tab_custom"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp" />
+
+        </RadioGroup>
+
+    </FrameLayout>
+
+    <!-- Topics List Container with Pull-to-Refresh and Gradient Overlays -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="false">
+        android:layout_weight="1">
 
-        <!-- Topics List Container -->
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smartRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <!-- Topics RecyclerView - handles sections with headers outside cards -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/topicsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="20dp"
+                    android:clipToPadding="false" />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <!-- Coming Soon Overlay for Custom tab -->
         <LinearLayout
+            android:id="@+id/comingSoonOverlay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="20dp"
             android:orientation="vertical"
-            android:background="@drawable/topic_list_background">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone">
 
-            <!-- Topics RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/topicsRecycler"
+            <!-- Section Header - matches other section headers -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:paddingVertical="0dp"
-                android:clipToPadding="false" />
+                android:text="@string/topic_tab_custom"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextSecondary"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp" />
+
+            <!-- Card container matching 4 topics tall (4 * 56dp = 224dp) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:orientation="vertical"
+                android:background="@drawable/topic_custom_card_background"
+                android:gravity="center"
+                android:padding="32dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_ai_compass_24"
+                    android:contentDescription="@string/coming_soon"
+                    android:tint="@color/brand_primary"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coming_soon"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextDeep"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_topics_coming_soon"
+                    android:textSize="13sp"
+                    android:textColor="@color/colorTextMiddle"
+                    android:gravity="center"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+        <!-- Top gradient fade - positioned behind toggle area -->
+        <View
+            android:id="@+id/topGradientFade"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_gravity="top"
+            android:background="@drawable/topic_scroll_fade_top" />
+
+        <!-- Bottom gradient fade -->
+        <View
+            android:id="@+id/bottomGradientFade"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/topic_scroll_fade_bottom" />
+
+    </FrameLayout>
 
 </LinearLayout>

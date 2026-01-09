@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 
 class NewsDetailRepository @Inject constructor(private val appHttpService: AppHttpService) {
-    suspend fun queryNewsDetail(id: String, language: String? = null): ArticleDetailEntry {
+    suspend fun queryNewsDetail(id: String, language: String? = null): GenericResponse<ArticleDetailEntry> {
         return appHttpService.queryArticleDetail(id, language)
     }
 
@@ -26,7 +26,9 @@ class NewsDetailRepository @Inject constructor(private val appHttpService: AppHt
     }
 
     suspend fun saveHis(id: String): GenericResponse<CommonResponseEntry> {
-        return appHttpService.saveNewsHis(id)
+        val jsonObject = JSONObject()
+        jsonObject.put("article_id", id)
+        return appHttpService.saveNewsHis(Utils.createJsonRequestBody(jsonObject.toString()))
     }
 
     suspend fun collectHis(id: String): GenericResponse<CommonResponseEntry> {

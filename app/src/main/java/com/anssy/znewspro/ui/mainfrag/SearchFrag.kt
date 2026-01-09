@@ -40,6 +40,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.google.android.flexbox.FlexboxLayout
 import com.hjq.shape.view.ShapeButton
 import java.text.SimpleDateFormat
@@ -93,6 +94,12 @@ class SearchFrag : BaseFragment() {
     // Debounce timing to prevent rapid successive refreshes
     private var lastRefreshTime: Long = 0
     private val minimumTimeBetweenRefreshes = 1500L // 1.5 seconds minimum between refreshes
+    
+    // Auto-search debouncing
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
+    private val searchDebounceDelay = 500L // 500ms delay before triggering search
+    private var isProgrammaticTextChange = false // Flag to skip auto-search for programmatic text changes
 
     override fun initData() {
         mProgressWidth = resources.displayMetrics.widthPixels - Utils.dpToPx(36f, resources)
@@ -103,6 +110,9 @@ class SearchFrag : BaseFragment() {
         // Set up trending searches (discover content)
         setupTrendingSearches()
         
+        // Setup coming soon overlay for trending topics
+        setupComingSoonOverlay()
+        
         // Initialize data
         initModel()
         loadDiscoverContent()
@@ -112,6 +122,8 @@ class SearchFrag : BaseFragment() {
     private fun setupSearchBar() {
         mViewBinding.searchEt.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                // Cancel any pending auto-search and perform immediate search
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
                 performSearch()
             }
             false
@@ -122,10 +134,7 @@ class SearchFrag : BaseFragment() {
             if (hasFocus) {
                 // Change search bar edge to brand primary color when focused
                 updateSearchBarFocusState(true)
-                // When user taps search, show search UI
-                if (!isSearchMode) {
-                    enterSearchMode()
-                }
+                // Don't enter search mode just on focus - wait for user to type
             } else {
                 // Reset search bar edge color when not focused
                 updateSearchBarFocusState(false)
@@ -135,20 +144,65 @@ class SearchFrag : BaseFragment() {
         // Initialize search bar to default state
         updateSearchBarFocusState(false)
         
-        // Handle text changes for width animation
+        // Handle text changes for width animation, search mode, and auto-search
         mViewBinding.searchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val hasText = !s.isNullOrEmpty()
+                val query = s?.toString()?.trim() ?: ""
                 
-                // Only trigger animation on the first character typed
-                if (hasText && !hasTypedFirstCharacter) {
+                // Cancel any pending search requests
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
+                
+                // Skip auto-search if this is a programmatic text change (we'll handle search separately)
+                if (isProgrammaticTextChange) {
+                    isProgrammaticTextChange = false
+                    // Still handle UI state changes
+                    if (hasText && !isSearchMode) {
+                        hasTypedFirstCharacter = true
+                        enterSearchMode()
+                        animateSearchBarWidth(true)
+                    } else if (!hasText && isSearchMode) {
+                        hasTypedFirstCharacter = false
+                        exitSearchMode()
+                        animateSearchBarWidth(false)
+                    }
+                    return
+                }
+                
+                // Enter search mode when user types something, exit when text is cleared
+                if (hasText && !isSearchMode) {
+                    // User started typing - enter search mode and hide trending sections
                     hasTypedFirstCharacter = true
+                    enterSearchMode()
                     animateSearchBarWidth(true) // Make it narrower
-                } else if (!hasText && hasTypedFirstCharacter) {
+                    // Trigger search immediately for first character
+                    triggerAutoSearch(query)
+                } else if (!hasText && isSearchMode) {
+                    // User cleared text - exit search mode and show trending sections
                     hasTypedFirstCharacter = false
+                    exitSearchMode()
                     animateSearchBarWidth(false) // Restore original width
+                } else if (hasText && !hasTypedFirstCharacter) {
+                    // Edge case: text exists but flag not set
+                    hasTypedFirstCharacter = true
+                    if (!isSearchMode) {
+                        enterSearchMode()
+                    }
+                    animateSearchBarWidth(true)
+                    // Trigger search immediately
+                    triggerAutoSearch(query)
+                } else if (!hasText && hasTypedFirstCharacter) {
+                    // Edge case: no text but flag is set
+                    hasTypedFirstCharacter = false
+                    if (isSearchMode) {
+                        exitSearchMode()
+                    }
+                    animateSearchBarWidth(false)
+                } else if (hasText && isSearchMode) {
+                    // User is continuing to type - debounce the search
+                    triggerAutoSearch(query)
                 }
             }
             
@@ -157,33 +211,35 @@ class SearchFrag : BaseFragment() {
         
         // Setup cancel button click listener
         mViewBinding.cancelButton.setOnClickListener {
-            // Clear the search text and exit search mode
-            mViewBinding.searchEt.setText(getString(R.string.empty_search_text))
-            exitSearchMode()
+            // Clear the search text - this will trigger text watcher to exit search mode
+            mViewBinding.searchEt.setText("")
+            mViewBinding.searchEt.clearFocus()
         }
         
         // Setup search button click listener
         mViewBinding.searchButton.setOnClickListener {
-            // Perform search
+            // Cancel any pending auto-search and perform immediate search
+            searchRunnable?.let { searchHandler.removeCallbacks(it) }
             performSearch()
         }
     }
     
     /**
-     * Update search bar focus state (change edge color)
+     * Update search bar focus state (change edge color while keeping background visible)
      */
     private fun updateSearchBarFocusState(hasFocus: Boolean) {
         val searchLayout = mViewBinding.searchLayout
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorSurfaceVariant)
+        
         if (hasFocus) {
-            // Remove background and add brand primary border when focused
+            // Keep background visible and add brand primary border when focused
             searchLayout.shapeDrawableBuilder
-                .setSolidColor(android.R.color.transparent)
+                .setSolidColor(backgroundColor)
                 .setStrokeColor(ContextCompat.getColor(requireContext(), R.color.brand_primary))
                 .setStrokeSize(Utils.dpToPx(2f, resources))
                 .intoBackground()
         } else {
             // Maintain theme-aware background and remove edge when not focused
-            val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorSurfaceVariant)
             searchLayout.shapeDrawableBuilder
                 .setSolidColor(backgroundColor)
                 .setStrokeSize(0)
@@ -222,9 +278,19 @@ class SearchFrag : BaseFragment() {
             })
             animator.start()
         } else {
-            // Hide cancel button and search button first, then restore width
+            // Hide cancel button and search button quickly (fade out) before restoring width
+            // This prevents the search button from appearing to narrow as the search bar expands
             hideCancelButton()
-            hideSearchButton()
+            
+            // Hide search button immediately (set visibility to GONE) to prevent narrowing visual effect
+            // Then fade out quickly for smooth transition
+            val searchButton = mViewBinding.searchButton
+            if (searchButton.visibility == View.VISIBLE) {
+                // Set visibility to GONE immediately so it doesn't participate in layout
+                searchButton.visibility = View.GONE
+                // Reset alpha for next time it's shown
+                searchButton.alpha = 1f
+            }
             
             // Restore original width by resetting right margin
             val currentRightMargin = layoutParams.rightMargin
@@ -301,6 +367,23 @@ class SearchFrag : BaseFragment() {
     }
     
     /**
+     * Hide search button quickly with fast fade out animation
+     * Used when search bar is expanding to prevent narrowing visual effect
+     */
+    private fun hideSearchButtonQuickly() {
+        val searchButton = mViewBinding.searchButton
+        if (searchButton.visibility == View.VISIBLE) {
+            searchButton.animate()
+                .alpha(0f)
+                .setDuration(100) // Quick fade out
+                .withEndAction {
+                    searchButton.visibility = View.GONE
+                }
+                .start()
+        }
+    }
+    
+    /**
      * Show search results reminder with query and result count
      */
     private fun showSearchResultsReminder(query: String, resultCount: Int) {
@@ -318,14 +401,64 @@ class SearchFrag : BaseFragment() {
     }
     
     /**
-     * Handle back button press when in search mode
+     * Handle back button press when in search mode or when search bar is focused
      */
     fun onBackPressed(): Boolean {
+        // Check if search bar is focused (selected state)
+        if (mViewBinding.searchEt.isFocused) {
+            val hasText = mViewBinding.searchEt.text.toString().trim().isNotEmpty()
+            if (hasText) {
+                // Clear the text and focus - this will trigger text watcher to handle state changes
+                mViewBinding.searchEt.setText("")
+                mViewBinding.searchEt.clearFocus()
+                return true // Consumed the back press
+            } else {
+                // No text, just clear focus
+                mViewBinding.searchEt.clearFocus()
+                return true // Consumed the back press
+            }
+        }
+        
+        // Handle search mode (when not focused but in search mode)
         if (isSearchMode) {
             exitSearchMode()
             return true // Consumed the back press
         }
+        
         return false // Let the system handle it
+    }
+    
+    private fun setupComingSoonOverlay() {
+        val overlay = mViewBinding.comingSoonOverlay
+        val blurView = mViewBinding.comingSoonBlurView
+        val icon = mViewBinding.comingSoonIcon
+        
+        // Start pulse animation on the star icon
+        val pulseAnimation = android.view.animation.AnimationUtils.loadAnimation(requireContext(), R.anim.pulse_animation)
+        icon.startAnimation(pulseAnimation)
+        
+        // Ensure overlay blocks all interactions
+        overlay.isClickable = true
+        overlay.isFocusable = true
+        overlay.setOnClickListener {
+            // Block all clicks - do nothing
+        }
+        
+        // Setup frosted glass effect using semi-transparent overlay
+        // This avoids hardware acceleration issues that RenderScriptBlur causes
+        overlay.post {
+            // Use semi-transparent overlay for frosted glass effect
+            // The translucent background with opacity provides the frosted glass look
+            // Without actual blur processing, this won't affect hardware acceleration
+            blurView.setBackgroundResource(R.drawable.coming_soon_overlay)
+            blurView.visibility = View.VISIBLE
+        }
+    }
+    
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        // No cleanup needed - RenderEffect doesn't affect hardware acceleration globally
+        // For older versions, we're using a simple overlay which doesn't need cleanup
     }
     
     private fun setupTrendingTopics() {
@@ -360,9 +493,14 @@ class SearchFrag : BaseFragment() {
                     .intoBackground()
                 
                 setOnClickListener {
-                    // Perform search with this topic
+                    // Cancel any pending auto-search
+                    searchRunnable?.let { searchHandler.removeCallbacks(it) }
+                    // Set flag to skip auto-search in text watcher
+                    isProgrammaticTextChange = true
+                    // Set text and perform immediate search
                     mViewBinding.searchEt.setText(topic.displayName)
-                    performSearch()
+                    // Perform immediate search without debounce
+                    performSearch(topic.displayName)
                 }
             }
             
@@ -421,7 +559,7 @@ class SearchFrag : BaseFragment() {
                 }
                 
                 titleTv.text = t.title
-                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ease_default_image)
+                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ic_image_not_supported_24)
                     .into(newsIv)
             }
         }
@@ -432,22 +570,15 @@ class SearchFrag : BaseFragment() {
         mViewBinding.homeRecycler.layoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
         
         mAdapter = object :
-            CommonAdapter<SearchListEntry.DataDTO.ArticlesDTO>(mContext, R.layout.item_home_recycler, mNewsList) {
+            CommonAdapter<SearchListEntry.DataDTO.ArticlesDTO>(mContext, R.layout.item_search_result, mNewsList) {
             @SuppressLint("SetTextI18n")
             override fun convert(holder: ViewHolder?, t: SearchListEntry.DataDTO.ArticlesDTO, position: Int) {
-                val placeTv: TextView = holder!!.getView(R.id.place_tv)
-                val tagTv: TextView = holder.getView(R.id.tag_tv)
-                val titleTv: TextView = holder.getView(R.id.news_title_tv)
+                val titleTv: TextView = holder!!.getView(R.id.news_title_tv)
                 val newsIv: ImageView = holder.getView(R.id.news_iv)
-                val trackView: View = holder.getView(R.id.progress_track)
-                val highlightView: View = holder.getView(R.id.progress_highlight)
-                val timeTv: TextView = holder.getView(R.id.news_time_tv)
-                val countTv: TextView = holder.getView(R.id.news_count_tv)
-                countTv.text = getString(R.string.reports_count, t.nSources)
-                val transScoreTv: TextView = holder.getView(R.id.trans_score_tv)
+                
                 holder.convertView.setOnClickListener {
                     val intent = Intent(mContext, NewsDetailActivity::class.java)
-                    intent.putExtra(getString(R.string.id_key),t.articleID)
+                    intent.putExtra(getString(R.string.id_key), t.articleID)
                     startActivity(intent)
                 }
                 
@@ -471,55 +602,10 @@ class SearchFrag : BaseFragment() {
                     shareArticle(t)
                     true
                 }
-                placeTv.text = t.region
-                val sentimentText = getString(CalculateUtil.getSentimentLabelResId(t.metrics.sentiment))
-                val sentimentScore = t.metrics.sentiment
                 
-                // Set sentiment text without "Sentiment:" prefix
-                if (sentimentScore > 0.1 || sentimentScore < -0.1) {
-                    // Apply colorization for significant positive/negative sentiment
-                    val spannableString = SpannableString(sentimentText)
-                    val colorResId = resources.getIdentifier(CalculateUtil.getSentimentColorName(sentimentScore), "color", context?.packageName)
-                    val sentimentColor = ContextCompat.getColor(mContext, colorResId)
-                    spannableString.setSpan(ForegroundColorSpan(sentimentColor), 0, sentimentText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    transScoreTv.text = spannableString
-                } else {
-                    // No colorization for neutral sentiment
-                    transScoreTv.text = sentimentText
-                }
-                tagTv.text = t.sector
                 titleTv.text = t.title
-                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ease_default_image)
+                Glide.with(mContext).load(t.pictureURL).error(R.drawable.ic_image_not_supported_24)
                     .into(newsIv)
-
-                try {
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                    val parse = dateFormat.parse(t.date)
-                    timeTv.text = Utils.getMultilingualSpaceTime(mContext!!, parse!!.time)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                // progress highlight from zero
-                trackView.post(Runnable {
-                    val totalWidth = trackView.width
-                    val half = totalWidth / 2
-                    val score = CalculateUtil.round(t.metrics.sentiment, 2)
-                    val distance = (kotlin.math.abs(score) * half).toInt()
-                    val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
-                    if (distance <= 0) {
-                        highlightView.visibility = View.INVISIBLE
-                        lp.width = 1
-                        lp.marginStart = half
-                    } else {
-                        highlightView.visibility = View.VISIBLE
-                        lp.width = distance
-                        lp.marginStart = if (score > 0) half else (half - distance)
-                    }
-                    highlightView.layoutParams = lp
-                    highlightView.setBackgroundResource(
-                        if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
-                    )
-                })
             }
         }
         mViewBinding.homeRecycler.adapter = mAdapter
@@ -577,7 +663,9 @@ class SearchFrag : BaseFragment() {
         })
         
         // Setup SmartRefreshLayout for pull-to-refresh functionality (discover content)
-        mViewBinding.contentSmartRefresh.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+        // Disable load more as discover content doesn't support pagination
+        mViewBinding.contentSmartRefresh.setEnableLoadMore(false)
+        mViewBinding.contentSmartRefresh.setOnRefreshListener(object : OnRefreshListener {
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 // Only proceed if this is a pull-to-refresh, not a button-triggered refresh
                 if (!isButtonRefresh) {
@@ -599,11 +687,6 @@ class SearchFrag : BaseFragment() {
                     loadTrendingTopics()
                 }
             }
-
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                // Discover content doesn't support load more, just finish
-                refreshLayout.finishLoadMore()
-            }
         })
     }
     
@@ -611,34 +694,83 @@ class SearchFrag : BaseFragment() {
         isSearchMode = true
         mViewBinding.contentSmartRefresh.visibility = View.GONE
         mViewBinding.smartRefresh.visibility = View.VISIBLE
+        // Initially show loading indicator (will be hidden when results arrive)
+        mViewBinding.searchResultsProgress.visibility = View.VISIBLE
+        mViewBinding.homeRecycler.visibility = View.GONE
     }
     
     private fun exitSearchMode() {
         isSearchMode = false
         mViewBinding.contentSmartRefresh.visibility = View.VISIBLE
         mViewBinding.smartRefresh.visibility = View.GONE
-        mViewBinding.searchEt.clearFocus()
-        mViewBinding.searchEt.setText(getString(R.string.empty_search_text))
         
         // Reset search bar state
         hasTypedFirstCharacter = false
-        updateSearchBarFocusState(false)
+        
+        // Update focus state based on current focus
+        // If focused, keep the focused styling (background + border)
+        // If not focused, use unfocused styling (background only)
+        updateSearchBarFocusState(mViewBinding.searchEt.isFocused)
+        
         hideCancelButton()
         hideSearchButton()
         hideSearchResultsReminder()
         animateSearchBarWidth(false)
     }
     
-    private fun performSearch() {
-        val query = mViewBinding.searchEt.text.toString().trim()
-        if (query.isEmpty()) {
-            searchModel.querySearchList()
-            hideSearchResultsReminder()
-        } else {
-            searchModel.queryListByTitle(query)
-            showSearchResultsReminder(query, 0) // Start with 0 results, will be updated when actual results come in
+    /**
+     * Trigger auto-search with debouncing
+     */
+    private fun triggerAutoSearch(query: String) {
+        // Cancel any pending search
+        searchRunnable?.let { searchHandler.removeCallbacks(it) }
+        
+        // Create new search runnable
+        searchRunnable = Runnable {
+            performSearch(query)
         }
-        enterSearchMode()
+        
+        // Post with debounce delay
+        searchHandler.postDelayed(searchRunnable!!, searchDebounceDelay)
+    }
+    
+    /**
+     * Perform search with given query
+     */
+    private fun performSearch(query: String? = null) {
+        val searchQuery = query ?: mViewBinding.searchEt.text.toString().trim()
+        
+        // Show loading indicator and hide RecyclerView (this will also enter search mode if needed)
+        showSearchLoading()
+        
+        // Hide results reminder until we have actual results (prevents flashing "0 results")
+        hideSearchResultsReminder()
+        
+        if (searchQuery.isEmpty()) {
+            searchModel.querySearchList()
+        } else {
+            searchModel.queryListByTitle(searchQuery)
+        }
+    }
+    
+    /**
+     * Show loading indicator in place of search results
+     */
+    private fun showSearchLoading() {
+        // Ensure we're in search mode (will be set by enterSearchMode if not already)
+        if (!isSearchMode) {
+            enterSearchMode()
+        }
+        mViewBinding.searchResultsProgress.visibility = View.VISIBLE
+        mViewBinding.homeRecycler.visibility = View.GONE
+    }
+    
+    /**
+     * Hide loading indicator and show search results
+     */
+    private fun hideSearchLoading() {
+        mViewBinding.searchResultsProgress.visibility = View.GONE
+        mViewBinding.homeRecycler.visibility = View.VISIBLE
     }
     
     private fun loadDiscoverContent() {
@@ -661,6 +793,9 @@ class SearchFrag : BaseFragment() {
                         mNewsList.clear()
                         mNewsList.addAll(it.data.articles)
                         mAdapter.notifyDataSetChanged()
+                        
+                        // Hide loading indicator and show results
+                        hideSearchLoading()
                         
                         // Update search results reminder with actual count
                         val currentQuery = mViewBinding.searchEt.text.toString().trim()
@@ -687,6 +822,8 @@ class SearchFrag : BaseFragment() {
                     }
                     
                     if (isSearchMode) {
+                        // Hide loading indicator even on error (show empty state or previous results)
+                        hideSearchLoading()
                         // Finish refresh animation with error and minimum duration
                         finishRefreshWithMinimumDuration(false)
                     } else {

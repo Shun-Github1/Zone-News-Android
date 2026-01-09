@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import razerdp.util.PopupUtils.getString
 import com.anssy.znewspro.R
+import okhttp3.MediaType.Companion.toMediaType
 
 /**
  * @Description 个人
@@ -82,7 +83,17 @@ class MyModel @Inject constructor(
                 }
 
                 is NetworkResponse.Success -> {
-                    _myViewHisEntry.value = result.body
+                    val responseBody = result.body
+                    // Check if the response body has a code field indicating success/error
+                    if (responseBody.code == 200) {
+                        _myViewHisEntry.value = responseBody
+                    } else {
+                        // API returned error in response body
+                        val errorEntry = ViewHisEntry()
+                        errorEntry.code = responseBody.code
+                        errorEntry.msg = responseBody.msg ?: "Failed to load reading history"
+                        _myViewHisEntry.value = errorEntry
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {
@@ -109,7 +120,17 @@ class MyModel @Inject constructor(
                 }
 
                 is NetworkResponse.Success -> {
-                    _myCollectEntry.value = result.body
+                    val responseBody = result.body
+                    // Check if the response body has a code field indicating success/error
+                    if (responseBody.code == 200) {
+                        _myCollectEntry.value = responseBody
+                    } else {
+                        // API returned error in response body
+                        val errorEntry = ViewHisEntry()
+                        errorEntry.code = responseBody.code
+                        errorEntry.msg = responseBody.msg ?: "Failed to load saved articles"
+                        _myCollectEntry.value = errorEntry
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {
@@ -164,6 +185,69 @@ class MyModel @Inject constructor(
 
                 is NetworkResponse.Success -> {
                     _commonResponseEntry.value = result.body
+                }
+
+                is NetworkResponse.UnknownError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = "未知错误"
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+            }
+        }
+    }
+
+    fun redeemCode(code: String) {
+        viewModelScope.launch {
+            val mediaType = "application/json; charset=utf-8".toMediaType()
+            val requestBody = okhttp3.RequestBody.create(
+                mediaType,
+                "{\"code\":\"$code\"}"
+            )
+            val result = withContext(Dispatchers.IO) {
+                myRepository.redeemCode(requestBody)
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = getString(R.string.server_error_message)
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+
+                is NetworkResponse.Success -> {
+                    _commonResponseEntry.value = result.body
+                    // Refresh profile after successful redeem
+                    queryMyFormation()
+                }
+
+                is NetworkResponse.UnknownError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = "未知错误"
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+            }
+        }
+    }
+
+    fun cancelSubscription() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                myRepository.cancelSubscription()
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = getString(R.string.server_error_message)
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+
+                is NetworkResponse.Success -> {
+                    _commonResponseEntry.value = result.body
+                    // Refresh profile after successful cancel
+                    queryMyFormation()
                 }
 
                 is NetworkResponse.UnknownError -> {

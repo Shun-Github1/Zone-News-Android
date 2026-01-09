@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- Frosted glass effect with semi-transparent background -->
+    <!-- Uses colorSurfaceVariant (same as search bar) with 85% opacity for translucent frosted glass look -->
+    <!-- Light mode: #F5F5F5 with 85% opacity, Dark mode: #2C2C2C with 85% opacity -->
+    <solid android:color="@color/coming_soon_overlay_bg" />
+    
+</shape>
+

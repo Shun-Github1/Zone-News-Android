@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- MARK: - Core Brand Colors (Single Source of Truth) -->
-    <color name="brand_primary">#00A9A9</color>
+    <color name="brand_primary">#239B98</color>
     <color name="brand_secondary">#37508D</color>
     <color name="brand_accent">#22B14C</color>
     
@@ -40,6 +40,8 @@
     
     <!-- Essential UI Color Aliases (Actually Used) -->
     <color name="divider_color">@color/separator</color>
+    <!-- Card edge color: visible in light mode, transparent in dark mode -->
+    <color name="card_edge_color_light">@color/divider_color</color>
     <color name="line_color">@color/separator</color>
     <color name="news_detail_card">@color/transparent</color>
     
@@ -74,14 +76,14 @@
     
     <!-- MARK: - Media Region Colors -->
     <color name="media_region_card_bg">#E5F9F8</color>
-    <color name="media_region_card_unselected">@color/separator</color>
-    <color name="media_region_stroke_unselected">#E0E0E0</color>
+    <color name="media_region_card_unselected">#00000000</color> <!-- Transparent -->
+    <color name="media_region_card_selected">#14239B98</color> <!-- ~8% opacity of brand color -->
+    <color name="media_region_stroke_unselected">#26000000</color> <!-- ~15% opacity gray for border -->
+    <color name="media_region_stroke_selected">#4D239B98</color> <!-- ~30% opacity of brand color for border -->
     <color name="media_region_check_unselected">#BDBDBD</color>
-    <color name="media_region_card_selected">#4000A9A9</color>
-    <color name="media_region_stroke_selected">#00A9A9</color>
-    <color name="media_region_check_selected">#00A9A9</color>
+    <color name="media_region_check_selected">#239B98</color>
 
-    <color name="trending_card">#4000A9A9</color>
+    <color name="trending_card">#40239B98</color>
 
     <!-- MARK: - Subjectivity Score Colors -->
     <color name="subjectivity_high">#879693</color>
@@ -107,4 +109,31 @@
     
     <!-- MARK: - Tag Chip Colors -->
     <color name="tag_chip_background">@android:color/transparent</color>
+    
+    <!-- MARK: - Bottom Navigation Bar Liquid Glass Colors -->
+    <!-- Translucent background for liquid glass effect (60% opacity) -->
+    <color name="bottom_nav_glass_light">#99FFFFFF</color>
+    <color name="bottom_nav_glass_dark">#991A1C1C</color>
+    
+    <!-- MARK: - Bottom Navigation Selected Tab Highlight Colors -->
+    <!-- Darker, semi-opaque highlight for selected tab (light mode, 50% opacity) -->
+    <color name="bottom_nav_selected_light">#80E0E0E0</color>
+    <!-- Lighter, semi-opaque highlight for selected tab (dark mode, 50% opacity) -->
+    <color name="bottom_nav_selected_dark">#80333333</color>
+    
+    <!-- MARK: - Image Placeholder Background -->
+    <color name="image_placeholder_background">#E6E6E6</color>
+    
+    <!-- MARK: - Topic Toggle Background Color -->
+    <!-- Matches divider color in light mode -->
+    <color name="topic_toggle_background_color">@color/divider_color</color>
+    
+    <!-- MARK: - Topic Toggle Highlight Color -->
+    <!-- 80% opacity white for light mode -->
+    <color name="topic_toggle_highlight_color">#CCFFFFFF</color>
+    
+    <!-- MARK: - Coming Soon Overlay Background -->
+    <!-- Uses colorSurfaceVariant with 85% opacity for frosted glass effect -->
+    <!-- Light mode: #F5F5F5 with 85% opacity = #D9F5F5F5 -->
+    <color name="coming_soon_overlay_bg">#D9F5F5F5</color>
 </resources>

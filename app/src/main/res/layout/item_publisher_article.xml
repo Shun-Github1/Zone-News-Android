@@ -11,7 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ease_default_image"
+        android:src="@drawable/ic_image_not_supported_24"
         android:background="@android:color/transparent"
         android:layout_marginEnd="12dp"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
@@ -46,7 +46,7 @@
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="2dp"
                 android:textSize="12sp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/custom"
                 android:background="@drawable/publisher_bias_tag_background"
                 android:visibility="gone"/>
         </LinearLayout>

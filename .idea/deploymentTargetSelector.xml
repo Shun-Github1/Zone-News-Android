@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="ZNews">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-09-29T14:23:52.184333200Z">
+        <DropdownSelection timestamp="2025-12-22T01:39:49.994082800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=f430a262" />

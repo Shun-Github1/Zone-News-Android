@@ -58,12 +58,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:paddingTop="0dp">
+                android:paddingTop="40dp">
 
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@mipmap/pg_logo"
+                    android:src="@mipmap/pg_about_logo"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/about_app_name"
                     android:textSize="26sp"
+                    android:textStyle="bold"
                     android:textColor="@color/colorTextDeep"
                     android:layout_marginTop="16dp" />
 
@@ -78,8 +79,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/about_version"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorTextSmall"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorTextSecondary"
                     android:layout_marginTop="8dp" />
             </LinearLayout>
 
@@ -94,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/about_heading"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorTextDeep" />
 
@@ -126,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/about_features"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorTextDeep" />
 
@@ -134,14 +135,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="8dp">
 
                 <!-- AI Context -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
+                    android:orientation="horizontal">
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -159,14 +159,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_ai_context"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_ai_context_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -179,7 +180,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_article_title_24"
+                        android:src="@drawable/format_list_bulleted_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -193,14 +194,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_article_list"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_article_list_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -213,7 +215,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_bookmark_24"
+                        android:src="@drawable/shoppingmode_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -227,14 +229,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_custom_tags"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_custom_tags_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -247,7 +250,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_open_in_browser_24"
+                        android:src="@drawable/captive_portal_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -261,14 +264,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_in_app_browser"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_in_app_browser_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -281,7 +285,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_star_24"
+                        android:src="@drawable/sunny_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -295,14 +299,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_levity_mode"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_levity_mode_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -315,7 +320,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_publisher_bias_24"
+                        android:src="@drawable/warning_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -329,14 +334,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_bias_tags"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_bias_tags_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -349,7 +355,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_public_24"
+                        android:src="@drawable/pie_chart_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -363,14 +369,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_distribution"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_distribution_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -383,7 +390,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_trending_24"
+                        android:src="@drawable/mood_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -397,14 +404,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_sentiment"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_media_sentiment_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -417,7 +425,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_clock_arrow_circlepath"
+                        android:src="@drawable/history_2_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -431,14 +439,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_recap"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_recap_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -451,7 +460,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_trending_up_24"
+                        android:src="@drawable/chart_data_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -465,14 +474,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_significance"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_significance_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -485,7 +495,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_tune_24"
+                        android:src="@drawable/tune_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -499,14 +509,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_subjectivity_score"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_subjectivity_score_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -519,7 +530,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_book_page_24"
+                        android:src="@drawable/description_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -533,14 +544,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_summary"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_summary_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -553,7 +565,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_clock_24"
+                        android:src="@drawable/width_wide_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -567,14 +579,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_timeline"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_timeline_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -587,7 +600,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_app_24"
+                        android:src="@drawable/widgets_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -601,14 +614,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_widgets"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_widgets_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -621,7 +635,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_home_24"
+                        android:src="@drawable/account_circle_24"
                         android:tint="@color/main_color"
                         android:contentDescription="@null" />
                     <LinearLayout
@@ -635,14 +649,15 @@
                             android:layout_height="wrap_content"
                             android:text="@string/feature_your_feed"
                             android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp" />
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feature_your_feed_desc"
-                            android:textColor="@color/colorTextSmall"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="14sp"
-                            android:layout_marginTop="4dp" />
+                            android:layout_marginTop="2dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -659,7 +674,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/contact_us"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorTextDeep" />
 
@@ -667,68 +682,105 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="8dp">
                     <!-- Email -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
+                        android:orientation="horizontal">
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/pg_login_top_back"
+                            android:src="@drawable/mail_24"
                             android:tint="@color/main_color"
                             android:contentDescription="@null" />
                         <TextView
+                            android:id="@+id/emailTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/contact_email"
-                            android:textColor="@color/colorTextMiddle"
-                            android:textSize="15sp"
-                            android:layout_marginStart="12dp" />
-                    </LinearLayout>
-                    <!-- Website -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/pg_home_more"
-                            android:tint="@color/main_color"
-                            android:contentDescription="@null" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contact_website"
-                            android:textColor="@color/colorTextMiddle"
-                            android:textSize="15sp"
-                            android:layout_marginStart="12dp" />
-                    </LinearLayout>
-                    <!-- Phone -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/pg_more"
-                            android:tint="@color/main_color"
-                            android:contentDescription="@null" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contact_phone"
-                            android:textColor="@color/colorTextMiddle"
-                            android:textSize="15sp"
-                            android:layout_marginStart="12dp" />
+                            android:text="contact@zonenews.io"
+                            android:textColor="@color/main_color"
+                            android:textSize="14sp"
+                            android:layout_marginStart="12dp"
+                            android:clickable="true"
+                            android:focusable="true" />
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+
+            <!-- Social Media Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="24dp">
+                
+                <!-- Instagram -->
+                <ImageView
+                    android:id="@+id/instagramIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_instagram_24"
+                    android:tint="@color/colorTextPrimary"
+                    android:contentDescription="@string/instagram"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="32dp" />
+                
+                <!-- Facebook -->
+                <ImageView
+                    android:id="@+id/facebookIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_facebook_24"
+                    android:tint="@color/colorTextPrimary"
+                    android:contentDescription="@string/facebook"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="32dp" />
+                
+                <!-- X (Twitter) -->
+                <ImageView
+                    android:id="@+id/xIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_x_twitter_24"
+                    android:tint="@color/colorTextPrimary"
+                    android:contentDescription="@string/x_twitter"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="32dp" />
+                
+                <!-- LinkedIn -->
+                <ImageView
+                    android:id="@+id/linkedinIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_linkedin_24"
+                    android:tint="@color/colorTextPrimary"
+                    android:contentDescription="@string/linkedin"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="32dp" />
+                
+                <!-- Website -->
+                <ImageView
+                    android:id="@+id/websiteIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/captive_portal_24"
+                    android:tint="@color/colorTextPrimary"
+                    android:contentDescription="@string/website"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </LinearLayout>
 
             <!-- Legal Links -->

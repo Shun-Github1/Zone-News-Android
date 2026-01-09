@@ -24,7 +24,7 @@
             android:id="@+id/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall.Custom"
             android:textColor="@color/text_primary"
             android:layout_marginBottom="16dp" />
 
@@ -33,7 +33,7 @@
             android:id="@+id/dialog_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium.Custom"
             android:textColor="@color/text_secondary"
             android:layout_marginBottom="24dp" />
 

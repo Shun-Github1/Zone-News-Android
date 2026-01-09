@@ -5,13 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bottom_line"
     android:paddingVertical="8dp"
-    android:paddingLeft="16dp"
+    android:paddingLeft="2dp"
     android:paddingRight="8dp">
 
     <!-- Ranking number -->
     <TextView
         android:id="@+id/ranking_tv"
-        android:layout_width="18dp"
+        android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:text="1"
         android:textSize="18sp"
@@ -38,7 +38,7 @@
         android:textSize="16sp"
         android:textColor="@color/colorTextDeep"
         android:textStyle="bold"
-        android:maxLines="2"
+        android:maxLines="3"
         android:ellipsize="end"
         android:id="@+id/news_title_tv"
         android:layout_marginStart="16dp"

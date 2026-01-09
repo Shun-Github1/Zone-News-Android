@@ -44,6 +44,18 @@ Language fallback:
     "msg": "Reason for failure"
 }
 ```
+- **409 Conflict** – Registration failed  
+```json
+{
+    "msg": "Email already registered or Username already taken"
+}
+```
+
+*comments*
+- verify user email (handled by backend)
+- password should have a minimum length and contain numbers 
+  and/or special characters (checked by backend or frontend?)
+- desktop site has a 'confirm password' that's checked by frontend
 
 ---
 
@@ -59,16 +71,29 @@ Language fallback:
 ```
 
 **Responses**
-- **200 OK** – Login successful, returns JWT Cookie  
-- **401 Unauthorized** – Login failed  
+- **200 OK** – Login successful, returns csrf token
+- **400 BAD REQUEST** - Missing username or password
+- **401 Unauthorized** – Login failed (incorrect username or password)
 
 ---
 
-### Login with Google
-`POST /auth/google-login`
+### Login with Firebase (includes Google, Facebook and Apple)
+`POST /auth/firebase`
 
-### Login with Apple
-`POST /auth/apple-login` 
+**Request Body**
+```json
+{
+    "idToken": "idToken",
+}
+```
+
+**Responses**
+- **200 OK** – Login successful, returns csrf token  
+- **409 Conflict** – Login failed  
+
+*reasons for failure:*
+- user already has a username+password account registered with this email
+- user used another firebase provider to login with the same email
 
 ### Logout
 `POST /auth/logout`
@@ -89,6 +114,65 @@ Anything beyond this point (everything except `/auth/` endpoints) will return da
 ```
 
 ## User Profile
+
+### Get Profile Information
+`GET /profile`
+
+**Response**
+```json
+{
+    "email": "test001@zonenews.io",
+    "isPro": false,
+    "language": "zh-CN",
+    "profileIcon": "https://api.zonenews.io/dev/img/icon?fn=0",
+    "username": "test001"
+}
+```
+
+---
+
+### Change language
+`PUT /profile/language`
+
+**Request Body**
+```json
+{
+    "language": "chosen language",
+}
+```
+
+**Responses**
+- **200 OK** – Language updated
+- **400 BAD REQUEST** - Language not in *(en-UK, zh-HK or zh-CN)*
+- **500 Internal Server Error** – Database error
+
+---
+
+### Redeem Code for Zone News Pro
+`POST /profile/redeem`
+
+**Request Body**
+```json
+{
+    "code": "dgH9pxAz2LmCEA3l",
+}
+```
+
+**Responses**
+- **200 OK** – Account Type updated
+- **400 BAD REQUEST** - Invalid code
+- **500 Internal Server Error** – Database error
+
+---
+
+### Cancel Pro Subscription
+`POST /profile/cancelsubscription`
+
+**Responses**
+- **200 OK** – Pro Subscription cancelled
+- **500 Internal Server Error** – Database error
+
+---
 
 ### Get Browsing History / Saved Articles
 `GET /profile/history`  
@@ -123,6 +207,21 @@ Anything beyond this point (everything except `/auth/` endpoints) will return da
 ```
 articleID=12345
 ```
+
+---
+
+### Append article to reading history
+`POST /profile/reading-history`
+
+**Request Body**
+```json
+{
+    "article_id": "articleID",
+}
+```
+*comments*
+- date & time of reading the article will be logged automatically
+- return reading history sorted by most recently opened first
 
 ---
 
@@ -186,7 +285,7 @@ articleID=12345
 ---
 
 ### Edit Topics List
-`GET /profile/edittopic`
+`POST /profile/edittopic`
 
 **Query Parameters**
 | Name   | Type   | Required | Description                           |
@@ -197,7 +296,7 @@ articleID=12345
 
 **Example:**
 ```
-GET /profile/edittopic?action=ADD&topic=politics&lang=en-UK
+POST /profile/edittopic?action=ADD&topic=politics&lang=en-UK
 ```
 
 **Response**
@@ -206,14 +305,30 @@ GET /profile/edittopic?action=ADD&topic=politics&lang=en-UK
 
 ---
 
-### Get Profile Information
-`GET /profile`
+### Get All Sectors List
+`GET /profile/sectors`
+
+**Query Parameters**
+| Name | Type   | Required | Description                    |
+|------|--------|----------|--------------------------------|
+| lang | string | No       | Language code (en-UK, zh-CN, zh-HK) |
 
 **Response**
 ```json
 {
-    "profileID": "user_123",
-    "profileIcon": "https://example.com/avatar.jpg"
+    "sectors": [
+        {"tag": "politics", "displayName": "Politics"},
+        {"tag": "economics", "displayName": "Economics"},
+        {"tag": "conflict", "displayName": "Conflict"},
+        {"tag": "diplomacy", "displayName": "Diplomacy"},
+        {"tag": "culture", "displayName": "Culture"},
+        {"tag": "science", "displayName": "Science"},
+        {"tag": "sports", "displayName": "Sports"},
+        {"tag": "technology", "displayName": "Technology"},
+        {"tag": "entertainment", "displayName": "Entertainment"},
+        {"tag": "military", "displayName": "Military"},
+        {"tag": "current-affairs", "displayName": "Current Affairs"}
+    ]
 }
 ```
 
@@ -308,12 +423,18 @@ China -> china
     ],
     "headlines": [
         {
-            "title": "Headline Title",
-            "pictureURL": "https://example.com/image.jpg",
-            "date": "2025-08-09 14:00:00",
-            "articleURL": "https://example.com/article",
-            "articleID": "67890",
-            "description": "Short summary"
+            "articleID": "7c3b1d9f-3b",
+            "articleURL": "https://api.zonenews.io/dev/article/7c3b1d9f-3b",
+            "date": "yyyy-mm-ddThh:mm:ss",
+            "description": "Article description",
+            "metrics": {
+                "sentiment": 0.12
+            },
+            "nSources": 2,
+            "pictureURL": "picturelink.com",
+            "region": "Region",
+            "sector": "Sector",
+            "title": "Article title"
         }
     ]
 }
@@ -330,13 +451,13 @@ The same is true for any mention of these variables in other endpoints.
 | Name   | Type    | Required | Description                |
 |--------|--------|----------|----------------------------|
 | offset | int    | No       | Article offset (default 0) |
-| limit  | int    | No       | Article limit (default 10) |
+| limit  | int    | No       | Article limit (default 20) |
 | lang   | string | No       | Language code (en-UK, zh-CN, zh-HK) |
 | sortby | string | No       | Sort order: `latest`, `popular`, or `relevant` |
 
 **Example:**
 ```
-GET /feed/personal?offset=0&limit=10&lang=en-UK&sortby=latest
+GET /feed/personal?offset=0&limit=20&lang=en-UK&sortby=latest
 ```
 
 **Response**
@@ -394,6 +515,8 @@ Returns 3-6 randomly selected trending topics with localized display names.
     "date": "2025-08-09 14:00:00",
     "articleID": "12345",
     "shareURL": "https://example.com/share",
+    "sector": "SomeSector",
+    "region": "Region",
     "description": {
         "synopsis": "Brief summary of the main events",
         "implications": "Analysis of potential consequences and broader impact"
@@ -418,6 +541,7 @@ Returns 3-6 randomly selected trending topics with localized display names.
     },
     "articles": [
         {
+            "publisherID": 99,
             "publisherName": "Publisher",
             "publisherIcon": "https://example.com/logo.png",
             "title": "Article Title",
@@ -431,9 +555,17 @@ Returns 3-6 randomly selected trending topics with localized display names.
             "publisherRegion": "US"
         }
     ],
-    "relatedTopics": ["Politics", "Economy"],
-    "relatedArticles": [],
-    "liked": true
+    "relatedTopics": [
+        {
+            "displayName": "You Meinu",
+            "tag": "you-meinu"
+        },
+        {
+            "displayName": "Breach of Trust",
+            "tag": "breach-of-trust"
+        }
+    ],
+    "relatedArticles": []
 }
 ```
 
@@ -457,10 +589,15 @@ Returns 3-6 randomly selected trending topics with localized display names.
 `GET /search?q={query}`
 
 **Query Parameters**
-| Name | Type   | Required | Description                    |
-|------|--------|----------|--------------------------------|
-| q    | string | Yes      | Search query                   |
-| lang | string | No       | Language code (en-UK, zh-CN, zh-HK) |
+| Name   | Type   | Required | Description                                              |
+| ------ | ------ | -------- | -------------------------------------------------------- |
+| q      | string | Yes      | Search query                                             |
+| lang   | string | No       | Language code (`en-UK`, `zh-CN`, `zh-HK`)                |
+| page   | int    | No       | Page number (default = `1`)                              |
+| limit  | int    | No       | Results per page (default = `15`)                        |
+| sortby | string | No       | Sort order (`latest` *(default)*, `popular`, `relevant`) |
+
+*note: `latest` (default), `popular`, or `relevant`
 
 **Response**
 ```json
@@ -468,11 +605,32 @@ Returns 3-6 randomly selected trending topics with localized display names.
     "articles": [
         {
             "title": "Search Result Title",
+            "articleID": "articleID",
             "pictureURL": "https://example.com/image.jpg",
-            "articleURL": "https://example.com/article"
+            "articleURL": "https://example.com/article",
+            "date": "yyyy-mm-ddThh:mm:ss",
+            "description": "Article description",
+            "nSources": "number of sources",
+            "region": "region",
+            "sector": "sector",
+            "coverage": {
+                "centric": 0.0,
+                "progressive": 1.0
+            },
+            "metrics": {
+                "sentiment": 0.12,
+                "subjectivity": 0.41
+            }
         }
-    ]
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 15,
+        "total": 128,
+        "totalPages": 9
+    }
 }
+
 ```
 
 ---
@@ -486,6 +644,36 @@ Returns 3-6 randomly selected trending topics with localized display names.
 | lang | string | No       | Language code (en-UK, zh-CN, zh-HK) |
 
 (Same response format as `/search?q={}`)
+
+---
+
+## Info
+
+### Publisher Information
+`GET /info/publisher/{id}`
+
+**Query Parameters**
+| Name | Type   | Required | Description                    |
+|------|--------|----------|--------------------------------|
+| lang | string | No       | Language code (en-UK, zh-CN, zh-HK) |
+
+**Reseponse**
+```json
+{
+    "conglomerate": "Nikkei Inc.",
+    "controller": "Nikkei Inc.",
+    "id": 33,
+    "intro": "London-based global financial newspaper, pro-globalization and pro-free-market.",
+    "name": "Financial Times",
+    "region": "United Kingdom",
+    "stance": {
+        "displayName": "Progressive",
+        "tag": "p"
+    },
+    "type": "Corporate",
+    "website": "www.ft.com"
+},
+```
 
 ---
 
@@ -509,18 +697,30 @@ Uses Firebase Cloud Messaging (FCM) to send notifications.
 
 ---
 
-### About Us
-`GET /info/aboutus`
 
-**Query Parameters**
-| Name | Type   | Required | Description                    |
-|------|--------|----------|--------------------------------|
-| lang | string | No       | Language code (en-UK, zh-CN, zh-HK) |
+==================================================================
+*** to do list ***
 
-**Response**
-```json
-{
-    "content": "About us text..."
-}
-```
-(Content may contain clickable URLs and will be returned in the requested language.)
+- **create GET requests for**
+- news recap
+- article timeline
+- most read (same as daily recap)
+- levity mode (i believe this could be done as a tag for /feed)
+- latest
+
+
+- **consider**
+- endpoint for displaying articles in each *topic*
+- (alternatively we could just use /search ?)
+- (think ahead: how do we implement it for the deep dive section)
+- e.g. China -> technology or HK -> finance
+
+- add time range for /search ?
+- add sort to /search ? 
+- (currently website sorts on frontend)
+
+
+
+
+
+

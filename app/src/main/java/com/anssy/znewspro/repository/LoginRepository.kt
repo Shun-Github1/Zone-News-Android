@@ -5,6 +5,7 @@ import com.anssy.znewspro.entry.CommonResponseEntry
 import com.anssy.znewspro.entry.LoginEntry
 import com.anssy.znewspro.net.AppHttpService
 import com.anssy.znewspro.utils.Utils
+import com.anssy.znewspro.utils.network.PersistentCookieJar
 import com.anssy.znewspro.utils.network.exception.GenericResponse
 import org.json.JSONObject
 import javax.inject.Inject
@@ -15,7 +16,10 @@ import javax.inject.Inject
  * @CreateTime 2025年07月04日 10:55:09
  */
 
-class LoginRepository @Inject constructor(private val appHttpService: AppHttpService) {
+class LoginRepository @Inject constructor(
+    private val appHttpService: AppHttpService,
+    private val cookieJar: PersistentCookieJar
+) {
     private val TAG = "LoginRepository"
     
     suspend fun loginApp(name:String,pass:String):GenericResponse<LoginEntry>{
@@ -36,7 +40,10 @@ class LoginRepository @Inject constructor(private val appHttpService: AppHttpSer
     }
 
     suspend fun outLoginApp():GenericResponse<CommonResponseEntry>{
-        return  appHttpService.logoutApp()
+        val result = appHttpService.logoutApp()
+        // Clear cookies on logout
+        cookieJar.clearCookies()
+        return result
     }
 
     suspend fun registerApp(email:String,userName:String,passWord:String):GenericResponse<CommonResponseEntry>{
@@ -45,5 +52,21 @@ class LoginRepository @Inject constructor(private val appHttpService: AppHttpSer
         jsonObject.put("username",userName)
         jsonObject.put("password",passWord)
         return appHttpService.registerApp(Utils.createJsonRequestBody(jsonObject.toString()))
+    }
+
+    suspend fun loginWithFirebase(idToken: String): GenericResponse<LoginEntry> {
+        val jsonObject = JSONObject()
+        jsonObject.put("idToken", idToken)
+        val requestBody = Utils.createJsonRequestBody(jsonObject.toString())
+        Log.d(TAG, "Making Firebase login API call")
+        Log.d(TAG, "Request body: ${jsonObject.toString()}")
+        try {
+            val result = appHttpService.loginWithFirebase(requestBody)
+            Log.d(TAG, "Firebase API call completed. Result type: ${result::class.simpleName}")
+            return result
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception during Firebase API call: ${e.message}", e)
+            throw e
+        }
     }
 }

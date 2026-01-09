@@ -13,6 +13,7 @@ import com.anssy.znewspro.utils.Constants
 import com.anssy.znewspro.net.AppHttpService
 import com.anssy.znewspro.utils.SharedPreferenceUtils
 import com.anssy.znewspro.utils.network.exception.NetworkResponseAdapterFactory
+import com.anssy.znewspro.utils.network.PersistentCookieJar
 
 import dagger.Module
 import dagger.Provides
@@ -46,21 +47,42 @@ object NetworkModule {
         init(null, trustAllCerts, SecureRandom())
     }
 
+    // Cookie jar instance - shared across the app
+    @Provides
+    @Singleton
+    fun provideCookieJar(@ApplicationContext context: Context): PersistentCookieJar {
+        return PersistentCookieJar(context)
+    }
+
     // 普通用户的 OkHttpClient
     @Provides
     @Singleton
     @Named("user")
-    fun provideUserOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+    fun provideUserOkHttpClient(
+        @ApplicationContext context: Context,
+        cookieJar: PersistentCookieJar
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
             .hostnameVerifier { _, _ -> true } // Accept all hostnames
+            .cookieJar(cookieJar) // Enable cookie-based authentication
+            // Add CSRF token interceptor for POST requests
             .addInterceptor { chain ->
-                val tokens = SharedPreferenceUtils.getString(context,"token")
-                val token = tokens ?: ""
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $token") // 添加 token
-                    .build()
-                chain.proceed(request)
+                val request = chain.request()
+                // Only add CSRF token for POST, PUT, DELETE requests
+                if (request.method in listOf("POST", "PUT", "DELETE")) {
+                    val csrfToken = cookieJar.getCsrfToken()
+                    if (!csrfToken.isNullOrEmpty()) {
+                        val newRequest = request.newBuilder()
+                            .addHeader("X-CSRF-Token", csrfToken)
+                            .build()
+                        chain.proceed(newRequest)
+                    } else {
+                        chain.proceed(request)
+                    }
+                } else {
+                    chain.proceed(request)
+                }
             }
             .addInterceptor(CustomLoggingInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)

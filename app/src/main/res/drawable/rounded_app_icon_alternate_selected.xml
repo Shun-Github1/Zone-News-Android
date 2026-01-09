@@ -16,7 +16,7 @@
             <corners android:radius="10dp" />
             <stroke
                 android:width="3dp"
-                android:color="@color/brand_primary" />
+                android:color="@color/media_region_stroke_selected" />
         </shape>
     </item>
 </layer-list>

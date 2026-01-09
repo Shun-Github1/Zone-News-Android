@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top|center_horizontal"
+    android:paddingHorizontal="4dp"
+    android:paddingTop="0dp">
+
+    <!-- Header Text -->
+    <TextView
+        android:id="@+id/screenshotHeaderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/colorTextDeep"/>
+
+    <!-- Glow Container with iPhone Frame -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="12dp">
+
+        <!-- Glow Effect Background (radiates outward from iPhone frame edge) -->
+        <!-- 24dp larger than iPhone frame (160dp × 320dp) = 184dp × 344dp for smooth fade -->
+        <View
+            android:layout_width="184dp"
+            android:layout_height="344dp"
+            android:layout_gravity="center"
+            android:background="@drawable/screenshot_glow_effect" />
+
+        <!-- iPhone Frame Container -->
+        <FrameLayout
+            android:layout_width="160dp"
+            android:layout_height="320dp"
+            android:layout_gravity="center"
+            android:elevation="8dp">
+
+            <!-- Outer Black Frame (iPhone frame) -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/iphone_frame_outer" />
+
+            <!-- Inner Gray Screen -->
+            <FrameLayout
+                android:layout_width="140dp"
+                android:layout_height="280dp"
+                android:layout_gravity="center"
+                android:background="@drawable/iphone_screen_inner">
+
+                <!-- Placeholder Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_broken_image_icon"
+                        app:tint="@color/colorTextSmall"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/screenshotPlaceholderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTextSmall" />
+                </LinearLayout>
+            </FrameLayout>
+        </FrameLayout>
+    </FrameLayout>
+
+</LinearLayout>

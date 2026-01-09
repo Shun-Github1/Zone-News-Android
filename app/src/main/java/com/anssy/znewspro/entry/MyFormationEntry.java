@@ -37,15 +37,34 @@ public class MyFormationEntry {
     }
 
     public static class DataDTO {
-        private String profileID;
+        private String email;
+        private Boolean isPro;
+        private String language;
         private String profileIcon;
+        private String username;
 
-        public String getProfileID() {
-            return profileID;
+        public String getEmail() {
+            return email;
         }
 
-        public void setProfileID(String profileID) {
-            this.profileID = profileID;
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public Boolean getIsPro() {
+            return isPro;
+        }
+
+        public void setIsPro(Boolean isPro) {
+            this.isPro = isPro;
+        }
+
+        public String getLanguage() {
+            return language;
+        }
+
+        public void setLanguage(String language) {
+            this.language = language;
         }
 
         public String getProfileIcon() {
@@ -54,6 +73,14 @@ public class MyFormationEntry {
 
         public void setProfileIcon(String profileIcon) {
             this.profileIcon = profileIcon;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
         }
     }
 }

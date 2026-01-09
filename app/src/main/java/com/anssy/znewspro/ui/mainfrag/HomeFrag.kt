@@ -1,9 +1,12 @@
 package com.anssy.znewspro.ui.mainfrag
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 // removed unused ViewGroup import to avoid ambiguity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -15,6 +18,7 @@ import com.anssy.znewspro.databinding.FragHomeBinding
 import com.anssy.znewspro.ui.MainActivity
 import com.anssy.znewspro.ui.mainfrag.homechild.HomeChildFrag
 import com.anssy.znewspro.ui.notice.NoticeListActivity
+import com.anssy.znewspro.utils.SharedPreferenceUtils
 import com.google.android.material.tabs.TabLayoutMediator
 import android.widget.TextView
 import android.view.Gravity
@@ -57,14 +61,26 @@ class HomeFrag : BaseFragment() {
         }
         mViewBinding.homeVp.adapter = MyAdapter(this)
         mViewBinding.homeVp.isUserInputEnabled = true
+        // Preload all adjacent fragments to prevent lag when switching tabs
+        mViewBinding.homeVp.offscreenPageLimit = 2
+        
+        // Set initial tab based on landing page preference (only on first load)
+        setInitialTabFromPreference()
         
         // Setup MaterialToolbar menu item clicks
         setupToolbar()
         
         val tabLayoutMediator  =TabLayoutMediator(mViewBinding.tabLayout,mViewBinding.homeVp){ tab, position ->
             val container = FrameLayout(requireContext()).apply {
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                // Use MATCH_PARENT width so container fills the tab space allocated by TabLayout
+                // TabLayout with fixed mode will allocate equal widths, container should use all of it
+                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 foregroundGravity = Gravity.CENTER
+                // Add horizontal and top padding to accommodate scaled text (1.1x scale means 10% larger)
+                // No bottom padding to prevent pushing divider down - indicator is positioned at bottom via drawable
+                val paddingDp = 6f
+                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
+                setPadding(paddingPx, paddingPx, paddingPx, 0)
             }
             val baseText = TextView(requireContext()).apply {
                 text = titleGroup[position]
@@ -73,6 +89,10 @@ class HomeFrag : BaseFragment() {
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
                 typeface = android.graphics.Typeface.DEFAULT
                 alpha = 0f
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                )
             }
             val labelText = TextView(requireContext()).apply {
                 text = titleGroup[position]
@@ -80,6 +100,10 @@ class HomeFrag : BaseFragment() {
                 textSize = 10f
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
                 typeface = android.graphics.Typeface.DEFAULT
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                )
             }
             container.addView(baseText)
             container.addView(labelText)
@@ -87,17 +111,21 @@ class HomeFrag : BaseFragment() {
             tab.customView = container
         }
         tabLayoutMediator.attach()
-        // Apply bold and size changes via listener
+        // Apply bold and size changes via listener with scale animation
         fun styleTab(tab: com.google.android.material.tabs.TabLayout.Tab?, selected: Boolean) {
             val tv = (tab?.customView?.tag) as? TextView ?: return
             if (selected) {
                 tv.setTypeface(tv.typeface, android.graphics.Typeface.BOLD)
                 tv.textSize = 16f
                 tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextDeep))
+                // Animate scale to 1.1x (reduced from 1.2x)
+                animateTabScale(tv, 1.0f, 1.1f)
             } else {
                 tv.setTypeface(null, android.graphics.Typeface.NORMAL)
                 tv.textSize = 14f
                 tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
+                // Animate scale back to 1.0x
+                animateTabScale(tv, 1.1f, 1.0f)
             }
         }
 
@@ -113,12 +141,44 @@ class HomeFrag : BaseFragment() {
             override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab) {}
         })
 
-        // Initialize current styles
+        // Initialize current styles without animation
         mViewBinding.tabLayout.post {
             val selected = mViewBinding.tabLayout.selectedTabPosition
             for (i in 0 until mViewBinding.tabLayout.tabCount) {
-                styleTab(mViewBinding.tabLayout.getTabAt(i), i == selected)
+                val tab = mViewBinding.tabLayout.getTabAt(i)
+                val tv = (tab?.customView?.tag) as? TextView ?: continue
+                val isSelected = i == selected
+                if (isSelected) {
+                    tv.setTypeface(tv.typeface, android.graphics.Typeface.BOLD)
+                    tv.textSize = 16f
+                    tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextDeep))
+                } else {
+                    tv.setTypeface(null, android.graphics.Typeface.NORMAL)
+                    tv.textSize = 14f
+                    tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
+                }
+                // Set initial scale without animation for first load
+                tv.scaleX = if (isSelected) 1.1f else 1.0f
+                tv.scaleY = if (isSelected) 1.1f else 1.0f
             }
+        }
+    }
+
+    /**
+     * Helper function to animate tab text scale
+     */
+    private fun animateTabScale(textView: TextView, startScale: Float, endScale: Float) {
+        val scaleX = ObjectAnimator.ofFloat(textView, "scaleX", startScale, endScale).apply {
+            duration = 300
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        val scaleY = ObjectAnimator.ofFloat(textView, "scaleY", startScale, endScale).apply {
+            duration = 300
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        AnimatorSet().apply {
+            playTogether(scaleX, scaleY)
+            start()
         }
     }
 
@@ -143,6 +203,38 @@ class HomeFrag : BaseFragment() {
         }
     }
 
+    /**
+     * Set the current tab in the Home fragment (0 = Today, 1 = Hong Kong, 2 = China)
+     */
+    fun setCurrentTab(tabIndex: Int) {
+        if (tabIndex in 0..2 && mViewBinding.homeVp.adapter != null) {
+            mViewBinding.homeVp.setCurrentItem(tabIndex, false)
+        }
+    }
+    
+    /**
+     * Set initial tab based on landing page preference (only called on first load)
+     */
+    private fun setInitialTabFromPreference() {
+        // Only set initial tab if this is the first time the fragment is created
+        // Check if we've already set the initial tab by checking if ViewPager has a current item
+        if (mViewBinding.homeVp.currentItem == 0) {
+            val landingPage = SharedPreferenceUtils.getString(mContext, "landing_page")
+            val subTabIndex = when (landingPage) {
+                "today" -> 0 // Today tab
+                "hongKong" -> 1 // Hong Kong tab
+                "china" -> 2 // China tab
+                else -> 0 // Default to Today
+            }
+            // Use post to ensure ViewPager is ready
+            mViewBinding.homeVp.post {
+                if (subTabIndex != 0) {
+                    mViewBinding.homeVp.setCurrentItem(subTabIndex, false)
+                }
+            }
+        }
+    }
+    
     /**
      * Refresh all child fragments
      */

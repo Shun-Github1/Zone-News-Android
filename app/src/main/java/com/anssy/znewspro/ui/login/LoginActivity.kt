@@ -56,19 +56,56 @@ class LoginActivity : BaseActivity() {
         mViewBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
         
-        if (SharedPreferenceUtils.getBoolean(mContext, "isLogin")) {
-            val intent = Intent(mContext, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            Log.d(TAG, "onCreate: User not logged in, initializing views")
-            initView()
-            initFirebase()
-            initGoogleSignIn()
-            initFacebookAuth()
-            initModel()
+        // CRITICAL: Always force isLogin to false first - we're on the login screen
+        // This prevents auto-login from backup/restored SharedPreferences
+        SharedPreferenceUtils.saveBoolean(mContext, "isLogin", false)
+        SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", false)
+        SharedPreferenceUtils.deleteString(mContext, "token")
+        SharedPreferenceUtils.deleteString(mContext, "autoLogin")
+        
+        // Clear cookies from SharedPreferences (before PersistentCookieJar singleton loads them)
+        val cookiePrefs = mContext!!.getSharedPreferences("cookie_prefs", android.content.Context.MODE_PRIVATE)
+        cookiePrefs.edit().clear().apply()
+        Log.d(TAG, "Cleared all authentication SharedPreferences and cookies")
+        
+        // Now initialize Firebase and Google Sign-In (needed for sign out operations)
+        initFirebase()
+        initGoogleSignIn()
+        
+        // Sign out from all third-party auth providers to ensure clean state
+        clearThirdPartyAuth()
+        
+        // Always show login screen (never auto-login, regardless of backup restore)
+        Log.d(TAG, "Showing login screen - user must authenticate")
+        initView()
+        // Set up observer first before registering callbacks
+        initModel()
+        initFacebookAuth()
+    }
+    
+    /**
+     * Clear third-party authentication state (Firebase, Google, Facebook)
+     * This is called after initializing these services so we can sign out
+     */
+    private fun clearThirdPartyAuth() {
+        try {
+            // Sign out from Firebase Auth
+            auth.signOut()
+            Log.d(TAG, "Signed out from Firebase Auth")
+            
+            // Sign out from Google Sign-In
+            googleSignInClient.signOut().addOnCompleteListener {
+                Log.d(TAG, "Signed out from Google Sign-In")
+            }
+            
+            // Sign out from Facebook
+            LoginManager.getInstance().logOut()
+            Log.d(TAG, "Signed out from Facebook")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error clearing third-party auth: ${e.message}")
         }
     }
+    
 
 
     private fun initFacebookAuth() {
@@ -77,8 +114,12 @@ class LoginActivity : BaseActivity() {
             callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    Log.d(TAG, "facebook:onSuccess:$result")
-                    handleFacebookAccessToken(result.accessToken)
+                    Log.d(TAG, "facebook:onSuccess - Thread: ${Thread.currentThread().name}")
+                    Log.d(TAG, "facebook:onSuccess - AccessToken: ${result.accessToken?.token?.take(20)}...")
+                    // Ensure we're on the main thread
+                    runOnUiThread {
+                        handleFacebookAccessToken(result.accessToken)
+                    }
                 }
 
                 override fun onCancel() {
@@ -86,8 +127,10 @@ class LoginActivity : BaseActivity() {
                 }
 
                 override fun onError(error: FacebookException) {
-                    Log.d(TAG, "facebook:onError", error)
-                    ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                    Log.e(TAG, "facebook:onError", error)
+                    runOnUiThread {
+                        ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                    }
                 }
             }
         )
@@ -98,32 +141,46 @@ class LoginActivity : BaseActivity() {
      * Facebook登录处理
      */
     private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
+        Log.d(TAG, "handleFacebookAccessToken - Thread: ${Thread.currentThread().name}")
+        Log.d(TAG, "handleFacebookAccessToken - Token: ${token.token.take(20)}...")
         
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
+                    // Sign in success, get Firebase ID token and authenticate with backend
+                    Log.d(TAG, "signInWithCredential:success - User: ${task.result?.user?.email}")
                     val user = auth.currentUser
-                    user?.email.let {
-                        if (!TextUtils.isEmpty(user?.email)) {
-                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_prefix, user?.email ?: ""))
-                            SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", true)
-                            SharedPreferenceUtils.saveBoolean(mContext, "isLogin", true)
-                            
-                            // Navigate to MainActivity
-                            val intent = Intent(mContext, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
+                    if (user != null && !TextUtils.isEmpty(user.email)) {
+                        // Get Firebase ID token and authenticate with backend API
+                        Log.d(TAG, "Getting Firebase ID token for user: ${user.email}")
+                        user.getIdToken(false).addOnCompleteListener { tokenTask ->
+                            if (tokenTask.isSuccessful) {
+                                val idToken = tokenTask.result?.token
+                                if (idToken != null) {
+                                    Log.d(TAG, "Firebase ID token obtained, calling loginWithFirebase")
+                                    SystemDialogUtils.showLoadingDialog(this, getString(R.string.login_logging_in))
+                                    loginModel.loginWithFirebase(idToken)
+                                } else {
+                                    Log.e(TAG, "Firebase ID token is null")
+                                    SystemDialogUtils.dismissLoadingDialog()
+                                    ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                                }
+                            } else {
+                                Log.e(TAG, "Failed to get Firebase ID token", tokenTask.exception)
+                                SystemDialogUtils.dismissLoadingDialog()
+                                ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                            }
                         }
+                    } else {
+                        Log.e(TAG, "User is null or email is empty - User: $user, Email: ${user?.email}")
+                        SystemDialogUtils.dismissLoadingDialog()
+                        ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
                     }
                 } else {
                     // If sign in fails, display a message to the user
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Log.e(TAG, "signInWithCredential:failure", task.exception)
+                    SystemDialogUtils.dismissLoadingDialog()
                     ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
                 }
             }
@@ -164,65 +221,43 @@ class LoginActivity : BaseActivity() {
     private fun signInWithEmailAndPassword(email: String, password: String) {
         Log.d(TAG, "signInWithEmailAndPassword: Starting email/password sign-in")
         
-        // Check for special development admin access - use old API
-        if (email == "admin" && password == "admin") {
-            Log.d(TAG, "Development admin access - using old API method")
-            SystemDialogUtils.showLoadingDialog(this, getString(R.string.login_logging_in))
-            loginModel.loginApp(email, password)
-            return
-        }
-        
-        // Use Firebase for regular users
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmailAndPassword:success")
-                    val user = auth.currentUser
-                    user?.email.let {
-                        if (!TextUtils.isEmpty(user?.email)) {
-                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_prefix, user?.email ?: ""))
-                            SharedPreferenceUtils.saveBoolean(mContext, "isLogin", true)
-                            
-                            // Navigate to MainActivity
-                            val intent = Intent(mContext, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
-                        }
-                    }
-                } else {
-                    // If sign in fails, display a message to the user
-                    Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
-                    val errorMessage = when {
-                        task.exception?.message?.contains("invalid-email") == true -> 
-                            getString(R.string.login_error_invalid_email)
-                        task.exception?.message?.contains("user-disabled") == true -> 
-                            getString(R.string.login_error_user_disabled)
-                        task.exception?.message?.contains("user-not-found") == true -> 
-                            getString(R.string.login_error_user_not_found)
-                        task.exception?.message?.contains("wrong-password") == true -> 
-                            getString(R.string.login_error_wrong_password)
-                        else -> getString(R.string.login_failed)
-                    }
-                    ToastUtils.showShortToast(mContext!!, errorMessage)
-                }
-            }
+        // All email/password logins go through the backend API
+        // The backend handles authentication and returns JWT cookies
+        SystemDialogUtils.showLoadingDialog(this, getString(R.string.login_logging_in))
+        loginModel.loginApp(email, password)
     }
 
     private fun initModel(){
-        loginModel.loginEntry.observe(this){
-            if (it.code == com.anssy.znewspro.utils.Constants.SUCCESS_CODE){
+        loginModel.loginEntry.observe(this) { loginEntry ->
+            if (loginEntry == null) {
+                Log.w(TAG, "LoginEntry is null")
+                return@observe
+            }
+            
+            Log.d(TAG, "LoginEntry received - code: ${loginEntry.code}, msg: ${loginEntry.msg}")
+            
+            if (loginEntry.code != null && loginEntry.code == com.anssy.znewspro.utils.Constants.SUCCESS_CODE) {
+                Log.d(TAG, "Login successful, navigating to MainActivity")
+                SystemDialogUtils.dismissLoadingDialog()
                 SystemDialogUtils.showSuccessMessage(this, getString(R.string.login_success))
-                SharedPreferenceUtils.saveString(mContext,"token",it.data.access_token)
+                // With cookie-based authentication, we don't need to save token manually
+                // Cookies are automatically handled by PersistentCookieJar
+                // Keep token field for backward compatibility if needed, but it's not used for auth
+                loginEntry.data?.access_token?.let { token ->
+                    SharedPreferenceUtils.saveString(mContext,"token", token)
+                }
+                // Mark as third-party login if Firebase auth is active
+                if (auth.currentUser != null) {
+                    SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", true)
+                }
                 SharedPreferenceUtils.saveBoolean(mContext,"isLogin",true)
                 val intent = Intent(mContext,MainActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
-            }else{
+            } else {
+                Log.w(TAG, "Login failed - code: ${loginEntry.code}, msg: ${loginEntry.msg}")
                 SystemDialogUtils.dismissLoadingDialog()
-                ToastUtils.showShortToast(mContext!!,it.msg)
+                ToastUtils.showShortToast(mContext!!, loginEntry.msg ?: getString(R.string.login_failed))
             }
         }
     }
@@ -289,22 +324,27 @@ class LoginActivity : BaseActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+                    // Sign in success, get Firebase ID token and authenticate with backend
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    user?.email.let {
-                        if (!TextUtils.isEmpty(user?.email)) {
-                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_prefix, user?.email ?: ""))
-                            SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", true)
-                            SharedPreferenceUtils.saveBoolean(mContext, "isLogin", true)
-                            
-                            // Navigate to MainActivity
-                            val intent = Intent(mContext, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
+                    if (user != null && !TextUtils.isEmpty(user.email)) {
+                        // Get Firebase ID token and authenticate with backend API
+                        user.getIdToken(false).addOnCompleteListener { tokenTask ->
+                            if (tokenTask.isSuccessful) {
+                                val firebaseIdToken = tokenTask.result?.token
+                                if (firebaseIdToken != null) {
+                                    SystemDialogUtils.showLoadingDialog(this, getString(R.string.login_logging_in))
+                                    loginModel.loginWithFirebase(firebaseIdToken)
+                                } else {
+                                    ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                                }
+                            } else {
+                                Log.w(TAG, "Failed to get Firebase ID token", tokenTask.exception)
+                                ToastUtils.showShortToast(mContext!!, getString(R.string.login_failed))
+                            }
                         }
+                    } else {
+                        ToastUtils.showShortToast(mContext!!, getString(R.string.email_empty))
                     }
                 } else {
                     // If sign in fails, display a message to the user

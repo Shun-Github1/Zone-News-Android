@@ -177,6 +177,7 @@
     <string name="currently_sorted_by">Currently sorted by</string>
     <string name="latest_sort">Latest</string>
     <string name="active_tags">Active tags</string>
+    <string name="select_tags_to_follow">Select tags to follow</string>
     <string name="your_feed_title">Your Feed</string>
     <string name="recap_title">Recap</string>
     <string name="recap_24h_header">In the past 24 hours,</string>
@@ -331,6 +332,7 @@
     <string name="time_minutes_ago">%1$d minutes ago</string>
     <string name="time_hours_ago">%1$d hours ago</string>
     <string name="time_days_ago">%1$d days ago</string>
+    <string name="time_unknown">Unknown date</string>
     
     <!-- Reading History strings -->
     <string name="clear_all">Clear All</string>
@@ -341,10 +343,33 @@
     <string name="browsing_history">Browsing History</string>
     <string name="saved_articles">Saved Articles</string>
     <string name="cleared_all_items">Cleared all items</string>
+    <string name="clear_reading_history_confirmation_title">Clear Reading History</string>
+    <string name="clear_reading_history_confirmation_message">This will permanently delete all your reading history. This action cannot be undone.</string>
+    <string name="clear_reading_history_confirmation_confirm">Clear All</string>
+    <string name="clear_saved_articles_confirmation_title">Clear Saved Articles</string>
+    <string name="clear_saved_articles_confirmation_message">This will permanently delete all your saved articles. This action cannot be undone.</string>
+    <string name="clear_saved_articles_confirmation_confirm">Clear All</string>
     
     <!-- Language Settings Help Messages -->
     <string name="language_settings_help">Navigate to App Info → Language to change app language</string>
     <string name="language_settings_help_modern">Select your preferred language from the list</string>
     <string name="language_settings_fallback">Navigate to System Settings → Languages to change app language</string>
     <string name="language_settings_error">Unable to open settings. Please manually go to Settings → Apps → Zone News → Language</string>
+
+    <!-- Topic Selection Menu -->
+    <string name="clear_all_topics">Clear All Topics</string>
+    <string name="clear_all_topics_confirmation_title">Clear All Topics</string>
+    <string name="clear_all_topics_confirmation_message">Are you sure you want to clear all selected topics across all sections? This action cannot be undone.</string>
+    <string name="clear_all_topics_confirmation_confirm">Clear All</string>
+    <string name="cleared_all_topics">Cleared all topics</string>
+    <string name="search_topics">Search topics</string>
+    <string name="topic_tab_all">All</string>
+    <string name="topic_tab_sectors">Sectors</string>
+    <string name="topic_tab_regions">Regions</string>
+    <string name="topic_tab_trending">Trending</string>
+    <string name="topic_tab_custom">Custom</string>
+    <string name="section_sectors">Sectors</string>
+    <string name="section_regions">Regions</string>
+    <string name="section_trending">Trending</string>
+    <string name="custom_topics_coming_soon">Custom topics coming soon</string>
 </resources>

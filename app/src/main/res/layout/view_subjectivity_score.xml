@@ -19,15 +19,32 @@
             android:textColor="@color/colorTextDeep"
             android:textSize="16sp"/>
         <ImageView
+            android:id="@+id/chevron_btn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_down_24"
+            android:tint="@color/colorTextMiddle"/>
+        <ImageView
+            android:id="@+id/menu_btn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_menu_24"
+            android:tint="@color/colorTextMiddle"/>
+        <ImageView
             android:id="@+id/info_btn"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_info_outline_18"
-            android:tint="@color/colorTextSmall"/>
+            android:tint="@color/colorTextMiddle"/>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

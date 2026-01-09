@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="600dp"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_sheet_background"
+    android:layout_marginTop="80dp">
+
+    <!-- Top Bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:elevation="1dp">
+
+        <!-- Done button on the right -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/doneButton"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/done"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="14sp"
+            android:minWidth="0dp" />
+
+    </RelativeLayout>
+
+    <!-- Content Container with Header Overlay -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="400dp">
+
+        <!-- Scrollable Content -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="76dp"
+            android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="24dp">
+
+            <!-- UPGRADE PAGE (shown when NOT Pro) -->
+            <LinearLayout
+                android:id="@+id/upgradePageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- Screenshots Carousel -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/screenshotsViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="370dp" />
+
+                    <!-- Page Indicator Dots (custom implementation) -->
+                    <LinearLayout
+                        android:id="@+id/pageIndicatorContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+
+                <!-- Subscription Plan Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardForegroundColor="@android:color/transparent"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="1dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/profile_card_background"
+                        android:padding="20dp">
+
+                        <!-- Plan Info -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_marginBottom="20dp">
+
+                            <TextView
+                                android:id="@+id/planTitleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/subscription_plan_title"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorTextDeep"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:id="@+id/planPriceText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/subscription_plan_price"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/main_color"
+                                android:layout_marginBottom="4dp" />
+
+                            <TextView
+                                android:id="@+id/planBillingText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/subscription_plan_billing"
+                                android:textSize="14sp"
+                                android:textColor="@color/colorTextSecondary" />
+                        </LinearLayout>
+
+                        <!-- Features List -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/subscription_features_title"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextDeep"
+                            android:layout_marginBottom="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="4dp"
+                            android:paddingVertical="8dp">
+
+                            <!-- Feature 1: Ad-Free -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ad_off_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_ad_free"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_ad_free_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Feature 2: Unlimited Articles -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/all_inclusive_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_unlimited_articles"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_unlimited_articles_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Feature 3: Report Patterns -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_bar_chart_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_report_patterns"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_report_patterns_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Feature 4: Recap -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/history_2_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_recap"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_recap_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Feature 5: Timeline -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/width_wide_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_timeline"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_timeline_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Feature 6: Priority Support -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/support_agent_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_priority_support"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_priority_support_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Feature 7: Advanced Personalization -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/manufacturing_24"
+                                    app:tint="@color/colorTextPrimary"
+                                    android:layout_marginEnd="12dp" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/subscription_feature_advanced_personalization"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorTextDeep" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:maxWidth="200dp"
+                                        android:text="@string/subscription_feature_advanced_personalization_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSecondary" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Subscribe Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/subscribeButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:minHeight="56dp"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/subscription_subscribe_button"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="@color/main_color"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Redeem Code Button -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardForegroundColor="@android:color/transparent"
+                    app:strokeColor="@color/divider_color"
+                    app:strokeWidth="1dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/redeemCodeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/profile_card_background"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/mail_24"
+                            app:tint="@color/colorTextDeep"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/subscription_redeem_button"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextDeep" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24"
+                            app:tint="@color/colorTextSecondary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Restore Purchases Button -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardForegroundColor="@android:color/transparent"
+                    app:strokeColor="@color/divider_color"
+                    app:strokeWidth="1dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/restorePurchasesLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/profile_card_background"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_settings_backup_restore_24"
+                            app:tint="@color/colorTextDeep"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/subscription_restore_button"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextDeep" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24"
+                            app:tint="@color/colorTextSecondary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- MANAGE SUBSCRIPTION PAGE (shown when Pro) -->
+            <LinearLayout
+                android:id="@+id/managePageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- Section 1: Current Subscription Status Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/currentStatusCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardForegroundColor="@android:color/transparent"
+                    app:strokeColor="@color/card_edge_color_light"
+                    app:strokeWidth="1dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/profile_card_background"
+                        android:padding="16dp">
+
+                        <!-- Status Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_verified_24"
+                                app:tint="@color/main_color"
+                                android:layout_marginEnd="12dp" />
+
+                            <TextView
+                                android:id="@+id/proMemberTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/manage_subscription_status_title"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorTextDeep" />
+
+                            <!-- Active Badge -->
+                            <TextView
+                                android:id="@+id/activeBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/manage_subscription_status_active"
+                                android:textSize="12sp"
+                                android:textColor="@android:color/white"
+                                android:background="@drawable/active_badge_background"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="4dp" />
+                        </LinearLayout>
+
+                        <!-- Subscription Info -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="8dp">
+
+                            <!-- Expiration Date Row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="8dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/manage_subscription_expires"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextSecondary" />
+
+                                <TextView
+                                    android:id="@+id/expirationDateText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/colorTextDeep" />
+                            </LinearLayout>
+
+                            <!-- Auto-Renewal Row (conditional) -->
+                            <LinearLayout
+                                android:id="@+id/autoRenewalRow"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/manage_subscription_auto_renew"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextSecondary" />
+
+                                <TextView
+                                    android:id="@+id/autoRenewalStatusText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/manage_subscription_auto_renew_enabled"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/green" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Section 2: Subscription Details Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardForegroundColor="@android:color/transparent"
+                    app:strokeColor="@color/card_edge_color_light"
+                    app:strokeWidth="1dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/profile_card_background"
+                        android:padding="16dp">
+
+                        <!-- Section Title -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manage_subscription_details_title"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextDeep"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- Detail Rows -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="12dp">
+
+                            <!-- Plan Row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/manage_subscription_details_plan"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextSecondary" />
+
+                                <TextView
+                                    android:id="@+id/detailsPlanValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/subscription_plan_title"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextDeep" />
+                            </LinearLayout>
+
+                            <!-- Price Row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/manage_subscription_details_price"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextSecondary" />
+
+                                <TextView
+                                    android:id="@+id/detailsPriceValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/subscription_plan_price"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextDeep" />
+                            </LinearLayout>
+
+                            <!-- Billing Row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="12dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/manage_subscription_details_billing"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextSecondary" />
+
+                                <TextView
+                                    android:id="@+id/detailsBillingValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextDeep" />
+                            </LinearLayout>
+
+                            <!-- Transaction ID Row (conditional) -->
+                            <LinearLayout
+                                android:id="@+id/transactionIdRow"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/manage_subscription_details_transaction_id"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/colorTextSecondary" />
+
+                                <TextView
+                                    android:id="@+id/detailsTransactionIdValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/colorTextDeep" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Section 3: Management Actions -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Section Title -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_subscription_actions_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextDeep"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Cancel Subscription Button -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardBackgroundColor="?attr/colorSurface"
+                        app:cardForegroundColor="@android:color/transparent"
+                        app:strokeColor="@color/colorRed"
+                        app:strokeWidth="1dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:cardUseCompatPadding="true"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:id="@+id/cancelSubscriptionLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/profile_card_background"
+                            android:padding="16dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_cancel_24"
+                                app:tint="@color/colorRed"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/manage_subscription_cancel_button"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorRed" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_chevron_right_24"
+                                app:tint="@color/colorTextSecondary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Cancel Info Text -->
+                    <TextView
+                        android:id="@+id/cancelInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTextSecondary"
+                        android:layout_marginBottom="12dp"
+                        android:paddingHorizontal="8dp" />
+
+                    <!-- Restore Purchases Button -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardBackgroundColor="?attr/colorSurface"
+                        app:cardForegroundColor="@android:color/transparent"
+                        app:strokeColor="@color/divider_color"
+                        app:strokeWidth="1dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:cardUseCompatPadding="true"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:id="@+id/restorePurchasesLayoutManage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/profile_card_background"
+                            android:padding="16dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_settings_backup_restore_24"
+                                app:tint="@color/colorTextDeep"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/subscription_restore_button"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorTextDeep" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_chevron_right_24"
+                                app:tint="@color/colorTextSecondary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- Section 4: Support Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp">
+
+                    <!-- Section Title -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_subscription_support_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextDeep"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Contact Support Button -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardBackgroundColor="?attr/colorSurface"
+                        app:cardForegroundColor="@android:color/transparent"
+                        app:strokeColor="@color/divider_color"
+                        app:strokeWidth="1dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:cardUseCompatPadding="true"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:id="@+id/contactSupportLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/profile_card_background"
+                            android:padding="16dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/mail_24"
+                                app:tint="@color/colorTextDeep"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/manage_subscription_support_contact"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorTextDeep" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_chevron_right_24"
+                                app:tint="@color/colorTextSecondary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+        <!-- Large Header with Fade Background - overlays scrollable content -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:background="@drawable/bottom_sheet_scroll_fade_top"
+            android:elevation="2dp">
+            <TextView
+                android:id="@+id/headerTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/subscription_title"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextDeep"
+                android:gravity="start"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

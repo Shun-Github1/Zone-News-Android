@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- Darker, opaque background for selected tab in light mode -->
+    <solid android:color="@color/bottom_nav_selected_light" />
+    
+    <!-- Fully rounded corners (pill-shaped) -->
+    <corners android:radius="28dp" />
+    
+</shape>
+

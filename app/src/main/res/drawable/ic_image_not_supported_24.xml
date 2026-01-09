@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background layer - fills entire image area -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/imagePlaceholderBackground" />
+        </shape>
+    </item>
+    <!-- Broken image icon - centered, scaled down to ~20% of container size using inset padding -->
+    <item
+        android:drawable="@drawable/ic_broken_image_scaled"
+        android:gravity="center" />
+</layer-list>

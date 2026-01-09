@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_broken_image_icon"
+    android:insetLeft="40%"
+    android:insetRight="40%"
+    android:insetTop="40%"
+    android:insetBottom="40%" />
+

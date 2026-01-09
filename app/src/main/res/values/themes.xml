@@ -28,11 +28,14 @@
         <item name="android:editTextStyle">@style/GlobalEditTextStyle</item>
         <item name="checkboxStyle">@style/GlobalCheckboxStyle</item>
         <item name="switchStyle">@style/GlobalSwitchStyle</item>
+        <!-- Image placeholder background -->
+        <item name="imagePlaceholderBackground">@color/image_placeholder_background</item>
     </style>
 
     <!-- Define the global TextView style -->
     <style name="GlobalTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/custom</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <!-- Define the global RadioButton style -->
@@ -49,6 +52,7 @@
     <style name="GlobalEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:fontFamily">@font/custom</item>
         <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <!-- Define the global Checkbox style -->
@@ -75,6 +79,20 @@
         <item name="android:fontFamily">@font/custom</item>
     </style>
 
+    <!-- Topic Selection Tab Style -->
+    <style name="TopicTabStyle" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingHorizontal">4dp</item>
+        <item name="android:paddingVertical">4dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:fontFamily">@font/custom</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
     <style name="horizontal_slide" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
         <item name="android:fontFamily">@font/custom</item>
@@ -94,23 +112,30 @@
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorError">@color/error</item>
         <item name="colorOutline">@color/outline</item>
+        <!-- Image placeholder background -->
+        <item name="imagePlaceholderBackground">@color/image_placeholder_background</item>
     </style>
 
     <style name="TabText" parent="TextAppearance.Material3.LabelLarge">
         <item name="textAllCaps">false</item>
         <item name="android:fontFamily">@font/custom</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <style name="AnimFade2" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
         <item name="android:fontFamily">@font/custom</item>
     </style>
     <!-- Dialog 样式-->
     <!--弹出框 动画-->
+    <style name="DialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
 
     <!-- Material 3 Typography Styles -->
 
@@ -120,6 +145,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorTextDeep</item>
         <item name="android:fontFamily">@font/custom</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
     <!-- URL text style for browser toolbar - smaller and unbold -->
@@ -128,6 +154,45 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorTextDeep</item>
         <item name="android:fontFamily">@font/custom</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <!-- Custom Material3 TextAppearance overrides with consistent line spacing -->
+    <style name="TextAppearance.Material3.HeadlineLarge.Custom" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.HeadlineMedium.Custom" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.HeadlineSmall.Custom" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.TitleLarge.Custom" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.TitleMedium.Custom" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.TitleSmall.Custom" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.BodyLarge.Custom" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.BodyMedium.Custom" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.BodySmall.Custom" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.LabelLarge.Custom" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.LabelMedium.Custom" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="TextAppearance.Material3.LabelSmall.Custom" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
 </resources>

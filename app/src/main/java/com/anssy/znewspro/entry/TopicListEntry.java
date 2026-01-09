@@ -39,6 +39,8 @@ public class TopicListEntry {
 
     public static class DataDTO {
         private List<TopicDTO> topics;
+        private List<TopicDTO> sectors;
+        private List<TopicDTO> regions;
 
         public List<TopicDTO> getTopics() {
             return topics;
@@ -46,6 +48,22 @@ public class TopicListEntry {
 
         public void setTopics(List<TopicDTO> topics) {
             this.topics = topics;
+        }
+        
+        public List<TopicDTO> getSectors() {
+            return sectors;
+        }
+
+        public void setSectors(List<TopicDTO> sectors) {
+            this.sectors = sectors;
+        }
+        
+        public List<TopicDTO> getRegions() {
+            return regions;
+        }
+
+        public void setRegions(List<TopicDTO> regions) {
+            this.regions = regions;
         }
         
         // Backward compatibility method

@@ -155,6 +155,12 @@
     <string name="browsing_history">瀏覽紀錄</string>
     <string name="saved_articles">收藏的文章</string>
     <string name="cleared_all_items">已清除所有項目</string>
+    <string name="clear_reading_history_confirmation_title">清除閱讀紀錄</string>
+    <string name="clear_reading_history_confirmation_message">這將永久刪除您的所有閱讀紀錄。此操作無法撤銷。</string>
+    <string name="clear_reading_history_confirmation_confirm">清除全部</string>
+    <string name="clear_saved_articles_confirmation_title">清除收藏的文章</string>
+    <string name="clear_saved_articles_confirmation_message">這將永久刪除您的所有收藏文章。此操作無法撤銷。</string>
+    <string name="clear_saved_articles_confirmation_confirm">清除全部</string>
     
     <!-- Theme and Settings Strings -->
     <string name="appearance">外觀</string>
@@ -186,8 +192,10 @@
     <string name="close">關閉</string>
     <string name="no_data_message">暫無相關數據</string>
     <string name="english">English</string>
-    <string name="traditional_chinese">繁體</string>
-    <string name="simplified_chinese">简体</string>
+    <string name="traditional_chinese">繁體中文</string>
+    <string name="simplified_chinese">简体中文</string>
+    <string name="straightforward">Straightforward</string>
+    <string name="nuanced">Nuanced</string>
     <string name="topic_name">主題名稱</string>
     <string name="hong_kong_sar">香港特別行政區</string>
     <string name="mainland_china">中國內地</string>
@@ -333,10 +341,28 @@
     <string name="time_minutes_ago">%1$d 分鐘前</string>
     <string name="time_hours_ago">%1$d 小時前</string>
     <string name="time_days_ago">%1$d 天前</string>
+    <string name="time_unknown">未知日期</string>
     
     <!-- Exit message -->
     <string name="exit_app_message">再按一次，退出應用程式</string>
     <string name="trending_topics">熱門主題</string>
     <string name="trending_searches">熱門搜尋</string>
     <string name="searcher_ai_attribution">此摘要由SearcherAI提供</string>
+
+    <!-- Topic Selection Menu -->
+    <string name="clear_all_topics">清除所有主題</string>
+    <string name="clear_all_topics_confirmation_title">清除所有主題</string>
+    <string name="clear_all_topics_confirmation_message">確定要清除所有已選主題嗎？此操作無法復原。</string>
+    <string name="clear_all_topics_confirmation_confirm">全部清除</string>
+    <string name="cleared_all_topics">已清除所有主題</string>
+    <string name="search_topics">搜尋主題</string>
+    <string name="topic_tab_all">全部</string>
+    <string name="topic_tab_sectors">行業</string>
+    <string name="topic_tab_regions">地區</string>
+    <string name="topic_tab_trending">熱門</string>
+    <string name="topic_tab_custom">自訂</string>
+    <string name="section_sectors">行業</string>
+    <string name="section_regions">地區</string>
+    <string name="section_trending">熱門</string>
+    <string name="custom_topics_coming_soon">自訂主題即將推出</string>
 </resources>

@@ -43,26 +43,36 @@ class NewsDetailModel @Inject constructor(
     private var _deleteCollectEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
     var deleteCollectEntry: LiveData<CommonResponseEntry> = _deleteCollectEntry
 
-    fun queryNewsDetail(id: String) {
+    fun queryNewsDetail(id: String, summaryLanguage: String? = null) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                runCatching { newsDetailRepository.queryNewsDetail(id, languageManager.getCurrentLanguageCode()) }
+                // Use summaryLanguage if provided, otherwise fall back to app language
+                val languageToUse = summaryLanguage ?: languageManager.getCurrentLanguageCode()
+                newsDetailRepository.queryNewsDetail(id, languageToUse)
             }
-            if (result.isSuccess) {
-                _newsDetailEntry.value = result.getOrNull()!!
-            } else {
-                // Log the actual exception to help debug
-                val exception = result.exceptionOrNull()
-                Log.e("NewsDetailModel", "Error fetching article detail for ID: $id", exception)
-                exception?.let {
-                    Log.e("NewsDetailModel", "Exception type: ${it.javaClass.name}")
-                    Log.e("NewsDetailModel", "Exception message: ${it.message}")
-                    it.printStackTrace()
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val articleDetailEntry = ArticleDetailEntry()
+                    articleDetailEntry.code = 1000
+                    articleDetailEntry.msg = result.errorMsg ?: getString(R.string.server_error_message)
+                    _newsDetailEntry.value = articleDetailEntry
                 }
-                val articleDetailEntry = ArticleDetailEntry()
-                articleDetailEntry.code = 1000
-                articleDetailEntry.msg = getString(R.string.server_error_message)
-                _newsDetailEntry.value = articleDetailEntry
+                is NetworkResponse.Success -> {
+                    val responseBody = result.body
+                    // Check if the response body has a code field indicating success/error
+                    if (responseBody.code == 200) {
+                        _newsDetailEntry.value = responseBody
+                    } else {
+                        // API returned error in response body
+                        _newsDetailEntry.value = responseBody
+                    }
+                }
+                is NetworkResponse.UnknownError -> {
+                    val articleDetailEntry = ArticleDetailEntry()
+                    articleDetailEntry.code = 1000
+                    articleDetailEntry.msg = result.error?.message ?: "Unknown error"
+                    _newsDetailEntry.value = articleDetailEntry
+                }
             }
         }
     }
@@ -105,7 +115,14 @@ class NewsDetailModel @Inject constructor(
                     _addHisEntry.value = commonResponseEntry
                 }
                 is NetworkResponse.Success -> {
-                    _addHisEntry.value = result.body
+                    val responseBody = result.body
+                    // Check if the response body has a code field indicating success/error
+                    if (responseBody.code == 200) {
+                        _addHisEntry.value = responseBody
+                    } else {
+                        // API returned error in response body
+                        _addHisEntry.value = responseBody
+                    }
                 }
                 is NetworkResponse.UnknownError -> {
                     val commonResponseEntry = CommonResponseEntry()
@@ -133,7 +150,14 @@ class NewsDetailModel @Inject constructor(
                     _collectEntry.value = commonResponseEntry
                 }
                 is NetworkResponse.Success -> {
-                    _collectEntry.value = result.body
+                    val responseBody = result.body
+                    // Check if the response body has a code field indicating success/error
+                    if (responseBody.code == 200) {
+                        _collectEntry.value = responseBody
+                    } else {
+                        // API returned error in response body
+                        _collectEntry.value = responseBody
+                    }
                 }
                 is NetworkResponse.UnknownError -> {
                     val commonResponseEntry = CommonResponseEntry()
@@ -161,7 +185,14 @@ class NewsDetailModel @Inject constructor(
                     _deleteCollectEntry.value = commonResponseEntry
                 }
                 is NetworkResponse.Success -> {
-                    _deleteCollectEntry.value = result.body
+                    val responseBody = result.body
+                    // Check if the response body has a code field indicating success/error
+                    if (responseBody.code == 200) {
+                        _deleteCollectEntry.value = responseBody
+                    } else {
+                        // API returned error in response body
+                        _deleteCollectEntry.value = responseBody
+                    }
                 }
                 is NetworkResponse.UnknownError -> {
                     val commonResponseEntry = CommonResponseEntry()

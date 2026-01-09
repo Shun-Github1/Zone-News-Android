@@ -1,22 +1,18 @@
 package com.anssy.znewspro.ui.mainfrag
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.PathInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,19 +26,13 @@ import com.anssy.znewspro.model.TopicModel
 import com.anssy.znewspro.selfview.NewNestedScrollView
 import com.anssy.znewspro.selfview.popup.SortPopupWindow
 import com.anssy.znewspro.ui.MainActivity
-import com.anssy.znewspro.ui.newsdetail.NewsDetailActivity
 import com.anssy.znewspro.ui.topicmodify.TopicSelectionActivity
-import com.anssy.znewspro.utils.CalculateUtil
 import com.anssy.znewspro.utils.Constants
 import com.anssy.znewspro.utils.ToastUtils
 import com.anssy.znewspro.utils.Utils
-import com.bumptech.glide.Glide
+import android.widget.LinearLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
-import com.zhy.adapter.recyclerview.CommonAdapter
-import com.zhy.adapter.recyclerview.base.ViewHolder
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
  * Fragment displaying the "Your Feed" page with personalized news recommendations
@@ -58,8 +48,10 @@ class YourFeedFragment : Fragment() {
     private var pageNo = 1
     private val pageSize = 10
     private var isRefresh = true
+    private var isLastPage = false
+    private var isLoadingMore = false
     
-    private lateinit var mAdapter: CommonAdapter<SearchListEntry.DataDTO.ArticlesDTO>
+    private lateinit var mAdapter: YourFeedAdapter
     private var mNewsList = ArrayList<SearchListEntry.DataDTO.ArticlesDTO>()
     private var currentSort: SortPopupWindow.SortOption = SortPopupWindow.SortOption.LATEST
     private var allTopics = ArrayList<TopicListEntry.TopicDTO>()
@@ -67,12 +59,12 @@ class YourFeedFragment : Fragment() {
     
     // Animation timing
     private var refreshStartTime: Long = 0
-    private val minimumRefreshDuration = 800L
-    private var isButtonRefresh = false
+    private val minimumRefreshDuration = 800L // 800ms minimum duration
+    private var isButtonRefresh = false // Flag to prevent double API calls
     
-    // Debounce timing
+    // Debounce timing to prevent rapid successive refreshes
     private var lastRefreshTime: Long = 0
-    private val minimumTimeBetweenRefreshes = 1500L
+    private val minimumTimeBetweenRefreshes = 1500L // 1.5 seconds minimum between refreshes
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,153 +83,96 @@ class YourFeedFragment : Fragment() {
         loadData()
     }
     
+    override fun onResume() {
+        super.onResume()
+        // Refresh tags when fragment becomes visible to ensure active tags indicator is up to date
+        topicModel.queryMyTopics()
+    }
+    
     private fun setupRecyclerView() {
         binding.homeRecycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        mAdapter = object : CommonAdapter<SearchListEntry.DataDTO.ArticlesDTO>(requireContext(), R.layout.item_recommended_news, mNewsList) {
-            override fun convert(holder: ViewHolder, t: SearchListEntry.DataDTO.ArticlesDTO, position: Int) {
-                val placeTv: TextView = holder.getView(R.id.place_tv)
-                val tagTv: TextView = holder.getView(R.id.tag_tv)
-                val titleTv: TextView = holder.getView(R.id.news_title_tv)
-                val newsIv: ImageView = holder.getView(R.id.news_iv)
-                val trackView: View = holder.getView(R.id.progress_track)
-                val highlightView: View = holder.getView(R.id.progress_highlight)
-                val timeTv: TextView = holder.getView(R.id.news_time_tv)
-                val countTv: TextView = holder.getView(R.id.news_count_tv)
-                val transScoreTv: TextView = holder.getView(R.id.trans_score_tv)
-                val aiIcon: ImageView = holder.getView(R.id.ai_icon)
-                val recommendedText: TextView = holder.getView(R.id.recommended_text)
-                
-                placeTv.text = t.region ?: ""
-                tagTv.text = t.sector ?: ""
-                
-                aiIcon.visibility = View.VISIBLE
-                recommendedText.visibility = View.VISIBLE
-                
-                titleTv.text = t.title
-                countTv.text = getString(R.string.reports_count, t.nSources)
-                
-                val subjectivity = t.metrics?.subjectivity ?: 0.0
-                val sentimentText = getString(CalculateUtil.getSentimentLabelResId(subjectivity))
-                
-                if (subjectivity > 0.1 || subjectivity < -0.1) {
-                    val spannableString = SpannableString(sentimentText)
-                    val colorResId = resources.getIdentifier(CalculateUtil.getSentimentColorName(subjectivity), "color", context?.packageName)
-                    val sentimentColor = ContextCompat.getColor(requireContext(), colorResId)
-                    spannableString.setSpan(ForegroundColorSpan(sentimentColor), 0, sentimentText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    transScoreTv.text = spannableString
-                } else {
-                    transScoreTv.text = sentimentText
-                }
-                
-                Glide.with(requireContext())
-                    .load(t.pictureURL)
-                    .placeholder(R.drawable.ease_default_image)
-                    .error(R.drawable.ease_default_image)
-                    .into(newsIv)
-
-                trackView.post {
-                    val totalWidth = trackView.width
-                    val half = totalWidth / 2
-                    val score = subjectivity
-                    val distance = (kotlin.math.abs(score) * half).toInt()
-                    val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
-                    if (distance <= 0) {
-                        highlightView.visibility = View.INVISIBLE
-                        lp.width = 1
-                        lp.marginStart = half
-                    } else {
-                        highlightView.visibility = View.VISIBLE
-                        lp.width = distance
-                        lp.marginStart = if (score > 0) half else (half - distance)
-                    }
-                    highlightView.layoutParams = lp
-                    highlightView.setBackgroundResource(
-                        if (score > 0) R.drawable.bg_progress_positive else R.drawable.bg_progress_negative
-                    )
-                }
-
-                try {
-                    val dateFormat = SimpleDateFormat(getString(R.string.date_format_pattern), Locale.getDefault())
-                    val parse = dateFormat.parse(t.date)
-                    timeTv.text = Utils.getMultilingualSpaceTime(requireContext(), parse!!.time)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    timeTv.text = t.date
-                }
-
-                holder.itemView.setOnClickListener {
-                    val intent = Intent(requireContext(), NewsDetailActivity::class.java)
-                    intent.putExtra("id", t.articleID)
-                    startActivity(intent)
-                }
-                
-                holder.itemView.setOnLongClickListener {
-                    holder.itemView.animate()
-                        .scaleX(0.95f)
-                        .scaleY(0.95f)
-                        .setDuration(150)
-                        .withEndAction {
-                            holder.itemView.animate()
-                                .scaleX(1.0f)
-                                .scaleY(1.0f)
-                                .setDuration(300)
-                                .start()
-                        }
-                        .start()
-                    
-                    shareArticle(t)
-                    true
-                }
-            }
+        mAdapter = YourFeedAdapter(requireContext(), mNewsList) { article ->
+            shareArticle(article)
         }
         binding.homeRecycler.adapter = mAdapter
         
         // Add RecyclerView scroll listener
+        android.util.Log.d("YourFeedFragment", "Adding RecyclerView scroll listener")
         binding.homeRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val activity = requireActivity() as? MainActivity
+                android.util.Log.d("YourFeedFragment", "RecyclerView onScrolled: dx=$dx, dy=$dy")
+                val activity = requireActivity() as MainActivity
                 if (dy > 0) {
-                    activity?.hideBottomBar()
+                    android.util.Log.d("YourFeedFragment", "RecyclerView scrolling down - hiding bottom bar")
+                    activity.hideBottomBar()
                 } else if (dy < 0) {
-                    activity?.showBottomBar()
+                    android.util.Log.d("YourFeedFragment", "RecyclerView scrolling up - showing bottom bar")
+                    activity.showBottomBar()
                 }
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                val activity = requireActivity() as? MainActivity
+                android.util.Log.d("YourFeedFragment", "RecyclerView onScrollStateChanged: $newState")
+                val activity = requireActivity() as MainActivity
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    activity?.scheduleBottomBarAutoShow()
+                    android.util.Log.d("YourFeedFragment", "RecyclerView IDLE - scheduling auto-show")
+                    activity.scheduleBottomBarAutoShow()
                 } else {
-                    activity?.cancelBottomBarAutoShow()
+                    android.util.Log.d("YourFeedFragment", "RecyclerView not IDLE - canceling auto-show")
+                    activity.cancelBottomBarAutoShow()
                 }
             }
         })
         
-        // Add NestedScrollView scroll listener for better scroll detection
-        binding.nestedScrollView.addScrollChangeListener(object : NewNestedScrollView.AddScrollChangeListener {
-            override fun onScrollChange(scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
-                val activity = requireActivity() as? MainActivity
-                if (scrollY > oldScrollY) {
-                    // Scrolling down
-                    activity?.hideBottomBar()
-                } else if (scrollY < oldScrollY) {
-                    // Scrolling up
-                    activity?.showBottomBar()
+        // Add NestedScrollView scroll listener as backup
+        android.util.Log.d("YourFeedFragment", "Adding NestedScrollView scroll listener")
+        binding.nestedScrollView.addScrollChangeListener(object :
+            NewNestedScrollView.AddScrollChangeListener {
+            override fun onScrollChange(
+                scrollX: Int,
+                scrollY: Int,
+                oldScrollX: Int,
+                oldScrollY: Int
+            ) {
+                android.util.Log.d("YourFeedFragment", "NestedScrollView onScrollChange: scrollY=$scrollY, oldScrollY=$oldScrollY, isLoadingMore=$isLoadingMore")
+                val activity = requireActivity() as MainActivity
+                
+                // Detect suspicious scroll changes that might be load-more rebound
+                // The rebound typically shows scrollY < oldScrollY with a large difference
+                val scrollDifference = oldScrollY - scrollY
+                val isSuspiciousRebound = scrollDifference > 100 && scrollY < oldScrollY
+                
+                // Only handle scroll direction changes if we're not loading more and not a suspicious rebound
+                if (!isLoadingMore && !isSuspiciousRebound) {
+                    if (scrollY > oldScrollY) {
+                        android.util.Log.d("YourFeedFragment", "NestedScrollView scrolling down - hiding bottom bar")
+                        activity.hideBottomBar()
+                    } else if (scrollY < oldScrollY) {
+                        android.util.Log.d("YourFeedFragment", "NestedScrollView scrolling up - showing bottom bar")
+                        activity.showBottomBar()
+                    }
+                } else {
+                    if (isSuspiciousRebound) {
+                        android.util.Log.d("YourFeedFragment", "NestedScrollView suspicious rebound detected (diff=$scrollDifference) - ignoring scroll change")
+                    } else {
+                        android.util.Log.d("YourFeedFragment", "NestedScrollView scroll change during load-more - ignoring")
+                    }
                 }
             }
-            
+
             override fun onScrollState(state: NewNestedScrollView.ScrollState?) {
-                val activity = requireActivity() as? MainActivity
+                android.util.Log.d("YourFeedFragment", "NestedScrollView onScrollState: $state")
+                val activity = requireActivity() as MainActivity
                 when (state) {
                     NewNestedScrollView.ScrollState.IDLE -> {
-                        // When scroll stops, schedule auto-show
-                        activity?.scheduleBottomBarAutoShow()
+                        android.util.Log.d("YourFeedFragment", "NestedScrollView IDLE - scheduling auto-show")
+                        activity.scheduleBottomBarAutoShow()
                     }
                     NewNestedScrollView.ScrollState.DRAG, NewNestedScrollView.ScrollState.SCROLLING -> {
-                        // While scrolling, cancel auto-show
-                        activity?.cancelBottomBarAutoShow()
+                        android.util.Log.d("YourFeedFragment", "NestedScrollView DRAG/SCROLLING - canceling auto-show")
+                        activity.cancelBottomBarAutoShow()
                     }
                     else -> {}
                 }
@@ -246,14 +181,18 @@ class YourFeedFragment : Fragment() {
         
         binding.smartRefresh.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onRefresh(refreshLayout: RefreshLayout) {
+                // Only proceed if this is a pull-to-refresh, not a button-triggered refresh
                 if (!isButtonRefresh) {
+                    // Check debounce timing for pull-to-refresh as well
                     val currentTime = System.currentTimeMillis()
                     val timeSinceLastRefresh = currentTime - lastRefreshTime
                     if (timeSinceLastRefresh < minimumTimeBetweenRefreshes) {
+                        android.util.Log.d("YourFeedFragment", "Pull-to-refresh blocked - too soon since last refresh (${timeSinceLastRefresh}ms < ${minimumTimeBetweenRefreshes}ms)")
                         refreshLayout.finishRefresh()
                         return
                     }
                     
+                    // Update last refresh time and proceed
                     lastRefreshTime = currentTime
                     refreshStartTime = System.currentTimeMillis()
                     isRefresh = true
@@ -263,6 +202,12 @@ class YourFeedFragment : Fragment() {
             }
 
             override fun onLoadMore(refreshLayout: RefreshLayout) {
+                if (isLastPage) {
+                    refreshLayout.finishLoadMore(true)
+                    return
+                }
+                android.util.Log.d("YourFeedFragment", "Starting load-more - setting isLoadingMore=true")
+                isLoadingMore = true
                 isRefresh = false
                 pageNo++
                 personRecommendModel.queryRecommendList(pageNo, pageSize)
@@ -312,15 +257,32 @@ class YourFeedFragment : Fragment() {
                         finishRefreshWithMinimumDuration(true)
                     } else {
                         binding.smartRefresh.finishLoadMore(true)
+                        android.util.Log.d("YourFeedFragment", "Load-more completed - setting isLoadingMore=false")
+                        isLoadingMore = false
                     }
+                    isLastPage = it.data.articles.isEmpty()
                     mNewsList.addAll(it.data.articles)
                     applyCurrentSort()
-                    mAdapter.notifyDataSetChanged()
+                    val lastPosition = mNewsList.size
+                    if (isRefresh){
+                        mAdapter.notifyDataSetChanged()
+                        // Trigger wave animation after data is refreshed (only for button refresh, not pull-to-refresh or tab switch)
+                        // Check if fragment is currently visible to prevent animation when switching tabs
+                        if (isButtonRefresh && isResumed && isVisible) {
+                            binding.homeRecycler.post {
+                                triggerWaveAnimation()
+                            }
+                        }
+                    }else{
+                        mAdapter.notifyItemRangeInserted(lastPosition,it.data.articles.size)
+                    }
                 } else {
                     if (isRefresh) {
                         finishRefreshWithMinimumDuration(false)
                     } else {
                         binding.smartRefresh.finishLoadMore(false)
+                        android.util.Log.d("YourFeedFragment", "Load-more failed - setting isLoadingMore=false")
+                        isLoadingMore = false
                     }
                     if (it.code == 1000) {
                         ToastUtils.showShortToast(requireContext(), getString(R.string.server_error_message))
@@ -373,14 +335,61 @@ class YourFeedFragment : Fragment() {
         val activeTags = userSelectedTopics
         
         if (activeTags.isEmpty()) {
-            val noneText = TextView(requireContext())
-            noneText.text = "None"
-            noneText.setTextColor(requireContext().getColor(R.color.colorTextDeep))
-            noneText.textSize = 16f
-            noneText.typeface = requireContext().resources.getFont(R.font.inter_regular)
-            noneText.setTypeface(noneText.typeface, android.graphics.Typeface.BOLD)
+            // "Select tags to follow" chip
+            val selectTagsChip = LayoutInflater.from(requireContext()).inflate(
+                R.layout.item_tag_chip,
+                binding.activeTagsChipsContainer,
+                false
+            )
+            val selectTagsIcon = selectTagsChip.findViewById<ImageView>(R.id.tag_icon)
+            val selectTagsText = selectTagsChip.findViewById<TextView>(R.id.tag_text)
             
-            binding.activeTagsChipsContainer.addView(noneText)
+            selectTagsText.text = getString(R.string.select_tags_to_follow)
+            selectTagsText.setTextColor(requireContext().getColor(R.color.colorTextMiddle))
+            selectTagsIcon.setImageResource(R.drawable.shoppingmode_24)
+            selectTagsIcon.setColorFilter(requireContext().getColor(R.color.colorTextMiddle))
+            
+            // Adjust layout params to remove bottom margin for horizontal scroll and ensure vertical centering
+            (selectTagsChip.layoutParams as? LinearLayout.LayoutParams)?.let { lp ->
+                lp.bottomMargin = 0
+                lp.gravity = android.view.Gravity.CENTER_VERTICAL
+                selectTagsChip.layoutParams = lp
+            }
+            
+            selectTagsChip.setOnClickListener {
+                showTopicSelection()
+            }
+            
+            binding.activeTagsChipsContainer.addView(selectTagsChip)
+            
+            // Manage chip with chevron
+            val manageView = LayoutInflater.from(requireContext()).inflate(
+                R.layout.item_tag_chip,
+                binding.activeTagsChipsContainer,
+                false
+            )
+            val manageIcon = manageView.findViewById<ImageView>(R.id.tag_icon)
+            val manageText = manageView.findViewById<TextView>(R.id.tag_text)
+            manageIcon.setImageResource(R.drawable.ic_chevron_right_24)
+            manageIcon.setColorFilter(requireContext().getColor(R.color.colorTextMiddle))
+            manageText.visibility = View.GONE
+            (manageIcon.layoutParams as? android.widget.LinearLayout.LayoutParams)?.let { lp ->
+                lp.marginEnd = 0
+                manageIcon.layoutParams = lp
+            }
+            // Smaller pointer cardlet with same rounding as regular tags, less padding
+            manageView.background = requireContext().getDrawable(R.drawable.tag_chip_background)
+            val padV = Utils.dpToPx(2f, resources) // Reduced vertical padding for smaller size
+            val padH = Utils.dpToPx(4f, resources) // Reduced horizontal padding for smaller size
+            manageView.setPadding(padH, padV, padH, padV)
+            // Adjust layout params to remove bottom margin for horizontal scroll and ensure vertical centering
+            (manageView.layoutParams as? LinearLayout.LayoutParams)?.let { lp ->
+                lp.bottomMargin = 0
+                lp.gravity = android.view.Gravity.CENTER_VERTICAL
+                manageView.layoutParams = lp
+            }
+            manageView.setOnClickListener { showTopicSelection() }
+            binding.activeTagsChipsContainer.addView(manageView)
         } else {
             activeTags.forEach { tag ->
                 val chipView = LayoutInflater.from(requireContext()).inflate(
@@ -394,8 +403,16 @@ class YourFeedFragment : Fragment() {
                 tagText.text = tag.displayName
                 tagIcon.setImageResource(getTagIcon(tag.tag))
                 
+                // Adjust layout params to remove bottom margin for horizontal scroll and ensure vertical centering
+                (chipView.layoutParams as? LinearLayout.LayoutParams)?.let { lp ->
+                    lp.bottomMargin = 0
+                    lp.gravity = android.view.Gravity.CENTER_VERTICAL
+                    chipView.layoutParams = lp
+                }
+                
+                // Clicking on any tag cardlet should open the menu
                 chipView.setOnClickListener {
-                    removeActiveTag(tag.tag)
+                    showTopicSelection()
                 }
                 
                 binding.activeTagsChipsContainer.addView(chipView)
@@ -409,15 +426,25 @@ class YourFeedFragment : Fragment() {
             val manageIcon = manageView.findViewById<ImageView>(R.id.tag_icon)
             val manageText = manageView.findViewById<TextView>(R.id.tag_text)
             manageIcon.setImageResource(R.drawable.ic_chevron_right_24)
+            manageIcon.setColorFilter(requireContext().getColor(R.color.colorTextMiddle))
             manageText.visibility = View.GONE
             (manageIcon.layoutParams as? android.widget.LinearLayout.LayoutParams)?.let { lp ->
                 lp.marginEnd = 0
                 manageIcon.layoutParams = lp
             }
-            val padV = Utils.dpToPx(4f, resources)
-            val padH = Utils.dpToPx(8f, resources)
+            // Smaller pointer cardlet with same rounding as regular tags, less padding
+            manageView.background = requireContext().getDrawable(R.drawable.tag_chip_background)
+            val padV = Utils.dpToPx(2f, resources) // Reduced vertical padding for smaller size
+            val padH = Utils.dpToPx(4f, resources) // Reduced horizontal padding for smaller size
             manageView.setPadding(padH, padV, padH, padV)
+            // Adjust layout params to remove bottom margin for horizontal scroll and ensure vertical centering
+            (manageView.layoutParams as? LinearLayout.LayoutParams)?.let { lp ->
+                lp.bottomMargin = 0
+                lp.gravity = android.view.Gravity.CENTER_VERTICAL
+                manageView.layoutParams = lp
+            }
             manageView.setOnClickListener { showTopicSelection() }
+            // Add chevron cardlet last to ensure it's always rightmost
             binding.activeTagsChipsContainer.addView(manageView)
         }
     }
@@ -433,7 +460,7 @@ class YourFeedFragment : Fragment() {
             "science" -> R.drawable.ic_science_24
             "sports" -> R.drawable.ic_sports_soccer_24
             "technology" -> R.drawable.ic_memory_24
-            else -> R.drawable.ic_security_24
+            else -> R.drawable.shoppingmode_24 // Default icon changed to shoppingmode
         }
     }
     
@@ -519,6 +546,61 @@ class YourFeedFragment : Fragment() {
         isRefresh = true
         pageNo = 1
         personRecommendModel.queryRecommendList(pageNo, pageSize)
+        // Also refresh tags when refreshing data
+        topicModel.queryMyTopics()
+    }
+    
+    /**
+     * Trigger wave animation for news cards when reloaded via bottom bar
+     * Each card animates down 20dp over 180ms (smooth easeOut), then back to 0px over 320ms (smooth easeInOut)
+     * Stagger delay: cardIndex * 40ms for tighter wave effect
+     */
+    private fun triggerWaveAnimation() {
+        val recyclerView = binding.homeRecycler
+        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+        
+        // Convert 20dp to pixels
+        val density = resources.displayMetrics.density
+        val offsetPx = 20f * density
+        
+        // Smooth interpolators for more natural motion
+        // FastOutSlowIn curve: (0.4f, 0f, 0.2f, 1f) - smooth deceleration
+        val smoothEaseOut = PathInterpolator(0.4f, 0f, 0.2f, 1f)
+        // Standard easeInOut curve: (0.4f, 0f, 0.6f, 1f) - smooth acceleration and deceleration
+        val smoothEaseInOut = PathInterpolator(0.4f, 0f, 0.6f, 1f)
+        
+        // Reset all card offsets to 0 before animating
+        for (i in 0 until layoutManager.childCount) {
+            val child = layoutManager.getChildAt(i)
+            child?.translationY = 0f
+        }
+        
+        // Animate each visible card with stagger delay
+        for (i in 0 until layoutManager.childCount) {
+            val child = layoutManager.getChildAt(i) ?: continue
+            val cardIndex = i
+            val delay = cardIndex * 40L // 40ms stagger per card for tighter wave
+            
+            // Stage 1: Animate down by 20dp over 180ms with smooth easeOut
+            val stage1 = ObjectAnimator.ofFloat(child, "translationY", 0f, offsetPx).apply {
+                duration = 180
+                interpolator = smoothEaseOut
+            }
+            
+            // Stage 2: Animate back to 0px over 320ms with smooth easeInOut
+            val stage2 = ObjectAnimator.ofFloat(child, "translationY", offsetPx, 0f).apply {
+                duration = 320
+                interpolator = smoothEaseInOut
+                startDelay = 180 // Start after stage 1 completes
+            }
+            
+            // Combine both stages
+            AnimatorSet().apply {
+                playSequentially(stage1, stage2)
+                startDelay = delay
+                start()
+            }
+        }
     }
     
     override fun onDestroyView() {

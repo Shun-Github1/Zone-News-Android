@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- MARK: - Core Brand Colors (Single Source of Truth) -->
-    <color name="brand_primary">#00CCCC</color>
+    <color name="brand_primary">#239B98</color>
     <color name="brand_secondary">#6699FF</color>
     <color name="brand_accent">#33CC66</color>
     
@@ -29,10 +29,12 @@
     <!-- MARK: - UI Element Colors -->
     <color name="separator">#374151</color>
     <color name="outline">#374151</color>
-    <color name="news_detail_card">@color/text_secondary</color>
+    <color name="news_detail_card">@color/divider_color</color>
     
     <!-- Essential UI Color Aliases (Actually Used) -->
     <color name="divider_color">@color/separator</color>
+    <!-- Card edge color: visible in light mode, transparent in dark mode -->
+    <color name="card_edge_color_light">@color/transparent</color>
     
     <!-- MARK: - Status Colors -->
     <color name="success">#33CC66</color>
@@ -66,4 +68,31 @@
     
     <!-- MARK: - Basic Colors -->
     <color name="white">#E0E0E0</color>
+    
+    <!-- MARK: - Bottom Navigation Bar Liquid Glass Colors -->
+    <!-- Translucent background for liquid glass effect (60% opacity) -->
+    <color name="bottom_nav_glass_light">#99FFFFFF</color>
+    <color name="bottom_nav_glass_dark">#991A1C1C</color>
+    
+    <!-- MARK: - Bottom Navigation Selected Tab Highlight Colors -->
+    <!-- Darker, semi-opaque highlight for selected tab (light mode, 50% opacity) -->
+    <color name="bottom_nav_selected_light">#80E0E0E0</color>
+    <!-- Lighter, semi-opaque highlight for selected tab (dark mode, 50% opacity) -->
+    <color name="bottom_nav_selected_dark">#80333333</color>
+    
+    <!-- MARK: - Image Placeholder Background -->
+    <color name="image_placeholder_background">#333333</color>
+    
+    <!-- MARK: - Topic Toggle Background Color -->
+    <!-- Matches menu card color in dark mode -->
+    <color name="topic_toggle_background_color">@color/profile_card_bg</color>
+    
+    <!-- MARK: - Topic Toggle Highlight Color -->
+    <!-- 25% opacity white for dark mode -->
+    <color name="topic_toggle_highlight_color">#40FFFFFF</color>
+    
+    <!-- MARK: - Coming Soon Overlay Background -->
+    <!-- Uses colorSurfaceVariant with 85% opacity for frosted glass effect -->
+    <!-- Dark mode: #2C2C2C with 85% opacity = #D92C2C2C -->
+    <color name="coming_soon_overlay_bg">#D92C2C2C</color>
 </resources>

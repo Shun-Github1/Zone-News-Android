@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.anssy.znewspro.R;
 
 import razerdp.basepopup.BasePopupWindow;
+import razerdp.util.animation.AnimationHelper;
 
 public class PublisherArticlesSortPopupWindow extends BasePopupWindow {
     
@@ -135,18 +136,36 @@ public class PublisherArticlesSortPopupWindow extends BasePopupWindow {
     
     @Override
     public void showPopupWindow(View anchorView) {
-        // Align popup's right edge 16dp from screen edge
+        // Use fixed width from layout (240dp) like NewsDetailSettingsPopupWindow does
         float density = anchorView.getContext().getResources().getDisplayMetrics().density;
         int popupWidth = (int) (240 * density);
         int anchorWidth = anchorView.getWidth();
-        int rightMargin = (int) (-64 * density); // 16dp margin from screen edge
+        int anchorHeight = anchorView.getHeight();
         
-        // Move popup so its right edge is 16dp from screen edge
-        setOffsetX(anchorWidth - popupWidth - rightMargin);
+        // Align popup's right edge with button's right edge
+        // BasePopupWindow by default aligns left edges, so we move right by (anchorWidth - popupWidth)
+        setOffsetX(anchorWidth - popupWidth);
         
-        // Add 2dp spacing between the menu and button
-        setOffsetY((int) (2 * density));
+        // Align popup's top edge with button's top edge
+        // BasePopupWindow by default aligns bottom of popup with bottom of anchor
+        // We need to move it up by the height of the anchor to align tops
+        // Negative value moves up
+        setOffsetY(-anchorHeight);
         
         super.showPopupWindow(anchorView);
+    }
+    
+    @Override
+    protected android.view.animation.Animation onCreateShowAnimation() {
+        return AnimationHelper.asAnimation()
+                .withAlpha(razerdp.util.animation.AlphaConfig.IN)
+                .toShow();
+    }
+
+    @Override
+    protected android.view.animation.Animation onCreateDismissAnimation() {
+        return AnimationHelper.asAnimation()
+                .withAlpha(razerdp.util.animation.AlphaConfig.OUT)
+                .toDismiss();
     }
 }

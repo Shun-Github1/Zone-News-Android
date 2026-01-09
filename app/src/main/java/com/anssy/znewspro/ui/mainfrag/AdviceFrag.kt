@@ -1,9 +1,12 @@
 package com.anssy.znewspro.ui.mainfrag
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.view.Gravity
@@ -64,6 +67,8 @@ class AdviceFrag : BaseFragment() {
     private fun setupViewPager() {
         val adapter = PersonalPagerAdapter(this)
         mViewBinding.personalViewPager.adapter = adapter
+        // Preload all adjacent fragments to prevent lag when switching tabs
+        mViewBinding.personalViewPager.offscreenPageLimit = 1
     }
     
     private fun setupTabs() {
@@ -74,7 +79,14 @@ class AdviceFrag : BaseFragment() {
         TabLayoutMediator(tabLayout, mViewBinding.personalViewPager) { tab, position ->
             // Create custom view for each tab
             val container = FrameLayout(requireContext()).apply {
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                // Use MATCH_PARENT width so container fills the tab space allocated by TabLayout
+                // TabLayout with fixed mode will allocate equal widths, container should use all of it
+                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                // Add horizontal and top padding to accommodate scaled text (1.1x scale means 10% larger)
+                // No bottom padding to prevent pushing divider down - indicator is positioned at bottom via drawable
+                val paddingDp = 6f
+                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
+                setPadding(paddingPx, paddingPx, paddingPx, 0)
             }
             val labelText = TextView(requireContext()).apply {
                 text = tabTitles[position]
@@ -82,6 +94,10 @@ class AdviceFrag : BaseFragment() {
                 textSize = 14f
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
                 typeface = android.graphics.Typeface.DEFAULT
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                )
             }
             container.addView(labelText)
             container.tag = labelText
@@ -89,17 +105,21 @@ class AdviceFrag : BaseFragment() {
             tab.customView = container
         }.attach()
 
-        // Apply bold and size changes via listener (matching HomeFrag styling)
+        // Apply bold and size changes via listener (matching HomeFrag styling) with scale animation
         fun styleTab(tab: com.google.android.material.tabs.TabLayout.Tab?, selected: Boolean) {
             val tv = (tab?.customView?.tag) as? TextView ?: return
             if (selected) {
                 tv.setTypeface(tv.typeface, android.graphics.Typeface.BOLD)
                 tv.textSize = 16f
                 tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextDeep))
+                // Animate scale to 1.1x (reduced from 1.2x)
+                animateTabScale(tv, 1.0f, 1.1f)
             } else {
                 tv.setTypeface(null, android.graphics.Typeface.NORMAL)
                 tv.textSize = 14f
                 tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
+                // Animate scale back to 1.0x
+                animateTabScale(tv, 1.1f, 1.0f)
             }
         }
 
@@ -113,12 +133,44 @@ class AdviceFrag : BaseFragment() {
             override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab) {}
         })
 
-        // Initialize current styles
+        // Initialize current styles without animation
         tabLayout.post {
             val selected = tabLayout.selectedTabPosition
             for (i in 0 until tabLayout.tabCount) {
-                styleTab(tabLayout.getTabAt(i), i == selected)
+                val tab = tabLayout.getTabAt(i)
+                val tv = (tab?.customView?.tag) as? TextView ?: continue
+                val isSelected = i == selected
+                if (isSelected) {
+                    tv.setTypeface(tv.typeface, android.graphics.Typeface.BOLD)
+                    tv.textSize = 16f
+                    tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextDeep))
+                } else {
+                    tv.setTypeface(null, android.graphics.Typeface.NORMAL)
+                    tv.textSize = 14f
+                    tv.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextSmall))
+                }
+                // Set initial scale without animation for first load
+                tv.scaleX = if (isSelected) 1.1f else 1.0f
+                tv.scaleY = if (isSelected) 1.1f else 1.0f
             }
+        }
+    }
+
+    /**
+     * Helper function to animate tab text scale
+     */
+    private fun animateTabScale(textView: TextView, startScale: Float, endScale: Float) {
+        val scaleX = ObjectAnimator.ofFloat(textView, "scaleX", startScale, endScale).apply {
+            duration = 300
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        val scaleY = ObjectAnimator.ofFloat(textView, "scaleY", startScale, endScale).apply {
+            duration = 300
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        AnimatorSet().apply {
+            playTogether(scaleX, scaleY)
+            start()
         }
     }
 

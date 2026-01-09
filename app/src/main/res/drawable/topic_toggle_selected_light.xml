@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- Background for selected tab - 50% opacity of surface_primary -->
+    <solid android:color="@color/topic_toggle_highlight_color" />
+    
+    <!-- Fully rounded corners (18dp for 36dp height) -->
+    <corners android:radius="18dp" />
+    
+</shape>
+

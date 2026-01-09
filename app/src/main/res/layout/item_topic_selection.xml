@@ -32,26 +32,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/topic_name"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:textColor="@color/black"
             android:fontFamily="@font/inter_regular" />
 
         <!-- Selection Indicator -->
         <ImageView
             android:id="@+id/checkmark_iv"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:src="@drawable/ic_circle_outline"
             android:contentDescription="@null" />
 
     </LinearLayout>
 
-    <!-- Divider -->
+    <!-- Divider - starts with text (icon width 24dp + margin 16dp + padding 20dp = 60dp) -->
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="60dp"
         android:background="@color/divider_color" />
 
 </LinearLayout>

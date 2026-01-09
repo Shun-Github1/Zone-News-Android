@@ -55,10 +55,21 @@ class SearchModel @Inject constructor(
         }
     }
     
-    fun queryListByTitle(title: String) {
+    fun queryListByTitle(
+        title: String,
+        page: Int? = null,
+        limit: Int? = null,
+        sortBy: String? = null
+    ) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                searchRepository.queryNewsByTitle(title, languageManager.getCurrentLanguageCode())
+                searchRepository.queryNewsByTitle(
+                    title,
+                    languageManager.getCurrentLanguageCode(),
+                    page,
+                    limit,
+                    sortBy
+                )
             }
             when (result) {
                 is NetworkResponse.NetError -> {

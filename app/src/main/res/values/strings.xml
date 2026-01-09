@@ -41,6 +41,129 @@
     <string name="saved">Saved Articles</string>
     <string name="saved_subtitle">View your saved items</string>
     <string name="about_us_subtitle">Learn more about Zone News</string>
+    
+    <!-- Account menu strings matching iOS -->
+    <string name="account_menu_reading_history_title">Reading History</string>
+    <string name="account_menu_reading_history_subtitle">View your reading history</string>
+    <string name="account_menu_saved_articles_title">Saved Articles</string>
+    <string name="account_menu_saved_articles_subtitle">View your saved articles</string>
+    <string name="account_menu_report_patterns_title">Report Patterns</string>
+    <string name="account_menu_report_patterns_subtitle">Display media stance</string>
+    <string name="account_menu_report_patterns_upgrade">Upgrade to unlock Report Patterns</string>
+    <string name="account_menu_language_title">Language</string>
+    <string name="account_menu_language_subtitle">Change app language</string>
+    <string name="account_menu_notifications_title">Notifications</string>
+    <string name="account_menu_notifications_subtitle">Manage notification preferences</string>
+    <string name="account_menu_notifications_breaking_news_title">Breaking News</string>
+    <string name="account_menu_notifications_breaking_news_subtitle">Receive alerts for breaking news</string>
+    <string name="account_menu_notifications_follows_topics_title">Follows Topics</string>
+    <string name="account_menu_notifications_follows_topics_subtitle">Get notified about topics you follow</string>
+    <string name="account_menu_media_region_title">Media Region</string>
+    <string name="account_menu_media_region_subtitle">Select media by regions</string>
+    <string name="account_menu_landing_page_title">Landing Page</string>
+    <string name="account_menu_landing_page_subtitle">Choose your default page</string>
+    <string name="landing_page_today">Today</string>
+    <string name="landing_page_hong_kong">Hong Kong</string>
+    <string name="landing_page_china">China</string>
+    <string name="landing_page_your_feed">Your Feed</string>
+    <string name="landing_page_levity_mode">Levity Mode</string>
+    <string name="levity_mode_coming_soon">Levity Mode is coming soon!</string>
+    <string name="account_menu_article_opening_method_title">Article Opening Method</string>
+    <string name="account_menu_article_opening_method_subtitle">Select the method to open external articles</string>
+    <string name="article_opening_in_app">Use in-app browser</string>
+    <string name="article_opening_external">Open links with default browser or external apps</string>
+    <string name="account_menu_appearance_title">Appearance</string>
+    <string name="account_menu_appearance_subtitle">Choose appearance mode</string>
+    <string name="account_menu_app_icon_title">App Icon</string>
+    <string name="account_menu_app_icon_subtitle">Select app icon</string>
+    <string name="account_menu_reset_settings_title">Reset Settings</string>
+    <string name="account_menu_reset_settings_subtitle">Restore all settings to default</string>
+    <string name="account_menu_reset_settings_confirmation_title">Reset All Settings</string>
+    <string name="account_menu_reset_settings_confirmation_message">This will reset all your app settings to their default values. This action cannot be undone.</string>
+    <string name="account_menu_reset_settings_confirmation_confirm">Reset</string>
+    <string name="account_menu_reset_settings_confirmation_cancel">Cancel</string>
+    <string name="account_menu_show_tips_title">Show Tips Again</string>
+    <string name="account_menu_show_tips_subtitle">Re-display tutorial tips</string>
+    <string name="account_menu_show_tips_confirmation_title">Show Tips Again</string>
+    <string name="account_menu_show_tips_confirmation_message">Tutorial tips will be shown again on each page.</string>
+    <string name="account_menu_show_tips_confirmation_confirm">Show Tips</string>
+    <string name="account_menu_show_tips_confirmation_cancel">Cancel</string>
+    <string name="tutorial_coming_soon">Tutorial is coming soon!</string>
+    <string name="account_menu_feedback_title">Feedback</string>
+    <string name="account_menu_feedback_subtitle">Send feedback and suggestions</string>
+    <string name="account_menu_about_title">About</string>
+    <string name="account_menu_logout_title">Logout</string>
+    <string name="account_menu_logout_subtitle">Sign out of your account</string>
+    <string name="account_menu_logout_confirmation_title">Logout</string>
+    <string name="account_menu_logout_confirmation_message">Are you sure you want to logout?</string>
+    <string name="account_menu_logout_confirmation_confirm">Logout</string>
+    <string name="account_menu_logout_confirmation_cancel">Cancel</string>
+    <string name="account_pro_status_title">Zone News Pro </string>
+    <string name="account_pro_status_subtitle">Manage your subscription</string>
+    <string name="account_pro_upgrade_title">Upgrade to Pro</string>
+    <string name="account_pro_upgrade_subtitle">Unlock Pro features</string>
+    <string name="account_pro_active_title">Pro Active</string>
+    <string name="account_pro_active_subtitle">Manage your subscription</string>
+    
+    <!-- Subscription Page Strings -->
+    <string name="subscription_title">Upgrade to Pro</string>
+    <string name="subscription_pro_active">Pro Active</string>
+    <string name="subscription_expires">Expires</string>
+    <string name="subscription_plan_title">Zone News Pro Monthly</string>
+    <string name="subscription_plan_price">HK$18/month</string>
+    <string name="subscription_plan_billing">Monthly billing</string>
+    <string name="subscription_features_title">Pro Features</string>
+    <string name="subscription_feature_ad_free">Ad-Free Experience</string>
+    <string name="subscription_feature_ad_free_description">Enjoy news without any advertisements</string>
+    <string name="subscription_feature_unlimited_articles">Unlimited Articles</string>
+    <string name="subscription_feature_unlimited_articles_description">Read unlimited articles without restrictions</string>
+    <string name="subscription_feature_report_patterns">Report Patterns</string>
+    <string name="subscription_feature_report_patterns_description">Analyze news patterns and reporting trends</string>
+    <string name="subscription_feature_recap">Recap</string>
+    <string name="subscription_feature_recap_description">Get personalized news summaries and recaps</string>
+    <string name="subscription_feature_timeline">Timeline</string>
+    <string name="subscription_feature_timeline_description">View related articles in chronological order</string>
+    <string name="subscription_feature_priority_support">Priority Support</string>
+    <string name="subscription_feature_priority_support_description">Get faster response times for support requests</string>
+    <string name="subscription_feature_advanced_personalization">Advanced Personalization</string>
+    <string name="subscription_feature_advanced_personalization_description">Access advanced customization options</string>
+    <string name="subscription_subscribe_button">Subscribe Now</string>
+    <string name="subscription_cancel_button">Cancel Subscription</string>
+    <string name="subscription_redeem_button">Redeem Code</string>
+    <string name="subscription_restore_button">Restore Purchases</string>
+    <string name="subscription_redeem_dialog_title">Redeem Code</string>
+    <string name="subscription_redeem_dialog_hint">Enter code</string>
+    <string name="subscription_redeem_success">Code redeemed successfully!</string>
+    <string name="subscription_redeem_failed">Invalid or expired code. Please try again.</string>
+    <string name="subscription_cancel_confirmation_title">Cancel Subscription</string>
+    <string name="subscription_cancel_confirmation_message">Are you sure you want to cancel your Pro subscription?</string>
+    <string name="subscription_cancel_confirmation_confirm">Cancel Subscription</string>
+    <string name="subscription_cancel_success">Subscription cancelled successfully</string>
+    <string name="subscription_restore_success">Purchases restored successfully</string>
+    <string name="subscription_restore_failed">No purchases found to restore</string>
+    <string name="subscription_screenshot">Screenshot</string>
+    
+    <!-- Manage Subscription Page Strings -->
+    <string name="manage_subscription_title">Manage Subscription</string>
+    <string name="manage_subscription_status_title">Pro Member</string>
+    <string name="manage_subscription_status_active">Active</string>
+    <string name="manage_subscription_expires">Expires</string>
+    <string name="manage_subscription_auto_renew">Auto-renewal</string>
+    <string name="manage_subscription_auto_renew_enabled">Enabled</string>
+    <string name="manage_subscription_details_title">Subscription Details</string>
+    <string name="manage_subscription_details_plan">Plan</string>
+    <string name="manage_subscription_details_price">Price</string>
+    <string name="manage_subscription_details_billing">Billing</string>
+    <string name="manage_subscription_details_transaction_id">Transaction ID</string>
+    <string name="manage_subscription_actions_title">Manage Subscription</string>
+    <string name="manage_subscription_cancel_button">Cancel Subscription</string>
+    <string name="manage_subscription_cancel_info">After cancellation, you can still enjoy all Pro features until your subscription expires on %1$s. No immediate changes will occur.</string>
+    <string name="manage_subscription_cancel_info_no_date">After cancellation, you can still enjoy all Pro features until your subscription expires. No immediate changes will occur.</string>
+    <string name="manage_subscription_cancel_confirmation_message">Your subscription will be cancelled. You can still enjoy all Pro features until your subscription expires.</string>
+    <string name="manage_subscription_cancel_confirmation_confirm">Confirm Cancel</string>
+    <string name="manage_subscription_support_title">Need Help?</string>
+    <string name="manage_subscription_support_contact">Contact Support</string>
+    <string name="subscription_support_email">contact@zonenews.io</string>
     <string name="share">Share</string>
     <string name="translate">Translate</string>
     <string name="open_in_browser">Open in browser</string>
@@ -118,6 +241,7 @@
     <string name="topic_modify_delete_success">Topic deleted</string>
     <string name="topic_modify_server_error_dialog">Server Error</string>
     <string name="topic_modify_delete">Delete topic</string>
+    <string name="delete">Delete</string>
     <string name="topic_modify_cancel">Cancel</string>
     <string name="topic_modify_submitting">Deleting topic</string>
     <string name="unknown_error">Unknown Error</string>
@@ -153,8 +277,10 @@
     <string name="close">Close</string>
     <string name="no_data_message">No relevant data</string>
     <string name="english">English</string>
-    <string name="traditional_chinese">繁體</string>
-    <string name="simplified_chinese">简体</string>
+    <string name="traditional_chinese">繁體中文</string>
+    <string name="simplified_chinese">简体中文</string>
+    <string name="straightforward">Straightforward</string>
+    <string name="nuanced">Nuanced</string>
     <string name="topic_name">Topic Name</string>
     <string name="hong_kong_sar">Hong Kong SAR</string>
     <string name="mainland_china">Mainland China</string>
@@ -169,6 +295,7 @@
     <string name="currently_sorted_by">Currently sorted by</string>
     <string name="latest_sort">Latest</string>
     <string name="active_tags">Active tags</string>
+    <string name="select_tags_to_follow">Select tags to follow</string>
     <string name="your_feed_title">Your Feed</string>
     <string name="recap_title">Recap</string>
     <string name="recap_24h_header">過去 24 小時，</string>
@@ -323,6 +450,7 @@
     <string name="time_minutes_ago">%1$d minutes ago</string>
     <string name="time_hours_ago">%1$d hours ago</string>
     <string name="time_days_ago">%1$d days ago</string>
+    <string name="time_unknown">Unknown date</string>
     
     <!-- Reading History strings -->
     <string name="clear_all">Clear All</string>
@@ -333,6 +461,12 @@
     <string name="browsing_history">Browsing History</string>
     <string name="saved_articles">Saved Articles</string>
     <string name="cleared_all_items">Cleared all items</string>
+    <string name="clear_reading_history_confirmation_title">Clear Reading History</string>
+    <string name="clear_reading_history_confirmation_message">This will permanently delete all your reading history. This action cannot be undone.</string>
+    <string name="clear_reading_history_confirmation_confirm">Clear All</string>
+    <string name="clear_saved_articles_confirmation_title">Clear Saved Articles</string>
+    <string name="clear_saved_articles_confirmation_message">This will permanently delete all your saved articles. This action cannot be undone.</string>
+    <string name="clear_saved_articles_confirmation_confirm">Clear All</string>
     
     <!-- Language Settings Help Messages -->
     <string name="language_settings_help">Navigate to App Info → Language to change app language</string>
@@ -383,6 +517,8 @@
     <!-- Search/Discover page strings -->
     <string name="trending_topics">Trending Topics</string>
     <string name="trending_searches">Trending Searches</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="coming_soon_subtitle">This feature will be available soon</string>
     
     <!-- Exit message -->
     <string name="exit_app_message">Press once more to exit the app</string>
@@ -396,4 +532,28 @@
     <string name="order">Order</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    
+    <!-- Social Media -->
+    <string name="instagram">Open Instagram</string>
+    <string name="facebook">Open Facebook</string>
+    <string name="x_twitter">Open X (Twitter)</string>
+    <string name="linkedin">Open LinkedIn</string>
+    <string name="website">Open website</string>
+
+    <!-- Topic Selection Menu -->
+    <string name="clear_all_topics">Clear All Topics</string>
+    <string name="clear_all_topics_confirmation_title">Clear All Topics</string>
+    <string name="clear_all_topics_confirmation_message">Are you sure you want to clear all selected topics across all sections? This action cannot be undone.</string>
+    <string name="clear_all_topics_confirmation_confirm">Clear All</string>
+    <string name="cleared_all_topics">Cleared all topics</string>
+    <string name="search_topics">Search topics</string>
+    <string name="topic_tab_all">All</string>
+    <string name="topic_tab_sectors">Sectors</string>
+    <string name="topic_tab_regions">Regions</string>
+    <string name="topic_tab_trending">Trending</string>
+    <string name="topic_tab_custom">Custom</string>
+    <string name="section_sectors">Sectors</string>
+    <string name="section_regions">Regions</string>
+    <string name="section_trending">Trending</string>
+    <string name="custom_topics_coming_soon">Custom topics coming soon</string>
 </resources>

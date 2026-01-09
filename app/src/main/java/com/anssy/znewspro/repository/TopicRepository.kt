@@ -26,7 +26,19 @@ class TopicRepository @Inject constructor(private val appHttpService: AppHttpSer
         return appHttpService.editTopic(type, topic, language)
     }
 
-    suspend fun getTrendingTopics(language: String? = null): GenericResponse<TopicListEntry> {
-        return appHttpService.getTrendingTopics(language)
+    suspend fun getTrendingTopics(language: String? = null, all: Boolean = false): GenericResponse<TopicListEntry> {
+        return appHttpService.getTrendingTopics(language, all)
+    }
+
+    suspend fun getSectors(language: String? = null): GenericResponse<TopicListEntry> {
+        return appHttpService.getSectors(language)
+    }
+
+    suspend fun getRegions(language: String? = null): GenericResponse<TopicListEntry> {
+        return appHttpService.getRegions(language, "regions")
+    }
+    
+    suspend fun getAllTopics(language: String? = null): GenericResponse<TopicListEntry> {
+        return appHttpService.queryAllTopics(language)
     }
 }

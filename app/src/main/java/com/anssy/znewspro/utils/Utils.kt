@@ -250,7 +250,7 @@ object Utils {
             (spaceSecond.toLong() / 60).toString() + "分钟之前"
         } else if (spaceSecond.toLong() / 3600 > 0 && spaceSecond.toLong() / 3600 < 24) {
             (spaceSecond.toLong() / 3600).toString() + "小时之前"
-        } else if (spaceSecond.toLong() / 86400 <= 0 || spaceSecond.toLong() / 86400 >= 3) {
+        } else if (spaceSecond.toLong() / 86400 >= 3) {
             getDateTimeFromMillisecond(millisecond)
         } else {
             (spaceSecond.toLong() / 86400).toString() + "天之前"
@@ -272,15 +272,160 @@ object Utils {
             context.getString(R.string.time_minutes_ago, spaceSecond.toLong() / 60)
         } else if (spaceSecond.toLong() / 3600 > 0 && spaceSecond.toLong() / 3600 < 24) {
             context.getString(R.string.time_hours_ago, spaceSecond.toLong() / 3600)
-        } else if (spaceSecond.toLong() / 86400 <= 0 || spaceSecond.toLong() / 86400 >= 3) {
-            getDateTimeFromMillisecond(millisecond)
         } else {
-            context.getString(R.string.time_days_ago, spaceSecond.toLong() / 86400)
+            val days = spaceSecond.toLong() / 86400
+            // Fix grammar: "1 day ago" instead of "1 days ago"
+            val daysString = context.getString(R.string.time_days_ago, days)
+            if (days == 1L && daysString.contains("days")) {
+                daysString.replace("days", "day")
+            } else {
+                daysString
+            }
         }
     }
 
     private fun getDateTimeFromMillisecond(millisecond: Long): String {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(millisecond))
+    }
+    
+    /**
+     * Parse backend date string and format for display as relative time
+     * Supports formats:
+     * - ISO format with microseconds: yyyy-MM-dd'T'HH:mm:ss:SSSSSS (e.g., 2025-11-30T02:40:38:787798)
+     * - ISO format with milliseconds: yyyy-MM-dd'T'HH:mm:ss.SSS
+     * - Standard format: yyyy-MM-dd HH:mm:ss
+     * Returns relative time (moments ago, minutes ago, hours ago, days ago) for all dates
+     */
+    fun formatBackendDate(context: Context, backendDate: String?): String {
+        if (backendDate.isNullOrEmpty()) return ""
+        
+        return try {
+            val date = parseBackendDate(backendDate) ?: return context.getString(R.string.time_unknown)
+            
+            // Calculate time difference
+            val now = Calendar.getInstance().timeInMillis
+            val dateTime = date.time
+            val diffSeconds = (now - dateTime) / 1000
+            
+            // Handle future dates (shouldn't happen, but just in case)
+            if (diffSeconds < 0) {
+                return context.getString(R.string.time_moments_ago)
+            }
+            
+            when {
+                diffSeconds < 60 -> context.getString(R.string.time_moments_ago)
+                diffSeconds < 3600 -> context.getString(R.string.time_minutes_ago, diffSeconds / 60)
+                diffSeconds < 86400 -> context.getString(R.string.time_hours_ago, diffSeconds / 3600)
+                else -> {
+                    val days = diffSeconds / 86400
+                    // Fix grammar: "1 day ago" instead of "1 days ago"
+                    val daysString = context.getString(R.string.time_days_ago, days)
+                    if (days == 1L && daysString.contains("days")) {
+                        daysString.replace("days", "day")
+                    } else {
+                        daysString
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            context.getString(R.string.time_unknown)
+        }
+    }
+    
+    /**
+     * Parse backend date string supporting multiple formats
+     * Supports:
+     * - ISO format with microseconds: 2025-11-30T02:40:38:787798
+     * - ISO format with milliseconds: 2025-11-30T02:40:38.787
+     * - Standard format: 2025-11-30 02:40:38
+     * - Date only: 2025-11-30
+     * 
+     * Note: ISO format dates (with 'T' separator) are assumed to be in UTC timezone
+     * per API documentation. Standard format dates use device's local timezone.
+     */
+    fun parseBackendDate(backendDate: String): Date? {
+        // Clean up the date string - handle microseconds by truncating to milliseconds
+        var cleanDate = backendDate.trim()
+        val isIsoFormat = cleanDate.contains("T")
+        
+        // Handle ISO format with 'T' separator: 2025-11-30T02:40:38:787798
+        // Replace the last colon before microseconds with a dot for standard parsing
+        if (isIsoFormat) {
+            // Pattern: yyyy-MM-ddTHH:mm:ss:SSSSSS or yyyy-MM-ddTHH:mm:ss.SSSSSS
+            val regex = Regex("(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2})[:.](\\d+)")
+            val match = regex.find(cleanDate)
+            if (match != null) {
+                val dateTimePart = match.groupValues[1]
+                val fracSeconds = match.groupValues[2]
+                // Take only first 3 digits for milliseconds
+                val millis = fracSeconds.take(3).padEnd(3, '0')
+                cleanDate = "$dateTimePart.$millis"
+            }
+        }
+        
+        // Try different date formats
+        val formats = listOf(
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy-MM-dd"
+        )
+        
+        for (format in formats) {
+            try {
+                val formatter = SimpleDateFormat(format, Locale.US)
+                // ISO format dates (with 'T') are assumed to be in UTC per API documentation
+                if (isIsoFormat && format.contains("'T'")) {
+                    formatter.timeZone = TimeZone.getTimeZone("UTC")
+                }
+                return formatter.parse(cleanDate)
+            } catch (e: Exception) {
+                // Try next format
+            }
+        }
+        
+        return null
+    }
+    
+    /**
+     * Format backend date for saved articles / reading history display
+     * Returns HTML-formatted string like "<b>December 21st, 2025</b> 14:00"
+     */
+    fun formatBackendDateWithTime(backendDate: String?): String {
+        if (backendDate.isNullOrEmpty()) return ""
+        
+        return try {
+            val date = parseBackendDate(backendDate) ?: return backendDate
+            
+            val calendar = Calendar.getInstance().apply { time = date }
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            
+            // Get ordinal suffix
+            val ordinalSuffix = when (day) {
+                1, 21, 31 -> "st"
+                2, 22 -> "nd"
+                3, 23 -> "rd"
+                else -> "th"
+            }
+            
+            // Format month and day
+            val monthDayFormatter = SimpleDateFormat("MMMM d", Locale.getDefault())
+            val monthDay = monthDayFormatter.format(date)
+            
+            // Format year
+            val yearFormatter = SimpleDateFormat("yyyy", Locale.getDefault())
+            val year = yearFormatter.format(date)
+            
+            // Format time as 24-hour
+            val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val time = timeFormatter.format(date)
+            
+            "<b>$monthDay$ordinalSuffix, $year</b> $time"
+        } catch (e: Exception) {
+            e.printStackTrace()
+            backendDate
+        }
     }
 
     fun getFormatTime(date: Date?): String {

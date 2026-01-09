@@ -41,6 +41,7 @@ public class SearchListEntry {
 
     public static class DataDTO {
         private List<ArticlesDTO> articles;
+        private MetaDTO meta;
 
         public List<ArticlesDTO> getArticles() {
             return articles;
@@ -48,6 +49,53 @@ public class SearchListEntry {
 
         public void setArticles(List<ArticlesDTO> articles) {
             this.articles = articles;
+        }
+
+        public MetaDTO getMeta() {
+            return meta;
+        }
+
+        public void setMeta(MetaDTO meta) {
+            this.meta = meta;
+        }
+
+        public static class MetaDTO {
+            private Integer page;
+            private Integer limit;
+            private Integer total;
+            private Integer totalPages;
+
+            public Integer getPage() {
+                return page;
+            }
+
+            public void setPage(Integer page) {
+                this.page = page;
+            }
+
+            public Integer getLimit() {
+                return limit;
+            }
+
+            public void setLimit(Integer limit) {
+                this.limit = limit;
+            }
+
+            public Integer getTotal() {
+                return total;
+            }
+
+            public void setTotal(Integer total) {
+                this.total = total;
+            }
+
+            public Integer getTotalPages() {
+                return totalPages;
+            }
+
+            public void setTotalPages(Integer totalPages) {
+                this.totalPages = totalPages;
+            }
         }
 
         public static class ArticlesDTO {

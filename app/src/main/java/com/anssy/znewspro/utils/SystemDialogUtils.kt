@@ -2,10 +2,12 @@ package com.anssy.znewspro.utils
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.anssy.znewspro.R
 
@@ -65,6 +67,8 @@ object SystemDialogUtils {
      * @param title The dialog title
      * @param message The dialog message
      * @param positiveButtonText Text for the positive button (default: "OK")
+     * @param negativeButtonText Text for the negative button (default: "Cancel")
+     * @param isDestructive Whether the positive button should be styled as destructive (red)
      * @param onPositiveClick Callback for positive button click
      */
     fun showAlertDialog(
@@ -72,6 +76,8 @@ object SystemDialogUtils {
         title: String,
         message: String,
         positiveButtonText: String = context.getString(R.string.ok),
+        negativeButtonText: String = context.getString(R.string.dialog_button_cancel),
+        isDestructive: Boolean = false,
         onPositiveClick: (() -> Unit)? = null
     ) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog, null)
@@ -81,7 +87,19 @@ object SystemDialogUtils {
         dialogView.findViewById<TextView>(R.id.dialog_message).text = message
         
         // Set button text
-        dialogView.findViewById<MaterialButton>(R.id.btn_positive).text = positiveButtonText
+        val positiveButton = dialogView.findViewById<MaterialButton>(R.id.btn_positive)
+        positiveButton.text = positiveButtonText
+        
+        val negativeButton = dialogView.findViewById<MaterialButton>(R.id.btn_negative)
+        negativeButton.text = negativeButtonText
+        
+        // Apply destructive styling if needed - red background with white text (same as Confirm button)
+        if (isDestructive) {
+            val redColor = ContextCompat.getColor(context, R.color.colorRed)
+            val whiteTextColor = ContextCompat.getColor(context, R.color.colorOnPrimary)
+            positiveButton.backgroundTintList = ColorStateList.valueOf(redColor)
+            positiveButton.setTextColor(whiteTextColor)
+        }
         
         val dialog = AlertDialog.Builder(context)
             .setView(dialogView)
@@ -91,12 +109,20 @@ object SystemDialogUtils {
         // Remove the default dialog background to show only our rounded card
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         
+        // Add smooth window animations for a more polished appearance
+        // Set animations before showing the dialog
+        dialog.window?.let { window ->
+            val params = window.attributes
+            params.windowAnimations = R.style.DialogAnimation
+            window.attributes = params
+        }
+        
         // Set up button click listeners
-        dialogView.findViewById<MaterialButton>(R.id.btn_negative).setOnClickListener {
+        negativeButton.setOnClickListener {
             dialog.dismiss()
         }
         
-        dialogView.findViewById<MaterialButton>(R.id.btn_positive).setOnClickListener {
+        positiveButton.setOnClickListener {
             onPositiveClick?.invoke()
             dialog.dismiss()
         }

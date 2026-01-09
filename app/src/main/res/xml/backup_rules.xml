@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older that API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+   Backup rules file - excludes authentication data from backup
+   to prevent auto-login after app reinstall
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <!-- Exclude authentication SharedPreferences from backup -->
+    <exclude domain="sharedpref" path="shunxingass.xml"/>
+    <exclude domain="sharedpref" path="cookie_prefs.xml"/>
+    <!-- Exclude Firebase Auth data -->
+    <exclude domain="sharedpref" path="com.google.firebase.auth.xml"/>
 </full-backup-content>

@@ -112,4 +112,33 @@ class LoginModel @Inject constructor(private val loginRepository: LoginRepositor
             }
         }
     }
+
+    fun loginWithFirebase(idToken: String) {
+        Log.d(TAG, "Attempting Firebase login")
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                loginRepository.loginWithFirebase(idToken)
+            }
+            when(result){
+                is NetworkResponse.NetError->{
+                    Log.e(TAG, "Firebase login network error - HTTP Code: ${result.httpCode}, Error: ${result.errorMsg}")
+                    val loginEntry = LoginEntry()
+                    loginEntry.code = result.httpCode ?: 1000
+                    loginEntry.msg = result.errorMsg ?: getString(R.string.server_error_message)
+                    _loginEntry.value = loginEntry
+                }
+                is NetworkResponse.Success->{
+                    Log.d(TAG, "Firebase login successful")
+                    _loginEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError->{
+                    Log.e(TAG, "Firebase login unknown error: ${result.error?.message}")
+                    val loginEntry = LoginEntry()
+                    loginEntry.code = 1000
+                    loginEntry.msg = "未知错误"
+                    _loginEntry.value = loginEntry
+                }
+            }
+        }
+    }
 }

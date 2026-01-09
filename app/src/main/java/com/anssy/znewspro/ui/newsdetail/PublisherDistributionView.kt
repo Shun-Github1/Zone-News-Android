@@ -72,7 +72,7 @@ class PublisherDistributionView @JvmOverloads constructor(
 		all.forEach { (icon, isProg) ->
 			val iv = ImageView(context)
 			iv.scaleType = ImageView.ScaleType.CENTER_CROP
-			Glide.with(iv).load(icon.logo).placeholder(R.drawable.ease_default_image).error(R.drawable.ease_default_image).into(iv)
+			Glide.with(iv).load(icon.logo).placeholder(R.drawable.ic_image_not_supported_24).error(R.drawable.ic_image_not_supported_24).into(iv)
 			iv.clipToOutline = true
 			iv.tag = Pair(icon, isProg)
 			iv.contentDescription = "publisher"

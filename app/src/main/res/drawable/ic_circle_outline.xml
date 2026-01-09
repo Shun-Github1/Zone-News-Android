@@ -6,8 +6,8 @@
     android:tint="?attr/colorOutline">
     <path
         android:fillColor="@android:color/transparent"
-        android:strokeWidth="2"
+        android:strokeWidth="1"
         android:strokeColor="?attr/colorOutline"
-        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2z"/>
+        android:pathData="M12,2.5C6.75,2.5 2.5,6.75 2.5,12s4.25,9.5 9.5,9.5 9.5,-4.25 9.5,-9.5S17.25,2.5 12,2.5z"/>
 </vector>
 

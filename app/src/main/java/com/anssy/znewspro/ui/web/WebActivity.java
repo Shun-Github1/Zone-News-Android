@@ -163,7 +163,7 @@ public class WebActivity extends BaseActivity {
                     if (publisherIcon != null && !publisherIcon.isEmpty()) {
                         Glide.with(this)
                             .load(publisherIcon)
-                            .error(R.drawable.ease_default_image)
+                            .error(R.drawable.ic_image_not_supported_24)
                             .into(mediaIcon);
                     }
                     
@@ -281,7 +281,6 @@ public class WebActivity extends BaseActivity {
             if (url == null) url = "";
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(browserIntent);
-            Toast.makeText(this, R.string.open_in_browser, Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }

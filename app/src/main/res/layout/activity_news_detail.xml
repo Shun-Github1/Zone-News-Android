@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_news_detail"
         app:navigationIcon="@drawable/ic_arrow_back_ios"
-        app:navigationIconTint="@color/brand_primary"/>
+        app:navigationIconTint="@color/colorTextDeep"/>
    <androidx.core.widget.NestedScrollView
        android:id="@+id/newsDetailScrollView"
        android:layout_width="match_parent"
@@ -28,13 +28,36 @@
            android:layout_width="match_parent"
            android:orientation="vertical"
            android:layout_height="wrap_content">
-           <ImageView
+           <FrameLayout
                android:layout_width="match_parent"
-               android:layout_height="225dp"
-               android:scaleType="centerCrop"
-               android:contentDescription="@null"
-               android:id="@+id/news_iv"
-               />
+               android:layout_height="225dp">
+               <ImageView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:scaleType="centerCrop"
+                   android:contentDescription="@null"
+                   android:id="@+id/news_iv"
+                   />
+               <LinearLayout
+                   android:id="@+id/settings_button_layout"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="bottom|end"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical"
+                   android:background="@drawable/tag_chip_background"
+                   android:padding="10dp"
+                   android:layout_margin="16dp"
+                   android:clickable="true"
+                   android:focusable="true">
+                   <ImageView
+                       android:layout_width="14dp"
+                       android:layout_height="14dp"
+                       android:contentDescription="@null"
+                       android:src="@drawable/ic_settings_24"
+                       android:tint="@color/colorTextDeep" />
+               </LinearLayout>
+           </FrameLayout>
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
@@ -51,64 +74,23 @@
                    android:textStyle="bold"
                    />
                 <!-- Synopsis section -->
-                <LinearLayout
-                    android:id="@+id/synopsisContainer"
+                <TextView
+                    android:id="@+id/newsSynopsisTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginBottom="4dp">
-                    
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Summary"
-                        android:textSize="12sp"
-                        android:textColor="@color/brand_primary"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-                    
-                    <TextView
-                        android:id="@+id/newsSynopsisTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorTextMiddle"
-                        android:background="@drawable/card_content_background"
-                        android:padding="12dp"
-                        android:lineSpacingExtra="4dp" />
-                        
-                </LinearLayout>
+                    android:textSize="15sp"
+                    android:textColor="@color/colorTextMiddle"
+                    android:layout_marginTop="16dp" />
                 
                 <!-- Implications section -->
-                <LinearLayout
-                    android:id="@+id/implicationsContainer"
+                <TextView
+                    android:id="@+id/newsImplicationsTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone">
-                    
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Analysis &amp; Implications"
-                        android:textSize="12sp"
-                        android:textColor="@color/brand_primary"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-                    
-                    <TextView
-                        android:id="@+id/newsImplicationsTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorTextMiddle"
-                        android:background="@drawable/card_content_background"
-                        android:padding="12dp"
-                        android:lineSpacingExtra="4dp" />
-                        
-                </LinearLayout>
+                    android:textSize="15sp"
+                    android:textColor="@color/colorTextMiddle"
+                    android:layout_marginTop="12dp"
+                    android:visibility="gone" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/generateContextBtn"
                     style="@style/Widget.Material3.Button"
@@ -118,9 +100,10 @@
                     android:layout_marginStart="36dp"
                     android:layout_marginEnd="36dp"
                    android:text="@string/context"
-                   app:icon="@drawable/ic_ai_compass_white_24"
+                   app:icon="@drawable/ic_forum_24"
                    app:iconGravity="textStart"
                    app:iconPadding="8dp"
+                   app:iconTint="@android:color/white"
                    app:cornerRadius="8dp"
                    app:backgroundTint="@color/brand_primary"
                    android:textColor="@android:color/white"
@@ -129,6 +112,12 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="16dp"
                     android:layout_height="wrap_content">
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/attribution_width_guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.4" />
                     <TextView
                         android:id="@+id/searcherAiAttribution"
                         android:layout_width="0dp"
@@ -137,37 +126,45 @@
                         android:textColor="#999999"
                         android:textSize="11sp"
                         android:gravity="start|center_vertical"
+                        android:layout_marginStart="4dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/feedBackLayout"
-                        android:layout_marginEnd="12dp" />
-                    <com.hjq.shape.layout.ShapeRelativeLayout
+                        app:layout_constraintRight_toLeftOf="@+id/attribution_width_guideline" />
+                    <LinearLayout
                         android:id="@+id/feedBackLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="4dp"
-                        android:paddingHorizontal="10dp"
-                        app:shape_radius="6dp"
-                        app:shape_solidColor="@android:color/transparent"
-                        app:shape_solidPressedColor="@android:color/transparent"
-                        app:shape_strokeColor="@color/colorTextMiddle"
-                        app:shape_strokeSize="1dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/tag_chip_background"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:layout_marginEnd="4dp"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent">
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="6dp"
+                            android:src="@drawable/ic_feedback_16"
+                            android:contentDescription="@null"
+                            android:tint="@color/colorTextDeep" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13sp"
-                            android:drawablePadding="6dp"
                             android:text="@string/feedback"
-                            android:textColor="@color/colorTextMiddle"
-                            app:drawableStartCompat="@drawable/ic_feedback_16"
-                            app:drawableTint="@color/colorTextMiddle" />
-                    </com.hjq.shape.layout.ShapeRelativeLayout>
+                            android:textColor="@color/colorTextDeep"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/inter_regular" />
+                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
            </LinearLayout>
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/sentiment_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -198,21 +195,44 @@
                             android:textSize="16sp"
                             android:textStyle="bold"/>
                         <ImageView
+                            android:id="@+id/sentiment_chevron_btn"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_chevron_down_24"
+                            android:tint="@color/colorTextMiddle"/>
+                        <ImageView
+                            android:id="@+id/sentiment_menu_btn"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_menu_24"
+                            android:tint="@color/colorTextMiddle"/>
+                        <ImageView
                             android:id="@+id/sentiment_info_btn"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_info_outline_18"
-                            android:tint="@color/colorTextSmall"/>
+                            android:tint="@color/colorTextMiddle"/>
                     </LinearLayout>
-                    <com.anssy.znewspro.ui.newsdetail.SentimentMeterView
-                        android:id="@+id/sentimentMeter"
+                    <LinearLayout
+                        android:id="@+id/sentiment_content_container"
                         android:layout_width="match_parent"
-                        android:layout_height="148dp"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.anssy.znewspro.ui.newsdetail.SentimentMeterView
+                            android:id="@+id/sentimentMeter"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"/>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/publisher_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -243,73 +263,96 @@
                             android:textSize="16sp"
                             android:textStyle="bold"/>
                         <ImageView
+                            android:id="@+id/publisher_chevron_btn"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_chevron_down_24"
+                            android:tint="@color/colorTextMiddle"/>
+                        <ImageView
+                            android:id="@+id/publisher_menu_btn"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="8dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_menu_24"
+                            android:tint="@color/colorTextMiddle"/>
+                        <ImageView
                             android:id="@+id/publisher_info_btn"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_info_outline_18"
-                            android:tint="@color/colorTextSmall"/>
+                            android:tint="@color/colorTextMiddle"/>
                     </LinearLayout>
 
-                    <com.anssy.znewspro.ui.newsdetail.PublisherDistributionView
-                        android:id="@+id/publisherDistribution"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="12dp" />
-
                     <LinearLayout
+                        android:id="@+id/publisher_content_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:background="#9CA3AF"
-                                android:layout_marginEnd="6dp"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/conservative"
-                                android:textSize="12sp"
-                                android:textColor="@color/colorTextSmall"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"/>
+                        android:orientation="vertical">
+                        <com.anssy.znewspro.ui.newsdetail.PublisherDistributionView
+                            android:id="@+id/publisherDistribution"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="12dp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:background="#6B7280"
-                                android:layout_marginEnd="6dp"
-                                android:layout_gravity="center_vertical"/>
-                            <TextView
+                            android:layout_marginTop="8dp">
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/progressive"
-                                android:textSize="12sp"
-                                android:textColor="@color/colorTextSmall"/>
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                <View
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:background="#9CA3AF"
+                                    android:layout_marginEnd="6dp"
+                                    android:layout_gravity="center_vertical"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/conservative"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/colorTextSmall"/>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                <View
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:background="#6B7280"
+                                    android:layout_marginEnd="6dp"
+                                    android:layout_gravity="center_vertical"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/progressive"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/colorTextSmall"/>
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/subjectivity_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -343,34 +386,46 @@
                    android:orientation="horizontal"
                    android:gravity="center_vertical"
                    android:paddingStart="36dp"
-                   android:paddingEnd="12dp">
+                   android:paddingEnd="36dp">
 
                    <TextView
                        android:id="@+id/timeline_title"
-                       android:layout_width="wrap_content"
+                       android:layout_width="0dp"
                        android:layout_height="wrap_content"
+                       android:layout_weight="1"
                        android:text="Timeline"
                        android:textColor="@color/colorTextDeep"
                        android:textSize="16sp"
                        android:textStyle="bold" />
 
                    <ImageView
+                       android:id="@+id/timeline_chevron_btn"
+                       android:layout_width="18dp"
+                       android:layout_height="18dp"
+                       android:layout_marginEnd="8dp"
+                       android:contentDescription="@null"
+                       android:src="@drawable/ic_chevron_down_24"
+                       android:tint="@color/colorTextMiddle" />
+                   <ImageView
+                       android:id="@+id/timeline_menu_btn"
+                       android:layout_width="18dp"
+                       android:layout_height="18dp"
+                       android:layout_marginEnd="8dp"
+                       android:contentDescription="@null"
+                       android:src="@drawable/ic_menu_24"
+                       android:tint="@color/colorTextMiddle" />
+                   <ImageView
                        android:id="@+id/timeline_info_btn"
                        android:layout_width="18dp"
                        android:layout_height="18dp"
-                       android:layout_marginStart="8dp"
                        android:contentDescription="@null"
                        android:src="@drawable/ic_info_outline_18"
-                       android:tint="@color/colorTextSmall" />
-
-                   <View
-                       android:layout_width="0dp"
-                       android:layout_height="1dp"
-                       android:layout_weight="1"/>
+                       android:tint="@color/colorTextMiddle" />
                </LinearLayout>
 
                <!-- Edge-to-edge scroller with background line -->
                <FrameLayout
+                   android:id="@+id/timeline_content_container"
                    android:layout_width="match_parent"
                    android:layout_height="120dp"
                    android:layout_marginTop="20dp"
@@ -446,21 +501,23 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:gravity="center_vertical"
-                                android:background="@drawable/sort_icon_border"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="4dp"
+                                android:background="@drawable/tag_chip_background"
+                                android:paddingLeft="12dp"
+                                android:paddingRight="12dp"
+                                android:paddingTop="6dp"
+                                android:paddingBottom="6dp"
                                 android:clickable="true"
                                 android:focusable="true">
                                 
                                 <!-- Sort option icon -->
                                 <ImageView
                                     android:id="@+id/sort_option_icon"
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
                                     android:src="@drawable/ic_building_2_24"
                                     android:contentDescription="@null"
-                                    android:layout_marginEnd="4dp"
-                                    app:tint="@color/colorTextSmall"/>
+                                    android:layout_marginEnd="6dp"
+                                    app:tint="@color/colorTextDeep"/>
                                 
                                 <!-- Sort option text -->
                                 <TextView
@@ -468,8 +525,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/publisher_name"
-                                    android:textColor="@color/colorTextSmall"
-                                    android:textSize="12sp"/>
+                                    android:textColor="@color/colorTextDeep"
+                                    android:textSize="12sp"
+                                    android:fontFamily="@font/inter_regular"/>
                             </LinearLayout>
                             
                             <!-- Arrow container with rounded background -->
@@ -478,8 +536,11 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:gravity="center_vertical"
-                                android:background="@drawable/sort_icon_border"
-                                android:padding="4dp"
+                                android:background="@drawable/tag_chip_background"
+                                android:paddingLeft="4dp"
+                                android:paddingRight="4dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
                                 android:layout_marginStart="8dp"
                                 android:clickable="true"
                                 android:focusable="true"
@@ -488,20 +549,20 @@
                                 <!-- Up arrow -->
                                 <ImageView
                                     android:id="@+id/sort_indicator_arrow_up"
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
                                     android:src="@drawable/ic_arrow_up_24"
                                     android:contentDescription="@null"
-                                    app:tint="@color/colorTextSmall"/>
+                                    app:tint="@color/colorTextDeep"/>
                                 
                                 <!-- Down arrow -->
                                 <ImageView
                                     android:id="@+id/sort_indicator_arrow_down"
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
                                     android:src="@drawable/ic_arrow_down_24"
                                     android:contentDescription="@null"
-                                    app:tint="@color/colorTextSmall"/>
+                                    app:tint="@color/colorTextDeep"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -525,51 +586,58 @@
    </androidx.core.widget.NestedScrollView>
    
    <!-- Floating Bottom Bar -->
-   <com.google.android.material.card.MaterialCardView
+   <FrameLayout
        android:id="@+id/newsDetailBottomCard"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_margin="12dp"
-       style="@style/Widget.Material3.CardView.Elevated"
-       app:cardCornerRadius="14dp"
-       app:cardBackgroundColor="?attr/colorSurface"
-       app:cardForegroundColor="@android:color/transparent"
-       app:strokeColor="@android:color/transparent"
-       android:backgroundTint="?attr/colorSurface"
-       app:cardElevation="4dp"
+       android:background="@android:color/transparent"
        app:layout_constraintBottom_toBottomOf="parent">
+
+       <eightbitlab.com.blurview.BlurView
+           android:id="@+id/newsDetailBottomBlurView"
+           android:layout_width="match_parent"
+           android:layout_height="55dp"
+           android:layout_gravity="top" />
+
+       <View
+           android:id="@+id/newsDetailBottomGlassOverlay"
+           android:layout_width="match_parent"
+           android:layout_height="55dp"
+           android:layout_gravity="top" />
 
        <RadioGroup
            android:id="@+id/newsDetailRg"
            android:layout_width="match_parent"
            android:layout_height="55dp"
            android:padding="4dp"
-           android:background="?attr/colorSurface"
-           android:orientation="horizontal">
+           android:background="@android:color/transparent"
+           android:orientation="horizontal"
+           android:layout_gravity="top">
 
-           <RadioButton
-               android:id="@+id/news_detail_home_rb"
-               style="@style/tabStyle"
-               android:drawableTop="@drawable/home_selector"
-               android:text="@string/main_page" />
+                   <RadioButton
+                       android:id="@+id/news_detail_home_rb"
+                       style="@style/tabStyle"
+                       android:drawableTop="@drawable/home_selector"
+                       android:text="@string/main_page" />
 
-           <RadioButton
-               android:id="@+id/news_detail_special_rb"
-               style="@style/tabStyle"
-               android:drawableTop="@drawable/special_selector"
-               android:text="@string/person_recommend" />
+                   <RadioButton
+                       android:id="@+id/news_detail_special_rb"
+                       style="@style/tabStyle"
+                       android:drawableTop="@drawable/special_selector"
+                       android:text="@string/person_recommend" />
 
-           <RadioButton
-               android:id="@+id/news_detail_my_rb"
-               style="@style/tabStyle"
-               android:drawableTop="@drawable/my_selector"
-               android:text="@string/my" />
+                   <RadioButton
+                       android:id="@+id/news_detail_my_rb"
+                       style="@style/tabStyle"
+                       android:drawableTop="@drawable/my_selector"
+                       android:text="@string/my" />
 
-           <RadioButton
-               android:id="@+id/news_detail_search_rb"
-               style="@style/tabStyle"
-               android:drawableTop="@drawable/search_selector"
-               android:text="@string/discover" />
+                   <RadioButton
+                       android:id="@+id/news_detail_search_rb"
+                       style="@style/tabStyle"
+                       android:drawableTop="@drawable/search_selector"
+                       android:text="@string/discover" />
        </RadioGroup>
-   </com.google.android.material.card.MaterialCardView>
+   </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- Card background color matching the topic list cards -->
+    <solid android:color="@color/profile_card_bg" />
+    
+    <!-- Rounded corners -->
+    <corners android:radius="12dp" />
+    
+</shape>
+

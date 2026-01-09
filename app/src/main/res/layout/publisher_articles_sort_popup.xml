@@ -18,8 +18,7 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
-        
-        <!-- Fixed checkmark area -->
+
         <FrameLayout
             android:layout_width="16dp"
             android:layout_height="16dp">
@@ -32,32 +31,25 @@
                 android:visibility="visible"
                 app:tint="@color/colorTextDeep"/>
         </FrameLayout>
-        
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/publisher_name"
-            android:textColor="@color/colorTextDeep"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/inter_regular"/>
-        
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_building_2_24"
             android:contentDescription="@null"
-            android:layout_marginEnd="8dp"
-            app:tint="@color/colorTextDeep"/>
-    </LinearLayout>
+            android:tint="@color/brand_primary"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
 
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="8dp"
-        android:background="@color/divider_color" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/publisher_name"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDeep"
+            android:fontFamily="@font/inter_regular" />
+    </LinearLayout>
 
     <!-- Media Significance -->
     <LinearLayout
@@ -70,8 +62,7 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
-        
-        <!-- Fixed checkmark area -->
+
         <FrameLayout
             android:layout_width="16dp"
             android:layout_height="16dp">
@@ -84,32 +75,25 @@
                 android:visibility="gone"
                 app:tint="@color/colorTextDeep"/>
         </FrameLayout>
-        
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/media_significance"
-            android:textColor="@color/colorTextDeep"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/inter_regular"/>
-        
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_media_significance_24"
             android:contentDescription="@null"
-            android:layout_marginEnd="8dp"
-            app:tint="@color/colorTextDeep"/>
-    </LinearLayout>
+            android:tint="@color/brand_primary"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
 
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="8dp"
-        android:background="@color/divider_color" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/media_significance"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDeep"
+            android:fontFamily="@font/inter_regular" />
+    </LinearLayout>
 
     <!-- Publisher Bias -->
     <LinearLayout
@@ -122,8 +106,7 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
-        
-        <!-- Fixed checkmark area -->
+
         <FrameLayout
             android:layout_width="16dp"
             android:layout_height="16dp">
@@ -136,32 +119,25 @@
                 android:visibility="gone"
                 app:tint="@color/colorTextDeep"/>
         </FrameLayout>
-        
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/publisher_bias"
-            android:textColor="@color/colorTextDeep"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/inter_regular"/>
-        
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_publisher_bias_24"
             android:contentDescription="@null"
-            android:layout_marginEnd="8dp"
-            app:tint="@color/colorTextDeep"/>
-    </LinearLayout>
+            android:tint="@color/brand_primary"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
 
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="8dp"
-        android:background="@color/divider_color" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/publisher_bias"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDeep"
+            android:fontFamily="@font/inter_regular" />
+    </LinearLayout>
 
     <!-- Publisher Region -->
     <LinearLayout
@@ -174,8 +150,7 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
-        
-        <!-- Fixed checkmark area -->
+
         <FrameLayout
             android:layout_width="16dp"
             android:layout_height="16dp">
@@ -188,32 +163,25 @@
                 android:visibility="gone"
                 app:tint="@color/colorTextDeep"/>
         </FrameLayout>
-        
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/publisher_region"
-            android:textColor="@color/colorTextDeep"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/inter_regular"/>
-        
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_publisher_region_24"
             android:contentDescription="@null"
-            android:layout_marginEnd="8dp"
-            app:tint="@color/colorTextDeep"/>
-    </LinearLayout>
+            android:tint="@color/brand_primary"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
 
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="8dp"
-        android:background="@color/divider_color" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/publisher_region"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDeep"
+            android:fontFamily="@font/inter_regular" />
+    </LinearLayout>
 
     <!-- Article Title -->
     <LinearLayout
@@ -226,8 +194,7 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
-        
-        <!-- Fixed checkmark area -->
+
         <FrameLayout
             android:layout_width="16dp"
             android:layout_height="16dp">
@@ -240,24 +207,24 @@
                 android:visibility="gone"
                 app:tint="@color/colorTextDeep"/>
         </FrameLayout>
-        
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/article_title"
-            android:textColor="@color/colorTextDeep"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/inter_regular"/>
-        
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_article_title_24"
             android:contentDescription="@null"
-            android:layout_marginEnd="8dp"
-            app:tint="@color/colorTextDeep"/>
+            android:tint="@color/brand_primary"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/article_title"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDeep"
+            android:fontFamily="@font/inter_regular" />
     </LinearLayout>
 
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- More rounded for manage chip -->
+    <corners android:radius="12dp" />
+    <!-- Slight background with slightly darker edge -->
+    <solid android:color="@color/colorSurfaceVariant" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/outline" />
+</shape>
+
+
+
+
+
+

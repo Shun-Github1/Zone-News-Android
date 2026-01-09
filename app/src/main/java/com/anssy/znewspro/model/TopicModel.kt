@@ -34,6 +34,18 @@ class TopicModel @Inject constructor(
     private var _myTopicsEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
     var myTopicsEntry: LiveData<TopicListEntry> = _myTopicsEntry
 
+    private var _sectorsEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
+    var sectorsEntry: LiveData<TopicListEntry> = _sectorsEntry
+
+    private var _regionsEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
+    var regionsEntry: LiveData<TopicListEntry> = _regionsEntry
+
+    private var _trendingTopicsEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
+    var trendingTopicsEntry: LiveData<TopicListEntry> = _trendingTopicsEntry
+
+    private var _trendingTopicsLimitedEntry: MutableLiveData<TopicListEntry> = MutableLiveData()
+    var trendingTopicsLimitedEntry: LiveData<TopicListEntry> = _trendingTopicsLimitedEntry
+
     private var _commonResponseEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
     var commonResponseEntry: LiveData<CommonResponseEntry> = _commonResponseEntry
 
@@ -115,25 +127,104 @@ class TopicModel @Inject constructor(
     }
 
     fun getTrendingTopics() {
+        // Fetches ALL topics for "All" tab using /profile/listtopics (no limits, like regions)
+        // This is separate from /feed/trending-topics which is limited
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                topicRepository.getTrendingTopics(languageManager.getCurrentLanguageCode())
+                topicRepository.getAllTopics(languageManager.getCurrentLanguageCode())
             }
             when (result) {
                 is NetworkResponse.NetError -> {
                     val topicListEntry = TopicListEntry()
                     topicListEntry.code = 1000
                     topicListEntry.msg = getString(R.string.server_error_message)
-                    _topicListEntry.value = topicListEntry
+                    _trendingTopicsEntry.value = topicListEntry
                 }
                 is NetworkResponse.Success -> {
-                    _topicListEntry.value = result.body
+                    _trendingTopicsEntry.value = result.body
                 }
                 is NetworkResponse.UnknownError -> {
                     val topicListEntry = TopicListEntry()
                     topicListEntry.code = 1000
                     topicListEntry.msg = "未知错误"
-                    _topicListEntry.value = topicListEntry
+                    _trendingTopicsEntry.value = topicListEntry
+                }
+            }
+        }
+    }
+
+    fun getTrendingTopicsLimited() {
+        // Fetches 3-6 trending topics for "Trending" tab
+        // Uses /feed/trending-topics which returns 3-6 randomly selected topics
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.getTrendingTopics(languageManager.getCurrentLanguageCode(), all = false)
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = getString(R.string.server_error_message)
+                    _trendingTopicsLimitedEntry.value = topicListEntry
+                }
+                is NetworkResponse.Success -> {
+                    _trendingTopicsLimitedEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _trendingTopicsLimitedEntry.value = topicListEntry
+                }
+            }
+        }
+    }
+
+    fun querySectors() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.getSectors(languageManager.getCurrentLanguageCode())
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = getString(R.string.server_error_message)
+                    _sectorsEntry.value = topicListEntry
+                }
+                is NetworkResponse.Success -> {
+                    _sectorsEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _sectorsEntry.value = topicListEntry
+                }
+            }
+        }
+    }
+
+    fun queryRegions() {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                topicRepository.getRegions(languageManager.getCurrentLanguageCode())
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = getString(R.string.server_error_message)
+                    _regionsEntry.value = topicListEntry
+                }
+                is NetworkResponse.Success -> {
+                    _regionsEntry.value = result.body
+                }
+                is NetworkResponse.UnknownError -> {
+                    val topicListEntry = TopicListEntry()
+                    topicListEntry.code = 1000
+                    topicListEntry.msg = "未知错误"
+                    _regionsEntry.value = topicListEntry
                 }
             }
         }

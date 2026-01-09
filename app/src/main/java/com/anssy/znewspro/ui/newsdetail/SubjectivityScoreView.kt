@@ -33,7 +33,7 @@ class SubjectivityScoreView @JvmOverloads constructor(
     private val infoBtn: View
 
 	init {
-		orientation = HORIZONTAL
+		orientation = VERTICAL
 		LayoutInflater.from(context).inflate(R.layout.view_subjectivity_score, this, true)
 		valueTv = findViewById(R.id.subjectivity_value)
 		denomTv = findViewById(R.id.subjectivity_denom)

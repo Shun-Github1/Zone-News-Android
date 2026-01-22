@@ -25,5 +25,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZnewsPro"
+rootProject.name = "Zonenews"
 include ':app'

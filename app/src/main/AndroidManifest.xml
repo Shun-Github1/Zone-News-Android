@@ -4,7 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
     
     <!-- Package visibility for Android 11+ (API 30+) -->
     <queries>
@@ -38,7 +40,8 @@
         android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:localeConfig="@xml/locale_config"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="34">
         <meta-data
             android:name="design_width_in_dp"
             android:value="375" />
@@ -58,109 +61,178 @@
         </service>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/horizontal_slide"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
+            <!-- Custom scheme deep links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="znews" />
+                <data android:scheme="zonenews" />
+                <data android:host="article" />
+            </intent-filter>
+            
+            <!-- Android App Links for zonenews.io (HTTPS deep links) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="zonenews.io" />
+                <data android:pathPrefix="/article/" />
+            </intent-filter>
+            
+            <!-- Android App Links for www.zonenews.io (HTTPS deep links) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="www.zonenews.io" />
+                <data android:pathPrefix="/article/" />
+            </intent-filter>
         </activity>
 
 
-        <activity android:name="com.anssy.znewspro.ui.topicmodify.TopicModifyActivity"
+        <activity android:name="com.searcher.zonenews.ui.topicmodify.TopicModifyActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.topicmodify.TopicSelectionActivity"
+        <activity android:name="com.searcher.zonenews.ui.topicmodify.TopicSelectionActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.newsdetail.NewsDetailActivity"
+        <activity android:name="com.searcher.zonenews.ui.newsdetail.NewsDetailActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.login.LoginActivity"
+        <activity android:name="com.searcher.zonenews.ui.login.LoginActivity"
             android:exported="true"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         
-        <activity android:name="com.anssy.znewspro.ui.login.RegisterActivity"
+        <activity android:name="com.searcher.zonenews.ui.login.RegisterActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.his.BrownHisActivity"
+        <activity android:name="com.searcher.zonenews.ui.his.BrownHisActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.collect.MyCollectListActivity"
+        <activity android:name="com.searcher.zonenews.ui.collect.MyCollectListActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.notice.NoticeListActivity"
+        <activity android:name="com.searcher.zonenews.ui.notice.NoticeListActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.topicmodify.TopicAllActivity"
+        <activity android:name="com.searcher.zonenews.ui.topicmodify.TopicAllActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.web.WebActivity"
+        <activity android:name="com.searcher.zonenews.ui.web.WebActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:screenOrientation="portrait"/>
         
-        <activity android:name="com.anssy.znewspro.ui.about.AboutActivity"
-            android:exported="false"
-            android:theme="@style/horizontal_slide"
-            android:label="@string/about"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name="com.anssy.znewspro.ui.settings.SettingsActivity"
+        <activity android:name="com.searcher.zonenews.ui.settings.SettingsActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:label="@string/settings"
             android:screenOrientation="portrait"
             />
-        <activity android:name="com.anssy.znewspro.ui.test.NotificationTestActivity"
+        <activity android:name="com.searcher.zonenews.ui.test.NotificationTestActivity"
             android:exported="false"
             android:theme="@style/horizontal_slide"
             android:label="Notification Test"
             android:screenOrientation="portrait"
             />
         
+
+
         <!-- Activity Aliases for Dynamic App Icon -->
         <activity-alias
-            android:name="com.anssy.znewspro.MainActivityLauncher"
-            android:enabled="false"
+            android:name="com.searcher.zonenews.MainActivityLauncher"
+            android:enabled="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:targetActivity=".ui.MainActivity">
-        </activity-alias>
-        
-        <activity-alias
-            android:name="com.anssy.znewspro.MainActivityLauncherAlt"
-            android:enabled="false"
-            android:exported="true"
-            android:icon="@mipmap/ic_launcher_alt"
-            android:roundIcon="@mipmap/ic_launcher_alt_round"
-            android:targetActivity=".ui.MainActivity">
+            android:targetActivity=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
+        
+        <activity-alias
+            android:name="com.searcher.zonenews.MainActivityLauncherAlt"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_alt"
+            android:roundIcon="@mipmap/ic_launcher_alt_round"
+            android:targetActivity=".ui.login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        
+        <!-- Widget Configuration Activity -->
+        <activity
+            android:name=".widget.WidgetConfigActivity"
+            android:exported="false"
+            android:theme="@style/horizontal_slide"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Detailed News Widget Provider -->
+        <receiver
+            android:name=".widget.DetailedNewsWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_detailed_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.searcher.zonenews.widget.ACTION_REFRESH_DETAILED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_detailed_info" />
+        </receiver>
+        
+        <!-- Compact News Widget Provider -->
+        <receiver
+            android:name=".widget.CompactNewsWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_compact_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.searcher.zonenews.widget.ACTION_REFRESH_COMPACT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_compact_info" />
+        </receiver>
     </application>
 
 </manifest>

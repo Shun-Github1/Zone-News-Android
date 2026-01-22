@@ -95,4 +95,12 @@
     <!-- Uses colorSurfaceVariant with 85% opacity for frosted glass effect -->
     <!-- Dark mode: #2C2C2C with 85% opacity = #D92C2C2C -->
     <color name="coming_soon_overlay_bg">#D92C2C2C</color>
+    
+    <!-- MARK: - Media Icon Circle Background -->
+    <!-- White background for media icons in dark mode for better visibility -->
+    <color name="media_icon_circle_bg">#FFFFFF</color>
+    
+    <!-- MARK: - Widget Colors -->
+    <color name="widget_shimmer_color">#333333</color>
+    <color name="widget_floating_bg_color">@color/coming_soon_overlay_bg</color>
 </resources>

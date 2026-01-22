@@ -12,7 +12,7 @@
         android:layout_height="40dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_image_not_supported_24"
-        android:background="@android:color/transparent"
+        android:background="@color/media_icon_circle_bg"
         android:layout_marginEnd="12dp"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
         app:strokeColor="@color/divider_color"
@@ -38,17 +38,30 @@
                 android:maxLines="1"
                 android:ellipsize="end"/>
                 
-            <TextView
-                android:id="@+id/article_publisher_bias"
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="2dp"
-                android:textSize="12sp"
-                android:fontFamily="@font/custom"
-                android:background="@drawable/publisher_bias_tag_background"
-                android:visibility="gone"/>
+                android:layout_marginStart="8dp">
+                <TextView
+                    android:id="@+id/article_publisher_bias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/custom"
+                    android:background="@drawable/publisher_bias_tag_background"
+                    android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/article_publisher_bias_lock"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/lock_24px"
+                    app:tint="@android:color/white"
+                    android:contentDescription="@null"
+                    android:visibility="gone"/>
+            </FrameLayout>
         </LinearLayout>
         <TextView
             android:id="@+id/article_title"

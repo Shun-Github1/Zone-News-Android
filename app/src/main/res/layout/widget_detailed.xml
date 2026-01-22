@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    android:background="@drawable/widget_background"
+    tools:minWidth="250dp"
+    tools:minHeight="180dp">
+
+    <!-- Layer 1: Content (Full Width) -->
+    <LinearLayout
+        android:id="@+id/widget_content_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:visibility="visible"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <!-- Image Container -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:id="@+id/widget_news_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/widget_news_image"
+                android:background="@drawable/widget_image_placeholder" />
+                
+            <!-- App branding overlay on image -->
+            <ImageView
+                android:id="@+id/widget_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"
+                android:layout_gravity="bottom|start"
+                android:background="@drawable/widget_brand_overlay_bg"
+                android:src="@mipmap/widget_brand_logo"
+                android:contentDescription="@null" />
+        </FrameLayout>
+
+        <!-- Content Container -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <!-- Region | Topic row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:id="@+id/widget_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTextSmall"
+                    android:textSize="11sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Hong Kong" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:text="|"
+                    android:textColor="@color/colorTextSmall"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/widget_topic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTextSmall"
+                    android:textSize="11sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Politics" />
+            </LinearLayout>
+
+            <!-- Headline -->
+            <TextView
+                android:id="@+id/widget_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="3"
+                android:ellipsize="end"
+                tools:text="Breaking: Major policy changes announced in latest press conference" />
+
+            <!-- Bias/Sentiment text row -->
+            <TextView
+                android:id="@+id/widget_bias_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/colorTextSmall"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Slightly Positive" />
+
+            <!-- Sentiment Progress Bar -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp">
+
+                <ImageView
+                    android:id="@+id/widget_progress_track"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@null"
+                    android:background="@drawable/widget_progress_track" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+                    <ImageView
+                        android:id="@+id/widget_sentiment_negative"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/widget_clip_negative"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@null" />
+                    <ImageView
+                        android:id="@+id/widget_sentiment_positive"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/widget_clip_positive"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@null" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="6dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@null"
+                    android:background="@color/colorTextSmall" />
+            </FrameLayout>
+
+            <!-- Articles count | Time row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/widget_articles_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTextSmall"
+                    android:textSize="10sp"
+                    tools:text="12 articles" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:text="@string/bullet_point"
+                    android:textColor="@color/colorTextSmall"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/widget_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorTextSmall"
+                    android:textSize="10sp"
+                    tools:text="3 hours ago" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Layer 2: Loading Overlay -->
+    <LinearLayout
+        android:id="@+id/widget_loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="visible"
+        tools:visibility="gone"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/widget_background">
+        
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:layout_marginEnd="10dp"
+            android:background="@color/widget_shimmer_color"
+            android:contentDescription="@null"/>
+            
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/widget_shimmer_color"
+                android:contentDescription="@null"/>
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="12dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/widget_shimmer_color"
+                android:contentDescription="@null"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="12dp"
+                android:background="@color/widget_shimmer_color"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+    </LinearLayout>
+    
+    <!-- Layer 3: Error Overlay -->
+    <LinearLayout
+        android:id="@+id/widget_error_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/widget_background">
+        
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_image_not_supported_24"
+            android:contentDescription="@null" />
+            
+        <TextView
+            android:id="@+id/widget_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/widget_tap_to_refresh"
+            android:textColor="@color/colorTextSmall"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Layer 4: Floating Controls (Top Z-Index) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/widget_btn_prev"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="-12dp"
+            android:padding="10dp"
+            android:alpha="0.5"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_chevron_left_24"
+            android:tint="@color/text_tertiary"
+            android:scaleType="centerInside"
+            android:contentDescription="Previous" />
+
+        <TextView
+            android:id="@+id/widget_page_tracker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:padding="0dp"
+            android:includeFontPadding="false"
+            android:gravity="bottom|end"
+            android:textColor="@color/colorTextSmall"
+            android:textSize="9sp"
+            tools:text="1/8" />
+
+        <ImageView
+            android:id="@+id/widget_btn_next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="-12dp"
+            android:padding="10dp"
+            android:alpha="0.5"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_chevron_right_24"
+            android:tint="@color/text_tertiary"
+            android:scaleType="centerInside"
+            android:contentDescription="Next" />
+
+        <ImageView
+            android:id="@+id/widget_btn_refresh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="4dp"
+            android:padding="12dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_settings_backup_restore_24"
+            android:tint="@color/text_tertiary"
+            android:scaleType="centerInside"
+            android:contentDescription="Reload" />
+    </RelativeLayout>
+
+</FrameLayout>

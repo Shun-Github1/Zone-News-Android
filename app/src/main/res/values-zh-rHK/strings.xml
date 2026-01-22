@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Zone 新聞</string>
-    <string name="today">今天</string>
+        <string name="today">今日</string>
     <string name="hongkong">香港</string>
     <string name="china">中國</string>
     <string name="main_page">首頁</string>
@@ -10,9 +10,10 @@
     <string name="my">帳戶</string>
     <string name="discover">發現</string>
     <string name="liberal">開放</string>
-    <string name="conservative">保守</string>
+        <string name="conservative">偏保守</string>
+    <string name="preview">預覽</string>
     <string name="progressive">開放</string>
-    <string name="media_distribution">媒體立場分佈</string>
+        <string name="media_distribution">媒體分佈</string>
     <string name="ads">廣告</string>
     <string name="relevant_topics">相關主題</string>
     <string name="title_notification">通知</string>
@@ -23,18 +24,19 @@
     <string name="detailed">詳盡</string>
     <string name="confirm">確定</string>
     <string name="email_login">使用電郵登入</string>
-    <string name="google_login">使用 Google 繼續</string>
-    <string name="facebook_login">使用 Facebook 繼續</string>
+        <string name="google_login">使用 Google 繼續</string>
+        <string name="facebook_login">使用 Facebook 繼續</string>
+    <string name="apple_login">使用 Apple 繼續</string>
     <string name="summaries_provided">新聞匯總由 SearcherAI 提供</string>
-    <string name="feedback">回饋</string>
+        <string name="feedback">意見回饋</string>
     <string name="feedback_subtitle">傳送你的回饋給我們</string>
-    <string name="context">生成摘要</string>
+        <string name="context">生成事件背景</string>
     <string name="account">帳戶</string>
     <string name="user_id_label">用戶ID：</string>
-    <string name="history">瀏覽紀錄</string>
+        <string name="history">閱讀歷史</string>
     <string name="history_subtitle">查看你的瀏覽活動</string>
     <string name="discover_headline">搜尋新聞標題</string>
-    <string name="saved">我的收藏</string>
+        <string name="saved">已收藏文章</string>
     <string name="saved_subtitle">查看已儲存的內容</string>
     <string name="about_us">關於我們</string>
     <string name="about_us_subtitle">了解更多關於 Zone 新聞</string>
@@ -42,8 +44,8 @@
     <string name="translate">翻譯</string>
     <string name="open_in_browser">在瀏覽器中開啟</string>
     <string name="version">版本號</string>
-    <string name="logout">登出</string>
-    <string name="logout_subtitle">登出你的帳戶</string>
+        <string name="logout">退出登錄</string>
+        <string name="logout_subtitle">退出您的賬戶</string>
     <string name="coverage">媒體覆蓋</string>
     <string name="sort">排序</string>
     <string name="sort_by">排序方式</string>
@@ -60,14 +62,14 @@
     <string name="done">完成</string>
     <string name="topics_loading">正在載入主題...</string>
     <string name="topics_error_loading">載入主題失敗</string>
-    <string name="button_retry">刷新</string>
-    <string name="recommended_based_on_history">根據您的閱讀歷史推薦</string>
+        <string name="button_retry">刷新</string>
+        <string name="recommended_based_on_history">根據您的閱讀歷史推薦</string>
     <string name="manage_topics">管理主題</string>
     <string name="personalization_sorted_articles">文章排序</string>
     <string name="media_bias">媒體立場</string>
     <string name="media_region">媒體所在地區</string>
     <string name="region_hong_kong">香港</string>
-    <string name="region_china">內地</string>
+        <string name="region_china">中國</string>
     <string name="region_uk">英國</string>
     <string name="region_usa">美國</string>
     <string name="region_asia_other">亞洲其他</string>
@@ -91,30 +93,41 @@
     <string name="auth_failed">驗證失敗</string>
     <string name="wait_logging_in">正在登入</string>
     <string name="login_failed">登入失敗</string>
+    <string name="email_password_login">電郵和密碼</string>
+    <string name="account_exists_different_provider">已存在使用相同電郵地址的帳戶。</string>
+        <string name="incorrect_username_or_password">用戶名或密碼不正確</string>
     <string name="email_empty">電郵為空</string>
     <string name="email_prefix">電郵：%1$s</string>
     <string name="hint_email">請輸入電郵</string>
-    <string name="password">密碼</string>
+        <string name="password">輸入密碼</string>
     <string name="hint_password">請輸入密碼</string>
     <string name="register">註冊</string>
     <string name="login">登入</string>
-    <string name="username">電郵</string>
+    <string name="username">用戶名</string>
     <string name="register_activity_title">註冊</string>
-    <string name="full_name">全名</string>
+    <string name="full_name">用戶名</string>
     <string name="create_account">建立帳戶</string>
-    <string name="register_tagline">加入Zone新聞獲取個人化新聞</string>
+    <string name="register_tagline">加入 Zone 新聞獲取個人化新聞</string>
     <string name="register_success">註冊成功</string>
     <string name="register_error_email_empty">請輸入電郵</string>
     <string name="register_error_username_empty">請輸入用戶名</string>
     <string name="register_error_password_empty">請輸入密碼</string>
     <string name="register_error_password_again_empty">請再次輸入密碼</string>
     <string name="register_error_passwords_mismatch">兩次密碼不符</string>
+    <string name="login_error_invalid_email">無效的電郵地址</string>
+    <string name="login_error_user_disabled">此帳戶已被停用</string>
+    <string name="login_error_user_not_found">未找到使用此電郵的帳戶</string>
+    <string name="login_error_wrong_password">密碼錯誤</string>
+    <string name="register_error_email_invalid">請輸入有效的電郵地址</string>
+    <string name="register_error_password_weak">密碼至少需要 6 個字符</string>
+    <string name="register_error_email_already_exists">該電郵已註冊</string>
+    <string name="register_error_general">註冊失敗，請重試</string>
     <string name="register_status_registering">正在註冊</string>
     <string name="email">電郵</string>
     <string name="signup_prompt">還沒有帳戶？註冊</string>
-    <string name="hint_username">請輸入全名</string>
+    <string name="hint_username">請輸入用戶名</string>
     <string name="confirm_password">確認密碼</string>
-    <string name="confirm_password_hint">請再次輸入密碼</string>
+        <string name="confirm_password_hint">確認您的密碼</string>
     <string name="enter_feedback">請輸入回饋內容</string>
     <string name="dialog_title_reminder">登出</string>
     <string name="logout_confirmation_message">確定要登出嗎？</string>
@@ -124,9 +137,10 @@
     <string name="collect_success_toast">收藏成功</string>
     <string name="uncollect_success_toast">取消收藏成功</string>
     <string name="feedback_prompt_toast">請輸入回饋內容</string>
-    <string name="ios_feedback_placeholder">請分享你對該摘要的看法...</string>
+        <string name="ios_feedback_placeholder">請分享您的意見。</string>
+        <string name="feedback_prompt">請分享您的意見。</string>
     <string name="no_content_placeholder">暫無內容</string>
-    <string name="report_count_format">%d個報導</string>
+        <string name="report_count_format">%d 篇文章</string>
     <string name="sentiment_analysis_label">情感分析：</string>
     <string name="metrics">指標</string>
     <string name="topic_modify_shared_pref_list_key">list</string>
@@ -148,18 +162,19 @@
     
     <!-- Reading History strings -->
     <string name="clear_all">清除全部</string>
+    <string name="clear">清除</string>
     <string name="no_browsing_history">沒有瀏覽紀錄</string>
     <string name="no_browsing_history_subtitle">您的瀏覽紀錄將顯示在這裡</string>
     <string name="no_saved_articles">沒有收藏的文章</string>
     <string name="no_saved_articles_subtitle">您收藏的文章將顯示在這裡</string>
     <string name="browsing_history">瀏覽紀錄</string>
-    <string name="saved_articles">收藏的文章</string>
+        <string name="saved_articles">已收藏文章</string>
     <string name="cleared_all_items">已清除所有項目</string>
     <string name="clear_reading_history_confirmation_title">清除閱讀紀錄</string>
-    <string name="clear_reading_history_confirmation_message">這將永久刪除您的所有閱讀紀錄。此操作無法撤銷。</string>
+        <string name="clear_reading_history_confirmation_message">這將永久刪除您的所有閱讀歷史。此操作無法撤銷。</string>
     <string name="clear_reading_history_confirmation_confirm">清除全部</string>
     <string name="clear_saved_articles_confirmation_title">清除收藏的文章</string>
-    <string name="clear_saved_articles_confirmation_message">這將永久刪除您的所有收藏文章。此操作無法撤銷。</string>
+        <string name="clear_saved_articles_confirmation_message">這將永久刪除您已收藏的所有文章。此操作無法撤銷。</string>
     <string name="clear_saved_articles_confirmation_confirm">清除全部</string>
     
     <!-- Theme and Settings Strings -->
@@ -178,8 +193,8 @@
     
     <!-- App Icon strings -->
     <string name="app_icon">應用圖標</string>
-    <string name="app_icon_subtitle">選擇應用圖示</string>
-    <string name="app_icon_default">預設</string>
+        <string name="app_icon_subtitle">選擇應用圖標</string>
+        <string name="app_icon_default">默認</string>
     <string name="app_icon_alternate">替代</string>
     
     <!-- Theme option strings -->
@@ -194,11 +209,11 @@
     <string name="english">English</string>
     <string name="traditional_chinese">繁體中文</string>
     <string name="simplified_chinese">简体中文</string>
-    <string name="straightforward">Straightforward</string>
-    <string name="nuanced">Nuanced</string>
+        <string name="straightforward">直接明瞭</string>
+        <string name="nuanced">深度了解</string>
     <string name="topic_name">主題名稱</string>
     <string name="hong_kong_sar">香港特別行政區</string>
-    <string name="mainland_china">中國內地</string>
+        <string name="mainland_china">中國大陸</string>
     <string name="united_kingdom">英國</string>
     <string name="united_states">美國</string>
     <string name="asia_other">亞洲其他</string>
@@ -208,17 +223,20 @@
     <string name="found_results_format">找到 %1$d 個與 \"%2$s\" 相關的結果</string>
     <string name="tag">標籤</string>
     <string name="currently_sorted_by">當前排序方式</string>
-    <string name="latest_sort">最新</string>
-    <string name="active_tags">活躍標籤</string>
+        <string name="latest_sort">時間</string>
+        <string name="active_tags">關注主題</string>
     <string name="submit_feedback">提交回饋</string>
     <string name="submit">提交</string>
-    <string name="low_objectivity">低客觀性</string>
+    <string name="low_objectivity">客觀性低</string>
     <string name="medium_objectivity">中等客觀性</string>
-    <string name="high_objectivity">高客觀性</string>
-    <string name="sentiment_analysis_description">媒體對此事件報導的總體情緒。分數基於文本分析結果。\n請訪問我們的網頁以了解更多。</string>
+    <string name="high_objectivity">客觀性高</string>
+    <string name="low_subjectivity">主觀性低</string>
+    <string name="medium_subjectivity">中等主觀性</string>
+    <string name="high_subjectivity">主觀性高</string>
+    <string name="sentiment_analysis_description">媒體對此事件報導的總體情緒。分數基於文本分析結果。\n請訪問 我們的網頁 以了解更多。</string>
     <string name="our_webpage">我們的網頁</string>
-    <string name="publisher_distribution_description">媒體報導模式具象圖：X軸 - 媒體偏見、Y軸 - 報導時機、圓點大小 - 媒體影響力。\n請訪問我們的網頁以了解更多。</string>
-    <string name="subjectivity_algorithm_description">媒體報導的整體主觀程度。分數基於文本分析結果。\n請訪問我們的網頁以了解更多。</string>
+    <string name="publisher_distribution_description">媒體報導模式具象圖：X軸 - 媒體偏見、Y軸 - 報導時機、圓點大小 - 媒體影響力。\n請訪問 我們的網頁 以了解更多。</string>
+    <string name="subjectivity_algorithm_description">媒體報導的整體主觀程度。分數基於文本分析結果。\n請訪問 我們的網頁 以了解更多。</string>
     <string name="ok">確定</string>
     <string name="news_type">新聞</string>
     <string name="fragment_special">專題</string>
@@ -240,7 +258,7 @@
     <string name="refresh_blocked_search">刷新被阻止 - 距離上次刷新時間太短 (%1$dms &lt; %2$dms)</string>
     <string name="exiting_search_mode">退出搜尋模式並返回發現</string>
     <string name="refreshing_discover_content">正在刷新發現內容</string>
-    <string name="latest_sort_option">最新</string>
+        <string name="latest_sort_option">時間</string>
     <string name="popular_sort_option">熱門</string>
     <string name="empty_string">""</string>
     <string name="text_plain">text/plain</string>
@@ -262,6 +280,7 @@
     <string name="time_placeholder">3分鐘前</string>
 
     <!-- Timeline strings -->
+    <string name="timeline">時間線</string>
     <string name="timeline_info_description">此新聞事件的前文後理。左右滑動可瀏覽時間軸。</string>
     <string name="timeline_info_scroll_hint">左右滑動可瀏覽時間軸。</string>
     <string name="timeline_mock_article1_title">模擬文章 1</string>
@@ -272,42 +291,41 @@
     <string name="timeline_mock_article7_title">模擬文章 7</string>
 
     <!-- About screen strings -->
-    <string name="about_app_name">Zone News</string>
+        <string name="about_app_name">Zone 新聞</string>
     <string name="about_version">版本 1.0.0</string>
-    <string name="about_heading">關於 Zone News</string>
-    <string name="about_desc_1">Zone 新聞是面向未來的多維新聞平台，讓您輕鬆整合來自數十個資訊來源、跨越時空的資訊。我們立足香港與中國，輻射全球，為您提供涵蓋政治、科技、體育等領域的均衡、準確、及時的報導。</string>
-    <string name="about_desc_2">我們的使命是資訊傳遞：以科學透明的方式，為您呈現值得關注的重要故事。透過簡潔、全面、便捷的新聞報導，我們致力於打破資訊繭房，呈現每個事件的多維視角。</string>
-    <string name="about_features">功能特色</string>
-    <string name="feature_ai_context">AI 背景</string>
-    <string name="feature_ai_context_desc">每個新聞事件的完整背景故事</string>
-    <string name="feature_article_list">文章列表</string>
-    <string name="feature_article_list_desc">具有排序功能的綜合文章列表</string>
-    <string name="feature_custom_tags">自定義標籤</string>
-    <string name="feature_custom_tags_desc">使用自定義新聞標籤追蹤感興趣的主題</string>
-    <string name="feature_in_app_browser">應用內瀏覽器</string>
+    <string name="about_heading">關於 Zone 新聞</string>
+    <string name="about_desc_1">Zone 新聞是未來的多維度新聞平台，讓您能夠輕鬆整合來自數十個跨越時空來源的資訊。我們提供關於政治、科技、體育等領域的平衡、準確且及時的報導，涵蓋香港、中國及全球範圍。</string>
+    <string name="about_desc_2">我們的使命是資訊傳播：以科學、透明的方式，為您帶來重要的事件報導。我們致力透過簡潔、全面且便捷的報導方式打破資訊壁壘，呈現每個事件的多角度觀點。</string>
+        <string name="about_features">功能特色</string>
+    <string name="feature_ai_context">AI 事件背景</string>
+    <string name="feature_ai_context_desc">每則新聞事件的完整背景資訊</string>
+        <string name="feature_article_list">文章列表</string>
+    <string name="feature_article_list_desc">完整文章列表，支援排序功能</string>
+    <string name="feature_custom_tags">自訂標籤</string>
+        <string name="feature_custom_tags_desc">透過自訂新聞標籤追蹤感興趣的主題</string>
+    <string name="feature_in_app_browser">內置瀏覽器</string>
     <string name="feature_in_app_browser_desc">以您選擇的語言在應用內閱讀完整文章</string>
-    <string name="feature_levity_mode">輕鬆模式</string>
+        <string name="feature_levity_mode">輕鬆模式</string>
     <string name="feature_levity_mode_desc">僅顯示正面新聞</string>
     <string name="feature_media_bias_tags">媒體偏見與立場標籤</string>
-    <string name="feature_media_bias_tags_desc">媒體標籤，便於評估潛在偏見</string>
+    <string name="feature_media_bias_tags_desc">媒體標籤助您輕鬆評估潛在偏見</string>
     <string name="feature_media_distribution">媒體分佈</string>
-    <string name="feature_media_distribution_desc">了解重要新聞的不同觀點</string>
-    <string name="feature_media_sentiment">媒體情緒</string>
-    <string name="feature_media_sentiment_desc">基於文本分析的報導整體基調</string>
-    <string name="feature_recap">回顧</string>
-    <string name="feature_recap_desc">每日、每週或每月新聞回顧</string>
-    <string name="feature_significance">重要性</string>
-    <string name="feature_significance_desc">DALY（生命年）和經濟影響分析</string>
-    <string name="feature_subjectivity_score">主觀性評分</string>
-    <string name="feature_subjectivity_score_desc">基於文本分析的媒體報導主觀性</string>
-    <string name="feature_summary">摘要</string>
-    <string name="feature_summary_desc">事件的關鍵信息、事實和影響</string>
-    <string name="feature_timeline">時間軸</string>
-    <string name="feature_timeline_desc">故事前後相關事件的時間軸</string>
-    <string name="feature_widgets">小工具</string>
-    <string name="feature_widgets_desc">多種設計的主螢幕小工具</string>
-    <string name="feature_your_feed">您的動態</string>
-    <string name="feature_your_feed_desc">具有固定和可自定義標籤的個人化動態</string>
+    <string name="feature_media_distribution_desc">了解不同媒體對重要事件的多樣觀點</string>
+        <string name="feature_media_sentiment">媒體情緒</string>
+    <string name="feature_media_sentiment_desc">基於文本分析的新聞報導整體語氣</string>
+    <string name="feature_recap">新聞回顧</string>
+    <string name="feature_recap_desc">每日、每週或每月新聞摘要</string>
+    <string name="feature_significance">事件影響評估</string>
+    <string name="feature_significance_desc">DALY（生命年）及經濟影響分析</string>
+        <string name="feature_subjectivity_score">主觀性評分</string>
+    <string name="feature_subjectivity_score_desc">基於文本分析的媒體報導主觀性程度</string>
+    <string name="feature_summary">事件摘要</string>
+    <string name="feature_summary_desc">事件關鍵資訊、事實與影響</string>
+        <string name="feature_timeline">時間軸</string>
+    <string name="feature_timeline_desc">事件前後的相關新聞時間軸</string>
+
+    <string name="feature_your_feed">個人動態</string>
+    <string name="feature_your_feed_desc">結合固定與自訂標籤的個性化新聞推送</string>
     <string name="contact_us">聯絡我們</string>
     <string name="contact_email">support@znews.com</string>
     <string name="contact_website">www.znews.com</string>
@@ -318,11 +336,11 @@
     
     <!-- News card strings -->
     <string name="reports_count">%1$d 份報告</string>
-    <string name="sentiment_score_label">媒體情感：%1$s</string>
-    <string name="sentiment_score">媒體情感</string>
+    <string name="sentiment_score_label">文本情感數值：%1$s</string>
+        <string name="sentiment_score">文本情感數值</string>
     <string name="publisher_distribution">媒體分佈</string>
-    <string name="subjectivity_score">主觀性評分</string>
-    <string name="publisher_articles">文章列表</string>
+        <string name="subjectivity_score">主觀性數值</string>
+        <string name="publisher_articles">文章一覽</string>
     <string name="publisher_name">媒體名稱</string>
     <string name="media_significance">媒體重要性</string>
     <string name="publisher_bias">媒體立場</string>
@@ -332,37 +350,231 @@
     <string name="sentiment_negative">負面</string>
     <string name="sentiment_neutral">中性</string>
     <string name="sentiment_very_positive">非常正面</string>
-    <string name="sentiment_slightly_positive">略為正面</string>
-    <string name="sentiment_slightly_negative">略為負面</string>
+
     <string name="sentiment_very_negative">非常負面</string>
     
     <!-- Time display strings -->
     <string name="time_moments_ago">剛剛</string>
     <string name="time_minutes_ago">%1$d 分鐘前</string>
     <string name="time_hours_ago">%1$d 小時前</string>
-    <string name="time_days_ago">%1$d 天前</string>
+    <string name="time_days_ago">%1$d 日前</string>
     <string name="time_unknown">未知日期</string>
     
     <!-- Exit message -->
     <string name="exit_app_message">再按一次，退出應用程式</string>
-    <string name="trending_topics">熱門主題</string>
+        <string name="trending_topics">熱門話題</string>
     <string name="trending_searches">熱門搜尋</string>
     <string name="searcher_ai_attribution">此摘要由SearcherAI提供</string>
 
     <!-- Topic Selection Menu -->
     <string name="clear_all_topics">清除所有主題</string>
     <string name="clear_all_topics_confirmation_title">清除所有主題</string>
-    <string name="clear_all_topics_confirmation_message">確定要清除所有已選主題嗎？此操作無法復原。</string>
-    <string name="clear_all_topics_confirmation_confirm">全部清除</string>
+        <string name="clear_all_topics_confirmation_message">確定要清除所有部分中所有已選擇的主題嗎？此操作無法撤銷。</string>
+        <string name="clear_all_topics_confirmation_confirm">清除全部</string>
     <string name="cleared_all_topics">已清除所有主題</string>
     <string name="search_topics">搜尋主題</string>
     <string name="topic_tab_all">全部</string>
-    <string name="topic_tab_sectors">行業</string>
+        <string name="topic_tab_sectors">領域</string>
     <string name="topic_tab_regions">地區</string>
     <string name="topic_tab_trending">熱門</string>
-    <string name="topic_tab_custom">自訂</string>
-    <string name="section_sectors">行業</string>
+        <string name="topic_tab_custom">自定義</string>
+        <string name="section_sectors">領域</string>
     <string name="section_regions">地區</string>
     <string name="section_trending">熱門</string>
     <string name="custom_topics_coming_soon">自訂主題即將推出</string>
+    <string name="recap_coming_soon">回顧功能即將推出！</string>
+    
+    <!-- Pro/Premium Features -->
+    <string name="account_pro_upgrade_title">升級到專業版</string>
+        <string name="account_pro_upgrade_subtitle">解鎖高級功能</string>
+        <string name="account_pro_active_title">Zone News 專業版</string>
+        <string name="account_pro_active_subtitle">管理你的訂閱</string>
+        <string name="account_menu_report_patterns_upgrade">升級解鎖報導模式</string>
+    <string name="levity_mode_upgrade">升級以解鎖輕鬆模式</string>
+    <string name="trending">熱門</string>
+    <string name="topic_business">商業</string>
+    <string name="topic_entertainment">娛樂</string>
+    <string name="topic_politics">政治</string>
+    <string name="topic_sports">體育</string>
+    <string name="topic_technology">科技</string>
+    <string name="topic_general">綜合</string>
+    <string name="search_hint">搜尋新聞...</string>
+    <string name="web_error_loading">頁面載入失敗</string>
+    <string name="notifications">通知</string>
+    <string name="account_menu_reading_history_title">閱讀歷史</string>
+    <string name="account_menu_reading_history_subtitle">查看您的閱讀歷史</string>
+    <string name="account_menu_saved_articles_title">已收藏文章</string>
+    <string name="account_menu_saved_articles_subtitle">查看您已收藏的文章</string>
+    <string name="account_menu_report_patterns_title">報導模式</string>
+    <string name="account_menu_report_patterns_subtitle">顯示媒體立場</string>
+    <string name="account_menu_language_title">語言</string>
+    <string name="account_menu_language_subtitle">更改應用語言</string>
+    <string name="account_menu_notifications_title">通知</string>
+    <string name="account_menu_notifications_subtitle">管理通知偏好設定</string>
+    <string name="account_menu_notifications_breaking_news_title">突發新聞</string>
+    <string name="account_menu_notifications_breaking_news_subtitle">接收突發新聞提醒</string>
+    <string name="account_menu_notifications_follows_topics_title">關注主題</string>
+    <string name="account_menu_notifications_follows_topics_subtitle">接收您關注主題的通知</string>
+    <string name="account_menu_media_region_subtitle">根據地區選擇新聞媒體</string>
+    <string name="region_updated_success">地區已更新</string>
+    <string name="region_updated_failure">更新地區失敗：%1$s</string>
+    <string name="account_menu_landing_page_title">首頁設置</string>
+    <string name="account_menu_landing_page_subtitle">選擇應用首先開啟的頁面</string>
+    <string name="landing_page_today">今日</string>
+    <string name="landing_page_hong_kong">香港</string>
+    <string name="landing_page_china">中國</string>
+    <string name="landing_page_your_feed">您的動態</string>
+    <string name="landing_page_levity_mode">正向模式</string>
+    <string name="account_menu_article_opening_method_subtitle">選擇打開外部文章的方法</string>
+    <string name="article_opening_in_app">使用應用內瀏覽器</string>
+    <string name="article_opening_external">使用默認瀏覽器或第三方應用打開鏈接</string>
+    <string name="account_menu_appearance_title">外觀</string>
+    <string name="account_menu_appearance_subtitle">選擇外觀模式</string>
+    <string name="account_menu_app_icon_title">應用圖標</string>
+    <string name="account_menu_app_icon_subtitle">選擇應用圖標</string>
+    <string name="account_menu_reset_settings_title">重置設定</string>
+    <string name="account_menu_reset_settings_subtitle">將所有設定恢復為預設值</string>
+    <string name="account_menu_reset_settings_confirmation_title">重置所有設定</string>
+    <string name="account_menu_reset_settings_confirmation_message">這將重置所有應用程式設定為預設值。此操作無法撤銷。</string>
+    <string name="account_menu_reset_settings_confirmation_confirm">重置</string>
+    <string name="account_menu_reset_settings_confirmation_cancel">取消</string>
+    <string name="account_menu_show_tips_subtitle">重新展示教學</string>
+    <string name="account_menu_show_tips_confirmation_message">教學提示將在每個頁面重新展示。</string>
+    <string name="account_menu_show_tips_confirmation_confirm">重新展示</string>
+    <string name="account_menu_show_tips_confirmation_cancel">取消</string>
+    <string name="account_menu_feedback_title">意見回饋</string>
+    <string name="account_menu_feedback_subtitle">發送反饋和建議</string>
+    <string name="account_menu_about_title">關於</string>
+    <string name="account_menu_logout_title">退出登錄</string>
+    <string name="account_menu_logout_subtitle">退出您的賬戶</string>
+    <string name="account_menu_logout_confirmation_title">退出登錄</string>
+    <string name="account_menu_logout_confirmation_message">確定要退出登錄嗎？</string>
+    <string name="account_menu_logout_confirmation_confirm">退出登錄</string>
+    <string name="account_menu_logout_confirmation_cancel">取消</string>
+    <string name="account_pro_status_title">Zone News 專業版</string>
+    <string name="account_pro_status_subtitle">管理你的訂閱</string>
+    <string name="subscription_title">升級到專業版</string>
+    <string name="subscription_pro_active">Zone News 專業版</string>
+    <string name="subscription_expires">到期時間</string>
+    <string name="subscription_plan_price">HK$18/月</string>
+    <string name="subscription_features_title">專業版功能</string>
+    <string name="subscription_feature_ad_free">無廣告體驗</string>
+    <string name="subscription_feature_ad_free_description">享受無廣告的新聞閱讀體驗</string>
+    <string name="subscription_feature_unlimited_articles">無限文章</string>
+    <string name="subscription_feature_unlimited_articles_description">無限制閱讀文章，無任何限制</string>
+    <string name="subscription_feature_report_patterns">報導模式</string>
+    <string name="subscription_feature_report_patterns_description">分析新聞模式和報導趨勢</string>
+    <string name="subscription_feature_recap">回顧</string>
+    <string name="subscription_feature_recap_description">獲取個性化新聞摘要和回顧</string>
+    <string name="subscription_feature_timeline">時間線</string>
+    <string name="subscription_feature_timeline_description">按時間順序查看相關文章</string>
+    <string name="subscription_feature_priority_support">優先支持</string>
+    <string name="subscription_feature_priority_support_description">獲得更快的客服響應時間</string>
+    <string name="subscription_feature_advanced_personalization">高級個性化</string>
+    <string name="subscription_feature_advanced_personalization_description">訪問高級自定義選項</string>
+    <string name="subscription_subscribe_button">立即訂閱</string>
+    <string name="subscription_cancel_button">取消訂閱</string>
+    <string name="subscription_redeem_button">兌換代碼</string>
+    <string name="subscription_restore_button">恢復購買</string>
+    <string name="subscription_redeem_dialog_title">兌換代碼</string>
+    <string name="subscription_redeem_dialog_hint">輸入代碼</string>
+    <string name="subscription_redeem_success">代碼兌換成功！</string>
+    <string name="subscription_redeem_failed">代碼無效或已過期。請重試。</string>
+    <string name="subscription_cancel_confirmation_title">取消訂閱</string>
+    <string name="subscription_cancel_confirmation_message">您確定要取消 Pro 訂閱嗎？</string>
+    <string name="subscription_cancel_confirmation_confirm">取消訂閱</string>
+    <string name="subscription_restore_success">購買恢復成功</string>
+    <string name="subscription_restore_failed">未找到可恢復的購買</string>
+    <string name="subscription_screenshot">截圖</string>
+    <string name="manage_subscription_title">管理訂閱</string>
+    <string name="manage_subscription_status_title">專業會員</string>
+    <string name="manage_subscription_status_active">活躍</string>
+    <string name="manage_subscription_expires">到期時間</string>
+    <string name="manage_subscription_auto_renew">自動續費</string>
+    <string name="manage_subscription_auto_renew_enabled">已啟用</string>
+    <string name="manage_subscription_details_title">訂閱詳情</string>
+    <string name="manage_subscription_details_plan">套餐</string>
+    <string name="manage_subscription_details_price">價格</string>
+    <string name="manage_subscription_details_billing">轉帳日期</string>
+    <string name="manage_subscription_details_transaction_id">交易ID</string>
+    <string name="manage_subscription_actions_title">管理訂閱</string>
+    <string name="manage_subscription_cancel_button">取消訂閱</string>
+    <string name="manage_subscription_cancel_info_no_date">取消後，您仍可享受所有專業版功能直到訂閱到期。不會立即發生變化。</string>
+    <string name="manage_subscription_support_title">需要幫助？</string>
+    <string name="manage_subscription_support_contact">聯繫客服</string>
+    <string name="or_label">或</string>
+    <string name="loading">載入中...</string>
+    <string name="select_tags_to_follow">選擇要關注的主題</string>
+    <string name="your_feed_title">您的動態</string>
+    <string name="recap_title">回顧</string>
+    <string name="coming_soon">即將推出</string>
+    <string name="coming_soon_subtitle">此功能即將推出</string>
+    <string name="account_menu_show_tips_title">提示</string>
+    <string name="account_menu_media_region_title">媒體地區</string>
+    <string name="account_menu_article_opening_method_title">文章跳轉</string>
+    <string name="subscription_plan_title">Zone News 專業版</string>
+    <string name="subscription_plan_billing">按月收費</string>
+
+    <string name="delete_account">刪除帳戶</string>
+    <string name="delete_account_confirmation_title">刪除帳戶</string>
+    <string name="delete_account_confirmation_message">您確定要刪除您的帳戶嗎？此操作無法撤銷，所有數據將被永久刪除。</string>
+    <string name="delete_account_confirm">刪除帳戶</string>
+    <string name="delete_account_success">帳戶已成功刪除</string>
+
+    <!-- Missing Popup and Time Strings -->
+    <string name="levity_mode_coming_soon">正向模式即將推出！</string>
+    <string name="no_news_data">暫無新聞數據</string>
+    <string name="check_back_later">請稍後再試</string>
+
+    <!-- Additional Missing Strings -->
+    <string name="tutorial_coming_soon">教學即將推出！</string>
+    <string name="trending_search_title">熱門搜尋</string>
+    <string name="submitting">正在提交...</string>
+    <string name="instagram">開啟 Instagram</string>
+    <string name="facebook">開啟 Facebook</string>
+    <string name="x_twitter">開啟 X (Twitter)</string>
+    <string name="linkedin">開啟 LinkedIn</string>
+    <string name="website">開啟網站</string>
+    <string name="order">順序</string>
+    <string name="ascending">升序</string>
+    <string name="descending">降序</string>
+
+    <!-- Timeline strings -->
+
+
+    <!-- Timeline Mock Data -->
+
+    <!-- Notification Popup Strings -->
+    <string name="toast_theme">主題：%1$s</string>
+    <string name="toast_landing_page">首頁：%1$s</string>
+    <string name="toast_article_opening">文章跳轉：%1$s</string>
+    <string name="toast_icon_light">圖標：淺色\n需要重啟應用</string>
+    <string name="toast_icon_dark">圖標：深色\n需要重啟應用</string>
+    <string name="toast_icon_updated">圖標已更新\n需要重啟應用</string>
+    <string name="toast_icon_change_failed">更換圖標失敗，請重試。</string>
+    <string name="toast_settings_reset">設定已重置為預設值</string>
+
+    <!-- Additional Subscription Strings -->
+    <string name="manage_subscription_cancel_confirmation_message">您確定要取消訂閱嗎？您將繼續享有服務直到當前計費週期結束。</string>
+    <string name="manage_subscription_cancel_confirmation_confirm">取消訂閱</string>
+    <string name="subscription_cancel_success">訂閱已成功取消</string>
+    <string name="subscription_support_email_subject">Zone News 專業版支援</string>
+    <string name="no_email_app_found">未找到郵件應用</string>
+
+    <!-- Widget Strings -->
+    <string name="widget_detailed_name">Zone News - 詳細版</string>
+    <string name="widget_detailed_description">顯示最新新聞的所有詳情，包括地區、話題、標題、情感和文章數量</string>
+    <string name="widget_compact_name">Zone News - 簡潔版</string>
+    <string name="widget_compact_description">顯示最新新聞標題、圖片和情感條</string>
+    <string name="widget_news_image">新聞圖片</string>
+    <string name="widget_tap_to_refresh">點擊刷新</string>
+    <string name="widget_loading">正在載入新聞…</string>
+    <string name="widget_no_data">暫無新聞</string>
+
+    <!-- Publisher Info Popup -->
+    <string name="region">地區</string>
+    <string name="type">類型</string>
+    <string name="conglomerate">所屬集團</string>
+    <string name="controller">控制人</string>
+    <string name="visit_website">瀏覽網站</string>
 </resources>

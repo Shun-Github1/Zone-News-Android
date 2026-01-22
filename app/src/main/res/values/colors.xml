@@ -103,7 +103,6 @@
     <!-- MARK: - Surface Variant Colors -->
     <color name="colorSurfaceVariant">#F5F5F5</color>
     <color name="colorSurface">#FFFFFF</color>
-    
     <!-- MARK: - Basic Colors -->
     <color name="white">#FFFFFF</color>
     
@@ -136,4 +135,15 @@
     <!-- Uses colorSurfaceVariant with 85% opacity for frosted glass effect -->
     <!-- Light mode: #F5F5F5 with 85% opacity = #D9F5F5F5 -->
     <color name="coming_soon_overlay_bg">#D9F5F5F5</color>
+    
+    <!-- MARK: - Media Icon Circle Background -->
+    <!-- Transparent in light mode, white in dark mode for better visibility -->
+    <color name="media_icon_circle_bg">@android:color/transparent</color>
+    
+    <!-- MARK: - Widget Colors -->
+    <color name="widget_shimmer_color">#E0E0E0</color>
+    <color name="widget_floating_bg_color">@color/coming_soon_overlay_bg</color>
+    
+    <!-- MARK: - Neutral Sentiment Color -->
+    <color name="neutral_gray">@color/colorTextSmall</color>
 </resources>

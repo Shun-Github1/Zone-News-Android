@@ -44,7 +44,13 @@
         app:tabRippleColor="@null"
         app:tabTextAppearance="@style/TabText"
         app:tabTextColor="@color/colorTextSmall"
-        app:tabSelectedTextColor="@color/colorTextDeep" />
+        app:tabSelectedTextColor="@color/colorTextDeep"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingTop="0dp"
+        app:tabPaddingBottom="0dp"
+        app:tabMinWidth="0dp"
+        app:tabMaxWidth="0dp" />
 
     <!-- ViewPager2 for swipeable content -->
     <androidx.viewpager2.widget.ViewPager2

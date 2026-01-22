@@ -137,6 +137,13 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+    <!-- Bottom Sheet 样式-->
+    <!--底部弹出框 动画-->
+    <style name="BottomSheetAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/slide_up_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_to_bottom</item>
+    </style>
+
     <!-- Material 3 Typography Styles -->
 
     <!-- Profile heading style matching the profile page -->
@@ -193,6 +200,11 @@
     </style>
     <style name="TextAppearance.Material3.LabelSmall.Custom" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <style name="CircleDetails">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
 </resources>

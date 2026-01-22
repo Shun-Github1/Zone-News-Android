@@ -98,7 +98,9 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:background="?attr/selectableItemBackground">
+                        android:background="@drawable/card_button_background_with_ripple"
+                        android:clickable="true"
+                        android:focusable="true">
                         <ImageView
                             android:id="@+id/subscriptionIcon"
                             android:layout_width="24dp"
@@ -253,8 +255,8 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            
-            <!-- Card 3: Report Patterns, Language, Notifications, Media Regions, Landing Page, Article Opening Method -->
+
+            <!-- Card 4: Report Patterns, Language, Notifications, Media Regions, Landing Page, Article Opening Method -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -281,8 +283,11 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:background="@drawable/selector_row_no_divider">
+                        android:background="@drawable/selector_row_no_divider"
+                        android:clickable="true"
+                        android:focusable="true">
                         <ImageView
+                            android:id="@+id/reportPatternsIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:contentDescription="@null"
@@ -295,6 +300,7 @@
                             android:orientation="vertical"
                             android:layout_marginStart="20dp">
                             <TextView
+                                android:id="@+id/reportPatternsTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_menu_report_patterns_title"
@@ -302,6 +308,7 @@
                                 android:textSize="16sp"
                                 android:textColor="@color/colorTextDeep"/>
                             <TextView
+                                android:id="@+id/reportPatternsSubtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/account_menu_report_patterns_subtitle"
@@ -314,6 +321,15 @@
                             android:layout_height="wrap_content"
                             android:thumbTint="@color/main_color"
                             android:trackTint="@color/main_color" />
+                        <!-- Lock icon for free users (hidden by default, shown for free users) -->
+                        <ImageView
+                            android:id="@+id/reportPatternsLockIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/lock_24px"
+                            app:tint="@color/colorTextSecondary"
+                            android:visibility="gone" />
                     </LinearLayout>
                     
                     <View
@@ -580,8 +596,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp">
                         <!-- First Row -->
                         <LinearLayout
@@ -900,8 +916,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp">
                         <!-- First Row: Today, Hong Kong -->
                         <LinearLayout
@@ -1076,11 +1092,22 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:orientation="vertical"
+                                    android:orientation="horizontal"
                                     android:gravity="center"
                                     android:paddingHorizontal="6dp"
                                     android:paddingVertical="4dp">
+                                    <!-- Lock icon for free users (hidden by default) -->
+                                    <ImageView
+                                        android:id="@+id/levityModeLockIcon"
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/lock_24px"
+                                        app:tint="@color/colorTextSecondary"
+                                        android:visibility="gone" />
                                     <TextView
+                                        android:id="@+id/levityModeText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/landing_page_levity_mode"
@@ -1159,8 +1186,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp">
                         <!-- Single Row: In-app browser, External browser -->
                         <LinearLayout
@@ -1324,13 +1351,12 @@
                             <!-- System Theme Option -->
                             <LinearLayout
                                 android:id="@+id/systemModeLayout"
-                                android:layout_width="0dp"
+                                android:layout_width="85dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:orientation="vertical"
                                 android:gravity="center"
                                 android:padding="12dp"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginHorizontal="8dp"
                                 android:background="@drawable/appearance_option_background"
                                 android:clickable="true"
                                 android:focusable="true">
@@ -1353,7 +1379,7 @@
                                 <!-- Label -->
                                 <TextView
                                     android:id="@+id/systemThemeText"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/theme_system"
                                     android:textSize="11sp"
@@ -1366,9 +1392,8 @@
                             <!-- Light Theme Option -->
                             <LinearLayout
                                 android:id="@+id/lightModeLayout"
-                                android:layout_width="0dp"
+                                android:layout_width="85dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:orientation="vertical"
                                 android:gravity="center"
                                 android:padding="12dp"
@@ -1395,7 +1420,7 @@
                                 <!-- Label -->
                                 <TextView
                                     android:id="@+id/lightThemeText"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/theme_light"
                                     android:textSize="11sp"
@@ -1408,13 +1433,12 @@
                             <!-- Dark Theme Option -->
                             <LinearLayout
                                 android:id="@+id/darkModeLayout"
-                                android:layout_width="0dp"
+                                android:layout_width="85dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:orientation="vertical"
                                 android:gravity="center"
                                 android:padding="12dp"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginHorizontal="8dp"
                                 android:background="@drawable/appearance_option_background"
                                 android:clickable="true"
                                 android:focusable="true">
@@ -1437,7 +1461,7 @@
                                 <!-- Label -->
                                 <TextView
                                     android:id="@+id/darkThemeText"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/theme_dark"
                                     android:textSize="11sp"
@@ -1546,7 +1570,7 @@
                                 <!-- Label -->
                                 <TextView
                                     android:id="@+id/defaultIconText"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/app_icon_default"
                                     android:textSize="11sp"
@@ -1582,7 +1606,7 @@
                                 <!-- Label -->
                                 <TextView
                                     android:id="@+id/alternateIconText"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/app_icon_alternate"
                                     android:textSize="11sp"

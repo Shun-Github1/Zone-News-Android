@@ -1,5 +1,5 @@
 [versions]
-agp = "8.12.1"
+agp = "8.12.3"
 androidxLifecycleViewmodelKtx = "2.6.2"
 androidxLifecycleRuntimeKtxVersion = "2.6.2"
 googleHiltAndroid = "2.56.2"
@@ -21,7 +21,7 @@ squareupLoggingInterceptorVersion = "3.10.0"
 squareupAdapterRxjavaVersion = "2.1.0"
 squareupRetrofit = "3.0.0"
 squareupConverterGson = "2.3.0"
-tencentMmkv = "1.2.11"
+tencentMmkv = "2.0.1"
 appcompat = "1.7.0"
 xxpermissions = "21.3"
 autosize = "1.2.1"
@@ -34,6 +34,7 @@ basepopup = "3.2.1"
 comKongzueDialogxDialogx2 = "0.0.47"
 scwangSmartrefreshheaderVersion = "1.1.0-alpha-22"
 smartrefreshlayout = "1.1.0-alpha-22"
+recyclerview = "1.3.2"
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -75,6 +76,8 @@ basepopup = { module = "io.github.razerdp:BasePopup", version.ref = "basepopup" 
 com-kongzue-dialogx-dialogx4 = { module = "com.kongzue.dialogx:DialogX", version.ref = "comKongzueDialogxDialogx2" }
 smartrefreshlayout = { module = "com.scwang.smartrefresh:SmartRefreshLayout", version.ref = "smartrefreshlayout" }
 com-scwang-smartrefresh-smartrefreshheader2 = { module = "com.scwang.smartrefresh:SmartRefreshHeader", version.ref = "scwangSmartrefreshheaderVersion" }
+glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

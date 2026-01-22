@@ -83,17 +83,76 @@ Language fallback:
 **Request Body**
 ```json
 {
-    "idToken": "idToken",
+    "idToken": "firebase_id_token"
 }
+
 ```
 
 **Responses**
 - **200 OK** – Login successful, returns csrf token  
-- **409 Conflict** – Login failed  
+```
+{
+    "msg": "Login successful",
+    "code": 200,
+    "data": {
+        "csrf_token": "csrf_token_value"
+    }
+}
+```
+- **401 Unauthorized** – Login failed due to an invalid or expired Firebase token. 
+```
+{
+    "msg": "Invalid Firebase token",
+    "code": 401
+}
+```
+- **409 Conflict** - email is already associated with a manual (username + password) account.
+```
+{
+    "msg": "An account already exists with this email. Please log in with your username and password.",
+    "code": 409
+}
+```
+❌ OLD behavior (removed)
 
-*reasons for failure:*
-- user already has a username+password account registered with this email
-- user used another firebase provider to login with the same email
+Reject login if the same email was used with a different Firebase provider
+
+✅ NEW behavior (current)
+
+Multiple Firebase providers are automatically linked
+
+Users can log in with Google, Facebook, or Apple interchangeably
+
+The same account and data are preserved
+
+👉 Clients must handle Firebase provider linking
+when Firebase raises:
+
+auth/account-exists-with-different-credential
+
+🔧 Client-side requirement (MANDATORY)
+
+When receiving auth/account-exists-with-different-credential from Firebase:
+
+Fetch existing sign-in methods:
+
+fetchSignInMethodsForEmail(auth, email)
+
+
+Sign in with the existing provider
+
+Call:
+
+linkWithCredential(user, pendingCredential)
+
+
+Obtain a fresh idToken
+
+Send it to POST /auth/firebase
+
+❗ Do NOT block login or show a permanent error in this case.
+
+---
 
 ### Logout
 `POST /auth/logout`
@@ -121,6 +180,7 @@ Anything beyond this point (everything except `/auth/` endpoints) will return da
 **Response**
 ```json
 {
+    "authMethod": "account",
     "email": "test001@zonenews.io",
     "isPro": false,
     "language": "zh-CN",
@@ -128,6 +188,9 @@ Anything beyond this point (everything except `/auth/` endpoints) will return da
     "username": "test001"
 }
 ```
+
+*comments*
+- authMethod is either 'account' or 'firebase'
 
 ---
 
@@ -219,6 +282,7 @@ articleID=12345
     "article_id": "articleID",
 }
 ```
+
 *comments*
 - date & time of reading the article will be logged automatically
 - return reading history sorted by most recently opened first
@@ -377,6 +441,29 @@ POST /profile/publisher-region?action=ADD&tag=asia-others&lang=en-UK
 **Response**
 - **200 OK** – Region selection updated
 - **400 Bad Request** – Invalid region tag or action
+
+---
+
+### Account deletion
+`POST /profile/delete-account`
+
+**Request Body**
+```json
+{
+    "password": "current_password"
+}
+OR 
+{
+    "idToken": "fresh_firebase_id_token"
+}
+(accounts and firebase)
+```
+
+**Response**
+- **200 OK** – Account deleted successfully
+- **400 BAD REQUEST** - missing password or firebase idToken 
+- **401 Unauthorized** - missing CSRF, invalid JWT, wrong password, invalid idToken
+- **500 Internal Server Error** – Database failure during detection
 
 ---
 
@@ -697,28 +784,11 @@ Uses Firebase Cloud Messaging (FCM) to send notifications.
 
 ---
 
+*** Website Only ***
 
-==================================================================
-*** to do list ***
-
-- **create GET requests for**
-- news recap
-- article timeline
-- most read (same as daily recap)
-- levity mode (i believe this could be done as a tag for /feed)
-- latest
-
-
-- **consider**
-- endpoint for displaying articles in each *topic*
-- (alternatively we could just use /search ?)
-- (think ahead: how do we implement it for the deep dive section)
-- e.g. China -> technology or HK -> finance
-
-- add time range for /search ?
-- add sort to /search ? 
-- (currently website sorts on frontend)
-
+- /feed/topic/{topic}
+- /feed/latest (region, sector, title, sentiment, dateTime, image)
+- /feed/mostread (region, sector, title, sentiment)
 
 
 

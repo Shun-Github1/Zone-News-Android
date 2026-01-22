@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -21,47 +22,52 @@ android {
             keyPassword '123456'
         }
     }
-    namespace 'com.anssy.znewspro'
-    compileSdk 34
+    namespace = 'com.searcher.zonenews'
+    compileSdk = 34
 
     defaultConfig {
-        applicationId "com.anssy.znewspro"
-        minSdk 24
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.searcher.zonenews"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = 3
+        versionName = "1.1.1"
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "arm64-v8a", "x86_64"
         }
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.release
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = '17'
     }
     buildFeatures {
-        compose false
-        viewBinding true
+        compose = false
+        viewBinding = true
     }
     
     lint {
         // Allow build to continue even with lint errors
-        abortOnError false
+        abortOnError = false
         // Create baseline for tracking new lint issues
         baseline = file("lint-baseline.xml")
     }
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 dependencies {
@@ -90,7 +96,7 @@ dependencies {
     kapt libs.google.hilt.android.compiler
     //腾讯MMKV
     implementation libs.com.tencent.mmkv
-    implementation libs.autosize
+    // AutoSize removed - unmaintained library with AndroidX/support library conflicts
     implementation libs.squareup.retrofit
     implementation libs.squareup.converter.gson
     implementation libs.reactivex.rxjava
@@ -107,9 +113,11 @@ dependencies {
     implementation libs.androidx.lifecycle.lifecycle.viewmodel.ktx
 //    implementation 'androidx.constraintlayout:constraintlayout:2.2.0' // 请检查是否有更新的版本
     implementation 'com.google.android.material:material:1.11.0'
+    implementation libs.recyclerview
     implementation libs.com.github.getactivity.shapeview
     implementation libs.bannerviewpager
     implementation libs.glide
+    implementation libs.glide.okhttp3.integration
     kapt libs.compiler
     implementation libs.github.baseadapter
     implementation libs.statusbarutil.library
@@ -130,10 +138,19 @@ dependencies {
     // Google Sign-In for Firebase
     implementation 'com.google.android.gms:play-services-auth:21.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:16.2.0'
-    implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如4.0.3
+    // Bugly removed - not compatible with 16KB page size requirement for Android 15+
+    // Using Firebase Crashlytics instead (already included via Firebase BOM)
+    implementation("com.google.firebase:firebase-crashlytics")
     // BlurView for liquid glass effect
     implementation 'com.github.Dimezis:BlurView:version-2.0.3'
 
+    // WorkManager for Widget Updates
+    implementation "androidx.work:work-runtime-ktx:2.9.0"
+
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // Google Play Billing for subscriptions
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
 
 }
 //    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'

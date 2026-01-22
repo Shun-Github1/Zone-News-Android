@@ -1,0 +1,99 @@
+package com.searcher.zonenews.ui.his
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.searcher.zonenews.utils.Constants
+import com.searcher.zonenews.R
+import com.searcher.zonenews.base.BaseActivity
+import com.searcher.zonenews.databinding.ActivityBrownHisBinding
+import com.searcher.zonenews.entry.ViewHisEntry
+import com.searcher.zonenews.model.MyModel
+import com.searcher.zonenews.ui.newsdetail.NewsDetailActivity
+import com.searcher.zonenews.utils.ToastUtils
+import com.searcher.zonenews.utils.glide.GlideApp
+import com.jaeger.library.StatusBarUtil
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+
+/**
+ * @Description 浏览历史
+ * @Author yulu
+ * @CreateTime 2025年07月03日 16:53:39
+ */
+
+class BrownHisActivity:BaseActivity() {
+    private lateinit var mViewBinding:ActivityBrownHisBinding
+    private val myModel:MyModel by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewBinding = ActivityBrownHisBinding.inflate(layoutInflater)
+        setContentView(mViewBinding.root)
+        applyStatusBarStyle()
+        initView()
+        initModel()
+    }
+    private var mList = ArrayList<ViewHisEntry.DataDTO.ArticlesDTO>()
+    private lateinit var mAdapter:CommonAdapter<ViewHisEntry.DataDTO.ArticlesDTO>
+    private fun initView() {
+        // Setup MaterialToolbar with navigation and title
+        setupToolbar()
+        
+        mViewBinding.hisRecycler.layoutManager = LinearLayoutManager(mContext,RecyclerView.VERTICAL,false)
+        mAdapter = object : CommonAdapter<ViewHisEntry.DataDTO.ArticlesDTO>(this, R.layout.item_brown_his,mList){
+            override fun convert(holder: ViewHolder, t: ViewHisEntry.DataDTO.ArticlesDTO, position: Int) {
+                    val newsIv:ImageView = holder.getView(R.id.news_iv)
+                    val titleTv:TextView = holder.getView(R.id.news_title_tv)
+                    val timeTv:TextView = holder.getView(R.id.news_time_tv)
+                    GlideApp.with(mContext).load(t.pictureURL).error(R.drawable.ic_image_not_supported_24).into(newsIv)
+                    titleTv.text = t.title
+                    timeTv.text = t.date
+                    holder.convertView.setOnClickListener {
+                        val intent = Intent(mContext, NewsDetailActivity::class.java)
+                        intent.putExtra("id", t.articleID)
+                        intent.putExtra("source_fragment", "my")
+                        startActivity(intent)
+                    }
+            }
+
+        }
+        mViewBinding.hisRecycler.adapter = mAdapter
+    }
+
+    private fun setupToolbar() {
+        val toolbar = mViewBinding.topLayout.toolbar
+        toolbar.title = getString(R.string.history)
+        toolbar.setNavigationOnClickListener { finish() }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initModel(){
+        myModel.queryMyViewHis()
+        myModel.myViewHisEntry.observe(this){
+            if (it!=null){
+                if (it.code== Constants.SUCCESS_CODE){
+                    mList.clear()
+                    mList.addAll(it.data.articles)
+                    mAdapter.notifyDataSetChanged()
+                    if (mList.isEmpty()){
+                        mViewBinding.noDataLayout.root.visibility = View.VISIBLE
+                    }else{
+                        mViewBinding.noDataLayout.root.visibility = View.GONE
+                    }
+                }else{
+                    if (it.code==1000){
+                        ToastUtils.showShortToast(mContext!!,getString(R.string.server_error_message))
+                    }else{
+                        ToastUtils.showShortToast(mContext!!,it.msg)
+                    }
+                }
+            }
+        }
+    }
+}

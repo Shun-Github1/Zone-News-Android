@@ -7,56 +7,27 @@
     android:background="@drawable/bottom_sheet_background"
     android:layout_marginTop="80dp">
 
-    <!-- Navigation Header - matches iOS NavigationStack -->
+    <!-- Top Bar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@android:color/transparent"
         android:elevation="1dp">
 
-        <!-- Combined back button container with ripple effect -->
-        <LinearLayout
-            android:id="@+id/backButtonContainer"
+        <!-- Close button on the left with brand color -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/closeButton"
+            style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:paddingHorizontal="4dp"
-            android:paddingVertical="4dp">
-
-            <!-- Left back icon - matching reading history tab -->
-            <ImageView
-                android:id="@+id/exitArrowIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back_ios"
-                android:tint="@color/brand_primary"
-                android:contentDescription="@string/dialog_button_cancel"
-                android:clickable="false"
-                android:focusable="false" />
-
-            <!-- Cancel button - positioned directly next to the icon -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancelButton"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_button_cancel"
-                android:textColor="@color/main_color"
-                android:textSize="14sp"
-                android:minWidth="0dp"
-                android:paddingHorizontal="4dp"
-                android:paddingVertical="4dp"
-                android:clickable="false"
-                android:focusable="false" />
-
-        </LinearLayout>
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/close"
+            android:textColor="@color/main_color"
+            android:textSize="14sp"
+            android:minWidth="0dp" />
 
         <!-- Navigation title - inline mode like iOS -->
         <TextView
@@ -85,17 +56,6 @@
             android:padding="16dp"
             android:minHeight="400dp">
 
-            <!-- Submit title - center aligned and matches Select Topics text size -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/submit_feedback"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorTextDeep"
-                android:gravity="center"
-                android:layout_marginBottom="16dp" />
-
             <!-- Text input area with flexible height for keyboard -->
             <FrameLayout
                 android:layout_width="match_parent"
@@ -114,7 +74,7 @@
                     android:gravity="top|start"
                     android:inputType="textMultiLine|textCapSentences"
                     android:scrollbars="vertical"
-                    android:hint="@string/ios_feedback_placeholder"
+                    android:hint="@string/feedback_prompt"
                     android:textColor="@color/colorTextDeep"
                     android:textColorHint="@color/colorTextHint"
             android:textSize="17sp"
@@ -128,12 +88,13 @@
                 style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
+                android:minHeight="44dp"
                 android:layout_gravity="center"
                 android:text="@string/submit"
                 android:textColor="@color/colorTextHint"
-                android:textSize="16sp"
-                android:textStyle="normal"
-                android:paddingHorizontal="32dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="24dp"
                 app:backgroundTint="@color/main_color"
                 app:cornerRadius="12dp"
                 android:enabled="false" />

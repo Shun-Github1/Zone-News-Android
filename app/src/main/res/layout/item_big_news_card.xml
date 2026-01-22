@@ -48,20 +48,20 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/placeholder_text"
-                android:textColor="@color/brand_primary"
+                android:textColor="@color/colorTextSmall"
                 android:textSize="12sp" />
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="4dp"
-                android:background="@color/brand_primary" />
+                android:background="@color/colorTextSmall" />
             <TextView
                 android:id="@+id/tag_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/placeholder_text"
-                android:textColor="@color/brand_primary"
+                android:textColor="@color/colorTextSmall"
                 android:textSize="12sp" />
         </LinearLayout>
 

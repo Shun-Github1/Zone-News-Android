@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="283dp"
+    android:orientation="vertical">
+
+    <com.zhpan.bannerview.BannerViewPager
+        android:id="@+id/homeBanner"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="3dp"
+        app:bvp_indicator_normal_color="#D9D9D9"
+        app:bvp_indicator_checked_color="@color/main_color"
+        app:bvp_indicator_style="round_rect"
+        app:bvp_auto_play="true"
+        app:bvp_can_loop="true" />
+</LinearLayout>

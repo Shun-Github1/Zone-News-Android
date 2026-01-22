@@ -16,6 +16,15 @@
         app:menu="@menu/menu_news_detail"
         app:navigationIcon="@drawable/ic_arrow_back_ios"
         app:navigationIconTint="@color/colorTextDeep"/>
+    <include
+        android:id="@+id/shimmer_layout"
+        layout="@layout/shimmer_news_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar"
+        android:visibility="visible" />
+
    <androidx.core.widget.NestedScrollView
        android:id="@+id/newsDetailScrollView"
        android:layout_width="match_parent"
@@ -23,7 +32,9 @@
        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_app_bar"
+        android:visibility="gone"
        >
+
        <LinearLayout
            android:layout_width="match_parent"
            android:orientation="vertical"
@@ -117,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.4" />
+                        app:layout_constraintGuide_percent="0.45" />
                     <TextView
                         android:id="@+id/searcherAiAttribution"
                         android:layout_width="0dp"
@@ -223,7 +234,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <com.anssy.znewspro.ui.newsdetail.SentimentMeterView
+                        <com.searcher.zonenews.ui.newsdetail.SentimentMeterView
                             android:id="@+id/sentimentMeter"
                             android:layout_width="match_parent"
                             android:layout_height="148dp"/>
@@ -243,112 +254,147 @@
                 android:backgroundTint="?attr/colorSurface"
                 app:cardUseCompatPadding="true"
                 app:cardElevation="4dp">
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@drawable/card_content_background"
-                    android:padding="16dp">
+                    android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/publisher_distribution"
-                            android:textColor="@color/colorTextDeep"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                        <ImageView
-                            android:id="@+id/publisher_chevron_btn"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_marginEnd="8dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_chevron_down_24"
-                            android:tint="@color/colorTextMiddle"/>
-                        <ImageView
-                            android:id="@+id/publisher_menu_btn"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_marginEnd="8dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_menu_24"
-                            android:tint="@color/colorTextMiddle"/>
-                        <ImageView
-                            android:id="@+id/publisher_info_btn"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_info_outline_18"
-                            android:tint="@color/colorTextMiddle"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/publisher_content_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <com.anssy.znewspro.ui.newsdetail.PublisherDistributionView
-                            android:id="@+id/publisherDistribution"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:layout_marginTop="12dp" />
-
+                        android:orientation="vertical"
+                        android:background="@drawable/card_content_background"
+                        android:padding="16dp">
+                        <!-- Header row -->
                         <LinearLayout
+                            android:id="@+id/publisher_header_row"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="8dp">
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    android:background="#9CA3AF"
-                                    android:layout_marginEnd="6dp"
-                                    android:layout_gravity="center_vertical"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/conservative"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/colorTextSmall"/>
-                            </LinearLayout>
-
-                            <View
+                            android:gravity="center_vertical">
+                            <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="1dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@android:color/transparent"/>
+                                android:text="@string/publisher_distribution"
+                                android:textColor="@color/colorTextDeep"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+                            <ImageView
+                                android:id="@+id/publisher_chevron_btn"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_chevron_down_24"
+                                android:tint="@color/colorTextMiddle"/>
+                            <ImageView
+                                android:id="@+id/publisher_menu_btn"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_menu_24"
+                                android:tint="@color/colorTextMiddle"/>
+                            <ImageView
+                                android:id="@+id/publisher_info_btn"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_info_outline_18"
+                                android:tint="@color/colorTextMiddle"/>
+                        </LinearLayout>
+
+                        <!-- Content area -->
+                        <LinearLayout
+                            android:id="@+id/publisher_content_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <com.searcher.zonenews.ui.newsdetail.PublisherDistributionView
+                                android:id="@+id/publisherDistribution"
+                                android:layout_width="match_parent"
+                                android:layout_height="120dp"
+                                android:layout_marginTop="12dp" />
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:id="@+id/publisher_legend_container"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:gravity="center_vertical">
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    android:background="#6B7280"
-                                    android:layout_marginEnd="6dp"
-                                    android:layout_gravity="center_vertical"/>
-                                <TextView
+                                android:layout_marginTop="8dp">
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/progressive"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/colorTextSmall"/>
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <View
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:background="#9CA3AF"
+                                        android:layout_marginEnd="6dp"
+                                        android:layout_gravity="center_vertical"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/conservative"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSmall"/>
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:layout_weight="1"
+                                    android:background="@android:color/transparent"/>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+                                    <View
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:background="#6B7280"
+                                        android:layout_marginEnd="6dp"
+                                        android:layout_gravity="center_vertical"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/progressive"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/colorTextSmall"/>
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+                    
+                    <!-- Premium blocker overlay at card level - covers content area only -->
+                    <FrameLayout
+                        android:id="@+id/publisher_blocker_overlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginStart="0.5dp"
+                        android:layout_marginEnd="0.5dp"
+                        android:layout_marginBottom="0.5dp"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <eightbitlab.com.blurview.BlurView
+                            android:id="@+id/publisher_blocker_blur_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/premium_blocker_overlay_bottom_only_rounded"
+                            android:clipToOutline="true" />
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/lock_24px"
+                            app:tint="@android:color/white"
+                            android:contentDescription="@null" />
+                    </FrameLayout>
+                </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -363,11 +409,42 @@
                 android:backgroundTint="?attr/colorSurface"
                 app:cardUseCompatPadding="true"
                 app:cardElevation="4dp">
-                <com.anssy.znewspro.ui.newsdetail.SubjectivityScoreView
-                    android:background="@drawable/card_content_background"
-                    android:id="@+id/subjectivity_score"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
+                    <com.searcher.zonenews.ui.newsdetail.SubjectivityScoreView
+                        android:background="@drawable/card_content_background"
+                        android:id="@+id/subjectivity_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    
+                    <!-- Premium blocker overlay at card level - covers content area only -->
+                    <FrameLayout
+                        android:id="@+id/subjectivity_blocker_overlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginStart="0.5dp"
+                        android:layout_marginEnd="0.5dp"
+                        android:layout_marginBottom="0.5dp"
+                        android:visibility="gone"
+                        android:clickable="true"
+                        android:focusable="true">
+                        <eightbitlab.com.blurview.BlurView
+                            android:id="@+id/subjectivity_blocker_blur_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/premium_blocker_overlay_bottom_only_rounded"
+                            android:clipToOutline="true" />
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/lock_24px"
+                            app:tint="@android:color/white"
+                            android:contentDescription="@null" />
+                    </FrameLayout>
+                </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
            <!-- Timeline (edge-to-edge, wider than page, horizontally scrollable) -->
@@ -375,9 +452,7 @@
                android:id="@+id/timeline_container"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:orientation="vertical"
-               android:paddingTop="16dp"
-               android:paddingBottom="8dp">
+               android:orientation="vertical">
 
                <!-- Header aligned with other sections -->
                <LinearLayout
@@ -386,14 +461,16 @@
                    android:orientation="horizontal"
                    android:gravity="center_vertical"
                    android:paddingStart="36dp"
-                   android:paddingEnd="36dp">
+                   android:paddingEnd="36dp"
+                   android:paddingTop="16dp"
+                   android:paddingBottom="16dp">
 
                    <TextView
                        android:id="@+id/timeline_title"
                        android:layout_width="0dp"
                        android:layout_height="wrap_content"
                        android:layout_weight="1"
-                       android:text="Timeline"
+                       android:text="@string/timeline"
                        android:textColor="@color/colorTextDeep"
                        android:textSize="16sp"
                        android:textStyle="bold" />
@@ -427,8 +504,7 @@
                <FrameLayout
                    android:id="@+id/timeline_content_container"
                    android:layout_width="match_parent"
-                   android:layout_height="120dp"
-                   android:layout_marginTop="20dp"
+                   android:layout_height="wrap_content"
                    android:paddingStart="0dp"
                    android:paddingEnd="0dp">
 
@@ -444,12 +520,76 @@
                    <androidx.recyclerview.widget.RecyclerView
                        android:id="@+id/timeline_list"
                        android:layout_width="match_parent"
-                       android:layout_height="match_parent"
+                       android:layout_height="wrap_content"
                        android:overScrollMode="never"
                        android:clipToPadding="false"
                        android:fadingEdgeLength="32dp"
                        android:requiresFadingEdge="horizontal"
                        android:scrollbarStyle="outsideOverlay"/>
+                   
+                   <!-- Coming Soon Overlay with Blur Effect -->
+                   <FrameLayout
+                       android:id="@+id/timeline_coming_soon_overlay"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:clickable="true"
+                       android:focusable="true"
+                       android:visibility="visible">
+                       
+                       <!-- Blur view for frosted glass effect -->
+                       <View
+                           android:id="@+id/timeline_coming_soon_blur_view"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:background="@drawable/coming_soon_overlay"/>
+                       
+                       <!-- Glass overlay for additional translucency -->
+                       <View
+                           android:id="@+id/timeline_coming_soon_glass_overlay"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:background="@drawable/coming_soon_overlay"/>
+                       
+                       <!-- Content -->
+                       <LinearLayout
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical"
+                           android:gravity="center"
+                           android:layout_gravity="center"
+                           android:padding="4dp">
+                           
+                           <!-- Animated AI Icon -->
+                           <ImageView
+                               android:id="@+id/timeline_coming_soon_icon"
+                               android:layout_width="24dp"
+                               android:layout_height="24dp"
+                               android:src="@drawable/ic_ai_compass_24"
+                               android:contentDescription="@string/coming_soon"
+                               android:tint="@color/brand_primary"
+                               android:layout_marginBottom="4dp"/>
+                           
+                           <!-- Coming Soon Title -->
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="@string/coming_soon"
+                               android:textSize="14sp"
+                               android:textStyle="bold"
+                               android:textColor="@color/colorTextDeep"
+                               android:layout_marginBottom="2dp"/>
+                           
+                           <!-- Coming Soon Subtitle -->
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="@string/coming_soon_subtitle"
+                               android:textSize="12sp"
+                               android:textColor="@color/colorTextSecondary"/>
+                           
+                       </LinearLayout>
+                       
+                   </FrameLayout>
                </FrameLayout>
            </LinearLayout>
 
@@ -590,7 +730,9 @@
        android:id="@+id/newsDetailBottomCard"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_margin="12dp"
+       android:layout_marginStart="20dp"
+       android:layout_marginEnd="20dp"
+       android:layout_marginBottom="12dp"
        android:background="@android:color/transparent"
        app:layout_constraintBottom_toBottomOf="parent">
 

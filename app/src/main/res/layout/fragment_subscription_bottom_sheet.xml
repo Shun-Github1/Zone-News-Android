@@ -438,7 +438,8 @@
                             android:textStyle="bold"
                             android:textColor="@android:color/white"
                             android:backgroundTint="@color/main_color"
-                            app:cornerRadius="12dp" />
+                            app:cornerRadius="12dp"
+                            app:rippleColor="?attr/colorControlHighlight" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -461,7 +462,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:background="@drawable/profile_card_background"
+                        android:background="@drawable/card_button_background_with_ripple"
                         android:padding="16dp"
                         android:clickable="true"
                         android:focusable="true">
@@ -469,7 +470,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/mail_24"
+                            android:src="@drawable/ic_redeem_gift"
                             app:tint="@color/colorTextDeep"
                             android:layout_marginEnd="16dp" />
 
@@ -509,7 +510,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:background="@drawable/profile_card_background"
+                        android:background="@drawable/card_button_background_with_ripple"
                         android:padding="16dp"
                         android:clickable="true"
                         android:focusable="true">
@@ -529,6 +530,54 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/colorTextDeep" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chevron_right_24"
+                            app:tint="@color/colorTextSecondary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Delete Account Button -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardForegroundColor="@android:color/transparent"
+                    app:strokeColor="@color/colorRed"
+                    app:strokeWidth="1dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/deleteAccountLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/card_button_background_with_ripple"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_delete_24"
+                            app:tint="@color/colorRed"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/delete_account"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorRed" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -842,7 +891,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:background="@drawable/profile_card_background"
+                            android:background="@drawable/card_button_background_with_ripple"
                             android:padding="16dp"
                             android:clickable="true"
                             android:focusable="true">
@@ -900,7 +949,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:background="@drawable/profile_card_background"
+                            android:background="@drawable/card_button_background_with_ripple"
                             android:padding="16dp"
                             android:clickable="true"
                             android:focusable="true">
@@ -920,6 +969,54 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/colorTextDeep" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_chevron_right_24"
+                                app:tint="@color/colorTextSecondary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Delete Account Button -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardBackgroundColor="?attr/colorSurface"
+                        app:cardForegroundColor="@android:color/transparent"
+                        app:strokeColor="@color/colorRed"
+                        app:strokeWidth="1dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:cardUseCompatPadding="true"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:id="@+id/deleteAccountLayoutManage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/card_button_background_with_ripple"
+                            android:padding="16dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_delete_24"
+                                app:tint="@color/colorRed"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/delete_account"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorRed" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -967,7 +1064,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:background="@drawable/profile_card_background"
+                            android:background="@drawable/card_button_background_with_ripple"
                             android:padding="16dp"
                             android:clickable="true"
                             android:focusable="true">

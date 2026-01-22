@@ -28,7 +28,7 @@
                 android:layout_height="24dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_image_not_supported_24"
-                android:background="@android:color/transparent"
+                android:background="@color/media_icon_circle_bg"
                 android:layout_marginEnd="8dp"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
                 app:strokeColor="@color/divider_color"
@@ -48,7 +48,7 @@
         
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.anssy.znewspro.selfview.ProgressWebView
+    <com.searcher.zonenews.selfview.ProgressWebView
         android:id="@+id/agree_web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

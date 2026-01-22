@@ -1,0 +1,63 @@
+package com.searcher.zonenews.ui.settings
+
+import android.content.SharedPreferences
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import com.searcher.zonenews.R
+import com.searcher.zonenews.utils.ThemeManager
+import com.searcher.zonenews.utils.Utils
+
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    
+    private lateinit var themePreference: ListPreference
+    
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
+        
+        // Initialize theme preference
+        themePreference = findPreference("theme_mode")!!
+        updateThemePreferenceSummary()
+        
+        // Set app version
+        val versionPreference: Preference? = findPreference("app_version")
+        versionPreference?.summary = "v${Utils.getVersionName(requireContext())}"
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+    }
+    
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            "theme_mode" -> {
+                val themeMode = sharedPreferences?.getString(key, "system") ?: "system"
+                ThemeManager.applyTheme(themeMode)
+                updateThemePreferenceSummary()
+                
+                // Simply recreate the current activity to apply theme changes
+                requireActivity().recreate()
+            }
+        }
+    }
+    
+    private fun updateThemePreferenceSummary() {
+        val currentValue = themePreference.value ?: "system"
+        val summaryText = when (currentValue) {
+            "light" -> getString(R.string.theme_light)
+            "dark" -> getString(R.string.theme_dark)
+            "system" -> getString(R.string.theme_system)
+            else -> getString(R.string.theme_system)
+        }
+        themePreference.summary = summaryText
+    }
+}

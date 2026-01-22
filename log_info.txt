@@ -1,0 +1,230 @@
+﻿Initialized native services in: C:\Users\ShunKwok\.gradle\native
+Initialized jansi services in: C:\Users\ShunKwok\.gradle\native
+Found daemon DaemonInfo{pid=36876, address=[f60ca384-7ab1-40bf-a12d-c35f7bb8122d port:63932, addresses:[/127.0.0.1]], state=Idle, lastBusy=1768506986394, context=DefaultDaemonContext[uid=00d7136b-bf4a-4688-9a70-fab56857a38f,javaHome=C:\Program Files\Android\Android Studio\jbr,javaVersion=21,javaVendor=JetBrains s.r.o.,daemonRegistryDir=C:\Users\ShunKwok\.gradle\daemon,pid=36876,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-Xmx2048m,-Dfile.encoding=UTF-8,-Duser.country=HK,-Duser.language=en,-Duser.variant]} however its context does not match the desired criteria.
+JVM is incompatible.
+Wanted: DaemonRequestContext{jvmCriteria=C:\Program Files\Java\jdk-24 (no JDK specified, using current Java home), daemonOpts=[-Xmx2048m, -Dfile.encoding=UTF-8, -Duser.country=HK, -Duser.language=en, -Duser.variant], applyInstrumentationAgent=true, nativeServicesMode=ENABLED, priority=NORMAL}
+Actual: DefaultDaemonContext[uid=00d7136b-bf4a-4688-9a70-fab56857a38f,javaHome=C:\Program Files\Android\Android Studio\jbr,javaVersion=21,javaVendor=JetBrains s.r.o.,daemonRegistryDir=C:\Users\ShunKwok\.gradle\daemon,pid=36876,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-Xmx2048m,-Dfile.encoding=UTF-8,-Duser.country=HK,-Duser.language=en,-Duser.variant]
+
+  Looking for a different daemon...
+The client will now receive all logging from the daemon (pid: 22952). The daemon log file: C:\Users\ShunKwok\.gradle\daemon\8.14\daemon-22952.out.log
+Starting 76th build in daemon [uptime: 11 hrs 54 mins 52.881 secs, performance: 99%, GC rate: 0.00/s, heap usage: 7% of 2 GiB]
+Using 16 worker leases.
+Calculating task graph as no cached configuration is available for tasks: processDebugResources
+Now considering [C:\Users\ShunKwok\Downloads\Zonenews] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'C:\Users\ShunKwok\Downloads\Zonenews\settings.gradle'.
+Projects loaded. Root project using build file 'C:\Users\ShunKwok\Downloads\Zonenews\build.gradle'.
+Included projects: [root project 'Zonenews', project ':app']
+
+> Configure project :
+Evaluating root project 'Zonenews' using build file 'C:\Users\ShunKwok\Downloads\Zonenews\build.gradle'.
+Resolved plugin [id: 'com.android.application', version: '8.12.3', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.0.21', apply: false]
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.56.2', apply: false]
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.3', apply: false]
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.3', apply: false]
+
+> Configure project :app
+Evaluating project ':app' using build file 'C:\Users\ShunKwok\Downloads\Zonenews\app\build.gradle'.
+Resolved plugin [id: 'com.android.application', version: '8.12.3']
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.0.21']
+Resolved plugin [id: 'dagger.hilt.android.plugin']
+Resolved plugin [id: 'kotlin-kapt']
+Resolved plugin [id: 'com.google.gms.google-services']
+Resolved plugin [id: 'com.google.firebase.crashlytics']
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+All projects evaluated.
+Task name matched 'processDebugResources'
+Selected primary task 'processDebugResources' from project :
+Tasks to be executed: [task ':app:preBuild', task ':app:preDebugBuild', task ':app:checkDebugAarMetadata', task ':app:generateDebugResValues', task ':app:injectCrashlyticsMappingFileIdDebug', task ':app:processDebugGoogleServices', task ':app:mapDebugSourceSetPaths', task ':app:generateDebugResources', task ':app:mergeDebugResources', task ':app:packageDebugResources', task ':app:parseDebugLocalResources', task ':app:createDebugCompatibleScreenManifests', task ':app:extractDeepLinksDebug', task ':app:processDebugMainManifest', task ':app:processDebugManifest', task ':app:processDebugManifestForPackage', task ':app:processDebugResources']
+Tasks that were excluded: []
+Registered task dependencies: app:debugCompileClasspath
+Skipping misunderstood TO dep string: androidx.compose.ui:ui-tooling
+Skipping misunderstood TO dep string: androidx.compose.ui:ui-test-manifest
+Skipping misunderstood TO dep string: androidx.compose.ui:ui
+Skipping misunderstood TO dep string: androidx.compose.ui:ui-graphics
+Skipping misunderstood TO dep string: androidx.compose.ui:ui-tooling-preview
+Skipping misunderstood TO dep string: androidx.compose.material3:material3
+Skipping misunderstood TO dep string: com.google.firebase:firebase-auth
+Skipping misunderstood TO dep string: com.google.firebase:firebase-analytics
+Skipping misunderstood TO dep string: com.google.firebase:firebase-messaging
+Skipping misunderstood TO dep string: com.google.firebase:firebase-crashlytics
+Starting dependency analysis
+w: Detected multiple Kotlin daemon sessions at 
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :app:preBuild (Thread[#7787,Execution worker,5,main]) started.
+Resolve mutations for :app:processDebugGoogleServices (Thread[#7791,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :app:injectCrashlyticsMappingFileIdDebug (Thread[#7788,Execution worker Thread 2,5,main]) started.
+:app:preBuild (Thread[#7787,Execution worker,5,main]) started.
+:app:injectCrashlyticsMappingFileIdDebug (Thread[#7791,Execution worker Thread 5,5,main]) started.
+:app:processDebugGoogleServices (Thread[#7796,Execution worker Thread 10,5,main]) started.
+
+> Task :app:preBuild UP-TO-DATE
+Skipping task ':app:preBuild' as it has no actions.
+Resolve mutations for :app:preDebugBuild (Thread[#7787,Execution worker,5,main]) started.
+:app:preDebugBuild (Thread[#7787,Execution worker,5,main]) started.
+
+> Task :app:preDebugBuild UP-TO-DATE
+Skipping task ':app:preDebugBuild' as it has no actions.
+Resolve mutations for :app:checkDebugAarMetadata (Thread[#7787,Execution worker,5,main]) started.
+Resolve mutations for :app:generateDebugResValues (Thread[#7793,Execution worker Thread 7,5,main]) started.
+Resolve mutations for :app:createDebugCompatibleScreenManifests (Thread[#7786,included builds,5,main]) started.
+:app:checkDebugAarMetadata (Thread[#7793,Execution worker Thread 7,5,main]) started.
+:app:generateDebugResValues (Thread[#7800,Execution worker Thread 14,5,main]) started.
+
+> Task :app:processDebugGoogleServices UP-TO-DATE
+Caching disabled for task ':app:processDebugGoogleServices' because:
+  Build cache is disabled
+Skipping task ':app:processDebugGoogleServices' as it is up-to-date.
+:app:createDebugCompatibleScreenManifests (Thread[#7787,Execution worker,5,main]) started.
+
+> Task :app:injectCrashlyticsMappingFileIdDebug UP-TO-DATE
+Caching disabled for task ':app:injectCrashlyticsMappingFileIdDebug' because:
+  Build cache is disabled
+  Caching has not been enabled for the task
+Skipping task ':app:injectCrashlyticsMappingFileIdDebug' as it is up-to-date.
+
+> Task :app:generateDebugResValues UP-TO-DATE
+Caching disabled for task ':app:generateDebugResValues' because:
+  Build cache is disabled
+Skipping task ':app:generateDebugResValues' as it is up-to-date.
+
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+Caching disabled for task ':app:createDebugCompatibleScreenManifests' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:createDebugCompatibleScreenManifests' as it is up-to-date.
+Resolve mutations for :app:mapDebugSourceSetPaths (Thread[#7800,Execution worker Thread 14,5,main]) started.
+Resolve mutations for :app:generateDebugResources (Thread[#7791,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :app:extractDeepLinksDebug (Thread[#7786,included builds,5,main]) started.
+:app:mapDebugSourceSetPaths (Thread[#7800,Execution worker Thread 14,5,main]) started.
+:app:generateDebugResources (Thread[#7791,Execution worker Thread 5,5,main]) started.
+:app:extractDeepLinksDebug (Thread[#7786,included builds,5,main]) started.
+
+> Task :app:generateDebugResources UP-TO-DATE
+Caching disabled for task ':app:generateDebugResources' because:
+  Build cache is disabled
+Skipping task ':app:generateDebugResources' as it is up-to-date.
+
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+Caching disabled for task ':app:extractDeepLinksDebug' because:
+  Build cache is disabled
+Skipping task ':app:extractDeepLinksDebug' as it is up-to-date.
+Resolve mutations for :app:mergeDebugResources (Thread[#7791,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :app:packageDebugResources (Thread[#7802,Execution worker Thread 15,5,main]) started.
+Resolve mutations for :app:processDebugMainManifest (Thread[#7786,included builds,5,main]) started.
+:app:packageDebugResources (Thread[#7802,Execution worker Thread 15,5,main]) started.
+:app:processDebugMainManifest (Thread[#7786,included builds,5,main]) started.
+:app:mergeDebugResources (Thread[#7791,Execution worker Thread 5,5,main]) started.
+
+> Task :app:packageDebugResources UP-TO-DATE
+Caching disabled for task ':app:packageDebugResources' because:
+  Build cache is disabled
+Skipping task ':app:packageDebugResources' as it is up-to-date.
+Resolve mutations for :app:parseDebugLocalResources (Thread[#7789,Execution worker Thread 3,5,main]) started.
+:app:parseDebugLocalResources (Thread[#7792,Execution worker Thread 6,5,main]) started.
+
+> Task :app:parseDebugLocalResources UP-TO-DATE
+Caching disabled for task ':app:parseDebugLocalResources' because:
+  Build cache is disabled
+Skipping task ':app:parseDebugLocalResources' as it is up-to-date.
+
+> Task :app:mergeDebugResources UP-TO-DATE
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+Caching disabled for task ':app:mergeDebugResources' because:
+  Build cache is disabled
+Skipping task ':app:mergeDebugResources' as it is up-to-date.
+
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+Caching disabled for task ':app:mapDebugSourceSetPaths' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:mapDebugSourceSetPaths' as it is up-to-date.
+
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+Caching disabled for task ':app:checkDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:checkDebugAarMetadata' as it is up-to-date.
+
+> Task :app:processDebugMainManifest UP-TO-DATE
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+Caching disabled for task ':app:processDebugMainManifest' because:
+  Build cache is disabled
+Skipping task ':app:processDebugMainManifest' as it is up-to-date.
+Resolve mutations for :app:processDebugManifest (Thread[#7786,included builds,5,main]) started.
+:app:processDebugManifest (Thread[#7786,included builds,5,main]) started.
+
+> Task :app:processDebugManifest UP-TO-DATE
+Caching disabled for task ':app:processDebugManifest' because:
+  Build cache is disabled
+Skipping task ':app:processDebugManifest' as it is up-to-date.
+Resolve mutations for :app:processDebugManifestForPackage (Thread[#7786,included builds,5,main]) started.
+:app:processDebugManifestForPackage (Thread[#7786,included builds,5,main]) started.
+
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+Caching disabled for task ':app:processDebugManifestForPackage' because:
+  Build cache is disabled
+Skipping task ':app:processDebugManifestForPackage' as it is up-to-date.
+Resolve mutations for :app:processDebugResources (Thread[#7786,included builds,5,main]) started.
+:app:processDebugResources (Thread[#7786,included builds,5,main]) started.
+
+> Task :app:processDebugResources FAILED
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+file or directory 'C:\Users\ShunKwok\Downloads\Zonenews\app\libs', not found
+Caching disabled for task ':app:processDebugResources' because:
+  Build cache is disabled
+Task ':app:processDebugResources' is not up-to-date because:
+  Task has failed previously.
+The input changes require a full rebuild for incremental task ':app:processDebugResources'.
+AAPT2 aapt2-8.12.3-13700139-windows Daemon #0: starting
+Android resource linking failed:
+process = AAPT2 aapt2-8.12.3-13700139-windows Daemon #0:
+command = C:\Users\ShunKwok\.gradle\caches\8.14\transforms\2ee40ae5089ec723030a68c2586eac32\transformed\aapt2-8.12.3-13700139-windows\aapt2.exe link -I\
+        C:\Users\ShunKwok\AppData\Local\Android\Sdk\platforms\android-34\android.jar\
+        --manifest\
+        C:\Users\ShunKwok\Downloads\Zonenews\app\build\intermediates\packaged_manifests\debug\processDebugManifestForPackage\AndroidManifest.xml\
+        -o\
+        C:\Users\ShunKwok\Downloads\Zonenews\app\build\intermediates\linked_resources_binary_format\debug\processDebugResources\linked-resources-binary-format-debug.ap_\
+        -R\
+        @C:\Users\ShunKwok\Downloads\Zonenews\app\build\intermediates\incremental\processDebugResources\resources-list-for-linked-resources-binary-format-debug.ap_.txt\
+        --auto-add-overlay\
+        --custom-package\
+        com.searcher.zonenews\
+        -0\
+        apk\
+        --output-text-symbols\
+        C:\Users\ShunKwok\Downloads\Zonenews\app\build\intermediates\runtime_symbol_list\debug\processDebugResources\R.txt\
+        --no-version-vectors\
+        --proguard-minimal-keep-rules\
+        --no-proguard-location-reference\
+        --emit-ids\
+        C:\Users\ShunKwok\Downloads\Zonenews\app\build\intermediates\stable_resource_ids_file\debug\processDebugResources\stableIds.txt
+AAPT2 aapt2-8.12.3-13700139-windows Daemon #0: shutdown
+
+0 problems were found storing the configuration cache.
+
+See the complete report at file:///C:/Users/ShunKwok/Downloads/Zonenews/build/reports/configuration-cache/7rnmvtlawb6qq7t1y84ii7qs3/a7713h9odnv9fi3jtgb44pp84/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///C:/Users/ShunKwok/Downloads/Zonenews/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+15 actionable tasks: 1 executed, 14 up-to-date
+Watched directory hierarchies: [C:\Users\ShunKwok\Downloads\Zonenews]
+Configuration cache entry stored.

@@ -1,127 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/smartRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <com.anssy.znewspro.selfview.NewNestedScrollView
-        android:id="@+id/nested_scroll_view"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:visibility="invisible">
         
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            
-            <!-- Currently sorted by indicator -->
-            <LinearLayout
-                android:id="@+id/sort_indicator_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp">
-                
-                <TextView
-                    android:id="@+id/sort_label_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/currently_sorted_by"
-                    android:textColor="@color/colorTextMiddle"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/inter_regular" />
-                    
-                <LinearLayout
-                    android:id="@+id/sort_chip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/tag_chip_background"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp">
-                    
-                    <ImageView
-                        android:id="@+id/sort_info_icon"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="6dp"
-                        android:src="@drawable/ic_clock_24"
-                        android:contentDescription="@null"
-                        android:tint="@color/colorTextDeep" />
-                    
-                    <TextView
-                        android:id="@+id/sort_value_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/latest_sort"
-                        android:textColor="@color/colorTextDeep"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/inter_regular" />
-                </LinearLayout>
-            </LinearLayout>
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:clipToPadding="false" />
 
-            <!-- Active tags indicator -->
-            <LinearLayout
-                android:id="@+id/active_tags_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp">
-                
-                <TextView
-                    android:id="@+id/active_tags_label_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/active_tags"
-                    android:textColor="@color/colorTextMiddle"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/inter_regular" />
-                    
-                <HorizontalScrollView
-                    android:id="@+id/active_tags_scroll_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:scrollbars="none"
-                    android:overScrollMode="never"
-                    android:fillViewport="false"
-                    android:clipToPadding="false"
-                    android:paddingTop="0dp"
-                    android:paddingBottom="0dp">
-                    
-                    <LinearLayout
-                        android:id="@+id/active_tags_chips_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="0dp">
-                        <!-- Chips added dynamically -->
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-            <!-- News RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false" />
+    <include
+        android:id="@+id/shimmer_layout"
+        layout="@layout/shimmer_your_feed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
-        </LinearLayout>
-        
-    </com.anssy.znewspro.selfview.NewNestedScrollView>
-
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-
+</RelativeLayout>

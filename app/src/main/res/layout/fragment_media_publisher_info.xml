@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_background">
+
+    <!-- Main Content Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Spacer for Top Bar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="56dp" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Main Content -->
+                <LinearLayout
+                    android:id="@+id/contentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/publisherLogoIv"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CircleDetails"
+                            tools:src="@tools:sample/avatars" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/publisherNameTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorTextDeep"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                tools:text="Publisher Name" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/biasTagTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/publisher_bias_tag_background"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="2dp"
+                                    android:textColor="@color/colorTextMiddle"
+                                    android:textSize="12sp"
+                                    tools:text="Central" />
+
+                                <ImageView
+                                    android:id="@+id/biasLockIcon"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginStart="4dp"
+                                    android:src="@drawable/ic_lock_closed"
+                                    android:visibility="gone"
+                                    app:tint="@color/colorTextSecondary"
+                                    tools:visibility="visible" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Intro Text -->
+                    <TextView
+                        android:id="@+id/introTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:textColor="@color/colorTextDeep"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="This is a description of the publisher..." />
+
+                    <!-- Details List (ConstraintLayout for alignment) -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <androidx.constraintlayout.widget.Barrier
+                            android:id="@+id/labelBarrier"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:barrierDirection="end"
+                            app:constraint_referenced_ids="labelRegion,labelType,labelConglomerate,labelController,websiteGroup" />
+
+                        <!-- Region -->
+                        <TextView
+                            android:id="@+id/labelRegion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/region"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:gravity="center_vertical|start"
+                            android:orientation="horizontal"
+                            app:layout_constraintBaseline_toBaselineOf="@id/labelRegion"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/labelBarrier">
+
+                            <TextView
+                                android:id="@+id/regionEmojiTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textSize="14sp"
+                                tools:text="🇺🇸" />
+
+                            <TextView
+                                android:id="@+id/regionTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorTextDeep"
+                                android:textSize="14sp"
+                                tools:text="United States" />
+                        </LinearLayout>
+
+                        <!-- Type -->
+                        <TextView
+                            android:id="@+id/labelType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/type"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/labelRegion" />
+
+                        <TextView
+                            android:id="@+id/typeTv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:gravity="start"
+                            android:textColor="@color/colorTextDeep"
+                            android:textSize="14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/labelType"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                            tools:text="Private Company" />
+
+                        <!-- Conglomerate -->
+                        <TextView
+                            android:id="@+id/labelConglomerate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/conglomerate"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/labelType" />
+
+                        <TextView
+                            android:id="@+id/conglomerateTv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:gravity="start"
+                            android:textColor="@color/colorTextDeep"
+                            android:textSize="14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/labelConglomerate"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                            tools:text="News Corp" />
+
+                        <!-- Controller -->
+                        <TextView
+                            android:id="@+id/labelController"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/controller"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/labelConglomerate" />
+
+                        <TextView
+                            android:id="@+id/controllerTv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:gravity="start"
+                            android:textColor="@color/colorTextDeep"
+                            android:textSize="14sp"
+                            app:layout_constraintBaseline_toBaselineOf="@id/labelController"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                            tools:text="Murdoch Family" />
+
+                        <!-- Website Row -->
+                        <LinearLayout
+                            android:id="@+id/websiteBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="24dp"
+                            android:background="@drawable/bg_surface_secondary_rounded_12dp_ripple"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/labelController">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/ic_public_24"
+                                app:tint="@color/text_tertiary" />
+
+                            <TextView
+                                android:id="@+id/websiteGroup"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/visit_website"
+                                android:textColor="@color/text_tertiary"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <!-- Loading Shimmer -->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerViewContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:visibility="gone">
+
+                    <include layout="@layout/shimmer_media_publisher_info" />
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </FrameLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <!-- Paywall Blur Overlay (Covers Content, Behind Top Bar) -->
+    <FrameLayout
+        android:id="@+id/paywallBlurOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/paywallBlurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/premium_blocker_overlay_top_rounded"
+            android:clipToOutline="true" />
+
+        <ImageView
+            android:id="@+id/paywallLockIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top|center_horizontal"
+            android:contentDescription="@null"
+            android:src="@drawable/lock_24px"
+            app:tint="@android:color/white" />
+    </FrameLayout>
+
+    <!-- Top Bar (Z-Index Top) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/doneButton"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/done"
+            android:textColor="@color/colorTextDeep"
+            android:textSize="14sp"
+            android:minWidth="0dp" />
+    </RelativeLayout>
+</FrameLayout>

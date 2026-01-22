@@ -1,0 +1,233 @@
+package com.searcher.zonenews.utils;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Paint;
+import android.util.TypedValue;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+/**
+ * 作者：chs on 2016/9/8 10:02
+ * 邮箱：657083984@qq.com
+ * 计算 工具类
+ */
+public class CalculateUtil {
+
+    /**
+     * 获取这个最大数 数总共有几位
+     *
+     * @param value
+     * @return
+     */
+    public static int getScale(float value) {
+        if (value >= 1 && value < 10) {
+            return 0;
+        }
+        if (value == 0) {
+            return 0;
+        }
+        if (value >= 10) {
+            return 1 + getScale(value / 10);
+        } else {
+            return getScale(value * 10) - 1;
+        }
+    }
+
+    public static float getRangeTop(float value) {
+        // value: [1,10)
+        if (value < 1.2) {
+            return 1.2f;
+        }
+
+        if (value < 1.5) {
+            return 1.5f;
+        }
+
+        if (value < 2.0) {
+            return 2.0f;
+        }
+
+        if (value < 3.0) {
+            return 3.0f;
+        }
+
+        if (value < 4.0) {
+            return 4.0f;
+        }
+
+        if (value < 5.0) {
+            return 5.0f;
+        }
+
+        if (value < 6.0) {
+            return 6.0f;
+        }
+
+        if (value < 8.0) {
+            return 8.0f;
+        }
+
+        return 10.0f;
+    }
+
+    /**
+     * 数字的乘法精度计算
+     */
+    public static float numMathMul(float d1, float d2) {
+        BigDecimal b1 = new BigDecimal(d1);
+        BigDecimal b2 = new BigDecimal(d2);
+        float res = b1.multiply(b2).setScale(1, RoundingMode.HALF_UP).floatValue();
+        return res;
+    }
+
+    public static BigDecimal add(double v1, double v2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.add(b2);
+    }
+
+    public static BigDecimal sub(double v1, double v2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.subtract(b2);
+    }
+
+    public static BigDecimal mul(double v1, double v2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.multiply(b2);
+    }
+
+    public static BigDecimal div(double v1, double v2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.divide(b2, 2, RoundingMode.HALF_UP);// 四舍五入,保留2位小数
+        // 除不尽的情况
+    }
+
+    public static int dpToPx(float dp, Resources resources) {
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
+        return (int) px;
+    }
+
+    /**
+     * 得到最大宽度值得文本
+     *
+     * @param maxDivisionValue
+     * @return
+     */
+    public static float getDivisionTextMaxWidth(float maxDivisionValue, Context context) {
+        Paint textPaint = new Paint();
+        textPaint.setTextSize(dpToPx(10, context.getResources()));
+        BigDecimal bigDecimal = new BigDecimal(maxDivisionValue);
+        float max = textPaint.measureText(String.valueOf(bigDecimal.intValue()));
+        for (int i = 2; i <= 10; i++) {
+            if (maxDivisionValue * 0.1 >= 1) {
+                // 当数字非常大的时候会出现精度丢失的情况 所以候使用BigDecimal做运算
+                BigDecimal bd = new BigDecimal(maxDivisionValue);
+                BigDecimal fen = new BigDecimal(0.1 * i);
+                String text = String.valueOf(bd.multiply(fen).longValue());
+                float w = textPaint.measureText(text);
+                if (w > max) {
+                    max = w;
+                }
+            } else {
+                max = textPaint.measureText(String.valueOf(maxDivisionValue * 10));
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 提供精确的小数位四舍五入处理。
+     * 
+     * @param v     需要四舍五入的数字
+     * @param scale 小数点后保留几位
+     * @return 四舍五入后的结果
+     */
+    public static double round(double v, int scale) {
+        if (scale < 0) {
+            throw new IllegalArgumentException(
+                    "The scale must be a positive integer or zero");
+        }
+
+        BigDecimal b = new BigDecimal(Double.toString(v));
+        BigDecimal ne = new BigDecimal("1");
+        return b.divide(ne, scale, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    public static double pers = 1048576; // 1024*1024
+
+    // long==> 616.19KB,3.73M
+    public static double sizeFormatNum2String(long size) {
+
+        return round((double) size / pers, 2);
+    }
+
+    /**
+     * Convert media sentiment to a descriptive label resource id for localization
+     * 
+     * @param sentimentScore The media sentiment in range [-1, 1]
+     * @return String resource id for the sentiment label
+     */
+    public static int getSentimentLabelResId(double sentimentScore) {
+        double absScore = Math.abs(sentimentScore);
+        if (absScore <= 0.1) {
+            return com.searcher.zonenews.R.string.sentiment_neutral;
+        } else if (absScore <= 0.28) {
+            if (sentimentScore > 0) {
+                return com.searcher.zonenews.R.string.sentiment_positive;
+            } else {
+                return com.searcher.zonenews.R.string.sentiment_negative;
+            }
+        } else {
+            if (sentimentScore > 0) {
+                return com.searcher.zonenews.R.string.sentiment_very_positive;
+            } else {
+                return com.searcher.zonenews.R.string.sentiment_very_negative;
+            }
+        }
+    }
+
+    /**
+     * Deprecated: Use getSentimentLabelResId and fetch string via Resources for
+     * localization.
+     */
+    @Deprecated
+    public static String getSentimentLabel(double sentimentScore) {
+        double absScore = Math.abs(sentimentScore);
+        if (absScore <= 0.1) {
+            return "Neutral";
+        } else if (absScore <= 0.28) {
+            if (sentimentScore > 0) {
+                return "Positive";
+            } else {
+                return "Negative";
+            }
+        } else {
+            if (sentimentScore > 0) {
+                return "Very Positive";
+            } else {
+                return "Very Negative";
+            }
+        }
+    }
+
+    /**
+     * Get color resource name for sentiment text based on score
+     * 
+     * @param sentimentScore The media sentiment in range [-1, 1]
+     * @return Color resource name for the sentiment
+     */
+    public static String getSentimentColorName(double sentimentScore) {
+        if (sentimentScore > 0.1) {
+            return "score_positive"; // Positive color (teal)
+        } else if (sentimentScore < -0.1) {
+            return "score_negative"; // Negative color (dark red)
+        } else {
+            return "neutral_gray"; // Neutral color (gray)
+        }
+    }
+}

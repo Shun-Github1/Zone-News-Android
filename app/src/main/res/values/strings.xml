@@ -9,6 +9,8 @@
     <string name="login_error_user_disabled">This account has been disabled</string>
     <string name="login_error_user_not_found">No account found with this email</string>
     <string name="login_error_wrong_password">Incorrect password</string>
+    <string name="email_password_login">Email and Password</string>
+    <string name="account_exists_different_provider">An account already exists with the same email address.</string>
     <string name="register_error_email_invalid">Please enter a valid email address</string>
     <string name="register_error_password_weak">Password should be at least 6 characters</string>
     <string name="register_error_email_already_exists">An account with this email already exists</string>
@@ -22,6 +24,7 @@
     <string name="discover">Discover</string>
     <string name="liberal">Liberal</string>
     <string name="conservative">Conservative</string>
+    <string name="preview">Preview</string>
     <string name="title_notification">Notifications</string>
     <string name="notifications">Notifications</string>
     <string name="language">Change Language</string>
@@ -29,6 +32,7 @@
     <string name="confirm">Confirm</string>
     <string name="google_login">Continue with Google</string>
     <string name="facebook_login">Continue with Facebook</string>
+    <string name="apple_login">Sign in with Apple</string>
     <string name="feedback">Feedback</string>
     <string name="feedback_subtitle">Send us your feedback</string>
     <string name="context">Generate Context</string>
@@ -58,7 +62,7 @@
     <string name="account_menu_notifications_breaking_news_subtitle">Receive alerts for breaking news</string>
     <string name="account_menu_notifications_follows_topics_title">Follows Topics</string>
     <string name="account_menu_notifications_follows_topics_subtitle">Get notified about topics you follow</string>
-    <string name="account_menu_media_region_title">Media Region</string>
+    <string name="account_menu_media_region_title">Media Regions</string>
     <string name="account_menu_media_region_subtitle">Select media by regions</string>
     <string name="account_menu_landing_page_title">Landing Page</string>
     <string name="account_menu_landing_page_subtitle">Choose your default page</string>
@@ -68,7 +72,8 @@
     <string name="landing_page_your_feed">Your Feed</string>
     <string name="landing_page_levity_mode">Levity Mode</string>
     <string name="levity_mode_coming_soon">Levity Mode is coming soon!</string>
-    <string name="account_menu_article_opening_method_title">Article Opening Method</string>
+    <string name="levity_mode_upgrade">Upgrade to unlock Levity Mode</string>
+    <string name="account_menu_article_opening_method_title">Article Redirection</string>
     <string name="account_menu_article_opening_method_subtitle">Select the method to open external articles</string>
     <string name="article_opening_in_app">Use in-app browser</string>
     <string name="article_opening_external">Open links with default browser or external apps</string>
@@ -82,7 +87,7 @@
     <string name="account_menu_reset_settings_confirmation_message">This will reset all your app settings to their default values. This action cannot be undone.</string>
     <string name="account_menu_reset_settings_confirmation_confirm">Reset</string>
     <string name="account_menu_reset_settings_confirmation_cancel">Cancel</string>
-    <string name="account_menu_show_tips_title">Show Tips Again</string>
+    <string name="account_menu_show_tips_title">Tips</string>
     <string name="account_menu_show_tips_subtitle">Re-display tutorial tips</string>
     <string name="account_menu_show_tips_confirmation_title">Show Tips Again</string>
     <string name="account_menu_show_tips_confirmation_message">Tutorial tips will be shown again on each page.</string>
@@ -102,16 +107,16 @@
     <string name="account_pro_status_subtitle">Manage your subscription</string>
     <string name="account_pro_upgrade_title">Upgrade to Pro</string>
     <string name="account_pro_upgrade_subtitle">Unlock Pro features</string>
-    <string name="account_pro_active_title">Pro Active</string>
+    <string name="account_pro_active_title">Zone News Pro</string>
     <string name="account_pro_active_subtitle">Manage your subscription</string>
     
     <!-- Subscription Page Strings -->
     <string name="subscription_title">Upgrade to Pro</string>
-    <string name="subscription_pro_active">Pro Active</string>
+    <string name="subscription_pro_active">Zone News Pro</string>
     <string name="subscription_expires">Expires</string>
-    <string name="subscription_plan_title">Zone News Pro Monthly</string>
+    <string name="subscription_plan_title">Zone News Pro</string>
     <string name="subscription_plan_price">HK$18/month</string>
-    <string name="subscription_plan_billing">Monthly billing</string>
+    <string name="subscription_plan_billing">Billed Monthly</string>
     <string name="subscription_features_title">Pro Features</string>
     <string name="subscription_feature_ad_free">Ad-Free Experience</string>
     <string name="subscription_feature_ad_free_description">Enjoy news without any advertisements</string>
@@ -183,7 +188,7 @@
     <string name="topics_loading">Loading topics...</string>
     <string name="topics_error_loading">Failed to load topics</string>
     <string name="button_retry">Retry</string>
-    <string name="recommended_based_on_history">Recommended based on your reading history</string>
+    <string name="recommended_based_on_history">Based on your reading history</string>
     <string name="manage_topics">Manage topics</string>
     <string name="personalization_sorted_articles">Sorted articles</string>
     <string name="media_bias">Media Bias</string>
@@ -202,13 +207,14 @@
     <string name="auth_failed">Authentication failed.</string>
     <string name="wait_logging_in">Signing in</string>
     <string name="login_failed">Login failed</string>
+    <string name="incorrect_username_or_password">Incorrect username or password</string>
     <string name="email_empty">Email is empty</string>
     <string name="email_prefix">Email: %1$s</string>
     <string name="hint_email">Enter your email</string>
     <string name="password">Enter your password</string>
     <string name="hint_password">Enter your password</string>
     <string name="login">Login</string>
-    <string name="full_name">Full Name</string>
+    <string name="full_name">Username</string>
     <string name="create_account">Create Account</string>
     <string name="register_tagline">Join Zone News to get personalized news</string>
     <string name="login_tagline">Stay informed with the latest news</string>
@@ -223,11 +229,12 @@
     <string name="register_error_passwords_mismatch">Passwords don\'t match</string>
     <string name="register_status_registering">Registering</string>
     <string name="email">Email</string>
-    <string name="hint_username">Enter your name</string>
+    <string name="hint_username">Enter your username</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="confirm_password_hint">Re-enter your password</string>
+    <string name="confirm_password_hint">Confirm your password</string>
     <string name="enter_feedback">Enter your feedback</string>
     <string name="ios_feedback_placeholder">Please share your feedback about this summary...</string>
+    <string name="feedback_prompt">Please share your feedback.</string>
     <string name="dialog_title_reminder">Sign Out</string>
     <string name="logout_confirmation_message">Are you sure you want to sign out?</string>
     <string name="dialog_button_cancel">Cancel</string>
@@ -257,6 +264,8 @@
     
     <!-- Media Region strings -->
     <string name="media_region_subtitle">Select your preferred media regions</string>
+    <string name="region_updated_success">Region updated</string>
+    <string name="region_updated_failure">Failed to update region: %1$s</string>
     
     <!-- Appearance strings -->
     <string name="appearance_subtitle">Choose light, dark, or system theme</string>
@@ -292,9 +301,9 @@
     <string name="found_results">Found 0 results related to \"\"</string>
     <string name="found_results_format">Found %1$d results related to \"%2$s\"</string>
     <string name="tag">Tag</string>
-    <string name="currently_sorted_by">Currently sorted by</string>
+    <string name="currently_sorted_by">Sorting</string>
     <string name="latest_sort">Latest</string>
-    <string name="active_tags">Active tags</string>
+    <string name="active_tags">Following</string>
     <string name="select_tags_to_follow">Select tags to follow</string>
     <string name="your_feed_title">Your Feed</string>
     <string name="recap_title">Recap</string>
@@ -333,10 +342,13 @@
     <string name="low_objectivity">Low objectivity</string>
     <string name="medium_objectivity">Medium objectivity</string>
     <string name="high_objectivity">High objectivity</string>
-    <string name="sentiment_analysis_description">The overall tone of reporting on this event, based on text analysis of articles.\nFor more details, visit our webpage.</string>
+    <string name="low_subjectivity">Low subjectivity</string>
+    <string name="medium_subjectivity">Medium subjectivity</string>
+    <string name="high_subjectivity">High subjectivity</string>
+    <string name="sentiment_analysis_description">The overall tone of reporting on this event, based on text analysis of articles.\nFor more details, visit our webpage .</string>
     <string name="our_webpage">our webpage</string>
-    <string name="publisher_distribution_description">Map of media reporting patterns: X-axis - media bias, Y-axis - timing of reporting, size of circles - accessed media significance.\nFor more details, visit our webpage.</string>
-    <string name="subjectivity_algorithm_description">How subjective media reporting on this event is, based on text analysis of articles.\nFor more details, visit our webpage.</string>
+    <string name="publisher_distribution_description">Map of media reporting patterns: X-axis - media bias, Y-axis - timing of reporting, size of circles - accessed media significance.\nFor more details, visit our webpage .</string>
+    <string name="subjectivity_algorithm_description">How subjective media reporting on this event is, based on text analysis of articles.\nFor more details, visit our webpage .</string>
     <string name="ok">OK</string>
     <string name="news_type">news</string>
     <string name="fragment_special">special</string>
@@ -380,6 +392,7 @@
     <string name="time_placeholder">3 minutes ago</string>
 
     <!-- Timeline strings -->
+    <string name="timeline">Timeline</string>
     <string name="timeline_info_description">Shows related events before and after the story. Swipe left or right to browse timeline.</string>
     <string name="timeline_info_scroll_hint">Swipe left or right to browse timeline.</string>
     <string name="timeline_mock_article1_title">Mock article 1</string>
@@ -422,8 +435,7 @@
     <string name="feature_summary_desc">The key information of the event, the facts and implications</string>
     <string name="feature_timeline">Timeline</string>
     <string name="feature_timeline_desc">Related events before and after the story in a timeline</string>
-    <string name="feature_widgets">Widgets</string>
-    <string name="feature_widgets_desc">Home screen widgets in several designs</string>
+
     <string name="feature_your_feed">Your Feed</string>
     <string name="feature_your_feed_desc">Personalized feed with fixed and customizable tags</string>
     <string name="contact_us">Contact Us</string>
@@ -435,7 +447,7 @@
     <string name="copyright_text">© 2024 Zone News. All rights reserved.</string>
     
     <!-- News card strings -->
-    <string name="reports_count">%1$d reports</string>
+    <string name="reports_count">%1$d articles</string>
     <string name="sentiment_score_label">Media Sentiment: %1$s</string>
     <string name="sentiment_positive">Positive</string>
     <string name="sentiment_negative">Negative</string>
@@ -454,6 +466,7 @@
     
     <!-- Reading History strings -->
     <string name="clear_all">Clear All</string>
+    <string name="clear">Clear</string>
     <string name="no_browsing_history">No browsing history</string>
     <string name="no_browsing_history_subtitle">Your browsing history will appear here</string>
     <string name="no_saved_articles">No saved articles</string>
@@ -475,7 +488,7 @@
     <string name="language_settings_error">Unable to open settings. Please manually go to Settings → Apps → Zone News → Language</string>
     
     <!-- Additional strings for layouts -->
-    <string name="searcher_ai_attribution">Summary provided by SearcherAI</string>
+    <string name="searcher_ai_attribution">This summary is generated by SearcherAI</string>
     <string name="centric">Centric</string>
     <string name="progressive">Liberal</string>
     <string name="publisher_articles">Article List</string>
@@ -506,7 +519,7 @@
     <string name="register">Register</string>
     <string name="related">Related</string>
     <string name="relevant_topics">Relevant Topics</string>
-    <string name="report_count_format">%d reports</string>
+    <string name="report_count_format">%d articles</string>
     <string name="sentiment_analysis_label">Sentiment Analysis</string>
     <string name="sort">Sort</string>
     <string name="summaries_provided">Summaries Provided</string>
@@ -517,8 +530,11 @@
     <!-- Search/Discover page strings -->
     <string name="trending_topics">Trending Topics</string>
     <string name="trending_searches">Trending Searches</string>
+    <string name="trending_search_title">Trending Search</string>
     <string name="coming_soon">Coming soon</string>
     <string name="coming_soon_subtitle">This feature will be available soon</string>
+    <string name="recap_coming_soon">Recap is coming soon!</string>
+    <string name="context_coming_soon">AI Context is coming soon!</string>
     
     <!-- Exit message -->
     <string name="exit_app_message">Press once more to exit the app</string>
@@ -556,4 +572,70 @@
     <string name="section_regions">Regions</string>
     <string name="section_trending">Trending</string>
     <string name="custom_topics_coming_soon">Custom topics coming soon</string>
+    <string name="no_news_data">No News Available</string>
+    <string name="check_back_later">Check back later</string>
+
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_confirmation_title">Delete Account</string>
+    <string name="delete_account_confirmation_message">Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.</string>
+    <string name="delete_account_confirm">Delete Account</string>
+    <string name="delete_account_success">Account deleted successfully</string>
+
+    <!-- Notification Popup Strings -->
+    <string name="toast_theme">Theme: %1$s</string>
+    <string name="toast_landing_page">Landing page: %1$s</string>
+    <string name="toast_article_opening">Article opening: %1$s</string>
+    <string name="toast_icon_light">Icon: light\nRequires app restart</string>
+    <string name="toast_icon_dark">Icon: dark\nRequires app restart</string>
+    <string name="toast_icon_updated">Icon updated\nRequires app restart</string>
+    <string name="toast_icon_change_failed">Failed to change app icon. Please try again.</string>
+    <string name="toast_settings_reset">Settings reset to default</string>
+
+    <!-- Additional Subscription Strings -->
+    <string name="subscription_support_email_subject">Zone News Pro Support</string>
+    <string name="no_email_app_found">No email app found</string>
+
+    <!-- Missing default values for localized strings -->
+    <string name="search_hint">Search news, topics...</string>
+    <string name="topic_business">Business</string>
+    <string name="topic_entertainment">Entertainment</string>
+    <string name="topic_politics">Politics</string>
+    <string name="topic_sports">Sports</string>
+    <string name="topic_technology">Technology</string>
+    <string name="topic_general">General</string>
+    <string name="trending">Trending</string>
+    <string name="web_error_loading">Failed to load page</string>
+
+    <!-- Widget Strings -->
+    <string name="widget_detailed_name">Zone News - Detailed</string>
+    <string name="widget_detailed_description">Display the latest news with all details including region, topic, headline, sentiment, and article count</string>
+    <string name="widget_compact_name">Zone News - Compact</string>
+    <string name="widget_compact_description">Display the latest news headline with image and sentiment bar</string>
+    <string name="widget_news_image">News image</string>
+    <string name="widget_tap_to_refresh">Tap to refresh</string>
+    <string name="widget_loading">Loading news…</string>
+    <string name="widget_no_data">No news available</string>
+    
+    <!-- Publisher Info Popup -->
+    <string name="region">Region</string>
+    <string name="type">Type</string>
+    <string name="conglomerate">Conglomerate</string>
+    <string name="controller">Controller</string>
+    <string name="visit_website">Visit Website</string>
+
+    <!-- Error Messages -->
+    <string name="error_invalid_format">Invalid request. Please try again.</string>
+    <string name="error_missing_parameter">Please fill in all required fields.</string>
+    <string name="error_not_authenticated">Please log in to continue.</string>
+    <string name="error_server_error">Something went wrong. Please try again later.</string>
+    <string name="error_not_found">Requested item not found.</string>
+    <string name="error_invalid_value">Invalid input. Please check and try again.</string>
+    <string name="error_already_exists">This item already exists.</string>
+    <string name="error_auth_failed">Invalid credentials. Please try again.</string>
+    <string name="error_internal_server_error">Server error. Please try again later.</string>
+    <string name="error_forbidden">You don\'t have permission to do this.</string>
+    <string name="error_session_expired">Session expired. Please log in again.</string>
+    <string name="error_weak_password">Password must be at least 8 characters with letters and numbers.</string>
+    <string name="error_verification_failed">Verification failed. Please try again.</string>
+    <string name="error_unsupported_operation">This operation is not supported.</string>
 </resources>

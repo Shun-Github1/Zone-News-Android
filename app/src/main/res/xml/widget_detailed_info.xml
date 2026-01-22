@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="180dp"
+    android:targetCellWidth="4"
+    android:targetCellHeight="2"
+    android:minResizeWidth="40dp"
+    android:minResizeHeight="40dp"
+    android:updatePeriodMillis="1800000"
+
+    android:previewImage="@drawable/widget_detailed_preview"
+    android:previewLayout="@layout/widget_detailed_preview"
+
+    android:initialLayout="@layout/widget_detailed"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen"
+    android:configure="com.searcher.zonenews.widget.WidgetConfigActivity"
+    android:description="@string/widget_detailed_description" />

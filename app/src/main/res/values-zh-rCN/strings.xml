@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Zone 新闻</string>
 
-    <string name="today">今天</string>
+        <string name="today">今日</string>
     <string name="hongkong">香港</string>
     <string name="china">中国</string>
     <string name="main_page">首页</string>
     <string name="person_recommend">个人</string>
-    <string name="my">账户</string>
+        <string name="my">帐户</string>
     <string name="discover">发现</string>
     <string name="liberal">开放</string>
-    <string name="conservative">保守</string>
-    <string name="media_distribution">媒体立场分布</string>
+        <string name="conservative">偏保守</string>
+    <string name="preview">预览</string>
+        <string name="media_distribution">媒体分布</string>
     <string name="ads">广告</string>
     <string name="relevant_topics">相关主题</string>
     <string name="title_notification">通知</string>
@@ -21,17 +23,17 @@
     <string name="detailed">详尽</string>
     <string name="confirm">确定</string>
     <string name="email_login">使用邮箱登录</string>
-    <string name="google_login">使用 Google 继续</string>
+        <string name="google_login">使用 Google 继续</string>
     <string name="summaries_provided">新闻汇总由 SearcherAI 提供</string>
     <string name="feedback">反馈</string>
     <string name="feedback_subtitle">向我们发送反馈</string>
-    <string name="context">生成摘要</string>
-    <string name="account">账号</string>
+        <string name="context">生成事件背景</string>
+        <string name="account">帐户</string>
     <string name="user_id_label">用户ID：</string>
-    <string name="history">浏览记录</string>
+        <string name="history">阅读历史</string>
     <string name="history_subtitle">查看你的浏览活动</string>
     <string name="discover_headline">搜索新闻标题</string>
-    <string name="saved">我的收藏</string>
+        <string name="saved">已收藏文章</string>
     <string name="saved_subtitle">查看已保存的内容</string>
     <string name="about_us">关于我们</string>
     <string name="about_us_subtitle">了解更多关于 Zone 新闻</string>
@@ -39,8 +41,8 @@
     <string name="translate">翻译</string>
     <string name="open_in_browser">在浏览器中开启</string>
     <string name="version">版本号</string>
-    <string name="logout">登出</string>
-    <string name="logout_subtitle">退出你的账户</string>
+        <string name="logout">退出登录</string>
+        <string name="logout_subtitle">退出您的账户</string>
     <string name="coverage">媒体覆盖</string>
     <string name="sort">排序</string>
     <string name="sort_by">排序方式</string>
@@ -54,15 +56,17 @@
     <string name="most_popular">热门度</string>
     <string name="most_relevant">相关性</string>
     <string name="select_topics">选择主题</string>
+    <string name="manage_topics">管理主题</string>
+    <string name="personalization_sorted_articles">文章排序</string>
     <string name="done">完成</string>
     <string name="topics_loading">正在加载主题...</string>
     <string name="topics_error_loading">加载主题失败</string>
     <string name="button_retry">刷新</string>
-    <string name="recommended_based_on_history">根据您的阅读历史推荐</string>
+        <string name="recommended_based_on_history">根据您的阅读历史推荐</string>
     <string name="media_bias">媒体立场</string>
     <string name="media_region">媒体所在地区</string>
     <string name="region_hong_kong">香港</string>
-    <string name="region_china">内地</string>
+        <string name="region_china">中国</string>
     <string name="region_uk">英国</string>
     <string name="region_usa">美国</string>
     <string name="region_asia_other">亚洲其他</string>
@@ -82,8 +86,17 @@
     <string name="login_enter_password">请输入密码</string>
     <string name="login_logging_in">正在登录</string>
     <string name="login_success">成功登陆</string>
+    <string name="login_tagline">随时掌握最新新闻</string>
+    <string name="auth_failed">验证失败。</string>
+    <string name="wait_logging_in">正在登录</string>
+    <string name="login_failed">登录失败</string>
+    <string name="email_password_login">邮箱和密码</string>
+    <string name="account_exists_different_provider">已存在使用相同邮箱地址的账户。</string>
+        <string name="incorrect_username_or_password">用户名或密码不正确</string>
     <string name="hint_email">请输入邮箱</string>
-    <string name="password">密码</string>
+    <string name="email_empty">邮箱不能为空</string>
+    <string name="email_prefix">邮箱：%1$s</string>
+        <string name="password">输入密码</string>
     <string name="hint_password">请输入密码</string>
     <string name="register">注册</string>
     <string name="login">登录</string>
@@ -95,11 +108,19 @@
     <string name="register_error_password_empty">请输入密码</string>
     <string name="register_error_password_again_empty">请再次输入密码</string>
     <string name="register_error_passwords_mismatch">两次密码不一致</string>
+    <string name="login_error_invalid_email">无效的邮箱地址</string>
+    <string name="login_error_user_disabled">此帐户已被禁用</string>
+    <string name="login_error_user_not_found">未找到使用此邮箱的帐户</string>
+    <string name="login_error_wrong_password">密码错误</string>
+    <string name="register_error_email_invalid">请输入有效的邮箱地址</string>
+    <string name="register_error_password_weak">密码至少需要 6 个字符</string>
+    <string name="register_error_email_already_exists">该邮箱已注册</string>
+    <string name="register_error_general">注册失败，请重试</string>
     <string name="register_status_registering">正在注册</string>
     <string name="email">邮箱</string>
     <string name="hint_username">donald musk</string>
     <string name="confirm_password">确认密码</string>
-    <string name="confirm_password_hint">confirm password</string>
+        <string name="confirm_password_hint">确认您的密码</string>
     <string name="enter_feedback">请输入反馈内容</string>
     <string name="dialog_title_reminder">退出登录</string>
     <string name="logout_confirmation_message">确定要退出登录吗？</string>
@@ -109,9 +130,10 @@
     <string name="collect_success_toast">收藏成功</string>
     <string name="uncollect_success_toast">取消收藏成功</string>
     <string name="feedback_prompt_toast">请输入反馈内容</string>
-    <string name="ios_feedback_placeholder">请分享你对该摘要的看法...</string>
+        <string name="ios_feedback_placeholder">请分享您的反馈。</string>
+    <string name="feedback_prompt">请分享您的反馈。</string>
     <string name="no_content_placeholder">暂无内容</string>
-    <string name="report_count_format">%d个报道</string>
+        <string name="report_count_format">%d 篇文章</string>
     <string name="sentiment_analysis_label">情感分析：</string>
     <string name="metrics">指标</string>
     <string name="topic_modify_shared_pref_list_key">list</string>
@@ -131,18 +153,19 @@
     
     <!-- Reading History strings -->
     <string name="clear_all">清除全部</string>
+    <string name="clear">清除</string>
     <string name="no_browsing_history">没有浏览记录</string>
     <string name="no_browsing_history_subtitle">您的浏览记录将显示在这里</string>
     <string name="no_saved_articles">没有收藏的文章</string>
     <string name="no_saved_articles_subtitle">您收藏的文章将显示在这里</string>
     <string name="browsing_history">浏览记录</string>
-    <string name="saved_articles">收藏的文章</string>
+        <string name="saved_articles">已收藏文章</string>
     <string name="cleared_all_items">已清除所有项目</string>
     <string name="clear_reading_history_confirmation_title">清除阅读历史</string>
     <string name="clear_reading_history_confirmation_message">这将永久删除您的所有阅读历史。此操作无法撤销。</string>
     <string name="clear_reading_history_confirmation_confirm">清除全部</string>
     <string name="clear_saved_articles_confirmation_title">清除收藏的文章</string>
-    <string name="clear_saved_articles_confirmation_message">这将永久删除您的所有收藏文章。此操作无法撤销。</string>
+        <string name="clear_saved_articles_confirmation_message">这将永久删除您已收藏的所有文章。此操作无法撤销。</string>
     <string name="clear_saved_articles_confirmation_confirm">清除全部</string>
     
     <!-- Theme and Settings Strings -->
@@ -177,8 +200,8 @@
     <string name="english">English</string>
     <string name="traditional_chinese">繁體中文</string>
     <string name="simplified_chinese">简体中文</string>
-    <string name="straightforward">Straightforward</string>
-    <string name="nuanced">Nuanced</string>
+        <string name="straightforward">直接明了</string>
+        <string name="nuanced">深度了解</string>
     <string name="topic_name">主题名称</string>
     <string name="hong_kong_sar">香港特别行政区</string>
     <string name="mainland_china">中国大陆</string>
@@ -191,17 +214,20 @@
     <string name="found_results_format">找到 %1$d 个与 \"%2$s\" 相关的结果</string>
     <string name="tag">标签</string>
     <string name="currently_sorted_by">当前排序方式</string>
-    <string name="latest_sort">最新</string>
-    <string name="active_tags">活跃标签</string>
+        <string name="latest_sort">时间</string>
+        <string name="active_tags">关注主题</string>
     <string name="submit_feedback">提交反馈</string>
     <string name="submit">提交</string>
-    <string name="low_objectivity">低客观性</string>
+    <string name="low_objectivity">客观性低</string>
     <string name="medium_objectivity">中等客观性</string>
-    <string name="high_objectivity">高客观性</string>
-    <string name="sentiment_analysis_description">媒体对此事件报导的总体情绪。分数基于文本分析结果。\n请访问我们的网页以了解更多。</string>
+    <string name="high_objectivity">客观性高</string>
+    <string name="low_subjectivity">主观性低</string>
+    <string name="medium_subjectivity">中等主观性</string>
+    <string name="high_subjectivity">主观性高</string>
+    <string name="sentiment_analysis_description">媒体对此事件报导的总体情绪。分数基于文本分析结果。\n请访问 我们的网页 以了解更多。</string>
     <string name="our_webpage">我们的网页</string>
-    <string name="publisher_distribution_description">媒体报导模式具象图：X轴 - 媒体偏见、Y轴 - 报导时机、圆点大小 - 媒体影响力。\n请访问我们的网页以了解更多。</string>
-    <string name="subjectivity_algorithm_description">媒体报导的整体主观程度。分数基于文本分析结果。\n请访问我们的网页以了解更多。</string>
+    <string name="publisher_distribution_description">媒体报导模式具象图：X轴 - 媒体偏见、Y轴 - 报导时机、圆点大小 - 媒体影响力。\n请访问 我们的网页 以了解更多。</string>
+    <string name="subjectivity_algorithm_description">媒体报导的整体主观程度。分数基于文本分析结果。\n请访问 我们的网页 以了解更多。</string>
     <string name="ok">确定</string>
     <string name="news_type">新闻</string>
     <string name="fragment_special">专题</string>
@@ -223,7 +249,7 @@
     <string name="refresh_blocked_search">刷新被阻止 - 距离上次刷新时间太短 (%1$dms &lt; %2$dms)</string>
     <string name="exiting_search_mode">退出搜索模式并返回发现</string>
     <string name="refreshing_discover_content">正在刷新发现内容</string>
-    <string name="latest_sort_option">最新</string>
+        <string name="latest_sort_option">时间</string>
     <string name="popular_sort_option">热门</string>
     <string name="empty_string">""</string>
     <string name="text_plain">text/plain</string>
@@ -245,6 +271,7 @@
     <string name="time_placeholder">3分钟前</string>
 
     <!-- Timeline strings -->
+    <string name="timeline">时间线</string>
     <string name="timeline_info_description">此新闻事件的前文后理。左右滑动可浏览时间轴。</string>
     <string name="timeline_info_scroll_hint">左右滑动可浏览时间轴。</string>
     <string name="timeline_mock_article1_title">模拟文章 1</string>
@@ -255,42 +282,41 @@
     <string name="timeline_mock_article7_title">模拟文章 7</string>
 
     <!-- About screen strings -->
-    <string name="about_app_name">Zone News</string>
+        <string name="about_app_name">Zone 新闻</string>
     <string name="about_version">版本 1.0.0</string>
-    <string name="about_heading">关于 Zone News</string>
-    <string name="about_desc_1">Zone 新闻是面向未来的多维新闻平台，让您轻松整合来自数十个信息来源、跨越时空的资讯。我们立足香港与中国，辐射全球，为您提供涵盖政治、科技、体育等领域的均衡、准确、及时的报道。</string>
-    <string name="about_desc_2">我们的使命是信息传递：以科学透明的方式，为您呈现值得关注的重要故事。通过简洁、全面、便捷的新闻报道，我们致力于打破信息茧房，呈现每个事件的多维视角。</string>
-    <string name="about_features">功能特色</string>
-    <string name="feature_ai_context">AI 背景</string>
-    <string name="feature_ai_context_desc">每个新闻事件的完整背景故事</string>
-    <string name="feature_article_list">文章列表</string>
-    <string name="feature_article_list_desc">具有排序功能的综合文章列表</string>
+    <string name="about_heading">关于 Zone 新闻</string>
+    <string name="about_desc_1">Zone 新闻是未来的多维度新闻平台，让您能够轻松整合来自数十个跨越时空来源的信息。我们提供关于政治、科技、体育等领域的平衡、准确且及时的报道，涵盖香港、中国及全球范围。</string>
+    <string name="about_desc_2">我们的使命是信息传播：以科学、透明的方式，为您带来重要的事件报道。我们致力通过简洁、全面且便捷的报道方式打破信息壁垒，呈现每个事件的多角度观点。</string>
+        <string name="about_features">功能特色</string>
+    <string name="feature_ai_context">AI 事件背景</string>
+    <string name="feature_ai_context_desc">每则新闻事件的完整背景信息</string>
+        <string name="feature_article_list">文章列表</string>
+    <string name="feature_article_list_desc">完整文章列表，支持排序功能</string>
     <string name="feature_custom_tags">自定义标签</string>
-    <string name="feature_custom_tags_desc">使用自定义新闻标签追踪感兴趣的主题</string>
-    <string name="feature_in_app_browser">应用内浏览器</string>
+    <string name="feature_custom_tags_desc">通过自定义新闻标签追踪感兴趣的主题</string>
+    <string name="feature_in_app_browser">内置浏览器</string>
     <string name="feature_in_app_browser_desc">以您选择的语言在应用内阅读完整文章</string>
-    <string name="feature_levity_mode">轻松模式</string>
+        <string name="feature_levity_mode">轻松模式</string>
     <string name="feature_levity_mode_desc">仅显示正面新闻</string>
     <string name="feature_media_bias_tags">媒体偏见与立场标签</string>
-    <string name="feature_media_bias_tags_desc">媒体标签，便于评估潜在偏见</string>
+    <string name="feature_media_bias_tags_desc">媒体标签助您轻松评估潜在偏见</string>
     <string name="feature_media_distribution">媒体分布</string>
-    <string name="feature_media_distribution_desc">了解重要新闻的不同观点</string>
-    <string name="feature_media_sentiment">媒体情绪</string>
-    <string name="feature_media_sentiment_desc">基于文本分析的报道整体基调</string>
-    <string name="feature_recap">回顾</string>
-    <string name="feature_recap_desc">每日、每周或每月新闻回顾</string>
-    <string name="feature_significance">重要性</string>
-    <string name="feature_significance_desc">DALY（生命年）和经济影响分析</string>
-    <string name="feature_subjectivity_score">主观性评分</string>
-    <string name="feature_subjectivity_score_desc">基于文本分析的媒体报道主观性</string>
-    <string name="feature_summary">摘要</string>
-    <string name="feature_summary_desc">事件的关键信息、事实和影响</string>
-    <string name="feature_timeline">时间轴</string>
-    <string name="feature_timeline_desc">故事前后相关事件的时间轴</string>
-    <string name="feature_widgets">小工具</string>
-    <string name="feature_widgets_desc">多种设计的主屏幕小工具</string>
-    <string name="feature_your_feed">您的动态</string>
-    <string name="feature_your_feed_desc">具有固定和可自定义标签的个性化动态</string>
+    <string name="feature_media_distribution_desc">了解不同媒体对重要事件的多样观点</string>
+        <string name="feature_media_sentiment">媒体情绪</string>
+    <string name="feature_media_sentiment_desc">基于文本分析的新闻报道整体语气</string>
+    <string name="feature_recap">新闻回顾</string>
+    <string name="feature_recap_desc">每日、每周或每月新闻摘要</string>
+    <string name="feature_significance">事件影响评估</string>
+    <string name="feature_significance_desc">DALY（生命年）及经济影响分析</string>
+        <string name="feature_subjectivity_score">主观性评分</string>
+    <string name="feature_subjectivity_score_desc">基于文本分析的媒体报道主观性程度</string>
+    <string name="feature_summary">事件摘要</string>
+    <string name="feature_summary_desc">事件关键信息、事实与影响</string>
+        <string name="feature_timeline">时间轴</string>
+    <string name="feature_timeline_desc">事件前后的相关新闻时间轴</string>
+
+    <string name="feature_your_feed">个人动态</string>
+    <string name="feature_your_feed_desc">结合固定与自定义标签的个性化新闻推送</string>
     <string name="contact_us">联系我们</string>
     <string name="contact_email">support@znews.com</string>
     <string name="contact_website">www.znews.com</string>
@@ -301,11 +327,11 @@
     
     <!-- News card strings -->
     <string name="reports_count">%1$d 份报告</string>
-    <string name="sentiment_score_label">媒体情感：%1$s</string>
-    <string name="sentiment_score">媒体情感</string>
+    <string name="sentiment_score_label">文本情感数值：%1$s</string>
+        <string name="sentiment_score">文本情感数值</string>
     <string name="publisher_distribution">媒体分布</string>
-    <string name="subjectivity_score">主观性评分</string>
-    <string name="publisher_articles">文章列表</string>
+        <string name="subjectivity_score">主观性数值</string>
+        <string name="publisher_articles">文章一览</string>
     <string name="centric">中立</string>
     <string name="progressive">开放</string>
     <string name="publisher_name">媒体名称</string>
@@ -317,8 +343,7 @@
     <string name="sentiment_negative">负面</string>
     <string name="sentiment_neutral">中性</string>
     <string name="sentiment_very_positive">非常正面</string>
-    <string name="sentiment_slightly_positive">略为正面</string>
-    <string name="sentiment_slightly_negative">略为负面</string>
+
     <string name="sentiment_very_negative">非常负面</string>
     
     <!-- Time display strings -->
@@ -330,24 +355,223 @@
     
     <!-- Exit message -->
     <string name="exit_app_message">再按一次，退出应用</string>
-    <string name="trending_topics">热门主题</string>
+        <string name="trending_topics">热门话题</string>
     <string name="trending_searches">热门搜索</string>
     <string name="searcher_ai_attribution">此摘要由SearcherAI提供</string>
 
     <!-- Topic Selection Menu -->
     <string name="clear_all_topics">清除所有主题</string>
     <string name="clear_all_topics_confirmation_title">清除所有主题</string>
-    <string name="clear_all_topics_confirmation_message">确定要清除所有已选主题吗？此操作无法撤销。</string>
-    <string name="clear_all_topics_confirmation_confirm">全部清除</string>
+        <string name="clear_all_topics_confirmation_message">确定要清除所有部分中所有已选择的主题吗？此操作无法撤销。</string>
+        <string name="clear_all_topics_confirmation_confirm">清除全部</string>
     <string name="cleared_all_topics">已清除所有主题</string>
     <string name="search_topics">搜索主题</string>
     <string name="topic_tab_all">全部</string>
-    <string name="topic_tab_sectors">行业</string>
+        <string name="topic_tab_sectors">领域</string>
     <string name="topic_tab_regions">地区</string>
     <string name="topic_tab_trending">热门</string>
     <string name="topic_tab_custom">自定义</string>
-    <string name="section_sectors">行业</string>
+        <string name="section_sectors">领域</string>
     <string name="section_regions">地区</string>
     <string name="section_trending">热门</string>
     <string name="custom_topics_coming_soon">自定义主题即将推出</string>
+    <string name="recap_coming_soon">回顾功能即将推出！</string>
+    
+    <!-- Pro/Premium Features -->
+    <string name="account_pro_upgrade_title">升级到专业版</string>
+        <string name="account_pro_upgrade_subtitle">解锁高级功能</string>
+        <string name="account_pro_active_title">Zone News 专业版</string>
+        <string name="account_pro_active_subtitle">管理你的订阅</string>
+        <string name="account_menu_report_patterns_upgrade">升级解锁报道模式</string>
+    <string name="levity_mode_upgrade">升级以解锁轻松模式</string>
+    <string name="trending">热门度</string>
+    <string name="topic_business">商业</string>
+    <string name="topic_entertainment">娱乐</string>
+    <string name="topic_politics">政治</string>
+    <string name="topic_sports">体育</string>
+    <string name="topic_technology">科技</string>
+    <string name="topic_general">综合</string>
+    <string name="create_account">创建账户</string>
+    <string name="facebook_login">使用 Facebook 继续</string>
+    <string name="apple_login">使用 Apple 继续</string>
+    <string name="register_tagline">加入 Zone 新闻获取个性化新闻</string>
+    <string name="search_hint">搜寻新闻...</string>
+    <string name="web_error_loading">页面加载失败</string>
+    <string name="notifications">通知</string>
+    <string name="account_menu_reading_history_title">阅读历史</string>
+    <string name="account_menu_reading_history_subtitle">查看您的阅读历史</string>
+    <string name="account_menu_saved_articles_title">已收藏文章</string>
+    <string name="account_menu_saved_articles_subtitle">查看您已收藏的文章</string>
+    <string name="account_menu_report_patterns_title">报道模式</string>
+    <string name="account_menu_report_patterns_subtitle">显示媒体立场</string>
+    <string name="account_menu_language_title">语言</string>
+    <string name="account_menu_language_subtitle">更改应用语言</string>
+    <string name="account_menu_notifications_title">通知</string>
+    <string name="account_menu_notifications_subtitle">管理通知偏好设置</string>
+    <string name="account_menu_notifications_breaking_news_title">突发新闻</string>
+    <string name="account_menu_notifications_breaking_news_subtitle">接收突发新闻提醒</string>
+    <string name="account_menu_notifications_follows_topics_title">关注主题</string>
+    <string name="account_menu_notifications_follows_topics_subtitle">接收您关注主题的通知</string>
+    <string name="account_menu_media_region_subtitle">根据地区选择新闻媒体</string>
+    <string name="region_updated_success">地区已更新</string>
+    <string name="region_updated_failure">更新地区失败：%1$s</string>
+    <string name="account_menu_landing_page_title">首页设置</string>
+    <string name="account_menu_landing_page_subtitle">选择应用首先开启的页面</string>
+    <string name="landing_page_today">今日</string>
+    <string name="landing_page_hong_kong">香港</string>
+    <string name="landing_page_china">中国</string>
+    <string name="landing_page_your_feed">您的动态</string>
+    <string name="landing_page_levity_mode">正向模式</string>
+    <string name="account_menu_article_opening_method_subtitle">选择打开外部文章的方法</string>
+    <string name="article_opening_in_app">使用应用内浏览器</string>
+    <string name="article_opening_external">使用默认浏览器或第三方应用打开链接</string>
+    <string name="account_menu_appearance_title">外观</string>
+    <string name="account_menu_appearance_subtitle">选择外观模式</string>
+    <string name="account_menu_app_icon_title">应用图标</string>
+    <string name="account_menu_app_icon_subtitle">选择应用图标</string>
+    <string name="account_menu_reset_settings_title">重置设置</string>
+    <string name="account_menu_reset_settings_subtitle">将所有设置恢复为默认值</string>
+    <string name="account_menu_reset_settings_confirmation_title">重置所有设置</string>
+    <string name="account_menu_reset_settings_confirmation_message">这将重置所有应用设置为默认值。此操作无法撤销。</string>
+    <string name="account_menu_reset_settings_confirmation_confirm">重置</string>
+    <string name="account_menu_reset_settings_confirmation_cancel">取消</string>
+    <string name="account_menu_show_tips_subtitle">重新展示教学</string>
+    <string name="account_menu_show_tips_confirmation_message">教学提示将在每个页面重新展示。</string>
+    <string name="account_menu_show_tips_confirmation_confirm">重新展示</string>
+    <string name="account_menu_show_tips_confirmation_cancel">取消</string>
+    <string name="account_menu_feedback_title">反馈</string>
+    <string name="account_menu_feedback_subtitle">发送反馈和建议</string>
+    <string name="account_menu_about_title">关于</string>
+    <string name="account_menu_logout_title">退出登录</string>
+    <string name="account_menu_logout_subtitle">退出您的账户</string>
+    <string name="account_menu_logout_confirmation_title">退出登录</string>
+    <string name="account_menu_logout_confirmation_message">确定要退出登录吗？</string>
+    <string name="account_menu_logout_confirmation_confirm">退出登录</string>
+    <string name="account_menu_logout_confirmation_cancel">取消</string>
+    <string name="account_pro_status_title">Zone News 专业版</string>
+    <string name="account_pro_status_subtitle">管理你的订阅</string>
+    <string name="subscription_title">升级到专业版</string>
+    <string name="subscription_pro_active">Zone News 专业版</string>
+    <string name="subscription_expires">到期时间</string>
+    <string name="subscription_plan_price">HK$18/月</string>
+    <string name="subscription_features_title">专业版功能</string>
+    <string name="subscription_feature_ad_free">无广告体验</string>
+    <string name="subscription_feature_ad_free_description">享受无广告的新闻阅读体验</string>
+    <string name="subscription_feature_unlimited_articles">无限文章</string>
+    <string name="subscription_feature_unlimited_articles_description">无限制阅读文章，无任何限制</string>
+    <string name="subscription_feature_report_patterns">报道模式</string>
+    <string name="subscription_feature_report_patterns_description">分析新闻模式和报道趋势</string>
+    <string name="subscription_feature_recap">回顾</string>
+    <string name="subscription_feature_recap_description">获取个性化新闻摘要和回顾</string>
+    <string name="subscription_feature_timeline">时间线</string>
+    <string name="subscription_feature_timeline_description">按时间顺序查看相关文章</string>
+    <string name="subscription_feature_priority_support">优先支持</string>
+    <string name="subscription_feature_priority_support_description">获得更快的客服响应时间</string>
+    <string name="subscription_feature_advanced_personalization">高级个性化</string>
+    <string name="subscription_feature_advanced_personalization_description">访问高级自定义选项</string>
+    <string name="subscription_subscribe_button">立即订阅</string>
+    <string name="subscription_cancel_button">取消订阅</string>
+    <string name="subscription_redeem_button">兑换代码</string>
+    <string name="subscription_restore_button">恢复购买</string>
+    <string name="subscription_redeem_dialog_title">兑换代码</string>
+    <string name="subscription_redeem_dialog_hint">输入代码</string>
+    <string name="subscription_redeem_success">代码兑换成功！</string>
+    <string name="subscription_redeem_failed">代码无效或已过期。请重试。</string>
+    <string name="subscription_cancel_confirmation_title">取消订阅</string>
+    <string name="subscription_cancel_confirmation_message">您确定要取消 Pro 订阅吗？</string>
+    <string name="subscription_cancel_confirmation_confirm">取消订阅</string>
+    <string name="subscription_restore_success">购买恢复成功</string>
+    <string name="subscription_restore_failed">未找到可恢复的购买</string>
+    <string name="subscription_screenshot">截图</string>
+    <string name="manage_subscription_title">管理订阅</string>
+    <string name="manage_subscription_status_title">专业会员</string>
+    <string name="manage_subscription_status_active">活跃</string>
+    <string name="manage_subscription_expires">到期时间</string>
+    <string name="manage_subscription_auto_renew">自动续费</string>
+    <string name="manage_subscription_auto_renew_enabled">已启用</string>
+    <string name="manage_subscription_details_title">订阅详情</string>
+    <string name="manage_subscription_details_plan">套餐</string>
+    <string name="manage_subscription_details_price">价格</string>
+    <string name="manage_subscription_details_billing">转帐日期</string>
+    <string name="manage_subscription_details_transaction_id">交易ID</string>
+    <string name="manage_subscription_actions_title">管理订阅</string>
+    <string name="manage_subscription_cancel_button">取消订阅</string>
+    <string name="manage_subscription_cancel_info_no_date">取消后，您仍可享受所有专业版功能直到订阅到期。不会立即发生变化。</string>
+    <string name="manage_subscription_support_title">需要帮助？</string>
+    <string name="manage_subscription_support_contact">联系客服</string>
+    <string name="or_label">或</string>
+    <string name="loading">加载中...</string>
+    <string name="select_tags_to_follow">选择要关注的主题</string>
+    <string name="your_feed_title">您的动态</string>
+    <string name="recap_title">回顾</string>
+    <string name="coming_soon">即将推出</string>
+    <string name="coming_soon_subtitle">此功能即将推出</string>
+    <string name="account_menu_show_tips_title">提示</string>
+    <string name="account_menu_media_region_title">媒体地区</string>
+    <string name="account_menu_article_opening_method_title">文章跳转</string>
+    <string name="subscription_plan_title">Zone News 专业版</string>
+    <string name="subscription_plan_billing">按月计费</string>
+
+    <string name="delete_account">删除帐户</string>
+    <string name="delete_account_confirmation_title">删除帐户</string>
+    <string name="delete_account_confirmation_message">您确定要删除您的帐户吗？此操作无法撤销，所有数据将被永久删除。</string>
+    <string name="delete_account_confirm">删除帐户</string>
+    <string name="delete_account_success">帐户已成功删除</string>
+
+    <!-- Missing Popup and Time Strings -->
+    <string name="levity_mode_coming_soon">正向模式即将推出！</string>
+    <string name="no_news_data">暂无新闻数据</string>
+    <string name="check_back_later">请稍后再试</string>
+
+    <!-- Additional Missing Strings -->
+    <string name="tutorial_coming_soon">教程即将推出！</string>
+    <string name="trending_search_title">热门搜索</string>
+    <string name="submitting">正在提交...</string>
+    <string name="instagram">打开 Instagram</string>
+    <string name="facebook">打开 Facebook</string>
+    <string name="x_twitter">打开 X (Twitter)</string>
+    <string name="linkedin">打开 LinkedIn</string>
+    <string name="website">打开网站</string>
+    <string name="order">排序</string>
+    <string name="ascending">升序</string>
+    <string name="descending">降序</string>
+
+    <!-- Timeline strings -->
+
+
+    <!-- Timeline Mock Data -->
+
+    <!-- Notification Popup Strings -->
+    <string name="toast_theme">主题：%1$s</string>
+    <string name="toast_landing_page">首页：%1$s</string>
+    <string name="toast_article_opening">文章跳转：%1$s</string>
+    <string name="toast_icon_light">图标：浅色\n需要重启应用</string>
+    <string name="toast_icon_dark">图标：深色\n需要重启应用</string>
+    <string name="toast_icon_updated">图标已更新\n需要重启应用</string>
+    <string name="toast_icon_change_failed">更换图标失败，请重试。</string>
+    <string name="toast_settings_reset">设置已重置为默认值</string>
+
+    <!-- Additional Subscription Strings -->
+    <string name="manage_subscription_cancel_confirmation_message">您确定要取消订阅吗？您将继续享有服务直到当前计费周期结束。</string>
+    <string name="manage_subscription_cancel_confirmation_confirm">取消订阅</string>
+    <string name="subscription_cancel_success">订阅已成功取消</string>
+    <string name="subscription_support_email_subject">Zone News 专业版支持</string>
+    <string name="no_email_app_found">未找到邮件应用</string>
+
+    <!-- Widget Strings -->
+    <string name="widget_detailed_name">Zone News - 详细版</string>
+    <string name="widget_detailed_description">显示最新新闻的所有详情，包括地区、话题、标题、情感和文章数量</string>
+    <string name="widget_compact_name">Zone News - 简洁版</string>
+    <string name="widget_compact_description">显示最新新闻标题、图片和情感条</string>
+    <string name="widget_news_image">新闻图片</string>
+    <string name="widget_tap_to_refresh">点击刷新</string>
+    <string name="widget_loading">正在加载新闻…</string>
+    <string name="widget_no_data">暂无新闻</string>
+
+    <!-- Publisher Info Popup -->
+    <string name="region">地区</string>
+    <string name="type">类型</string>
+    <string name="conglomerate">所属集团</string>
+    <string name="controller">控制人</string>
+    <string name="visit_website">浏览网站</string>
 </resources>

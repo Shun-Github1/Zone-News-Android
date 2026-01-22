@@ -17,7 +17,7 @@
         android:overScrollMode="never" />
 
     <!-- Progress tracker - positioned lower on the right -->
-    <com.anssy.znewspro.selfview.RecapProgressTracker
+    <com.searcher.zonenews.selfview.RecapProgressTracker
         android:id="@+id/recap_progress_tracker"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

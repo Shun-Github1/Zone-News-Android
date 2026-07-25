@@ -106,6 +106,45 @@
                         android:background="@drawable/profile_card_background"
                         android:padding="20dp">
 
+                        <!-- Plan Selection Toggle -->
+                        <RadioGroup
+                            android:id="@+id/planSelectionGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/toggle_background"
+                            android:checkedButton="@+id/radioMonthly"
+                            android:padding="4dp"
+                            android:layout_marginBottom="20dp">
+
+                            <RadioButton
+                                android:id="@+id/radioMonthly"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/toggle_selector"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="@string/subscription_plan_monthly"
+                                android:textColor="@color/toggle_text_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/radioYearly"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/toggle_selector"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="@string/subscription_plan_yearly"
+                                android:textColor="@color/toggle_text_color"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+                        </RadioGroup>
+
                         <!-- Plan Info -->
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -141,6 +180,21 @@
                                 android:text="@string/subscription_plan_billing"
                                 android:textSize="14sp"
                                 android:textColor="@color/colorTextSecondary" />
+                                
+                             <!-- Savings Badge (for Yearly) -->
+                            <TextView
+                                android:id="@+id/savingsBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/subscription_save_percent"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white"
+                                android:background="@drawable/active_badge_background"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="2dp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                         <!-- Features List -->

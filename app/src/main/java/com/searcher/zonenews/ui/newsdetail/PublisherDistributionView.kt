@@ -69,9 +69,17 @@ class PublisherDistributionView @JvmOverloads constructor(
 		val all = ArrayList<Pair<Icon, Boolean>>()
 		all.addAll(d.centricIcons.map { it to false })
 		all.addAll(d.progressiveIcons.map { it to true })
-		all.forEach { (icon, isProg) ->
+
+		// For each publisher (unique logo URL), display only the earliest instance (highest ry)
+		val deduplicated = all.groupBy { it.first.logo }
+			.map { entry ->
+				entry.value.maxByOrNull { it.first.ry }!!
+			}
+
+		deduplicated.forEach { (icon, isProg) ->
 			val iv = ImageView(context)
 			iv.scaleType = ImageView.ScaleType.CENTER_CROP
+			iv.setBackgroundResource(R.drawable.bg_white_circle)
 			Glide.with(iv).load(icon.logo).placeholder(R.drawable.ic_image_not_supported_24).error(R.drawable.ic_image_not_supported_24).into(iv)
 			iv.clipToOutline = true
 			iv.tag = Pair(icon, isProg)

@@ -207,7 +207,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Saved Articles -->
@@ -335,7 +335,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Language -->
@@ -386,7 +386,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Notifications -->
@@ -491,7 +491,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginStart="44dp"
+                            android:layout_marginStart="60dp"
                             android:background="@color/line_color" />
                         
                         <!-- Follows Topics Toggle -->
@@ -540,7 +540,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Media Region -->
@@ -860,7 +860,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Landing Page -->
@@ -1130,7 +1130,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Article Opening Method -->
@@ -1476,7 +1476,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- App Icon -->
@@ -1686,7 +1686,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Show Tips Again -->
@@ -1736,7 +1736,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Feedback -->
@@ -1787,7 +1787,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- About Us -->
@@ -1838,7 +1838,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginStart="44dp"
+                        android:layout_marginStart="60dp"
                         android:background="@color/line_color" />
                     
                     <!-- Logout -->

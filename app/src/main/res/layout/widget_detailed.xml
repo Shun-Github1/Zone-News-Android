@@ -97,11 +97,11 @@
             <TextView
                 android:id="@+id/widget_headline"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:maxLines="3"
                 android:ellipsize="end"
                 tools:text="Breaking: Major policy changes announced in latest press conference" />
 
@@ -179,6 +179,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorTextSmall"
                     android:textSize="10sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     tools:text="12 articles" />
 
                 <TextView
@@ -195,6 +197,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorTextSmall"
                     android:textSize="10sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     tools:text="3 hours ago" />
             </LinearLayout>
         </LinearLayout>

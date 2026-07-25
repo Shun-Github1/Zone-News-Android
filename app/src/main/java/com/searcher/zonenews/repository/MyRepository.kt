@@ -42,6 +42,10 @@ class MyRepository @Inject constructor(private val appHttpService: AppHttpServic
         return appHttpService.cancelSubscription()
     }
 
+    suspend fun saveNews(requestBody: okhttp3.RequestBody): GenericResponse<CommonResponseEntry> {
+        return appHttpService.saveNewsHis(requestBody)
+    }
+
     suspend fun deleteAccount(requestBody: okhttp3.RequestBody): GenericResponse<CommonResponseEntry> {
         return appHttpService.deleteAccount(requestBody)
     }

@@ -36,6 +36,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:largeHeap="true"
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -64,6 +65,7 @@
             android:exported="true"
             android:theme="@style/horizontal_slide"
             android:launchMode="singleTask"
+            android:configChanges="locale|layoutDirection"
             android:screenOrientation="portrait">
             <!-- Custom scheme deep links -->
             <intent-filter>
@@ -80,20 +82,37 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                
                 <data android:scheme="https" />
                 <data android:host="zonenews.io" />
+                <data android:host="www.zonenews.io" />
+
+                <!-- Home & Main Sections -->
+                <data android:path="/" />
+                <data android:path="/home" />
+                <data android:path="/china" />
+                <data android:path="/hk" />
+                <data android:path="/world" />
+                <data android:path="/today" />
+                <data android:path="/search" />
+                <data android:path="/recap" />
+                <data android:path="/levity" />
+
+                <!-- Article & Levity Article -->
                 <data android:pathPrefix="/article/" />
+                <data android:pathPrefix="/levity/article/" />
+                
+                <!-- Account & Other -->
+                <data android:pathPrefix="/account/" />
+                <data android:pathPrefix="/topics/" />
+                <data android:path="/personal" />
+                <data android:path="/login" />
+                <data android:path="/register" />
+                <data android:path="/subscribe" />
             </intent-filter>
             
-            <!-- Android App Links for www.zonenews.io (HTTPS deep links) -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" />
-                <data android:host="www.zonenews.io" />
-                <data android:pathPrefix="/article/" />
-            </intent-filter>
+
+
         </activity>
 
 
@@ -161,6 +180,18 @@
             android:label="Notification Test"
             android:screenOrientation="portrait"
             />
+            
+        <activity android:name="com.searcher.zonenews.ui.activity.LevityFeedActivity"
+            android:exported="false"
+            android:theme="@style/horizontal_slide"
+            android:screenOrientation="portrait"
+            />
+            
+        <activity android:name="com.searcher.zonenews.ui.activity.LevityDetailActivity"
+            android:exported="false"
+            android:theme="@style/horizontal_slide"
+            android:screenOrientation="portrait"
+            />
         
 
 
@@ -213,6 +244,9 @@
             <intent-filter>
                 <action android:name="com.searcher.zonenews.widget.ACTION_REFRESH_DETAILED" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.searcher.zonenews.widget.ACTION_REFRESH" />
+            </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_detailed_info" />
@@ -228,6 +262,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="com.searcher.zonenews.widget.ACTION_REFRESH_COMPACT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.searcher.zonenews.widget.ACTION_REFRESH" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

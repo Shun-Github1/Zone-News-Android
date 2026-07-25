@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="publisher_icon_stroke_width">2dp</dimen>
+</resources>

@@ -76,17 +76,10 @@ class SavedArticlesBottomSheetFragment : BottomSheetDialogFragment() {
         loadData()
     }
     
-    override fun onStart() {
-        super.onStart()
-        
-        // Force bottom sheet to fully expanded state
-        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-        bottomSheet?.let {
-            val behavior = BottomSheetBehavior.from(it)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-    }
+
     
+
+
     private fun setupViewModel() {
         myModel = ViewModelProvider(requireActivity())[MyModel::class.java]
         
@@ -619,7 +612,6 @@ class SavedArticlesBottomSheetFragment : BottomSheetDialogFragment() {
         intent.putExtra("id", articleId)
         intent.putExtra("source_fragment", "my")
         startActivity(intent)
-        dismiss()
     }
     
     /**

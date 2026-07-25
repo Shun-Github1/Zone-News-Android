@@ -1,4 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="quote_open">\u201C</string>
+    <string name="quote_close">\u201D</string>
     <string name="app_name" >Zone News</string>
 
     <string name="facebook_app_id">2833216987066254</string>
@@ -34,6 +36,12 @@
     <string name="facebook_login">Continue with Facebook</string>
     <string name="apple_login">Sign in with Apple</string>
     <string name="feedback">Feedback</string>
+    <string name="edit_mode">Rearrange Page</string>
+    <string name="rearrange_mode_toast">Cards temporarily collapsed</string>
+    <string name="rearrange_done">Confirm Changes</string>
+    <string name="rearrange_success">Changes Saved</string>
+    <string name="rearrange_cancel">Cancel</string>
+    <string name="summary_settings">Summary Settings</string>
     <string name="feedback_subtitle">Send us your feedback</string>
     <string name="context">Generate Context</string>
     <string name="sentiment_score">Media Sentiment</string>
@@ -74,7 +82,7 @@
     <string name="levity_mode_coming_soon">Levity Mode is coming soon!</string>
     <string name="levity_mode_upgrade">Upgrade to unlock Levity Mode</string>
     <string name="account_menu_article_opening_method_title">Article Redirection</string>
-    <string name="account_menu_article_opening_method_subtitle">Select the method to open external articles</string>
+    <string name="account_menu_article_opening_method_subtitle">Select how article links are opened</string>
     <string name="article_opening_in_app">Use in-app browser</string>
     <string name="article_opening_external">Open links with default browser or external apps</string>
     <string name="account_menu_appearance_title">Appearance</string>
@@ -115,8 +123,9 @@
     <string name="subscription_pro_active">Zone News Pro</string>
     <string name="subscription_expires">Expires</string>
     <string name="subscription_plan_title">Zone News Pro</string>
-    <string name="subscription_plan_price">HK$18/month</string>
+    <string name="subscription_plan_price">--</string>
     <string name="subscription_plan_billing">Billed Monthly</string>
+    <string name="subscription_plan_billing_yearly">Billed Yearly</string>
     <string name="subscription_features_title">Pro Features</string>
     <string name="subscription_feature_ad_free">Ad-Free Experience</string>
     <string name="subscription_feature_ad_free_description">Enjoy news without any advertisements</string>
@@ -148,6 +157,12 @@
     <string name="subscription_restore_failed">No purchases found to restore</string>
     <string name="subscription_screenshot">Screenshot</string>
     
+    <string name="subscription_restore_loading">Restoring purchases...</string>
+    
+    <string name="subscription_plan_monthly">Monthly</string>
+    <string name="subscription_plan_yearly">Yearly</string>
+    <string name="subscription_save_percent">Save %d%%</string>
+
     <!-- Manage Subscription Page Strings -->
     <string name="manage_subscription_title">Manage Subscription</string>
     <string name="manage_subscription_status_title">Pro Member</string>
@@ -183,7 +198,7 @@
     <string name="earliest">Publication date, from earliest</string>
     <string name="most_popular">Most Popular</string>
     <string name="most_relevant">Most Relevant</string>
-    <string name="select_topics">Select Topics</string>
+    <string name="select_topics">Select Tags</string>
     <string name="done">Done</string>
     <string name="topics_loading">Loading topics...</string>
     <string name="topics_error_loading">Failed to load topics</string>
@@ -285,6 +300,25 @@
     <string name="placeholder_text">Placeholder</string>
     <string name="close">Close</string>
     <string name="no_data_message">No relevant data</string>
+    <string name="key_quotes_title">Key Quotes</string>
+    <string name="key_quotes_see_all">See all</string>
+
+    <!-- Quote Categories -->
+    <string name="quote_category_academic">Academic</string>
+    <string name="quote_category_administrative">Administrative</string>
+    <string name="quote_category_charity">Charity</string>
+    <string name="quote_category_corporate">Corporate</string>
+    <string name="quote_category_education">Education</string>
+    <string name="quote_category_emergency">Emergency Services</string>
+    <string name="quote_category_entertainment">Entertainment</string>
+    <string name="quote_category_finance">Finance</string>
+    <string name="quote_category_legal">Legal</string>
+    <string name="quote_category_media">Media</string>
+    <string name="quote_category_medical">Medical Profession</string>
+    <string name="quote_category_military">Military</string>
+    <string name="quote_category_other">Other</string>
+    <string name="quote_category_political">Political</string>
+    <string name="quote_category_sports">Sports</string>
     <string name="english">English</string>
     <string name="traditional_chinese">繁體中文</string>
     <string name="simplified_chinese">简体中文</string>
@@ -301,9 +335,9 @@
     <string name="found_results">Found 0 results related to \"\"</string>
     <string name="found_results_format">Found %1$d results related to \"%2$s\"</string>
     <string name="tag">Tag</string>
-    <string name="currently_sorted_by">Sorting</string>
+    <string name="currently_sorted_by">Sort by</string>
     <string name="latest_sort">Latest</string>
-    <string name="active_tags">Following</string>
+    <string name="active_tags">Follow</string>
     <string name="select_tags_to_follow">Select tags to follow</string>
     <string name="your_feed_title">Your Feed</string>
     <string name="recap_title">Recap</string>
@@ -349,6 +383,7 @@
     <string name="our_webpage">our webpage</string>
     <string name="publisher_distribution_description">Map of media reporting patterns: X-axis - media bias, Y-axis - timing of reporting, size of circles - accessed media significance.\nFor more details, visit our webpage .</string>
     <string name="subjectivity_algorithm_description">How subjective media reporting on this event is, based on text analysis of articles.\nFor more details, visit our webpage .</string>
+    <string name="key_quotes_description">Top quotes from the event, categorized by entity and topic.\nFor more details, visit our webpage .</string>
     <string name="ok">OK</string>
     <string name="news_type">news</string>
     <string name="fragment_special">special</string>
@@ -375,7 +410,8 @@
     <string name="empty_string">""</string>
     <string name="text_plain">text/plain</string>
     <string name="http_prefix">https://</string>
-    <string name="example_website">https://www.example.com</string>
+    <string name="example_website">https://zonenews.io/user-guide</string>
+    <string name="about_us_website">https://zonenews.io/about-us</string>
     <string name="null_string">null</string>
     <string name="url_key">url</string>
     <string name="type_key">type</string>
@@ -517,7 +553,7 @@
     <string name="region_uk">UK</string>
     <string name="region_usa">USA</string>
     <string name="register">Register</string>
-    <string name="related">Related</string>
+    <string name="related">Related News</string>
     <string name="relevant_topics">Relevant Topics</string>
     <string name="report_count_format">%d articles</string>
     <string name="sentiment_analysis_label">Sentiment Analysis</string>
@@ -591,6 +627,25 @@
     <string name="toast_icon_change_failed">Failed to change app icon. Please try again.</string>
     <string name="toast_settings_reset">Settings reset to default</string>
 
+    <!-- Billing Error Strings -->
+    <string name="billing_error_purchase_failed">Purchase failed: %1$s</string>
+    <string name="billing_error_acknowledge_failed">Acknowledge failed: %1$s</string>
+    <string name="billing_error_verification_failed">Verification failed</string>
+    <string name="billing_error_network">Network error</string>
+    <string name="billing_error_unknown">Unknown error</string>
+    <string name="billing_error_no_subscriptions">No active subscriptions found</string>
+    <string name="billing_error_restore_failed">Restore failed: %1$s</string>
+    <string name="subscription_price_period_format">%1$s / %2$s</string>
+    
+    <!-- Trial strings -->
+    <string name="subscription_trial_billed_monthly">%1$s free, then billed monthly</string>
+    <string name="subscription_trial_billed_yearly">%1$s free, then billed yearly</string>
+    <string name="subscription_start_trial">Start Free Trial</string>
+    <string name="trial_7_days">7 Days</string>
+    <string name="trial_14_days">14 Days</string>
+    <string name="trial_1_month">1 Month</string>
+    <string name="trial_3_days">3 Days</string>
+
     <!-- Additional Subscription Strings -->
     <string name="subscription_support_email_subject">Zone News Pro Support</string>
     <string name="no_email_app_found">No email app found</string>
@@ -638,4 +693,81 @@
     <string name="error_weak_password">Password must be at least 8 characters with letters and numbers.</string>
     <string name="error_verification_failed">Verification failed. Please try again.</string>
     <string name="error_unsupported_operation">This operation is not supported.</string>
+    <!-- Levity Strings -->
+    <string name="levity_mode_title">Levity Mode</string>
+    <string name="levity_exit_dialog_title">Leave Levity Mode?</string>
+    <string name="levity_exit_dialog_message">Return to regular news feed?</string>
+    <string name="levity_exit_dialog_stay">Stay</string>
+    <string name="levity_exit_dialog_leave">Leave</string>
+    <string name="levity_refresh">Refresh</string>
+    <string name="levity_coming_soon_title">Coming soon!</string>
+    <string name="levity_coming_soon_message">This feature is coming soon!</string>
+    <string name="levity_loading_message">Finding positive news...</string>
+    <string name="levity_empty_title">No positive news right now</string>
+    <string name="levity_empty_subtitle">Check back soon for uplifting stories!</string>
+    <string name="levity_error_failed">Failed to load positive news. Please try again.</string>
+    <string name="levity_detail_loading">Loading positive vibes...</string>
+    <string name="levity_positive_vibes">Positive Vibes</string>
+    <string name="levity_summary">Summary</string>
+    <string name="levity_why_it_matters">Why it matters</string>
+    <string name="levity_timeline_footer">Part of an ongoing positive story</string>
+    <string name="sentiment_uplifting">Uplifting</string>
+    <string name="levity_sentiment_positive">Positive</string>
+    <string name="sentiment_hopeful">Hopeful</string>
+    <string name="sentiment_desc_uplifting">This story radiates joy and optimism! ✨</string>
+    <string name="sentiment_desc_positive">An uplifting and hopeful piece of news. 😊</string>
+    <string name="sentiment_desc_hopeful">A positive development worth celebrating. 🌟</string>
+    <string name="levity_button">Levity</string>
+    <string name="levity_enter_mode_a11y">Enter Levity Mode</string>
+    <string name="levity_enter_dialog_title">Enter Levity Mode?</string>
+    <string name="levity_enter_dialog_message">Enjoy a lighter, positive news experience.</string>
+    <string name="levity_enter_dialog_confirm">Enter</string>
+    <string name="levity_view_only_positive_hint">View only positive, uplifting news</string>
+    <string name="levity_upgrade_hint">Upgrade to Pro to access Levity Mode</string>
+
+    <!-- Tag News popup -->
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="no_tag_news">No articles found</string>
+    <string name="no_tag_news_subtitle">There are no articles for this tag yet.</string>
+
+    <!-- Tutorial System -->
+    <string name="tutorial_tap_to_continue">Tap anywhere to continue</string>
+    <string name="continue_text">Continue</string>
+    
+    <!-- Welcome Poster -->
+    <string name="tutorial_home_welcome">Welcome to your one stop news platform for the future! Let\'s go through some of the main features.</string>
+    
+    <!-- Homepage Tutorial Steps -->
+    <string name="tutorial_home_step1_title">Welcome to Zone News</string>
+    <string name="tutorial_home_step1_message">Home page is your default news feed, showing breaking and relevant news from around the world. </string>
+    <string name="tutorial_home_step1">Each row shows a news story. Tap to read more, or swipe to see more stories.</string>
+    <string name="tutorial_home_sentiment_bar">The sentiment bar shows how positive or negative the media coverage is for this story.</string>
+    
+    <string name="tutorial_personal_step1_message">This is your personalized news feed. Swipe through to discover stories curated for you.</string>
+    <!-- Personal Page (Your Feed) Tutorial Steps -->
+    <string name="tutorial_personal_active_tags">These are your active tags. Tap a tag to filter news, or tap the arrow to manage your followed tags.</string>
+    <string name="tutorial_personal_recap">Tap Recap to get a personalized summary of today\'s top stories based on your interests.</string>
+    <string name="tutorial_personal_levity">Levity Mode shows only positive, uplifting news. Perfect for when you need a break from heavy stories.</string>
+    <string name="tutorial_home_levity_button">Tap here to enter Levity Mode for positive, uplifting news stories.</string>
+    
+    <!-- News Detail Page Tutorial Steps -->
+    <string name="tutorial_detail_summary_settings">Tap the Settings button to customize how article summaries are displayed.</string>
+    <string name="tutorial_detail_sentiment_meter">This bar represents the net media sentiment towards this event, calculated through the ratio of positive and negative coded language.</string>
+    <string name="tutorial_detail_media_distribution">The Media Distribution chart shows which publishers are covering this story and their political lean.</string>
+    <string name="tutorial_detail_subjectivity">This score represents how subjective media reporting on this event is overall: a higher score means the language used is more emotive.</string>
+    <string name="tutorial_detail_article_card">Tap on any article card to read the full story from that publisher.</string>
+    
+    <!-- Tutorial completed messages -->
+    <string name="tutorial_complete">Tutorial complete! Enjoy exploring Zone News.</string>
+    <string name="tutorial_skip">Skip Tutorial</string>
+    
+    <!-- Show Tips Again functionality -->
+    <string name="tips_reset_success">Tutorials will show again on each page.</string>
+    <string name="tips_reset_dialog_title">Show Tips Again</string>
+    <string name="tips_reset_dialog_message">This will revert some settings temporarily.</string>
+    <string name="tips_reset_dialog_confirm">Show Tips</string>
+    <string name="tips_reset_dialog_cancel">Cancel</string>
+
+    <string name="article_unavailable">Article not available</string>
 </resources>

@@ -27,4 +27,32 @@ class HomeRepository @Inject constructor(private val appHttpService: AppHttpServ
         }
         return appHttpService.getHomeData(tag, offset, pageSize, language)
     }
+    
+    suspend fun queryFeedByTopic(
+        topic: String,
+        pageNo: Int? = null,
+        pageSize: Int? = null,
+        language: String? = null
+    ): HomeDataListEntry {
+        val offset = if (pageNo != null && pageSize != null) {
+            (pageNo - 1) * pageSize
+        } else {
+            null
+        }
+        return appHttpService.getFeedByTopic(topic, offset, pageSize, language)
+    }
+
+    suspend fun getLevityFeed(
+        language: String? = null,
+        pageNo: Int? = null,
+        pageSize: Int? = null
+    ): HomeDataListEntry {
+        // Calculate zero-based offset
+        val offset = if (pageNo != null && pageSize != null) {
+            (pageNo - 1) * pageSize
+        } else {
+            null
+        }
+        return appHttpService.getLevityFeed(language, offset, pageSize)
+    }
 }

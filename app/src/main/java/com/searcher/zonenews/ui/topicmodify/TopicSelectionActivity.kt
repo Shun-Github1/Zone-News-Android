@@ -140,6 +140,10 @@ class TopicSelectionActivity : BaseActivity() {
                 loadAllData()
             }
         })
+        
+        // Start shimmer
+        mViewBinding.shimmerViewContainer.visibility = View.VISIBLE
+        mViewBinding.shimmerViewContainer.startShimmer()
     }
     
     private fun setupSearchBar() {
@@ -407,6 +411,11 @@ class TopicSelectionActivity : BaseActivity() {
             mViewBinding.smartRefresh.finishRefresh(success)
             isRefreshing = false
         }
+        // Stop shimmer if visible
+        if (mViewBinding.shimmerViewContainer.isVisible) {
+            mViewBinding.shimmerViewContainer.stopShimmer()
+            mViewBinding.shimmerViewContainer.visibility = View.GONE
+        }
     }
     
     private fun updateDisplayList() {
@@ -426,7 +435,15 @@ class TopicSelectionActivity : BaseActivity() {
                 if (filteredRegions.isNotEmpty()) {
                     newDisplayList.add(DisplayItem.Section(sectionRegionsString, filteredRegions))
                 }
-                val filteredTrendingAll = filterTopics(trendingListAll)
+                
+                // Get duplicate tags from sectors to filter out of trending
+                val sectorTags = filteredSectors.map { it.tag }.toSet()
+                
+                // Filter trending topics: respect search query AND exclude topics already shown in sectors
+                val filteredTrendingAll = filterTopics(trendingListAll).filter { 
+                    !sectorTags.contains(it.tag)
+                }
+                
                 if (filteredTrendingAll.isNotEmpty()) {
                     newDisplayList.add(DisplayItem.Section(sectionTrendingString, filteredTrendingAll))
                 }
@@ -456,6 +473,12 @@ class TopicSelectionActivity : BaseActivity() {
         displayList.clear()
         displayList.addAll(newDisplayList)
         mAdapter.notifyDataSetChanged()
+        
+        // Stop shimmer if we have data to show
+        if (newDisplayList.isNotEmpty() && mViewBinding.shimmerViewContainer.isVisible) {
+            mViewBinding.shimmerViewContainer.stopShimmer()
+            mViewBinding.shimmerViewContainer.visibility = View.GONE
+        }
     }
     
     /**
@@ -464,13 +487,18 @@ class TopicSelectionActivity : BaseActivity() {
      * When search is empty, returns all topics in original backend order.
      */
     private fun filterTopics(topics: List<TopicListEntry.TopicDTO>): List<TopicListEntry.TopicDTO> {
-        // If no search query, return all topics in exact backend order
-        if (searchQuery.isEmpty()) return topics
-        // Only filter by search query - maintain backend order
-        return topics.filter { topic ->
-            topic.displayName.contains(searchQuery, ignoreCase = true) ||
-            topic.tag.contains(searchQuery, ignoreCase = true)
+        // If no search query, start with all topics, otherwise filter
+        val filtered = if (searchQuery.isEmpty()) {
+            topics
+        } else {
+            topics.filter { topic ->
+                topic.displayName.contains(searchQuery, ignoreCase = true) ||
+                topic.tag.contains(searchQuery, ignoreCase = true)
+            }
         }
+        
+        // Always sort alphabetically by display name
+        return filtered.sortedBy { it.displayName }
     }
     
     private fun updateClearAllButtonVisibility() {
@@ -558,17 +586,20 @@ class TopicSelectionActivity : BaseActivity() {
 
     private fun getTopicIcon(topicTag: String): Int {
         return when (topicTag.lowercase()) {
-            "conflict" -> R.drawable.ic_security_24
+            "conflict" -> R.drawable.ic_topic_conflict
             "culture" -> R.drawable.ic_palette_24
             "diplomacy" -> R.drawable.ic_public_24
-            "economics" -> R.drawable.ic_trending_up_24
-            "entertainment" -> R.drawable.ic_live_tv_24
+            "economics" -> R.drawable.ic_economics_custom
+            "economy" -> R.drawable.ic_storefront
+            "entertainment" -> R.drawable.ic_movie_custom
             "politics" -> R.drawable.ic_account_balance_24
             "science" -> R.drawable.ic_science_24
             "sports" -> R.drawable.ic_sports_soccer_24
             "technology" -> R.drawable.ic_memory_24
-            "military" -> R.drawable.ic_security_24
-            "current-affairs" -> R.drawable.ic_trending_24
+            "military" -> R.drawable.ic_topic_military
+            "current-affairs", "current events", "breaking news" -> R.drawable.ic_breaking_news
+            "criminal", "crime", "law" -> R.drawable.ic_gavel
+            "regional" -> R.drawable.ic_flag_custom
             // Region icons (regions are dynamically fetched from backend)
             "hk" -> R.drawable.ic_flag_24
             "china" -> R.drawable.ic_flag_24
@@ -576,7 +607,7 @@ class TopicSelectionActivity : BaseActivity() {
             "usa" -> R.drawable.ic_flag_24
             "asia-others" -> R.drawable.ic_public_24
             "europe-others" -> R.drawable.ic_public_24
-            else -> R.drawable.shoppingmode_24
+            else -> 0 // No icon for others
         }
     }
     
@@ -651,11 +682,25 @@ class TopicSelectionActivity : BaseActivity() {
                 
                 topicTv.text = topic.displayName
                 
-                // Set topic icon
+                // Set topic icon visibility and divider margin
                 val iconRes = getTopicIcon(topic.tag)
-                topicIcon.setImageResource(iconRes)
-                topicIcon.setColorFilter(getColor(R.color.colorTextMiddle))
-                topicIcon.tag = iconRes
+                val density = container.resources.displayMetrics.density
+                val dividerParams = divider.layoutParams as ViewGroup.MarginLayoutParams
+                
+                if (iconRes != 0) {
+                    topicIcon.visibility = View.VISIBLE
+                    topicIcon.setImageResource(iconRes)
+                    topicIcon.setColorFilter(getColor(R.color.colorTextMiddle))
+                    topicIcon.tag = iconRes
+                    // Divider starts at 56dp (20dp padding + 20dp icon + 16dp margin)
+                    dividerParams.marginStart = (56 * density).toInt()
+                } else {
+                    topicIcon.visibility = View.GONE
+                    topicIcon.tag = 0
+                    // Divider starts at 20dp (padding only)
+                    dividerParams.marginStart = (20 * density).toInt()
+                }
+                divider.layoutParams = dividerParams
                 
                 // Hide divider for last item
                 divider.visibility = if (index == topics.size - 1) View.GONE else View.VISIBLE
@@ -703,9 +748,23 @@ class TopicSelectionActivity : BaseActivity() {
                     topicTv.text = topic.displayName
                     
                     val iconRes = getTopicIcon(topic.tag)
-                    topicIcon.setImageResource(iconRes)
-                    topicIcon.setColorFilter(getColor(R.color.colorTextMiddle))
-                    topicIcon.tag = iconRes
+                    val density = container.resources.displayMetrics.density
+                    val dividerParams = divider.layoutParams as ViewGroup.MarginLayoutParams
+                    
+                    if (iconRes != 0) {
+                        topicIcon.visibility = View.VISIBLE
+                        topicIcon.setImageResource(iconRes)
+                        topicIcon.setColorFilter(getColor(R.color.colorTextMiddle))
+                        topicIcon.tag = iconRes
+                        // Divider starts at 56dp
+                        dividerParams.marginStart = (56 * density).toInt()
+                    } else {
+                        topicIcon.visibility = View.GONE
+                        topicIcon.tag = 0
+                        // Divider starts at 20dp
+                        dividerParams.marginStart = (20 * density).toInt()
+                    }
+                    divider.layoutParams = dividerParams
                 }
                 
                 // Hide divider for last item

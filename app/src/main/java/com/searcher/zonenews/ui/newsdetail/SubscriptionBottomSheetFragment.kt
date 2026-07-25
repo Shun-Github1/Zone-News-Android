@@ -37,6 +37,12 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.google.firebase.auth.FirebaseAuth
 
+import com.searcher.zonenews.billing.BillingManager
+import com.android.billingclient.api.ProductDetails
+import android.widget.RadioGroup
+import android.widget.RadioButton
+import android.widget.TextView
+
 class SubscriptionBottomSheetFragment : BottomSheetDialogFragment() {
     
     private var _binding: FragmentSubscriptionBottomSheetBinding? = null
@@ -48,6 +54,19 @@ class SubscriptionBottomSheetFragment : BottomSheetDialogFragment() {
     private var hasShownCancelMessage = false // Track if we've shown cancel message in this session
     private var isRedeemCodeOperation = false // Track if we're currently processing a redeem code operation
     private var isDeleteAccountOperation = false // Track if we're involved in delete account operation
+    
+    // Billing variables
+    private var activeProductDetails: ProductDetails? = null
+    private var monthlyOfferToken: String? = null
+    private var yearlyOfferToken: String? = null
+    private var isMonthlySelected = true
+    private var monthlyPrice: String = ""
+    private var yearlyPrice: String = ""
+    private var monthlyPriceMicros: Long = 0
+    private var yearlyPriceMicros: Long = 0
+    private var monthlyTrialPeriod: String = ""
+    private var yearlyTrialPeriod: String = ""
+
     
     companion object {
         fun newInstance(isPro: Boolean = false): SubscriptionBottomSheetFragment {
@@ -191,7 +210,150 @@ class SubscriptionBottomSheetFragment : BottomSheetDialogFragment() {
         
         // Load current profile
         myModel.queryMyFormation()
+        
+        // Observe billing data
+        myModel.productDetails.observe(viewLifecycleOwner) { detailsList ->
+            if (detailsList.isNotEmpty()) {
+                activeProductDetails = detailsList[0] // Assuming one product "pro_subscription"
+                processSubscriptionOffers(activeProductDetails!!)
+            }
+        }
+        
+        myModel.purchaseState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is BillingManager.PurchaseState.Loading -> {
+                    // Show loading if needed
+                    binding.subscribeButton.text = getString(R.string.loading)
+                    binding.subscribeButton.isEnabled = false
+                }
+                is BillingManager.PurchaseState.PurchaseSuccess -> {
+                    binding.subscribeButton.text = getString(R.string.subscription_subscribe_button)
+                    binding.subscribeButton.isEnabled = true
+                    ToastUtils.showShortToast(requireContext(), getString(R.string.subscription_redeem_success)) // Reuse string or add new "Subscribed"
+                    myModel.queryMyFormation() // Refresh profile
+                }
+                is BillingManager.PurchaseState.Error -> {
+                    binding.subscribeButton.text = getString(R.string.subscription_subscribe_button)
+                    binding.subscribeButton.isEnabled = true
+                    if (state.message.contains("Restore", true)) {
+                         ToastUtils.showShortToast(requireContext(), state.message)
+                    } else if (state.message.contains("Purchase failed", true)) {
+                        // Don't show toast for user cancellation usually, but manager handles it.
+                        // If specific error, show it
+                        if (!state.message.contains("User cancelled")) {
+                            ToastUtils.showShortToast(requireContext(), state.message)
+                        }
+                    } else {
+                         ToastUtils.showShortToast(requireContext(), state.message)
+                    }
+                }
+                is BillingManager.PurchaseState.Idle -> {
+                    binding.subscribeButton.text = getString(R.string.subscription_subscribe_button)
+                    binding.subscribeButton.isEnabled = true
+                }
+            }
+        }
     }
+    
+    private fun processSubscriptionOffers(productDetails: ProductDetails) {
+        val offerDetails = productDetails.subscriptionOfferDetails
+        if (offerDetails.isNullOrEmpty()) return
+        
+        // Find monthly and yearly offers based on base plan ID
+        for (offer in offerDetails) {
+            val basePlanId = offer.basePlanId
+            val pricingPhases = offer.pricingPhases.pricingPhaseList
+            
+            // Find the recurring phase (price > 0 for standard subscription, or recurrence mode is infinite)
+            // We look for the phase that defines the actual subscription cost
+            val recurringPhase = pricingPhases.find { it.priceAmountMicros > 0 } ?: pricingPhases.firstOrNull()
+            
+            // Check for free trial (price is 0)
+            val trialPhase = pricingPhases.find { it.priceAmountMicros == 0L }
+            
+            if (basePlanId == BillingManager.BASE_PLAN_MONTHLY) {
+                monthlyOfferToken = offer.offerToken
+                monthlyPrice = recurringPhase?.formattedPrice ?: ""
+                monthlyPriceMicros = recurringPhase?.priceAmountMicros ?: 0L
+                monthlyTrialPeriod = if (trialPhase != null) parseIsoDuration(trialPhase.billingPeriod) else ""
+            } else if (basePlanId == BillingManager.BASE_PLAN_YEARLY) {
+                yearlyOfferToken = offer.offerToken
+                yearlyPrice = recurringPhase?.formattedPrice ?: ""
+                yearlyPriceMicros = recurringPhase?.priceAmountMicros ?: 0L
+                yearlyTrialPeriod = if (trialPhase != null) parseIsoDuration(trialPhase.billingPeriod) else ""
+            }
+        }
+        
+        updatePriceDisplay()
+    }
+    
+    private fun parseIsoDuration(isoDuration: String): String {
+        return try {
+            // Simple logic for P1W, P7D, P1M etc.
+            when {
+                isoDuration.contains("P1W") || isoDuration.contains("P7D") -> getString(R.string.trial_7_days)
+                isoDuration.contains("P2W") || isoDuration.contains("P14D") -> getString(R.string.trial_14_days)
+                isoDuration.contains("P1M") || isoDuration.contains("P30D") -> getString(R.string.trial_1_month)
+                isoDuration.contains("P3D") -> getString(R.string.trial_3_days)
+                else -> ""
+            }
+        } catch (e: Exception) {
+            ""
+        }
+    }
+    
+    private fun updatePriceDisplay() {
+        if (isMonthlySelected) {
+            binding.planPriceText.text = if (monthlyPrice.isNotEmpty()) getString(R.string.subscription_price_period_format, monthlyPrice, getString(R.string.subscription_plan_monthly)) else getString(R.string.loading)
+            
+            // Show trial if available
+            if (monthlyTrialPeriod.isNotEmpty()) {
+                binding.planBillingText.text = getString(R.string.subscription_trial_billed_monthly, monthlyTrialPeriod)
+            } else {
+                binding.planBillingText.text = getString(R.string.subscription_plan_billing)
+            }
+            binding.savingsBadge.isVisible = false
+            
+            // Update button text for trial
+            if (monthlyTrialPeriod.isNotEmpty() && !isProUser) {
+                binding.subscribeButton.text = getString(R.string.subscription_start_trial)
+            } else if (!isProUser) {
+                 binding.subscribeButton.text = getString(R.string.subscription_subscribe_button)
+            }
+        } else {
+            binding.planPriceText.text = if (yearlyPrice.isNotEmpty()) getString(R.string.subscription_price_period_format, yearlyPrice, getString(R.string.subscription_plan_yearly)) else getString(R.string.loading)
+            
+            // Show trial if available
+            if (yearlyTrialPeriod.isNotEmpty()) {
+                binding.planBillingText.text = getString(R.string.subscription_trial_billed_yearly, yearlyTrialPeriod)
+            } else {
+                binding.planBillingText.text = getString(R.string.subscription_plan_billing_yearly)
+            }
+            
+            // Calculate savings
+            if (monthlyPriceMicros > 0 && yearlyPriceMicros > 0) {
+                binding.savingsBadge.isVisible = true
+                val annualizedMonthly = monthlyPriceMicros * 12
+                if (annualizedMonthly > yearlyPriceMicros) {
+                    val savingsContent = annualizedMonthly - yearlyPriceMicros
+                    val savingsPercent = (savingsContent.toDouble() / annualizedMonthly.toDouble() * 100).toInt()
+                    binding.savingsBadge.text = String.format(getString(R.string.subscription_save_percent), savingsPercent)
+                } else {
+                     binding.savingsBadge.isVisible = false
+                }
+            } else {
+                binding.savingsBadge.isVisible = false
+            }
+            
+            // Update button text for trial
+             if (yearlyTrialPeriod.isNotEmpty() && !isProUser) {
+                binding.subscribeButton.text = getString(R.string.subscription_start_trial)
+            } else if (!isProUser) {
+                 binding.subscribeButton.text = getString(R.string.subscription_subscribe_button)
+            }
+        }
+    }
+
     
     private fun setupScreenshotsCarousel() {
         screenshotsAdapter = ScreenshotsCarouselAdapter(4)
@@ -260,10 +422,24 @@ class SubscriptionBottomSheetFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         
+        // Plan Selection
+        binding.planSelectionGroup.setOnCheckedChangeListener { _, checkedId ->
+            isMonthlySelected = checkedId == R.id.radioMonthly
+            updatePriceDisplay()
+        }
+        
         // Subscribe button (shown if not Pro)
         binding.subscribeButton.setOnClickListener {
-            // For now, just show a message - actual subscription purchase would be implemented here
-            ToastUtils.showShortToast(requireContext(), getString(R.string.subscription_subscribe_button))
+             if (activeProductDetails != null) {
+                val offerToken = if (isMonthlySelected) monthlyOfferToken else yearlyOfferToken
+                if (offerToken != null) {
+                    myModel.launchPurchaseFlow(requireActivity(), activeProductDetails!!, offerToken)
+                } else {
+                    ToastUtils.showShortToast(requireContext(), getString(R.string.server_error_message))
+                }
+            } else {
+                ToastUtils.showShortToast(requireContext(), getString(R.string.topics_loading))
+            }
         }
         
         // Cancel subscription button (shown if Pro) - in manage page
@@ -278,16 +454,16 @@ class SubscriptionBottomSheetFragment : BottomSheetDialogFragment() {
         
         // Restore purchases button (upgrade page)
         binding.restorePurchasesLayout.setOnClickListener {
-            // For Android, this would typically restore purchases from Google Play
-            // For now, just show a message
-            ToastUtils.showShortToast(requireContext(), getString(R.string.subscription_restore_success))
+            val restoreMsg = getString(R.string.subscription_restore_loading)
+            ToastUtils.showShortToast(requireContext(), restoreMsg)
+            myModel.restorePurchases()
         }
         
         // Restore purchases button (manage page)
         binding.restorePurchasesLayoutManage.setOnClickListener {
-            // For Android, this would typically restore purchases from Google Play
-            // For now, just show a message
-            ToastUtils.showShortToast(requireContext(), getString(R.string.subscription_restore_success))
+            val restoreMsg = getString(R.string.subscription_restore_loading)
+            ToastUtils.showShortToast(requireContext(), restoreMsg)
+            myModel.restorePurchases()
         }
         
         // Contact support button (manage page)
@@ -420,17 +596,20 @@ class SubscriptionBottomSheetFragment : BottomSheetDialogFragment() {
     }
     
     private fun showCancelSubscriptionConfirmation() {
-        // For Android, we'll show a message that subscription will be cancelled through the backend
-        // (Unlike iOS which redirects to Apple ID settings)
         SystemDialogUtils.showAlertDialog(
             requireContext(),
             getString(R.string.manage_subscription_cancel_button),
-            getString(R.string.manage_subscription_cancel_confirmation_message),
-            getString(R.string.manage_subscription_cancel_confirmation_confirm),
+            getString(R.string.manage_subscription_cancel_confirmation_message) + "\n\n" + getString(R.string.manage_subscription_cancel_info_no_date),
+            "Go to Play Store",
             getString(R.string.dialog_button_cancel),
             isDestructive = true,
             onPositiveClick = {
-                myModel.cancelSubscription()
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/account/subscriptions?package=${requireContext().packageName}&sku=${BillingManager.PRODUCT_ID_PRO}"))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    ToastUtils.showShortToast(requireContext(), getString(R.string.topics_error_loading))
+                }
             }
         )
     }

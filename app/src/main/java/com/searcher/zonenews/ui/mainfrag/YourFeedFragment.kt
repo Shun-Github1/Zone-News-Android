@@ -23,6 +23,11 @@ import com.searcher.zonenews.entry.SearchListEntry
 import com.searcher.zonenews.entry.TopicListEntry
 import com.searcher.zonenews.model.PersonRecommendModel
 import com.searcher.zonenews.model.TopicModel
+import com.searcher.zonenews.model.MyModel
+import com.searcher.zonenews.ui.newsdetail.SubscriptionBottomSheetFragment
+import com.searcher.zonenews.ui.newsdetail.TagNewsBottomSheetFragment
+import com.searcher.zonenews.utils.SystemDialogUtils
+
 
 import com.searcher.zonenews.selfview.popup.SortPopupWindow
 import com.searcher.zonenews.ui.MainActivity
@@ -33,6 +38,9 @@ import com.searcher.zonenews.utils.Utils
 import android.widget.LinearLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.ViewPreloadSizeProvider
 
 /**
  * Fragment displaying the "Your Feed" page with personalized news recommendations
@@ -44,6 +52,9 @@ class YourFeedFragment : Fragment() {
     
     private val personRecommendModel: PersonRecommendModel by activityViewModels()
     private val topicModel: TopicModel by activityViewModels()
+    private val myModel: MyModel by activityViewModels()
+    
+    private var isPro = false
     
     private var pageNo = 1
     private val pageSize = 10
@@ -82,12 +93,22 @@ class YourFeedFragment : Fragment() {
         setupSortAndTags()
         observeData()
         personRecommendModel.queryRecommendList(pageNo, pageSize)
+        
+        // Load all topics for optimistic following logic
+        topicModel.queryAllTopics()
     }
     
     override fun onResume() {
         super.onResume()
         // Refresh tags when fragment becomes visible to ensure active tags indicator is up to date
         topicModel.queryMyTopics()
+        
+        // Check if tutorial needs to be shown when fragment becomes visible
+        if (mNewsList.isNotEmpty()) {
+            binding.homeRecycler.post {
+                showTutorialIfNeeded()
+            }
+        }
     }
     
     private fun setupRecyclerView() {
@@ -110,13 +131,36 @@ class YourFeedFragment : Fragment() {
                 }
 
                 override fun onTagClick(tag: TopicListEntry.TopicDTO) {
-                    showTopicSelection()
+                    showTagNews(tag)
+                }
+
+                override fun onTagUnselected(tag: TopicListEntry.TopicDTO) {
+                    removeActiveTag(tag.tag)
+                }
+
+                override fun onFollowTag(tag: String) {
+                    // Use shared optimistic logic to ensure all components stay in sync
+                    topicModel.updateMyTopicsOptimistically(Constants.TYPE_TOPIC_ADD, tag)
+                    
+                    topicModel.editTopic(Constants.TYPE_TOPIC_ADD, tag)
+                    
+                    // No longer refreshing feed content here to avoid disrupting the user's scroll position.
+                    // The new tag will be reflected in the "Active Tags" row via observation, 
+                    // and its content will appear naturally on the next manual refresh or reload.
                 }
             }
         )
         
         // Set adapter directly (no ConcatAdapter)
         binding.homeRecycler.adapter = newsAdapter
+        
+        // --- Batch Image Preloading Logic ---
+        // Preload 7 items ahead forpersonalized feed
+        val sizeProvider = ViewPreloadSizeProvider<SearchListEntry.DataDTO.ArticlesDTO>()
+        val preloader = RecyclerViewPreloader<SearchListEntry.DataDTO.ArticlesDTO>(
+            Glide.with(this), newsAdapter, sizeProvider, 7
+        )
+        binding.homeRecycler.addOnScrollListener(preloader)
         
         // Optimize RecyclerView for variable height items
         binding.homeRecycler.setItemViewCacheSize(20)
@@ -192,6 +236,12 @@ class YourFeedFragment : Fragment() {
     
     @SuppressLint("NotifyDataSetChanged")
     private fun observeData() {
+        myModel.myEntry.observe(viewLifecycleOwner) { response ->
+            if (response != null && response.code == Constants.SUCCESS_CODE) {
+                isPro = response.data?.isPro == true
+            }
+        }
+        
         topicModel.myTopicsEntry.observe(viewLifecycleOwner) { response ->
             if (response != null && response.code == Constants.SUCCESS_CODE) {
                 userSelectedTopics.clear()
@@ -217,9 +267,7 @@ class YourFeedFragment : Fragment() {
         
         topicModel.commonResponseEntry.observe(viewLifecycleOwner) { response ->
             if (response != null && response.code == Constants.SUCCESS_CODE) {
-                // Re-query needed? Or just assume update? Usually observe triggers after query?
-                // The original code called updateActiveTags(), which used userSelectedTopics.
-                newsAdapter.updateTags(userSelectedTopics)
+                // Success is already handled optimistically or via myTopicsEntry/recommendList refresh
             }
         }
         
@@ -249,6 +297,13 @@ class YourFeedFragment : Fragment() {
                         if (isButtonRefresh && isResumed && isVisible) {
                             binding.homeRecycler.post {
                                 triggerWaveAnimation()
+                            }
+                        }
+                        
+                        // Show tutorial (TutorialManager handles once-only logic)
+                        if (mNewsList.isNotEmpty()) {
+                            binding.homeRecycler.post {
+                                showTutorialIfNeeded()
                             }
                         }
                     } else {
@@ -299,11 +354,30 @@ class YourFeedFragment : Fragment() {
     // Obsolete tag methods removed
     
     private fun removeActiveTag(tag: String) {
+        // Use shared optimistic logic to ensure all components stay in sync
+        topicModel.updateMyTopicsOptimistically(Constants.TYPE_TOPIC_DELETE, tag)
+
+        // API call to update server
         topicModel.editTopic(Constants.TYPE_TOPIC_DELETE, tag)
         
-        isRefresh = true
-        pageNo = 1
-        personRecommendModel.queryRecommendList(pageNo, pageSize)
+        // No longer refreshing feed content here to avoid disrupting the user's scroll position.
+        // The tag will disappear from the "Active Tags" row via observation, but the current 
+        // feed articles will remain until the user manually refreshes or reloads.
+    }
+    
+    private fun showTagNews(topic: TopicListEntry.TopicDTO) {
+        val displayName = if (topic.tag.equals("General", ignoreCase = true)) {
+            getString(R.string.topic_general)
+        } else {
+            topic.displayName ?: topic.tag
+        }
+        val fragment = TagNewsBottomSheetFragment.newInstance(
+            tagName = displayName,
+            tagApiId = topic.tag,
+            isFollowing = true,
+            sourceFragment = "your_feed"
+        )
+        fragment.show(childFragmentManager, "TagNewsBottomSheet")
     }
     
     private fun showTopicSelection() {
@@ -346,10 +420,8 @@ class YourFeedFragment : Fragment() {
     private fun shareArticle(article: SearchListEntry.DataDTO.ArticlesDTO) {
         val shareText = buildString {
             append(article.title)
-            if (!article.articleURL.isNullOrEmpty()) {
-                append("\n\n")
-                append(article.articleURL)
-            }
+            append("\n\n")
+            append("https://zonenews.io/article/${article.articleID}")
         }
         
         val shareIntent = Intent(Intent.ACTION_SEND)
@@ -436,6 +508,143 @@ class YourFeedFragment : Fragment() {
                 start()
             }
         }
+    }
+    
+    /**
+     * Show tutorial overlay if it hasn't been shown yet
+     */
+    /**
+     * Show tutorial overlay if it hasn't been shown yet
+     */
+    private fun showTutorialIfNeeded() {
+        val context = requireContext()
+        
+        // ONLY show tutorial if fragment is actually visible and resumed
+        // This prevents tutorials for background-preloaded fragments from appearing
+        if (!isResumed || !isVisible) return
+        
+        var accountId = com.searcher.zonenews.utils.SharedPreferenceUtils.getString(context, "current_account_id")
+        
+        // If accountId is empty, wait briefly for profile data to load (defensive check)
+        // This handles edge cases where fragment loads before account ID is set
+        if (accountId.isEmpty()) {
+            // Post a delayed check to retry after a short period
+            binding.homeRecycler.postDelayed({
+                if (isResumed && isVisible && mNewsList.isNotEmpty()) {
+                    showTutorialIfNeeded()
+                }
+            }, 500)
+            return
+        }
+        
+        // Check if welcome poster has been shown - if not, show it first
+        // If tutorials were just reset, skip the welcome poster override
+        val skipPosterOverride = com.searcher.zonenews.utils.SharedPreferenceUtils.getBoolean(context, "skip_welcome_poster_once")
+        if (skipPosterOverride) {
+            com.searcher.zonenews.utils.SharedPreferenceUtils.saveBooleanCommit(context, "skip_welcome_poster_once", false)
+        }
+        
+        if (!skipPosterOverride && !com.searcher.zonenews.utils.TutorialManager.hasWelcomePosterBeenShown(context, accountId)) {
+            showWelcomePoster(accountId)
+            return
+        }
+        
+        // Check if tutorial has already been shown
+        if (com.searcher.zonenews.utils.TutorialManager.hasTutorialBeenShown(
+                context, 
+                com.searcher.zonenews.utils.TutorialManager.TUTORIAL_YOUR_FEED,
+                accountId
+            )) {
+            return
+        }
+        
+        // Create tutorial steps
+        val steps = listOf(
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "personal_welcome",
+                message = getString(R.string.tutorial_personal_step1_message),
+                hasHighlight = false
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "personal_active_tags",
+                message = getString(R.string.tutorial_personal_active_tags),
+                hasHighlight = true
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "personal_news_row",
+                message = getString(R.string.tutorial_home_step1),
+                hasHighlight = true
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "personal_levity",
+                message = getString(R.string.tutorial_home_levity_button),
+                hasHighlight = true
+            )
+        )
+        
+        // Create overlay and add to root view (DecorView to cover status bar/toolbar)
+        val decorView = requireActivity().window.decorView as ViewGroup
+        val overlay = com.searcher.zonenews.selfview.TutorialOverlayView(context)
+        overlay.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        
+        overlay.setTutorialSteps(steps)
+        overlay.setOnTutorialCompleteListener {
+            com.searcher.zonenews.utils.TutorialManager.markTutorialAsShown(
+                context,
+                com.searcher.zonenews.utils.TutorialManager.TUTORIAL_YOUR_FEED,
+                accountId
+            )
+            // Remove overlay from decorView when done
+            decorView.removeView(overlay)
+        }
+        
+        decorView.addView(overlay)
+        
+        // Get target view function
+        val getTargetView: (com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep) -> View? = { step ->
+            when (step.id) {
+                "personal_active_tags" -> {
+                    // Get the header view from the adapter (position 0)
+                    val layoutManager = binding.homeRecycler.layoutManager as? androidx.recyclerview.widget.LinearLayoutManager
+                    val headerView = layoutManager?.findViewByPosition(0)
+                    headerView?.findViewById(R.id.active_tags_container)
+                }
+                "personal_news_row" -> {
+                    // Get the first news item (position 1, since 0 is header)
+                    val layoutManager = binding.homeRecycler.layoutManager as? androidx.recyclerview.widget.LinearLayoutManager
+                    layoutManager?.findViewByPosition(1)
+                }
+                "personal_levity" -> {
+                    // Get levity button from parent fragment
+                    parentFragment?.view?.findViewById(R.id.levity_card)
+                }
+                else -> null
+            }
+        }
+        
+        // Set up click listener that advances with proper callback
+        overlay.setOnClickListener {
+            overlay.advanceWithCallback(null, getTargetView) // NestedScrollView is null for RecyclerView based pages
+        }
+        
+        // Start the tutorial
+        overlay.start(null, getTargetView)
+    }
+
+    /**
+     * Show welcome poster bottom sheet before the tutorial
+     */
+    private fun showWelcomePoster(accountId: String) {
+        val welcomeFragment = com.searcher.zonenews.ui.mainfrag.WelcomePosterBottomSheetFragment.newInstance {
+            // After welcome poster is dismissed, show the tutorial
+            binding.homeRecycler.post {
+                showTutorialIfNeeded()
+            }
+        }
+        welcomeFragment.show(parentFragmentManager, "WelcomePoster")
     }
     
     override fun onDestroyView() {

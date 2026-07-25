@@ -18,7 +18,13 @@ import com.searcher.zonenews.base.BaseFragment
 import com.searcher.zonenews.databinding.FragAdviceBinding
 import com.searcher.zonenews.model.PersonRecommendModel
 import com.searcher.zonenews.model.TopicModel
+import com.searcher.zonenews.model.MyModel
 import com.searcher.zonenews.ui.topicmodify.TopicSelectionActivity
+import com.searcher.zonenews.utils.SystemDialogUtils
+import com.searcher.zonenews.ui.activity.LevityFeedActivity
+import com.searcher.zonenews.ui.newsdetail.SubscriptionBottomSheetFragment
+import android.content.Intent
+import com.searcher.zonenews.utils.Constants
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
@@ -33,6 +39,9 @@ class AdviceFrag : BaseFragment() {
     // ViewModels shared with child fragments
     val personRecommendModel: PersonRecommendModel by viewModels()
     val topicModel: TopicModel by viewModels()
+    val myModel: MyModel by viewModels()
+    
+    private var isPro = false
 
     // Modern activity result launcher
     val topicSelectionLauncher = registerForActivityResult(
@@ -62,6 +71,48 @@ class AdviceFrag : BaseFragment() {
     override fun initData() {
         setupViewPager()
         setupTabs()
+        setupLevityButton()
+        observeData()
+    }
+    
+    private fun setupLevityButton() {
+        val levityCard = mViewBinding.toolbar.findViewById<View>(R.id.levity_card)
+        levityCard.setOnClickListener {
+            if (isPro) {
+                 SystemDialogUtils.showAlertDialog(
+                    requireContext(),
+                    getString(R.string.levity_enter_dialog_title),
+                    getString(R.string.levity_enter_dialog_message),
+                    getString(R.string.levity_enter_dialog_confirm),
+                    getString(R.string.dialog_button_cancel),
+                    onPositiveClick = {
+                        startActivity(Intent(requireContext(), LevityFeedActivity::class.java))
+                    }
+                )
+            } else {
+                SubscriptionBottomSheetFragment.newInstance(isPro).show(parentFragmentManager, "SubscriptionBottomSheetFragment")
+            }
+        }
+    }
+    
+    private fun observeData() {
+        myModel.myEntry.observe(viewLifecycleOwner) { response ->
+            if (response != null && response.code == Constants.SUCCESS_CODE) {
+                isPro = response.data?.isPro == true
+                updateLevityButtonIcon()
+            }
+        }
+        // Force refresh to get data
+        myModel.queryMyFormation()
+    }
+
+    private fun updateLevityButtonIcon() {
+        val iconView = mViewBinding.toolbar.findViewById<android.widget.ImageView>(R.id.levity_icon)
+        if (isPro) {
+            iconView.setImageResource(R.drawable.ic_wb_sunny_24)
+        } else {
+            iconView.setImageResource(R.drawable.lock_24px)
+        }
     }
 
     private fun setupViewPager() {

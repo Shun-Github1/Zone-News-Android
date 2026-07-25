@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bottom_line"
-    android:paddingVertical="8dp"
+
+    android:paddingTop="8dp"
     android:paddingLeft="2dp"
     android:paddingRight="8dp">
 
@@ -49,5 +49,15 @@
         app:layout_constraintStart_toEndOf="@id/ranking_tv" />
 
 
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/divider_color"
+        app:layout_constraintTop_toBottomOf="@id/news_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/ranking_tv"
+        app:layout_constraintEnd_toEndOf="@id/news_iv"/>
 
 </com.hjq.shape.layout.ShapeConstraintLayout>

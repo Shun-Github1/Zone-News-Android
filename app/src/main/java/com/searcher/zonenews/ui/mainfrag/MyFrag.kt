@@ -172,9 +172,31 @@ class MyFrag : BaseFragment() {
         
         mViewBinding.feedbackLayout.setOnDebounceClickListener { showFeedbackPopup() }
         
-        // Show Tips Again button - show coming soon message
+        // Show Tips Again button - show confirmation dialog and reset tutorials
         mViewBinding.showTipsLayout.setOnClickListener {
-            ToastUtils.showShortToast(mContext!!, getString(R.string.tutorial_coming_soon))
+            SystemDialogUtils.showAlertDialog(
+                requireContext(),
+                getString(R.string.tips_reset_dialog_title),
+                getString(R.string.tips_reset_dialog_message),
+                getString(R.string.tips_reset_dialog_confirm),
+                getString(R.string.tips_reset_dialog_cancel),
+                onPositiveClick = {
+                    val accountId = com.searcher.zonenews.utils.SharedPreferenceUtils.getString(mContext!!, "current_account_id")
+                    com.searcher.zonenews.utils.TutorialManager.resetAllTutorials(mContext!!, accountId)
+                    
+                    // Set flag to skip welcome poster on manual relaunch
+                    com.searcher.zonenews.utils.SharedPreferenceUtils.saveBooleanCommit(mContext!!, "skip_welcome_poster_once", true)
+                    
+                    // Set flag for NewsDetailActivity to temporarily expand cards using commit() to ensure it's persisted before restart
+                    SharedPreferenceUtils.saveBooleanCommit(mContext, "tutorials_just_reset", true)
+                    
+                    // Trigger a full app restart to clear any cached data in fragments
+                    // This ensures tutorials trigger correctly on the next navigation
+                    (requireActivity() as? MainActivity)?.triggerAppRestart()
+                    
+                    ToastUtils.showShortToast(mContext!!, getString(R.string.tips_reset_success))
+                }
+            )
         }
         
         // Reset Settings button - show confirmation dialog
@@ -698,6 +720,13 @@ class MyFrag : BaseFragment() {
                     // Display email if available
                     mViewBinding.userEmailTv.text = it.data.email ?: ""
                     
+                    // Update current_account_id with the fetched email or username using commit() to ensure persistence
+                    // This ensures that even on auto-login or if the login identifier was different, we always have a valid account-specific key
+                    val accountId = it.data.email ?: it.data.username ?: ""
+                    if (accountId.isNotEmpty()) {
+                        SharedPreferenceUtils.saveStringCommit(mContext, "current_account_id", accountId)
+                    }
+                    
                     // Update subscription UI based on isPro status
                     updateSubscriptionUI(it.data.isPro == true)
                 }else{
@@ -725,6 +754,9 @@ class MyFrag : BaseFragment() {
             SharedPreferenceUtils.deleteString(mContext, "autoLogin")
             SharedPreferenceUtils.saveBoolean(mContext, "isLogin", false)
             SharedPreferenceUtils.saveBoolean(mContext, "thirdLogin", false)
+            
+            // Clear current_account_id on logout to ensure the next login starts from a clean slate
+            SharedPreferenceUtils.deleteString(mContext, "current_account_id")
             
             // Clear cookie preferences explicitly
             val cookiePrefs: SharedPreferences = mContext!!.getSharedPreferences("cookie_prefs", android.content.Context.MODE_PRIVATE)
@@ -893,8 +925,13 @@ class MyFrag : BaseFragment() {
             selectLandingPage("yourFeed")
         }
         mViewBinding.landingPageLevityModeCard.setOnClickListener {
-            // Show coming soon message for Levity Mode
-            ToastUtils.showShortToast(mContext!!, getString(R.string.levity_mode_coming_soon))
+            val isPro = myModel.myEntry.value?.data?.isPro == true
+            if (isPro) {
+                selectLandingPage("levity")
+            } else {
+                val subscriptionFragment = SubscriptionBottomSheetFragment.newInstance(false)
+                subscriptionFragment.show(childFragmentManager, "Subscription")
+            }
         }
     }
     
@@ -911,6 +948,7 @@ class MyFrag : BaseFragment() {
             "hongKong" -> getString(R.string.landing_page_hong_kong)
             "china" -> getString(R.string.landing_page_china)
             "yourFeed" -> getString(R.string.landing_page_your_feed)
+            "levity" -> getString(R.string.landing_page_levity_mode)
             else -> landingPage
         }
         ToastUtils.showShortToast(mContext!!, getString(R.string.toast_landing_page, pageText))
@@ -940,6 +978,7 @@ class MyFrag : BaseFragment() {
             "hongKong" -> mViewBinding.landingPageHongKongCard
             "china" -> mViewBinding.landingPageChinaCard
             "yourFeed" -> mViewBinding.landingPageYourFeedCard
+            "levity" -> mViewBinding.landingPageLevityModeCard
             else -> null
         }
         
@@ -1153,11 +1192,11 @@ class MyFrag : BaseFragment() {
         mViewBinding.reportPatternsSwitch.isChecked = false
         
         // Reset news detail page card order to default
-        val defaultCardOrder = listOf("sentiment", "publisher", "subjectivity", "timeline")
+        val defaultCardOrder = listOf("sentiment", "timeline", "publisher", "subjectivity", "key_quotes", "related")
         SharedPreferenceUtils.saveString(mContext, "news_detail_card_order", defaultCardOrder.joinToString(","))
         
         // Reset news detail page card collapsed states to false (all expanded by default)
-        val cardIds = listOf("sentiment", "publisher", "subjectivity", "timeline")
+        val cardIds = listOf("sentiment", "timeline", "publisher", "subjectivity", "key_quotes", "related")
         cardIds.forEach { cardId ->
             SharedPreferenceUtils.saveBoolean(mContext, "news_detail_card_collapsed_$cardId", false)
         }

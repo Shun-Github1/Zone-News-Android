@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="600dp"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_sheet_background"
+    android:layout_marginTop="80dp">
+
+    <!-- Top Bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:elevation="1dp">
+
+        <!-- Close button on the left with brand color -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/closeButton"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="0dp"
+            android:text="@string/close"
+            android:textColor="@color/main_color"
+            android:textSize="14sp"
+            android:minWidth="0dp" />
+
+        <!-- Follow/Unfollow button on the right with stable width -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="0dp">
+
+            <!-- Ghost view for Unfollow (defines ripple boundary) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unfollow"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:includeFontPadding="false"
+                android:textAllCaps="false" />
+
+            <!-- Ghost view for Follow (defines ripple boundary) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/follow"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:includeFontPadding="false"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/followButton"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/follow"
+                android:textColor="@color/main_color"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:padding="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:textAllCaps="false"
+                android:includeFontPadding="false"
+                app:rippleColor="@color/ripple_brand_soft" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <!-- Content Container with Header Overlay -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="400dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="0dp">
+
+        <!-- Loading view with Shimmer -->
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+            
+            <include layout="@layout/shimmer_reading_history_list" />
+            
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <!-- Empty state view -->
+        <LinearLayout
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="32dp">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/shoppingmode_24"
+                android:contentDescription="@null"
+                android:layout_marginBottom="20dp"
+                app:tint="@color/colorTextSmall" />
+
+            <TextView
+                android:id="@+id/emptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_tag_news"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextDeep"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/emptySubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_tag_news_subtitle"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextMiddle"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <!-- News list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/newsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:paddingTop="76dp"
+            android:clipToPadding="false" />
+
+        <!-- Large Header with Fade Background - overlays scrollable content -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:background="@drawable/bottom_sheet_scroll_fade_top"
+            android:elevation="2dp">
+            <TextView
+                android:id="@+id/headerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextDeep"
+                android:gravity="start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <!-- Bottom spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp" />
+
+</LinearLayout>

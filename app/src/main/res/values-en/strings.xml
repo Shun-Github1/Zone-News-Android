@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="quote_open">\u201C</string>
+    <string name="quote_close">\u201D</string>
     <string name="app_name">Zone News</string>
     <string name="today">Today</string>
     <string name="hongkong">Hong Kong</string>
@@ -58,7 +60,7 @@
     <string name="earliest">Publication date, from earliest</string>
     <string name="most_popular">Most Popular</string>
     <string name="most_relevant">Most Relevant</string>
-    <string name="select_topics">Select Topics</string>
+    <string name="select_topics">Select Tags</string>
     <string name="done">Done</string>
     <string name="topics_loading">Loading topics...</string>
     <string name="topics_error_loading">Error loading topics</string>
@@ -180,9 +182,9 @@
     <string name="found_results">Found 0 results related to \"\"</string>
     <string name="found_results_format">Found %1$d results related to \"%2$s\"</string>
     <string name="tag">Tag</string>
-    <string name="currently_sorted_by">Sorting</string>
+    <string name="currently_sorted_by">Sort by</string>
     <string name="latest_sort">Latest</string>
-    <string name="active_tags">Following</string>
+    <string name="active_tags">Follow</string>
     <string name="select_tags_to_follow">Select tags to follow</string>
     <string name="your_feed_title">Your Feed</string>
     <string name="recap_title">Recap</string>
@@ -251,7 +253,7 @@
     <string name="empty_string">""</string>
     <string name="text_plain">text/plain</string>
     <string name="http_prefix">https://</string>
-    <string name="example_website">https://www.example.com</string>
+    <string name="example_website">https://zonenews.io/user-guide</string>
     <string name="null_string">null</string>
     <string name="url_key">url</string>
     <string name="type_key">type</string>
@@ -384,5 +386,8 @@
     <string name="register_tagline">Join Zone News to get personalized news</string>
     <string name="widget_detailed_name">Zone News - Detailed</string>
     <string name="widget_compact_name">Zone News - Compact</string>
+    <string name="subscription_plan_billing">Billed Monthly</string>
+    <string name="subscription_plan_billing_yearly">Billed Yearly</string>
     <string name="subscription_support_email_subject">Zone News Pro Support</string>
+    <string name="article_unavailable">Article not available</string>
 </resources>

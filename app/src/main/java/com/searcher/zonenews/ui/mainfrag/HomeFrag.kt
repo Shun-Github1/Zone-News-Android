@@ -162,6 +162,12 @@ class HomeFrag : BaseFragment() {
                 tv.scaleY = if (isSelected) 1.1f else 1.0f
             }
         }
+        
+        // Clear language change flag if it was set, now that UI is initializing
+        if (mContext != null && SharedPreferenceUtils.getBoolean(mContext, "language_just_changed")) {
+            android.util.Log.d("HomeFrag", "Clearing language_just_changed flag")
+            SharedPreferenceUtils.saveBoolean(mContext, "language_just_changed", false)
+        }
     }
 
     /**

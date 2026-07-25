@@ -146,7 +146,7 @@ class AboutBottomSheetFragment : BottomSheetDialogFragment() {
             isClickable = true
             isFocusable = true
             setOnClickListener {
-                openUrl("https://zonenews.io")
+                openUrl(getString(R.string.about_us_website))
             }
         }
     }

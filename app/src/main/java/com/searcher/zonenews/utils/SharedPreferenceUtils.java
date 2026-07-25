@@ -43,6 +43,14 @@ public class SharedPreferenceUtils {
         context.getSharedPreferences(FILE_NAME, 0).edit().putString(key, value).apply();
     }
 
+    /**
+     * Save a string value using commit() instead of apply() for immediate persistence
+     * Use this when the value must be written to disk before proceeding (e.g., account ID before activity start)
+     */
+    public static void saveStringCommit(Context context, String key, String value) {
+        context.getSharedPreferences(FILE_NAME, 0).edit().putString(key, value).commit();
+    }
+
     public static void saveInt(Context context, String key, int value) {
         context.getSharedPreferences(FILE_NAME, 0).edit().putInt(key, value).apply();
     }
@@ -57,6 +65,14 @@ public class SharedPreferenceUtils {
 
     public static void saveBoolean(Context context, String key, boolean value) {
         context.getSharedPreferences(FILE_NAME, 0).edit().putBoolean(key, value).apply();
+    }
+
+    /**
+     * Save a boolean value using commit() instead of apply() for immediate persistence
+     * Use this when the value must be written to disk before proceeding
+     */
+    public static void saveBooleanCommit(Context context, String key, boolean value) {
+        context.getSharedPreferences(FILE_NAME, 0).edit().putBoolean(key, value).commit();
     }
 
     public static void deleteString(Context context, String key) {

@@ -21,13 +21,15 @@ class LanguageManager @Inject constructor(
     
     /**
      * Get current app language for API calls
+     * @param overrideContext Optional context to use for configuration (e.g. Activity context)
      */
-    fun getCurrentLanguageCode(): String {
+    fun getCurrentLanguageCode(overrideContext: Context? = null): String {
+        val sourceContext = overrideContext ?: context
         val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ConfigurationCompat.getLocales(context.resources.configuration)[0]
+            ConfigurationCompat.getLocales(sourceContext.resources.configuration)[0]
         } else {
             @Suppress("DEPRECATION")
-            context.resources.configuration.locale
+            sourceContext.resources.configuration.locale
         }
 
         // Use full language tag if possible (e.g. zh-HK, zh-TW, en-US)

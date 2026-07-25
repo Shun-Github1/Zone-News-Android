@@ -66,6 +66,16 @@ class DetailedNewsWidgetProvider : AppWidgetProvider() {
         }
     }
 
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: android.os.Bundle?
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        updateWidget(context, appWidgetManager, appWidgetId)
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         
@@ -248,9 +258,11 @@ class DetailedNewsWidgetProvider : AppWidgetProvider() {
         val localizedContext = WidgetDataProvider.getLocalizedContext(context)
         views.setTextViewText(R.id.widget_error_text, localizedContext.getString(R.string.widget_tap_to_refresh))
         
-        // Use explicit intent to MainActivity with article ID as extra
-        // This is more reliable than implicit deep links when app is killed
-        val articleIntent = Intent(context, MainActivity::class.java).apply {
+        // Use explicit intent to MainActivity
+        // This is more robust against aggressive task killers like OnePlus
+        val articleIntent = Intent(context, com.searcher.zonenews.ui.MainActivity::class.java).apply {
+            action = Intent.ACTION_VIEW
+            data = Uri.parse("https://zonenews.io/article/$articleId")
             putExtra("widget_article_id", articleId)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
@@ -260,8 +272,7 @@ class DetailedNewsWidgetProvider : AppWidgetProvider() {
         )
         views.setOnClickPendingIntent(R.id.widget_content_wrapper, articlePendingIntent)
         
-        // Set dynamic app icon
-        views.setImageViewResource(R.id.widget_logo, AppIconManager.getCurrentIconResourceId(context))
+
         
         // Hide navigation and page tracker
         views.setViewVisibility(R.id.widget_btn_prev, View.GONE)
@@ -295,6 +306,15 @@ class DetailedNewsWidgetProvider : AppWidgetProvider() {
         // Set text content
         views.setTextViewText(R.id.widget_region, article.region ?: "")
         views.setTextViewText(R.id.widget_topic, article.sector ?: "")
+        // Calculate max lines based on widget height
+        val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+        val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+        // Overhead: Padding (32dp) + Top Row (18dp) + Bias (22dp) + Bar (10dp) + Bottom (15dp) + Spacing ~= 100dp
+        // Line Height: ~22dp (16sp)
+        val availableHeight = minHeight - 100
+        val maxLines = (availableHeight / 22).coerceAtLeast(1)
+        
+        views.setInt(R.id.widget_headline, "setMaxLines", maxLines)
         views.setTextViewText(R.id.widget_headline, article.title ?: "")
         
         // Use localized context for multilingual support
@@ -331,11 +351,13 @@ class DetailedNewsWidgetProvider : AppWidgetProvider() {
         // Save article ID persistently for this widget
         WidgetDataProvider.saveWidgetArticleId(context, appWidgetId, article.articleID, article.title)
         
-        // Use explicit intent to MainActivity with article ID as extra
-        // This is more reliable than implicit deep links when app process is killed
+        // Use explicit intent to MainActivity
+        // This is more robust against aggressive task killers like OnePlus
         val articleId = article.articleID
         if (!articleId.isNullOrEmpty()) {
-            val articleIntent = Intent(context, MainActivity::class.java).apply {
+            val articleIntent = Intent(context, com.searcher.zonenews.ui.MainActivity::class.java).apply {
+                action = Intent.ACTION_VIEW
+                data = Uri.parse("https://zonenews.io/article/$articleId")
                 putExtra("widget_article_id", articleId)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }

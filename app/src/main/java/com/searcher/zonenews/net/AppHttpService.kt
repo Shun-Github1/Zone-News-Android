@@ -35,6 +35,14 @@ interface AppHttpService {
         @Query("lang") language: String? = null
     ): HomeDataListEntry //首页数据
 
+    @GET("feed/topic/{topic}")
+    suspend fun getFeedByTopic(
+        @Path("topic") topic: String,
+        @Query("offset") offset: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("lang") language: String? = null
+    ): HomeDataListEntry // Topic-specific feed
+
     @GET("search/trending")
     suspend fun querySearchList(
         @Query("lang") language: String? = null
@@ -169,4 +177,14 @@ interface AppHttpService {
 
     @POST("profile/delete-account")
     suspend fun deleteAccount(@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry> //删除账号
+
+    @POST("profile/verify-purchase")
+    suspend fun verifyPurchase(@Body requestBody: RequestBody): GenericResponse<CommonResponseEntry> //验证Google Play购买
+
+    @GET("feed/levity")
+    suspend fun getLevityFeed(
+        @Query("lang") language: String? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("limit") limit: Int? = null
+    ): HomeDataListEntry // Levity Mode Feed
 }

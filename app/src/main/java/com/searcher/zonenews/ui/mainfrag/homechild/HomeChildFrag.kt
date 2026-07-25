@@ -38,6 +38,8 @@ import com.searcher.zonenews.utils.Utils
 import com.bumptech.glide.Glide
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.ViewPreloadSizeProvider
 import java.text.SimpleDateFormat
 import java.util.Locale
 import com.searcher.zonenews.widget.WidgetDataProvider
@@ -86,6 +88,17 @@ class HomeChildFrag : BaseFragment() {
         isButtonRefresh = false
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Check if tutorial needs to be shown when fragment becomes visible
+        // This handles cases where data was loaded while fragment was in background
+        if (shouldShowBanner() && mNewsList.isNotEmpty()) {
+            mViewBinding.homeRecycler.post {
+                showTutorialIfNeeded()
+            }
+        }
+    }
+
     private var pageNo = 1
     private val pageSize = 10
     private var mCurrentType = ""
@@ -126,6 +139,14 @@ class HomeChildFrag : BaseFragment() {
         
         // Set adapter directly (no ConcatAdapter)
         mViewBinding.homeRecycler.adapter = mAdapter
+        
+        // --- Batch Image Preloading Logic ---
+        // Preload 7 items ahead to ensure images are ready before they scroll onto screen
+        val sizeProvider = ViewPreloadSizeProvider<HomeDataListEntry.DataDTO.ArticlesDTO>()
+        val preloader = RecyclerViewPreloader<HomeDataListEntry.DataDTO.ArticlesDTO>(
+            Glide.with(this), mAdapter, sizeProvider, 7
+        )
+        mViewBinding.homeRecycler.addOnScrollListener(preloader)
         
         // Optimize RecyclerView for variable height items
         mViewBinding.homeRecycler.setItemViewCacheSize(20)
@@ -257,6 +278,13 @@ class HomeChildFrag : BaseFragment() {
                     if (isButtonRefresh && isResumed && isVisible) {
                         mViewBinding.homeRecycler.post {
                             triggerWaveAnimation()
+                        }
+                    }
+                    
+                    // Show tutorial (TutorialManager handles once-only logic)
+                    if (shouldShowBanner() && mNewsList.isNotEmpty()) {
+                        mViewBinding.homeRecycler.post {
+                            showTutorialIfNeeded()
                         }
                     }
                 }else{
@@ -440,10 +468,8 @@ class HomeChildFrag : BaseFragment() {
     private fun shareArticle(article: HomeDataListEntry.DataDTO.ArticlesDTO) {
         val shareText = buildString {
             append(article.title)
-            if (!article.articleURL.isNullOrEmpty()) {
-                append("\n\n")
-                append(article.articleURL)
-            }
+            append("\n\n")
+            append("https://zonenews.io/article/${article.articleID}")
         }
         
         val shareIntent = Intent(Intent.ACTION_SEND)
@@ -452,6 +478,134 @@ class HomeChildFrag : BaseFragment() {
         startActivity(Intent.createChooser(shareIntent, getString(R.string.app_name)))
     }
 
-
+    /**
+     * Show welcome poster and tutorial if they haven't been shown yet
+     */
+    private fun showTutorialIfNeeded() {
+        val context = mContext ?: return
+        
+        // ONLY show tutorial if fragment is actually visible and resumed
+        // This prevents tutorials for background-preloaded fragments from appearing
+        if (!isResumed || !isVisible) return
+        
+        var accountId = com.searcher.zonenews.utils.SharedPreferenceUtils.getString(context, "current_account_id")
+        
+        // If accountId is empty, wait briefly for profile data to load (defensive check)
+        // This handles edge cases where fragment loads before account ID is set
+        if (accountId.isEmpty()) {
+            mViewBinding.homeRecycler.postDelayed({
+                if (isResumed && isVisible && mNewsList.isNotEmpty()) {
+                    showTutorialIfNeeded()
+                }
+            }, 500)
+            return
+        }
+        
+        // Check if welcome poster has been shown - if not, show it first
+        // If tutorials were just reset, skip the welcome poster override
+        val skipPosterOverride = com.searcher.zonenews.utils.SharedPreferenceUtils.getBoolean(context, "skip_welcome_poster_once")
+        if (skipPosterOverride) {
+            com.searcher.zonenews.utils.SharedPreferenceUtils.saveBooleanCommit(context, "skip_welcome_poster_once", false)
+        }
+        
+        if (!skipPosterOverride && !com.searcher.zonenews.utils.TutorialManager.hasWelcomePosterBeenShown(context, accountId)) {
+            showWelcomePoster(accountId)
+            return
+        }
+        
+        // Check if tutorial has already been shown
+        if (com.searcher.zonenews.utils.TutorialManager.hasTutorialBeenShown(
+                context, 
+                com.searcher.zonenews.utils.TutorialManager.TUTORIAL_HOME,
+                accountId
+            )) {
+            return
+        }
+        
+        // Need at least one item in the list
+        if (mNewsList.isEmpty()) return
+        
+        // Create tutorial steps
+        val steps = listOf(
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "home_welcome",
+                message = getString(R.string.tutorial_home_step1_message),
+                hasHighlight = false
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "home_news_row",
+                message = getString(R.string.tutorial_home_step1),
+                hasHighlight = true
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "home_sentiment",
+                message = getString(R.string.tutorial_detail_sentiment_meter),
+                hasHighlight = true
+            )
+        )
+        
+        // Create overlay and add to root view (DecorView to cover status bar/toolbar)
+        val decorView = requireActivity().window.decorView as ViewGroup
+        val overlay = com.searcher.zonenews.selfview.TutorialOverlayView(context)
+        overlay.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        
+        overlay.setTutorialSteps(steps)
+        overlay.setOnTutorialCompleteListener {
+            com.searcher.zonenews.utils.TutorialManager.markTutorialAsShown(
+                context,
+                com.searcher.zonenews.utils.TutorialManager.TUTORIAL_HOME,
+                accountId
+            )
+            // Remove overlay from decorView when done
+            decorView.removeView(overlay)
+        }
+        
+        decorView.addView(overlay)
+        
+        // Get target view function
+        val getTargetView: (com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep) -> View? = { step ->
+            when (step.id) {
+                "home_news_row" -> {
+                    // Get the first news item (after banner if showing)
+                    val firstItemPosition = if (shouldShowBanner()) 1 else 0
+                    val layoutManager = mViewBinding.homeRecycler.layoutManager as? LinearLayoutManager
+                    layoutManager?.findViewByPosition(firstItemPosition)
+                }
+                "home_sentiment" -> {
+                    // Get the sentiment bar from the first news item
+                    val firstItemPosition = if (shouldShowBanner()) 1 else 0
+                    val layoutManager = mViewBinding.homeRecycler.layoutManager as? LinearLayoutManager
+                    val firstItem = layoutManager?.findViewByPosition(firstItemPosition)
+                    firstItem?.findViewById(R.id.progress_track)
+                }
+                else -> null
+            }
+        }
+        
+        // Set up click listener that advances with proper callback
+        overlay.setOnClickListener {
+            overlay.advanceWithCallback(null, getTargetView)
+        }
+        
+        // Start the tutorial
+        overlay.start(null, getTargetView)
+    }
+    
+    /**
+     * Show welcome poster bottom sheet before the tutorial
+     */
+    private fun showWelcomePoster(accountId: String) {
+        val welcomeFragment = com.searcher.zonenews.ui.mainfrag.WelcomePosterBottomSheetFragment.newInstance {
+            // After welcome poster is dismissed, show the tutorial
+            mViewBinding.homeRecycler.post {
+                showTutorialIfNeeded()
+            }
+        }
+        welcomeFragment.show(parentFragmentManager, "WelcomePoster")
+    }
 
 }
+

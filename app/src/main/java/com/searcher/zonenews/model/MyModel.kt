@@ -1,36 +1,31 @@
 package com.searcher.zonenews.model
 
-import android.view.View
+import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.searcher.zonenews.entry.CommonResponseEntry
-import com.searcher.zonenews.entry.MyFormationEntry
-import com.searcher.zonenews.entry.ViewHisEntry
-import com.searcher.zonenews.repository.MyRepository
+import com.searcher.zonenews.billing.BillingManager
+import com.searcher.zonenews.entry.*
 import com.searcher.zonenews.utils.LanguageManager
+import com.searcher.zonenews.repository.MyRepository
+import com.searcher.zonenews.utils.ErrorUtils
 import com.searcher.zonenews.utils.network.exception.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import razerdp.util.PopupUtils.getString
-import com.searcher.zonenews.R
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import com.searcher.zonenews.utils.ErrorUtils
+import javax.inject.Inject
 
-/**
- * @Description 个人
- * @Author yulu
- * @CreateTime 2025年07月07日 14:51:34
- */
 @HiltViewModel
 class MyModel @Inject constructor(
     private val myRepository: MyRepository,
-    private val languageManager: LanguageManager
+    private val languageManager: LanguageManager,
+    private val billingManager: BillingManager
 ) : ViewModel() {
     private var _myEntry: MutableLiveData<MyFormationEntry> = MutableLiveData()
     var myEntry: LiveData<MyFormationEntry> = _myEntry
@@ -43,6 +38,36 @@ class MyModel @Inject constructor(
 
     private var _commonResponseEntry: MutableLiveData<CommonResponseEntry> = MutableLiveData()
     var commonResponseEntry: LiveData<CommonResponseEntry> = _commonResponseEntry
+
+    // Billing related LiveData
+    private var _productDetails = MutableLiveData<List<com.android.billingclient.api.ProductDetails>>()
+    val productDetails: LiveData<List<com.android.billingclient.api.ProductDetails>> = _productDetails
+
+    private var _purchaseState = MutableLiveData<BillingManager.PurchaseState>()
+    val purchaseState: LiveData<BillingManager.PurchaseState> = _purchaseState
+
+    init {
+        // Observe flows from BillingManager
+        viewModelScope.launch {
+            billingManager.productDetails.collectLatest {
+                _productDetails.postValue(it)
+            }
+        }
+        viewModelScope.launch {
+            billingManager.purchaseState.collectLatest {
+                _purchaseState.postValue(it)
+            }
+        }
+    }
+    
+    // Billing methods
+    fun launchPurchaseFlow(activity: Activity, productDetails: com.android.billingclient.api.ProductDetails, offerToken: String) {
+        billingManager.launchPurchaseFlow(activity, productDetails, offerToken)
+    }
+
+    fun restorePurchases() {
+        billingManager.restorePurchases()
+    }
 
     fun queryMyFormation() {
         viewModelScope.launch {
@@ -145,10 +170,10 @@ class MyModel @Inject constructor(
         }
     }
 
-    fun deleteHistory(articleId: String) {
+    fun saveNews(requestBody: RequestBody) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                myRepository.deleteHistory(articleId)
+                myRepository.saveNews(requestBody)
             }
             when (result) {
                 is NetworkResponse.NetError -> {
@@ -159,7 +184,15 @@ class MyModel @Inject constructor(
                 }
 
                 is NetworkResponse.Success -> {
-                    _commonResponseEntry.value = result.body
+                     val responseBody = result.body
+                     if (responseBody.code == 200) {
+                        _commonResponseEntry.value = responseBody
+                    } else {
+                        val errorEntry = CommonResponseEntry()
+                        errorEntry.code = responseBody.code
+                        errorEntry.msg = responseBody.msg ?: "Failed to save"
+                        _commonResponseEntry.value = errorEntry
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {
@@ -172,10 +205,10 @@ class MyModel @Inject constructor(
         }
     }
 
-    fun deleteCollect(articleId: String) {
+    fun deleteCollect(id: String) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                myRepository.deleteCollect(articleId)
+                myRepository.deleteCollect(id)
             }
             when (result) {
                 is NetworkResponse.NetError -> {
@@ -186,7 +219,50 @@ class MyModel @Inject constructor(
                 }
 
                 is NetworkResponse.Success -> {
-                    _commonResponseEntry.value = result.body
+                     val responseBody = result.body
+                     if (responseBody.code == 200) {
+                        _commonResponseEntry.value = responseBody
+                    } else {
+                        val errorEntry = CommonResponseEntry()
+                        errorEntry.code = responseBody.code
+                        errorEntry.msg = responseBody.msg ?: "Failed to delete"
+                        _commonResponseEntry.value = errorEntry
+                    }
+                }
+
+                is NetworkResponse.UnknownError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = "未知错误"
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+            }
+        }
+    }
+    
+    fun deleteHistory(id: String) {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                myRepository.deleteHistory(id)
+            }
+            when (result) {
+                is NetworkResponse.NetError -> {
+                    val commonResponseEntry = CommonResponseEntry()
+                    commonResponseEntry.code = 1000
+                    commonResponseEntry.msg = ErrorUtils.getErrorMessage(result.errorMsg)
+                    _commonResponseEntry.value = commonResponseEntry
+                }
+
+                is NetworkResponse.Success -> {
+                     val responseBody = result.body
+                     if (responseBody.code == 200) {
+                        _commonResponseEntry.value = responseBody
+                    } else {
+                        val errorEntry = CommonResponseEntry()
+                        errorEntry.code = responseBody.code
+                        errorEntry.msg = responseBody.msg ?: "Failed to delete"
+                        _commonResponseEntry.value = errorEntry
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {
@@ -216,8 +292,10 @@ class MyModel @Inject constructor(
 
                 is NetworkResponse.Success -> {
                     _commonResponseEntry.value = result.body
-                    // Refresh profile after successful redeem
-                    queryMyFormation()
+                    // If successful, auto-refresh profile
+                    if (result.body.code == 200) {
+                        queryMyFormation()
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {
@@ -245,8 +323,10 @@ class MyModel @Inject constructor(
 
                 is NetworkResponse.Success -> {
                     _commonResponseEntry.value = result.body
-                    // Refresh profile after successful cancel
-                    queryMyFormation()
+                    // If successful, auto-refresh profile
+                    if (result.body.code == 200) {
+                        queryMyFormation()
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {
@@ -259,7 +339,7 @@ class MyModel @Inject constructor(
         }
     }
 
-    fun deleteAccount(requestBody: okhttp3.RequestBody) {
+    fun deleteAccount(requestBody: RequestBody) {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 myRepository.deleteAccount(requestBody)
@@ -273,7 +353,15 @@ class MyModel @Inject constructor(
                 }
 
                 is NetworkResponse.Success -> {
-                    _commonResponseEntry.value = result.body
+                     val responseBody = result.body
+                     if (responseBody.code == 200) {
+                        _commonResponseEntry.value = responseBody
+                    } else {
+                        val errorEntry = CommonResponseEntry()
+                        errorEntry.code = responseBody.code
+                        errorEntry.msg = responseBody.msg ?: "Failed to delete account"
+                        _commonResponseEntry.value = errorEntry
+                    }
                 }
 
                 is NetworkResponse.UnknownError -> {

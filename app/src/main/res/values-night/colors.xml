@@ -13,6 +13,7 @@
 
     <color name="profile_page_bg">@color/surface_primary</color>
     <color name="profile_card_bg">@color/surface_secondary</color>
+    <color name="sentiment_track_bg">@color/profile_card_bg</color>
 
     <!-- MARK: - Text Colors (Semantic Hierarchy) -->
     <color name="text_primary">#E0E0E0</color>
@@ -103,4 +104,18 @@
     <!-- MARK: - Widget Colors -->
     <color name="widget_shimmer_color">#333333</color>
     <color name="widget_floating_bg_color">@color/coming_soon_overlay_bg</color>
+    <!-- MARK: - Toggle Colors -->
+    <color name="toggle_background_color">@color/surface_card</color>
+    <color name="toggle_thumb_color">#505050</color>
+    <color name="toggle_text_selected">#E0E0E0</color>
+    <color name="toggle_text_unselected">#9CA3AF</color>
+    
+    <!-- MARK: - Tutorial Colors -->
+    <color name="tutorial_bubble_background">#2C2C2C</color>
+    <color name="tutorial_bubble_text">@color/text_primary</color>
+    <color name="tutorial_bubble_hint">@color/text_tertiary</color>
+    <color name="tutorial_overlay">#CC000000</color> <!-- 80% black -->
+    
+    <!-- MARK: - Publisher Icon Colors -->
+    <color name="publisher_icon_stroke_color">@color/white</color>
 </resources>

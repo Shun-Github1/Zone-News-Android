@@ -23,7 +23,10 @@ import com.searcher.zonenews.selfview.popup.SortPopupWindow
 import com.searcher.zonenews.ui.newsdetail.NewsDetailActivity
 import com.searcher.zonenews.utils.CalculateUtil
 import com.searcher.zonenews.utils.Utils
+import com.searcher.zonenews.utils.ImageCacheManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
 import kotlin.math.abs
 
 class YourFeedAdapter(
@@ -31,13 +34,28 @@ class YourFeedAdapter(
     private val newsList: MutableList<SearchListEntry.DataDTO.ArticlesDTO>,
     private val onShareArticle: (SearchListEntry.DataDTO.ArticlesDTO) -> Unit,
     private val headerCallback: HeaderCallback? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ListPreloader.PreloadModelProvider<SearchListEntry.DataDTO.ArticlesDTO> {
+
+    override fun getPreloadItems(position: Int): List<SearchListEntry.DataDTO.ArticlesDTO> {
+        val articlePosition = getArticlePosition(position)
+        return if (articlePosition >= 0 && articlePosition < newsList.size) {
+            listOf(newsList[articlePosition])
+        } else {
+            emptyList()
+        }
+    }
+
+    override fun getPreloadRequestBuilder(item: SearchListEntry.DataDTO.ArticlesDTO): RequestBuilder<*>? {
+        return Glide.with(context).asBitmap().load(item.pictureURL)
+    }
 
     // Header callback interface
     interface HeaderCallback {
         fun onSortClick(anchor: View)
         fun onManageTagsClick()
         fun onTagClick(tag: TopicListEntry.TopicDTO)
+        fun onTagUnselected(tag: TopicListEntry.TopicDTO)
+        fun onFollowTag(tag: String) // Added for following tags from cards
     }
     
     // Header state
@@ -49,9 +67,10 @@ class YourFeedAdapter(
         notifyItemChanged(0)
     }
     
+    @SuppressLint("NotifyDataSetChanged")
     fun updateTags(tags: List<TopicListEntry.TopicDTO>) {
-        activeTags = tags
-        notifyItemChanged(0)
+        this.activeTags = tags
+        notifyDataSetChanged()
     }
     
     private fun hasHeader(): Boolean = headerCallback != null
@@ -97,7 +116,7 @@ class YourFeedAdapter(
             }
             VIEW_TYPE_BIG -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_big_news_card, parent, false)
+                    .inflate(R.layout.item_big_news_card_your_feed, parent, false)
                 BigCardViewHolder(view)
             }
             VIEW_TYPE_FOOTER -> {
@@ -140,19 +159,16 @@ class YourFeedAdapter(
     }
 
     /**
-     * Animate sentiment bar from startWidth to endWidth over 720ms with LinearInterpolator
+     * Animate sentiment bar using GPU-accelerated transformations (Scale/Translation)
+     * This avoids expensive layout passes and ensures buttery-smooth scrolling.
      */
     private fun animateSentimentBar(
         highlightView: View,
         halfWidth: Int,
-        score: Double,
-        startWidth: Float,
-        endWidth: Float
+        score: Double
     ) {
-        // Cancel any previous animations
-        highlightView.clearAnimation()
-        
-        val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+        // Cancel any previous animations and reset state
+        highlightView.animate().cancel()
         
         // Clamp score between -1.0 and 1.0
         val clampedScore = when {
@@ -161,41 +177,29 @@ class YourFeedAdapter(
             else -> score
         }
         
-        // View should be GONE with width=1px from previous step
-        // Change from GONE to INVISIBLE, keeping width at 1px initially
-        highlightView.visibility = View.INVISIBLE
-        lp.width = startWidth.toInt()  // Start from 1px (or whatever startWidth is)
-        lp.marginStart = halfWidth
-        highlightView.layoutParams = lp
+        val absScore = kotlin.math.abs(clampedScore).toFloat()
         
-        // Post to ensure layout is complete before starting animation
-        highlightView.post {
-            // Make visible and start animation from 1px to target width
-            highlightView.visibility = View.VISIBLE
-            
-            // Animate using ValueAnimator over 720ms with LinearInterpolator (provides smooth counting effect)
-            ValueAnimator.ofFloat(startWidth, endWidth).apply {
-                duration = 720L
-                interpolator = LinearInterpolator()
-                addUpdateListener { animator ->
-                    val animatedValue = animator.animatedValue as Float
-                    val animatedDistance = animatedValue.toInt()
-                    
-                    if (animatedDistance > 0) {
-                        lp.width = animatedDistance
-                        // For positive: marginStart = half (extends right from center)
-                        // For negative: marginStart = half - distance (extends left from center)
-                        lp.marginStart = if (clampedScore > 0) {
-                            halfWidth
-                        } else {
-                            halfWidth - animatedDistance
-                        }
-                        highlightView.layoutParams = lp
-                    }
-                }
-                start()
-            }
+        // Setup initial state for GPU transformation
+        highlightView.visibility = View.VISIBLE
+        highlightView.alpha = 0f // Start invisible for a smooth fade-in
+        
+        // Setup pivot and translation based on sentiment direction
+        if (clampedScore >= 0) {
+            highlightView.pivotX = 0f // Center point is left edge of view
+            highlightView.translationX = 0f // Stay in right half
+        } else {
+            highlightView.pivotX = halfWidth.toFloat() // Center point is right edge of view
+            highlightView.translationX = -halfWidth.toFloat() // Move right-half view to left-half position
         }
+
+        // Animate Scale and Alpha simultaneously (GPU handles this, zero UI lag)
+        highlightView.scaleX = 0f // Start from zero width
+        highlightView.animate()
+            .scaleX(absScore)
+            .alpha(1f)
+            .setDuration(450) // Slightly faster for snappier feel
+            .setInterpolator(LinearInterpolator())
+            .start()
     }
 
     inner class NormalCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -208,22 +212,11 @@ class YourFeedAdapter(
         private val timeTv: TextView = itemView.findViewById(R.id.news_time_tv)
         private val countTv: TextView = itemView.findViewById(R.id.news_count_tv)
         private val transScoreTv: TextView = itemView.findViewById(R.id.trans_score_tv)
-        private val aiIcon: ImageView = itemView.findViewById(R.id.ai_icon)
-        private val recommendedText: TextView = itemView.findViewById(R.id.recommended_text)
+        private val cardTagsContainer: LinearLayout = itemView.findViewById(R.id.card_tags_container)
+        private var currentArticleId: String? = null
 
         @SuppressLint("SetTextI18n")
         fun bind(article: SearchListEntry.DataDTO.ArticlesDTO) {
-            // IMMEDIATELY reset sentiment bar state to prevent flash from recycled views
-            // Use View.GONE instead of INVISIBLE to prevent any layout space allocation
-            // and set width to 1px (not 0) to avoid MATCH_CONSTRAINT behavior
-            val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
-            highlightView.clearAnimation()
-            highlightView.visibility = View.GONE
-            lpReset.width = 1  // Use 1px instead of 0 to avoid ConstraintLayout MATCH_CONSTRAINT behavior
-            lpReset.marginStart = 0
-            highlightView.layoutParams = lpReset
-            
-            placeTv.text = article.region ?: ""
             placeTv.text = article.region ?: ""
             
             // Localize "General" topic
@@ -232,9 +225,6 @@ class YourFeedAdapter(
             } else {
                 tagTv.text = article.sector ?: ""
             }
-            
-            aiIcon.visibility = View.VISIBLE
-            recommendedText.visibility = View.VISIBLE
             
             titleTv.text = article.title
             countTv.text = context.getString(R.string.reports_count, article.nSources)
@@ -252,47 +242,78 @@ class YourFeedAdapter(
                 transScoreTv.text = sentimentText
             }
             
-            Glide.with(context)
-                .load(article.pictureURL)
+            // Use manual persistent cache for instant appearance
+            val cachedBitmap = ImageCacheManager.get(article.pictureURL)
+            if (cachedBitmap != null) {
+                newsIv.setImageBitmap(cachedBitmap)
+            }
+            
+            Glide.with(context).asBitmap().load(article.pictureURL)
                 .placeholder(R.drawable.ic_image_not_supported_24)
                 .error(R.drawable.ic_image_not_supported_24)
+                .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.Bitmap> {
+                    override fun onLoadFailed(
+                        e: com.bumptech.glide.load.engine.GlideException?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        isFirstResource: Boolean
+                    ): Boolean = false
+                    
+                    override fun onResourceReady(
+                        resource: android.graphics.Bitmap?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        resource?.let { ImageCacheManager.put(article.pictureURL, it) }
+                        return false
+                    }
+                })
                 .into(newsIv)
 
-            trackView.post {
-                val totalWidth = trackView.width
-                val half = totalWidth / 2
-                val score = sentimentScore
-                val targetDistance = (abs(score) * half).toInt()
-                val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+            // Reset and animate sentiment bar only if the article has changed
+            if (currentArticleId != article.articleID) {
+                currentArticleId = article.articleID
                 
-                if (targetDistance <= 0) {
-                    // Keep view GONE for zero distance
-                    highlightView.visibility = View.GONE
-                    lp.width = 1
+                highlightView.animate().cancel()
+                highlightView.visibility = View.INVISIBLE
+                highlightView.scaleX = 0f
+                highlightView.alpha = 0f
+                val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                lpReset.width = 0
+                highlightView.layoutParams = lpReset
+
+                // Set up sentiment progress bar with optimized GPU animation
+                trackView.post {
+                    val totalWidth = trackView.width
+                    val half = totalWidth / 2
+                    val score = sentimentScore
+                    
+                    // Set the highlightView's layout width to exactly half (the max it can be)
+                    val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                    lp.width = half
                     lp.marginStart = half
-                    highlightView.layoutParams = lp
-                } else {
-                    // Ensure view is GONE and width is 1px before setting up animation
-                    highlightView.clearAnimation()
-                    highlightView.visibility = View.GONE
-                    lp.width = 1  // Use 1px to avoid MATCH_CONSTRAINT, will animate from here
-                    lp.marginStart = half
-                    highlightView.setBackgroundResource(
-                        if (score > 0.1) R.drawable.bg_progress_positive 
-                        else if (score < -0.1) R.drawable.bg_progress_negative
-                        else R.drawable.bg_progress_neutral
-                    )
                     highlightView.layoutParams = lp
                     
-                    // Wait one frame to ensure GONE state is applied
-                    highlightView.post {
-                        animateSentimentBar(highlightView, half, score, 1f, targetDistance.toFloat())
+                    if (kotlin.math.abs(score) > 0.01) {
+                        highlightView.setBackgroundResource(
+                            if (score > 0.1) R.drawable.bg_progress_positive 
+                            else if (score < -0.1) R.drawable.bg_progress_negative
+                            else R.drawable.bg_progress_neutral
+                        )
+                        animateSentimentBar(highlightView, half, score)
+                    } else {
+                        highlightView.visibility = View.INVISIBLE
                     }
                 }
             }
 
             // Format date using backend date string directly
             timeTv.text = Utils.formatBackendDate(context, article.date)
+
+            // Handle Tags
+            populateCardTags(cardTagsContainer, article.sector, article.region, article.topics)
 
             itemView.setOnClickListener {
                 val intent = Intent(context, NewsDetailActivity::class.java)
@@ -333,35 +354,22 @@ class YourFeedAdapter(
         private val timeTv: TextView = itemView.findViewById(R.id.news_time_tv)
         private val countTv: TextView = itemView.findViewById(R.id.news_count_tv)
         private val transScoreTv: TextView = itemView.findViewById(R.id.trans_score_tv)
-        private val recommendedHintRow: View = itemView.findViewById(R.id.recommended_hint_row)
+        private val cardTagsContainer: LinearLayout = itemView.findViewById(R.id.card_tags_container)
+        private var currentArticleId: String? = null
 
         @SuppressLint("SetTextI18n")
         fun bind(article: SearchListEntry.DataDTO.ArticlesDTO) {
-            // IMMEDIATELY reset sentiment bar state to prevent flash from recycled views
-            // Use View.GONE instead of INVISIBLE to prevent any layout space allocation
-            // and set width to 1px (not 0) to avoid MATCH_CONSTRAINT behavior
-            val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
-            highlightView.clearAnimation()
-            highlightView.visibility = View.GONE
-            lpReset.width = 1  // Use 1px instead of 0 to avoid ConstraintLayout MATCH_CONSTRAINT behavior
-            lpReset.marginStart = 0
-            highlightView.layoutParams = lpReset
-            
             placeTv.text = article.region ?: ""
             val sentimentScore = article.metrics?.sentiment ?: 0.0
             val sentimentText = context.getString(CalculateUtil.getSentimentLabelResId(sentimentScore))
             
-            // Set sentiment text without "Sentiment:" prefix
-            // Set sentiment text without "Sentiment:" prefix
             if (sentimentScore > 0.1 || sentimentScore < -0.1) {
-                // Apply colorization for significant positive/negative sentiment
                 val spannableString = SpannableString(sentimentText)
                 val colorResId = context.resources.getIdentifier(CalculateUtil.getSentimentColorName(sentimentScore), "color", context.packageName)
                 val sentimentColor = ContextCompat.getColor(context, colorResId)
                 spannableString.setSpan(ForegroundColorSpan(sentimentColor), 0, sentimentText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 transScoreTv.text = spannableString
             } else {
-                // No colorization for neutral sentiment
                 transScoreTv.text = sentimentText
             }
             
@@ -372,50 +380,81 @@ class YourFeedAdapter(
                 tagTv.text = article.sector ?: ""
             }
             titleTv.text = article.title
-            Glide.with(context).load(article.pictureURL).error(R.drawable.ic_image_not_supported_24)
+            
+            // Use manual persistent cache for instant appearance
+            val cachedBitmap = ImageCacheManager.get(article.pictureURL)
+            if (cachedBitmap != null) {
+                featuredImage.setImageBitmap(cachedBitmap)
+            }
+            
+            Glide.with(context).asBitmap().load(article.pictureURL)
+                .placeholder(R.drawable.ic_image_not_supported_24)
+                .error(R.drawable.ic_image_not_supported_24)
+                .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.Bitmap> {
+                    override fun onLoadFailed(
+                        e: com.bumptech.glide.load.engine.GlideException?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        isFirstResource: Boolean
+                    ): Boolean = false
+                    
+                    override fun onResourceReady(
+                        resource: android.graphics.Bitmap?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        resource?.let { ImageCacheManager.put(article.pictureURL, it) }
+                        return false
+                    }
+                })
                 .into(featuredImage)
 
             // Format date using backend date string directly
             timeTv.text = Utils.formatBackendDate(context, article.date)
             
             countTv.text = context.getString(R.string.reports_count, article.nSources)
-            
-            // Set up sentiment progress bar with animation
-            trackView.post {
-                val totalWidth = trackView.width
-                val half = totalWidth / 2
-                val score = CalculateUtil.round(sentimentScore, 2)
-                val targetDistance = (abs(score) * half).toInt()
-                val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
-                
-                if (targetDistance <= 0) {
-                    // Keep view GONE for zero distance
-                    highlightView.visibility = View.GONE
-                    lp.width = 1
+
+            // Reset and animate sentiment bar only if the article has changed
+            if (currentArticleId != article.articleID) {
+                currentArticleId = article.articleID
+
+                highlightView.animate().cancel()
+                highlightView.visibility = View.INVISIBLE
+                highlightView.scaleX = 0f
+                highlightView.alpha = 0f
+                val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                lpReset.width = 0
+                highlightView.layoutParams = lpReset
+
+                // Set up sentiment progress bar with optimized GPU animation
+                trackView.post {
+                    val totalWidth = trackView.width
+                    val half = totalWidth / 2
+                    val score = CalculateUtil.round(sentimentScore, 2)
+                    
+                    // Set the highlightView's layout width to exactly half (the max it can be)
+                    val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                    lp.width = half
                     lp.marginStart = half
-                    highlightView.layoutParams = lp
-                } else {
-                    // Ensure view is GONE and width is 1px before setting up animation
-                    highlightView.clearAnimation()
-                    highlightView.visibility = View.GONE
-                    lp.width = 1  // Use 1px to avoid MATCH_CONSTRAINT, will animate from here
-                    lp.marginStart = half
-                    highlightView.setBackgroundResource(
-                        if (score > 0.1) R.drawable.bg_progress_positive 
-                        else if (score < -0.1) R.drawable.bg_progress_negative
-                        else R.drawable.bg_progress_neutral
-                    )
                     highlightView.layoutParams = lp
                     
-                    // Wait one frame to ensure GONE state is applied
-                    highlightView.post {
-                        animateSentimentBar(highlightView, half, score, 1f, targetDistance.toFloat())
+                    if (kotlin.math.abs(score) > 0.01) {
+                        highlightView.setBackgroundResource(
+                            if (score > 0.1) R.drawable.bg_progress_positive 
+                            else if (score < -0.1) R.drawable.bg_progress_negative
+                            else R.drawable.bg_progress_neutral
+                        )
+                        animateSentimentBar(highlightView, half, score)
+                    } else {
+                        highlightView.visibility = View.INVISIBLE
                     }
                 }
             }
 
-            // Show recommended hint for big cards (optional)
-            recommendedHintRow.visibility = View.GONE
+            // Handle Tags
+            populateCardTags(cardTagsContainer, article.sector, article.region, article.topics)
 
             // Set click listeners
             itemView.setOnClickListener {
@@ -444,6 +483,98 @@ class YourFeedAdapter(
                 onShareArticle(article)
                 true
             }
+        }
+    }
+
+    private fun populateCardTags(container: LinearLayout, sector: String?, region: String?, topics: List<SearchListEntry.DataDTO.ArticlesDTO.TopicsDTO>?) {
+        container.removeAllViews()
+        
+        // 1. Gather all unique tags with their priorities
+        // Priority: 3=Trending Topic, 2=Region, 1=Sector
+        data class TagCandidate(val id: String, val name: String, val priority: Int)
+        val candidates = mutableMapOf<String, TagCandidate>()
+
+        // Trending Topics (Priority 3)
+        topics?.forEach { topic ->
+            if (!topic.tag.isNullOrEmpty()) {
+                candidates[topic.tag] = TagCandidate(topic.tag, topic.displayName ?: topic.tag, 3)
+            }
+        }
+
+        // Regions (Priority 2)
+        if (!region.isNullOrEmpty()) {
+            if (!candidates.containsKey(region)) {
+                candidates[region] = TagCandidate(region, region, 2)
+            }
+        }
+
+        // Sectors (Priority 1)
+        if (!sector.isNullOrEmpty()) {
+            if (!candidates.containsKey(sector)) {
+                candidates[sector] = TagCandidate(sector, sector, 1)
+            }
+        }
+
+        // 2. Sort by Priority (Descending) and take top 2
+        val sortedTags = candidates.values.sortedByDescending { it.priority }.take(2)
+
+        sortedTags.forEach { candidate ->
+            val tagId = candidate.id
+            val displayName = candidate.name
+            
+            val isFollowed = activeTags.any { it.tag.equals(tagId, ignoreCase = true) || it.displayName.equals(displayName, ignoreCase = true) }
+            
+            val chipView = LayoutInflater.from(context).inflate(
+                R.layout.item_followed_tag,
+                container,
+                false
+            )
+            val tagText = chipView.findViewById<TextView>(R.id.tag_text)
+            val checkBtn = chipView.findViewById<LinearLayout>(R.id.tag_check_btn)
+            val checkImg = checkBtn.getChildAt(0) as ImageView
+
+            if (displayName.equals("General", ignoreCase = true)) {
+                tagText.text = context.getString(R.string.topic_general)
+            } else {
+                tagText.text = displayName
+            }
+
+            if (isFollowed) {
+                checkImg.setImageResource(R.drawable.ic_check)
+                checkBtn.setOnClickListener {
+                    val topic = activeTags.find { it.tag.equals(tagId, ignoreCase = true) || it.displayName.equals(displayName, ignoreCase = true) }
+                    topic?.let { 
+                        checkBtn.isEnabled = false
+                        checkImg.animate().alpha(0f).setDuration(200).withEndAction {
+                            headerCallback?.onTagUnselected(it)
+                        }.start()
+                    }
+                }
+            } else {
+                checkImg.setImageResource(R.drawable.ic_add)
+                checkBtn.setOnClickListener {
+                    checkBtn.isEnabled = false
+                    checkImg.animate().alpha(0f).setDuration(200).withEndAction {
+                        headerCallback?.onFollowTag(tagId)
+                    }.start()
+                }
+            }
+
+            // Tag text opens the Tag News popup
+            tagText.setOnClickListener {
+                val topic = activeTags.find { it.tag.equals(tagId, ignoreCase = true) || it.displayName.equals(displayName, ignoreCase = true) }
+                if (topic != null) {
+                    headerCallback?.onTagClick(topic)
+                } else {
+                    // Create a dummy topic DTO to show news for non-followed tags
+                    val dummyTopic = TopicListEntry.TopicDTO()
+                    dummyTopic.tag = tagId
+                    dummyTopic.displayName = displayName
+                    headerCallback?.onTagClick(dummyTopic)
+                }
+            }
+
+            container.addView(chipView)
         }
     }
     
@@ -482,10 +613,14 @@ class YourFeedAdapter(
         private val sortValueTv: TextView = itemView.findViewById(R.id.sort_value_tv)
         private val sortInfoIcon: ImageView = itemView.findViewById(R.id.sort_info_icon)
         private val activeTagsChipsContainer: LinearLayout = itemView.findViewById(R.id.active_tags_chips_container)
+        private val manageTagsBtn: LinearLayout = itemView.findViewById(R.id.manage_tags_btn)
 
         init {
             sortChip.setOnClickListener {
                 headerCallback?.onSortClick(sortChip)
+            }
+            manageTagsBtn.setOnClickListener {
+                headerCallback?.onManageTagsClick()
             }
         }
 
@@ -522,8 +657,8 @@ class YourFeedAdapter(
                     addTagChip(ctx, tag)
                 }
             }
-            // Always add manage chevron at the end
-            addManageChip(ctx)
+            // Managed by static button now
+            // addManageChip(ctx)
         }
         
         private fun addSelectTagsChip(ctx: android.content.Context) {
@@ -536,12 +671,23 @@ class YourFeedAdapter(
             val selectTagsText = selectTagsChip.findViewById<TextView>(R.id.tag_text)
 
             selectTagsText.text = ctx.getString(R.string.select_tags_to_follow)
-            selectTagsText.setTextColor(ctx.getColor(R.color.colorTextMiddle))
+            selectTagsText.setTextColor(ctx.getColor(R.color.colorTextDeep))
             selectTagsIcon.setImageResource(R.drawable.shoppingmode_24)
-            selectTagsIcon.setColorFilter(ctx.getColor(R.color.colorTextMiddle))
+            selectTagsIcon.setColorFilter(ctx.getColor(R.color.colorTextDeep))
+            
+            // Remove background and padding to look like plain text
+            selectTagsChip.background = null
+            
+            // Adjust padding to align with other tags
+            // item_followed_tag has Root(2dp) + Text(6dp) = 8dp vertical padding
+            val padV = Utils.dpToPx(8f, ctx.resources)
+            val padStart = Utils.dpToPx(8f, ctx.resources)
+            val padEnd = Utils.dpToPx(0f, ctx.resources)
+            selectTagsChip.setPadding(padStart, padV, padEnd, padV)
 
             (selectTagsChip.layoutParams as? LinearLayout.LayoutParams)?.let { lp ->
-                lp.bottomMargin = 0
+                lp.bottomMargin = Utils.dpToPx(4f, ctx.resources)
+                lp.rightMargin = Utils.dpToPx(4f, ctx.resources)
                 lp.gravity = android.view.Gravity.CENTER_VERTICAL
                 selectTagsChip.layoutParams = lp
             }
@@ -555,28 +701,37 @@ class YourFeedAdapter(
         
         private fun addTagChip(ctx: android.content.Context, tag: TopicListEntry.TopicDTO) {
             val chipView = LayoutInflater.from(ctx).inflate(
-                R.layout.item_tag_chip,
+                R.layout.item_followed_tag,
                 activeTagsChipsContainer,
                 false
             )
-            val tagIcon = chipView.findViewById<ImageView>(R.id.tag_icon)
             val tagText = chipView.findViewById<TextView>(R.id.tag_text)
+            val checkBtn = chipView.findViewById<LinearLayout>(R.id.tag_check_btn)
 
             if (tag.tag != null && tag.tag.equals("General", ignoreCase = true)) {
                 tagText.text = ctx.getString(R.string.topic_general)
             } else {
                 tagText.text = tag.displayName
             }
-            tagIcon.setImageResource(getTagIcon(tag.tag))
+            
+            // Remove previous layout/margin setting code as margins are handled in xml now 
+            // and gravity is handled by container
 
-            (chipView.layoutParams as? LinearLayout.LayoutParams)?.let { lp ->
-                lp.bottomMargin = 0
-                lp.gravity = android.view.Gravity.CENTER_VERTICAL
-                chipView.layoutParams = lp
+            checkBtn.setOnClickListener {
+                checkBtn.isEnabled = false // Prevent double clicks
+                // Animate fade out of the icon
+                val icon = checkBtn.getChildAt(0)
+                icon.animate()
+                    .alpha(0f)
+                    .setDuration(200)
+                    .withEndAction {
+                        headerCallback?.onTagUnselected(tag)
+                    }
+                    .start()
             }
-
-            chipView.setOnClickListener {
-                headerCallback?.onManageTagsClick()
+            // Tag text opens the Tag News popup
+             tagText.setOnClickListener {
+                headerCallback?.onTagClick(tag)
             }
 
             activeTagsChipsContainer.addView(chipView)

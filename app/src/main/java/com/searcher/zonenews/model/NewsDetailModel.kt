@@ -18,7 +18,6 @@ import javax.inject.Inject
 import razerdp.util.PopupUtils.getString
 import com.searcher.zonenews.entry.PublisherInfoEntry
 import com.searcher.zonenews.R
-import java.util.concurrent.ConcurrentHashMap
 import com.searcher.zonenews.utils.ErrorUtils
 
 /**
@@ -49,14 +48,20 @@ class NewsDetailModel @Inject constructor(
     private var _publisherInfoEntry: MutableLiveData<PublisherInfoEntry> = MutableLiveData()
     var publisherInfoEntry: LiveData<PublisherInfoEntry> = _publisherInfoEntry
 
-    // Cache for publisher info to prevent redundant network calls
-    private val publisherInfoCache = ConcurrentHashMap<Int, PublisherInfoEntry>()
-
     fun queryNewsDetail(id: String, summaryLanguage: String? = null) {
+        // Use summaryLanguage if provided, otherwise fall back to app language
+        val languageToUse = summaryLanguage ?: languageManager.getCurrentLanguageCode()
+        
+        // Check persistent repository cache first for instant load
+        val cached = newsDetailRepository.getCachedArticleDetail(id, languageToUse)
+        if (cached != null) {
+            _newsDetailEntry.value = cached
+            // Still fetch in background to refresh? For now, just return to wow with speed.
+            return
+        }
+
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                // Use summaryLanguage if provided, otherwise fall back to app language
-                val languageToUse = summaryLanguage ?: languageManager.getCurrentLanguageCode()
                 newsDetailRepository.queryNewsDetail(id, languageToUse)
             }
             when (result) {
@@ -67,14 +72,7 @@ class NewsDetailModel @Inject constructor(
                     _newsDetailEntry.value = articleDetailEntry
                 }
                 is NetworkResponse.Success -> {
-                    val responseBody = result.body
-                    // Check if the response body has a code field indicating success/error
-                    if (responseBody.code == 200) {
-                        _newsDetailEntry.value = responseBody
-                    } else {
-                        // API returned error in response body
-                        _newsDetailEntry.value = responseBody
-                    }
+                    _newsDetailEntry.value = result.body
                 }
                 is NetworkResponse.UnknownError -> {
                     val articleDetailEntry = ArticleDetailEntry()
@@ -217,9 +215,10 @@ class NewsDetailModel @Inject constructor(
      * Get publisher info with caching
      */
     fun queryPublisherInfo(id: Int) {
-        // Check cache first
-        if (publisherInfoCache.containsKey(id)) {
-            _publisherInfoEntry.value = publisherInfoCache[id]
+        // Check repository cache first
+        val cached = newsDetailRepository.getCachedPublisherInfo(id)
+        if (cached != null) {
+            _publisherInfoEntry.value = cached
             return
         }
 
@@ -235,14 +234,7 @@ class NewsDetailModel @Inject constructor(
                     _publisherInfoEntry.value = entry
                 }
                 is NetworkResponse.Success -> {
-                    val responseBody = result.body
-                    if (responseBody.code == 200) {
-                        // Cache successful response
-                        publisherInfoCache[id] = responseBody
-                        _publisherInfoEntry.value = responseBody
-                    } else {
-                        _publisherInfoEntry.value = responseBody
-                    }
+                    _publisherInfoEntry.value = result.body
                 }
                 is NetworkResponse.UnknownError -> {
                     val entry = PublisherInfoEntry()

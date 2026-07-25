@@ -13,6 +13,10 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.ViewGroup
 import android.view.ViewConfiguration
+import android.view.Gravity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.widget.PopupWindow
 import android.widget.FrameLayout
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
@@ -27,6 +31,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.activity.viewModels
+import com.searcher.zonenews.model.TopicModel
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.animation.PathInterpolatorCompat
 import androidx.core.content.ContextCompat
@@ -39,12 +44,14 @@ import com.searcher.zonenews.entry.ArticleDetailEntry
 import com.searcher.zonenews.entry.ViewHisEntry
 import com.searcher.zonenews.model.MyModel
 import com.searcher.zonenews.model.NewsDetailModel
+import kotlinx.coroutines.delay
 
 import com.searcher.zonenews.utils.ToastUtils
 import com.searcher.zonenews.utils.HapticFeedbackHelper
 import com.searcher.zonenews.utils.Utils
 import com.searcher.zonenews.utils.SharedPreferenceUtils
 import com.bumptech.glide.Glide
+import com.searcher.zonenews.utils.ImageCacheManager
 
 import com.google.android.material.card.MaterialCardView
 import com.searcher.zonenews.utils.SystemDialogUtils
@@ -54,13 +61,19 @@ import com.searcher.zonenews.utils.SwipeGestureHelper
 import com.searcher.zonenews.utils.ThemeManager
 import com.searcher.zonenews.utils.LanguageManager
 import com.searcher.zonenews.utils.Language
+import com.searcher.zonenews.selfview.popup.NewsDetailMorePopupWindow
 import androidx.core.os.ConfigurationCompat
 import eightbitlab.com.blurview.BlurView
 
 import android.graphics.BlurMaskFilter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import java.util.Locale
 import com.searcher.zonenews.utils.DebounceUtils.setOnDebounceClickListener
+import com.searcher.zonenews.ui.newsdetail.QuotesAdapter
+import com.searcher.zonenews.ui.newsdetail.QuotesBottomSheetFragment
+
+import com.searcher.zonenews.entry.QuoteEntry
 
 
 
@@ -72,6 +85,7 @@ import com.searcher.zonenews.utils.DebounceUtils.setOnDebounceClickListener
 class NewsDetailActivity : BaseActivity() {
     private val newsDetailModel:NewsDetailModel by viewModels ()
     private val myModel: MyModel by viewModels()
+    private val topicModel: TopicModel by viewModels()
     @Inject lateinit var languageManager: LanguageManager
     private lateinit var mViewBinding: ActivityNewsDetailBinding
 
@@ -95,6 +109,7 @@ class NewsDetailActivity : BaseActivity() {
     // Timeline
     private var isProUser: Boolean = false // Default to false, will be updated from API
     private lateinit var timelineAdapter: TimelineAdapter
+    private var publisherArticlesAdapter: com.zhy.adapter.recyclerview.CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO>? = null
     data class TimelineArticle(
         val id: String,
         val title: String,
@@ -107,8 +122,8 @@ class NewsDetailActivity : BaseActivity() {
     private val cardCollapsedState = mutableMapOf<String, Boolean>()
     
     // Card order management
-    private val cardIds = listOf("sentiment", "publisher", "subjectivity", "timeline")
-    private val defaultCardOrder = listOf("sentiment", "publisher", "subjectivity", "timeline")
+    private val cardIds = listOf("sentiment", "key_quotes", "publisher", "subjectivity", "timeline", "related")
+    private val defaultCardOrder = listOf("sentiment", "timeline", "publisher", "subjectivity", "key_quotes", "related")
     
     // Summary language preference
     private var currentSummaryLanguage: String = Constants.LANGUAGE_ENGLISH_UK
@@ -116,14 +131,93 @@ class NewsDetailActivity : BaseActivity() {
     // Sentiment animation tracking
     private var sentimentValue: Double = 0.0
     private var hasSentimentCardAnimated: Boolean = false
+    
+    // Tutorial-driven temporary state (Phase 3 & 4)
+    private var isTemporaryTutorialExpansionActive: Boolean = false
     private var sentimentCardPreDrawListener: ViewTreeObserver.OnPreDrawListener? = null
+    
+    // Track current locale to detect language changes
+    private var currentLocale: String? = null
+    
+    // Rearrange mode state
+    private var isRearrangeMode = false
+    private var savedCardOrderBeforeRearrange: List<String>? = null
+    private var menuButtonFlashAnimators = mutableListOf<android.animation.ObjectAnimator>()
+    private var preRearrangeCollapsedState = mutableMapOf<String, Boolean>()
+    
+    // Auto-scroll for Key Quotes
+    private var quotesRecyclerView: RecyclerView? = null
+    private var lastQuotesScrollTime = 0L
+    private var quotesScrollAccumulator = 0f
+    private val quotesScrollSpeedPerSecond = 144f // Reasonable reading speed
+
+    private val quotesScrollRunnable = object : Runnable {
+        override fun run() {
+            val rv = quotesRecyclerView ?: return
+            if (rv.layoutManager == null || rv.isComputingLayout) return
+
+            val now = android.os.SystemClock.uptimeMillis()
+            if (lastQuotesScrollTime == 0L) {
+                lastQuotesScrollTime = now
+            }
+
+            val deltaTime = now - lastQuotesScrollTime
+            lastQuotesScrollTime = now
+
+            // Calculate pixels to scroll based on time
+            quotesScrollAccumulator += (deltaTime * quotesScrollSpeedPerSecond) / 1000f
+            
+            val pixelsToScroll = quotesScrollAccumulator.toInt()
+            if (pixelsToScroll > 0) {
+                rv.scrollBy(pixelsToScroll, 0)
+                quotesScrollAccumulator -= pixelsToScroll
+            }
+
+            rv.postOnAnimation(this)
+        }
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Store current locale on creation
+        currentLocale = getCurrentLocaleString()
+        
         mViewBinding = ActivityNewsDetailBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
         applyStatusBarStyle()
         initView()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Ensure Pro status is fresh every time we return to this screen
+        myModel.queryMyFormation()
+        
+        // Resume quotes auto-scroll
+        quotesRecyclerView?.removeCallbacks(quotesScrollRunnable)
+        lastQuotesScrollTime = 0L
+        quotesScrollAccumulator = 0f
+        quotesRecyclerView?.postOnAnimation(quotesScrollRunnable)
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        // Stop quotes auto-scroll
+        quotesRecyclerView?.removeCallbacks(quotesScrollRunnable)
+    }
+    
+    
+    /**
+     * Get current locale as a string for comparison
+     */
+    private fun getCurrentLocaleString(): String {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            resources.configuration.locales[0].toString()
+        } else {
+            @Suppress("DEPRECATION")
+            resources.configuration.locale.toString()
+        }
     }
 
 
@@ -144,14 +238,8 @@ class NewsDetailActivity : BaseActivity() {
         setupGestureDetection()
         setupTimelineStatic()
         setupTimelineComingSoonOverlay()
-        mViewBinding.feedBackLayout.setOnDebounceClickListener {
-                showFeedBackWindow()
-        }
-		mViewBinding.generateContextBtn.setOnClickListener {
-			ToastUtils.showShortToast(mContext!!, getString(R.string.context_coming_soon))
-		}
-        
-        // Setup settings button
+
+        // Setup settings button (chip in attribution area)
         mViewBinding.settingsButtonLayout.setOnClickListener {
             showSettingsPopup(it)
         }
@@ -182,6 +270,27 @@ class NewsDetailActivity : BaseActivity() {
         setupCardControls()
         // Initialize and apply card order
         applyCardOrder()
+        
+        // Setup rearrange mode buttons
+        findViewById<View>(R.id.rearrange_cancel_btn)?.setOnClickListener {
+            exitRearrangeMode(save = false)
+        }
+        findViewById<View>(R.id.rearrange_done_btn)?.setOnClickListener {
+            exitRearrangeMode(save = true)
+            ToastUtils.showShortToast(this, getString(R.string.rearrange_success))
+        }
+        
+        // Handle back press to cancel rearrange mode
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isRearrangeMode) {
+                    exitRearrangeMode(save = false)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
 	}
 
 	private fun setupToolbar() {
@@ -191,11 +300,7 @@ class NewsDetailActivity : BaseActivity() {
 			when (item.itemId) {
 				R.id.action_share -> {
 					if (mArticleDetailEntry == null) return@setOnMenuItemClickListener true
-            val link = when {
-                !mArticleDetailEntry!!.shareURL.isNullOrEmpty() -> mArticleDetailEntry!!.shareURL
-                !mArticleDetailEntry!!.articleURL.isNullOrEmpty() -> mArticleDetailEntry!!.articleURL
-                else -> mArticleDetailEntry!!.pictureURL
-            }
+            val link = "https://zonenews.io/article/$articleId"
             shareLink(link)
 					addHis()
 					true
@@ -208,6 +313,24 @@ class NewsDetailActivity : BaseActivity() {
 					} else {
 						newsDetailModel.collectHis(articleId)
 					}
+					true
+				}
+				R.id.action_more -> {
+					val menuView = toolbar.findViewById<View>(R.id.action_more)
+					val morePopup = NewsDetailMorePopupWindow(
+                        this,
+                        onFeedbackClick = {
+                            val fragment = FeedbackBottomSheetFragment.newInstance { feedback ->
+                                delay(1000)
+                                true
+                            }
+                            fragment.show(supportFragmentManager, "FeedbackBottomSheet")
+                        },
+                        onEditModeClick = {
+                            enterRearrangeMode()
+                        }
+                    )
+                    morePopup.showPopupWindow(menuView ?: toolbar)
 					true
 				}
 				else -> false
@@ -240,6 +363,12 @@ class NewsDetailActivity : BaseActivity() {
             if (response != null && response.code == Constants.SUCCESS_CODE) {
                 isProUser = response.data?.isPro == true
                 updatePremiumBlockerVisibility()
+                
+                // Refresh adapters to reflect new Pro status
+                if (::timelineAdapter.isInitialized) {
+                    timelineAdapter.updateProStatus(isProUser)
+                }
+                publisherArticlesAdapter?.notifyDataSetChanged()
             }
         }
         
@@ -323,6 +452,26 @@ class NewsDetailActivity : BaseActivity() {
             }
         }
 
+        // Observe followed topics
+        topicModel.queryMyTopics()
+        topicModel.myTopicsEntry.observe(this) { response ->
+            if (response != null && response.code == Constants.SUCCESS_CODE) {
+                val followedTags = response.data?.topics?.mapNotNull { it.tag } ?: emptyList()
+                mViewBinding.relatedNewsView.followedTags = followedTags
+            }
+        }
+
+        // Observe follow/unfollow results
+        topicModel.commonResponseEntry.observe(this) { response ->
+            if (response != null && response.code == Constants.SUCCESS_CODE) {
+                // Success - the optimistic update already handled the UI
+            } else if (response != null) {
+                // Error - maybe refresh to sync back?
+                topicModel.queryMyTopics()
+                SystemDialogUtils.showErrorMessage(this, response.msg)
+            }
+        }
+
     }
     
     /**
@@ -380,7 +529,9 @@ class NewsDetailActivity : BaseActivity() {
         // Publisher distribution card blocker (at card level)
         val publisherBlocker = findViewById<FrameLayout>(R.id.publisher_blocker_overlay)
         val publisherCollapsed = cardCollapsedState["publisher"] ?: false
-        publisherBlocker?.visibility = if (isProUser || publisherCollapsed) View.GONE else View.VISIBLE
+        
+        // Hide blockers if user is Pro OR if card is collapsed OR if we are in temporary tutorial expansion mode
+        publisherBlocker?.visibility = if (isProUser || publisherCollapsed || isTemporaryTutorialExpansionActive) View.GONE else View.VISIBLE
         publisherBlocker?.setOnDebounceClickListener {
             showSubscriptionSheet()
         }
@@ -388,7 +539,9 @@ class NewsDetailActivity : BaseActivity() {
         // Subjectivity score card blocker (at card level in activity_news_detail.xml)
         val subjectivityBlocker = findViewById<FrameLayout>(R.id.subjectivity_blocker_overlay)
         val subjectivityCollapsed = cardCollapsedState["subjectivity"] ?: false
-        subjectivityBlocker?.visibility = if (isProUser || subjectivityCollapsed) View.GONE else View.VISIBLE
+        
+        // Hide blockers if user is Pro OR if card is collapsed OR if we are in temporary tutorial expansion mode
+        subjectivityBlocker?.visibility = if (isProUser || subjectivityCollapsed || isTemporaryTutorialExpansionActive) View.GONE else View.VISIBLE
         subjectivityBlocker?.setOnDebounceClickListener {
             showSubscriptionSheet()
         }
@@ -404,85 +557,288 @@ class NewsDetailActivity : BaseActivity() {
     private var mArticleDetailEntry: ArticleDetailEntry.DataDTO?=null
     @SuppressLint("NotifyDataSetChanged")
     private fun completeView(articleDetailEntry: ArticleDetailEntry.DataDTO){
-        // Hide Shimmer and Show Content
-        val shimmerLayout = findViewById<com.facebook.shimmer.ShimmerFrameLayout>(R.id.shimmer_layout)
-        shimmerLayout?.stopShimmer()
-        shimmerLayout?.visibility = View.GONE
-        mViewBinding.newsDetailScrollView.visibility = View.VISIBLE
+        val isUpdate = mArticleDetailEntry != null
 
-        mArticleDetailEntry = articleDetailEntry
-        Glide.with(mContext!!).load(articleDetailEntry.pictureURL).error(R.drawable.ic_image_not_supported_24)
-            .into(mViewBinding.newsIv)
+        if (!isUpdate) {
+            // Hide Shimmer and Show Content (only on first load)
+            val shimmerLayout = findViewById<com.facebook.shimmer.ShimmerFrameLayout>(R.id.shimmer_layout)
+            shimmerLayout?.stopShimmer()
+            shimmerLayout?.visibility = View.GONE
+            mViewBinding.newsDetailScrollView.visibility = View.VISIBLE
+
+            // Use manual persistent cache for "instant" appearance (similar to publisher info)
+            val cachedBitmap = ImageCacheManager.get(articleDetailEntry.pictureURL ?: "")
+            if (cachedBitmap != null) {
+                mViewBinding.newsIv.setImageBitmap(cachedBitmap)
+            }
+            
+            Glide.with(mContext!!).asBitmap().load(articleDetailEntry.pictureURL)
+                .error(R.drawable.ic_image_not_supported_24)
+                .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.Bitmap> {
+                    override fun onLoadFailed(
+                        e: com.bumptech.glide.load.engine.GlideException?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        isFirstResource: Boolean
+                    ): Boolean = false
+                    
+                    override fun onResourceReady(
+                        resource: android.graphics.Bitmap?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        resource?.let { ImageCacheManager.put(articleDetailEntry.pictureURL ?: "", it) }
+                        return false
+                    }
+                })
+                .into(mViewBinding.newsIv)
+        }
+
+        // Always update heading and summary (these are what change with language selection)
         mViewBinding.newsTitleTv.text = articleDetailEntry.title
         
         // Handle new description structure
         articleDetailEntry.description?.let { description ->
-            // Debug logging
-            Log.d("NewsDetail", "Description object: ${articleDetailEntry.description}")
-            Log.d("NewsDetail", "Synopsis: '${description.synopsis}'")
-            Log.d("NewsDetail", "Implications: '${description.implications}'")
-            
             // Handle synopsis section
             if (!description.synopsis.isNullOrEmpty()) {
                 mViewBinding.newsSynopsisTv.text = description.synopsis
                 mViewBinding.newsSynopsisTv.visibility = View.VISIBLE
-                Log.d("NewsDetail", "Synopsis displayed")
             } else {
                 mViewBinding.newsSynopsisTv.visibility = View.GONE
-                Log.d("NewsDetail", "Synopsis hidden - empty or null")
             }
             
             // Handle implications section
             if (!description.implications.isNullOrEmpty()) {
                 mViewBinding.newsImplicationsTv.text = description.implications
                 mViewBinding.newsImplicationsTv.visibility = View.VISIBLE
-                Log.d("NewsDetail", "Implications displayed")
             } else {
                 mViewBinding.newsImplicationsTv.visibility = View.GONE
-                Log.d("NewsDetail", "Implications hidden - empty or null")
             }
         } ?: run {
-            // Fallback for null description
-            Log.d("NewsDetail", "Description is null")
             mViewBinding.newsSynopsisTv.visibility = View.GONE
             mViewBinding.newsImplicationsTv.visibility = View.GONE
         }
-		// Note: Save button state is now determined by the saved articles list fetched in initModel()
-		// The button state is managed by isArticleSaved and updateSaveButtonState()
-		
-		// Sentiment meter - store value for animation when card becomes visible
-		sentimentValue = articleDetailEntry.metrics.sentiment
-		hasSentimentCardAnimated = false
-		// Initialize sentiment meter to 0, will animate when card becomes visible
-		mViewBinding.sentimentMeter.setSentiment(0.0)
-        startSentimentCardVisibilityWatcher()
-		// Subjectivity score
-		findViewById<SubjectivityScoreView>(R.id.subjectivity_score).setSubjectivity(articleDetailEntry.metrics.subjectivity)
-		// Publisher distribution
-		mViewBinding.publisherDistribution.setData(
-			PublisherDistributionView.Data(
-				centricPercent = articleDetailEntry.coverage.percentage.centric,
-				centricIcons = articleDetailEntry.coverage.icons.centric.map { icon ->
-					PublisherDistributionView.Icon(
-						size = icon.size,
-						rx = icon.rx,
-						ry = icon.ry,
-						logo = icon.logo
-					)
-				},
-				progressiveIcons = articleDetailEntry.coverage.icons.progressive.map { icon ->
-					PublisherDistributionView.Icon(
-						size = icon.size,
-						rx = icon.rx,
-						ry = icon.ry,
-						logo = icon.logo
-					)
-				}
-			)
-		)
 
-        setupPublisherArticles(articleDetailEntry)
-	}
+        if (!isUpdate) {
+            // Store entry and set up other cards only on first load
+            mArticleDetailEntry = articleDetailEntry
+            
+            // Sentiment meter - store value for animation when card becomes visible
+            sentimentValue = articleDetailEntry.metrics.sentiment
+            hasSentimentCardAnimated = false
+            // Initialize sentiment meter to 0, will animate when card becomes visible
+            mViewBinding.sentimentMeter.setSentiment(0.0)
+            startSentimentCardVisibilityWatcher()
+            
+            // Subjectivity score
+            findViewById<SubjectivityScoreView>(R.id.subjectivity_score).setSubjectivity(articleDetailEntry.metrics.subjectivity)
+            
+            // Publisher distribution
+            mViewBinding.publisherDistribution.setData(
+                PublisherDistributionView.Data(
+                    centricPercent = articleDetailEntry.coverage.percentage.centric,
+                    centricIcons = articleDetailEntry.coverage.icons.centric.map { icon ->
+                        PublisherDistributionView.Icon(
+                            size = icon.size,
+                            rx = icon.rx,
+                            ry = icon.ry,
+                            logo = icon.logo
+                        )
+                    },
+                    progressiveIcons = articleDetailEntry.coverage.icons.progressive.map { icon ->
+                        PublisherDistributionView.Icon(
+                            size = icon.size,
+                            rx = icon.rx,
+                            ry = icon.ry,
+                            logo = icon.logo
+                        )
+                    }
+                )
+            )
+
+            setupPublisherArticles(articleDetailEntry)
+            
+            // Setup Related News card
+            setupRelatedNews(articleDetailEntry)
+
+            // Setup Key Quotes card
+            setupKeyQuotes(articleDetailEntry)
+            
+            // Show tutorial on first load
+            mViewBinding.newsDetailScrollView.post {
+                showTutorialIfNeeded()
+            }
+        }
+    }
+    
+    /**
+     * Setup Related News card with related articles grouped by topics
+     */
+    private fun setupRelatedNews(data: ArticleDetailEntry.DataDTO) {
+        val relatedNewsCard = findViewById<com.google.android.material.card.MaterialCardView>(R.id.related_news_card)
+        val relatedNewsView = findViewById<RelatedNewsView>(R.id.related_news_view)
+        
+        val relatedArticles = data.relatedArticles
+        val relatedTopics = data.relatedTopics
+        
+        if (relatedArticles.isNullOrEmpty()) {
+            relatedNewsCard?.visibility = View.GONE
+            return
+        }
+        
+        relatedNewsCard?.visibility = View.VISIBLE
+        
+        // Set data and configure the view
+        relatedNewsView?.setRelatedData(relatedTopics, relatedArticles)
+        
+        // Handle follow action (Plus/Check button click)
+        relatedNewsView?.onFollowAction = { tagId, displayName, shouldFollow ->
+            val type = if (shouldFollow) Constants.TYPE_TOPIC_ADD else Constants.TYPE_TOPIC_DELETE
+            
+            // 1. Optimistic UI update
+            topicModel.updateMyTopicsOptimistically(type, tagId, displayName)
+            
+            // 2. Persist to backend
+            topicModel.editTopic(type, tagId)
+        }
+        
+        // Handle article click - navigate to article detail page
+        relatedNewsView?.onArticleClickListener = { articleId ->
+            val intent = Intent(this, NewsDetailActivity::class.java)
+            intent.putExtra("id", articleId)
+            // Pass the current source fragment to the next activity
+            val currentSource = getIntent().getStringExtra("source_fragment") ?: "home"
+            intent.putExtra("source_fragment", currentSource)
+            startActivity(intent)
+        }
+
+        // Handle topic click - open TagNewsBottomSheetFragment
+        relatedNewsView?.onTopicClickListener = { tag, displayName ->
+            val currentSource = intent.getStringExtra("source_fragment") ?: "home"
+            val fragment = TagNewsBottomSheetFragment.newInstance(
+                tagName = displayName,
+                tagApiId = tag,
+                isFollowing = false, // Default to false for related topics as we don't know status
+                sourceFragment = currentSource
+            )
+            fragment.show(supportFragmentManager, "TagNewsBottomSheet")
+        }
+        
+        // Handle scroll state change - disable swipe-to-go-back during horizontal scroll
+        relatedNewsView?.onScrollStateChangedListener = { isScrolling ->
+            // The parent NestedScrollView or swipe gesture handling would need to be
+            // disabled here if the app has swipe-to-go-back implemented
+            // For now, this callback is available for future use
+        }
+    }
+
+
+
+    /**
+     * Setup Key Quotes card
+     */
+    /**
+     * Setup Key Quotes card
+     */
+    private fun setupKeyQuotes(data: ArticleDetailEntry.DataDTO) {
+        val keyQuotesLayout = findViewById<View>(R.id.key_quotes_layout)
+        
+        val quotes = data.quotes
+        if (quotes.isNullOrEmpty()) {
+            keyQuotesLayout?.visibility = View.GONE
+            return
+        }
+
+        keyQuotesLayout?.visibility = View.VISIBLE
+
+        // Setup Carousel
+        val rvCarousel = keyQuotesLayout?.findViewById<RecyclerView>(R.id.rv_quotes_carousel)
+        rvCarousel?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+    rvCarousel?.adapter = QuotesAdapter(quotes) { quote ->
+         if (!quote.sourceURL.isNullOrEmpty()) {
+             val (icon, name) = getArticleInfo(quote.sourceURL)
+             openArticleLink(quote.sourceURL, icon, name)
+         } else {
+             ToastUtils.showShortToast(this, getString(R.string.article_unavailable))
+         }
+    }
+        
+        // Setup Auto-Scroll
+        quotesRecyclerView = rvCarousel
+        if (quotes.isNotEmpty()) {
+            // Start in middle for infinite scrolling feel
+            val middle = Int.MAX_VALUE / 2
+            val startPosition = middle - (middle % quotes.size)
+            rvCarousel?.scrollToPosition(startPosition)
+            
+            // Start auto-scroll
+            rvCarousel?.removeCallbacks(quotesScrollRunnable)
+            lastQuotesScrollTime = 0L
+            quotesScrollAccumulator = 0f
+            rvCarousel?.postOnAnimation(quotesScrollRunnable)
+            
+            // Pause on touch and scroll
+            rvCarousel?.setOnTouchListener { _, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        // Stop auto-scroll immediately on touch
+                        rvCarousel.removeCallbacks(quotesScrollRunnable)
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        // Resume only if idle. If flinging, ScrollListener will handle resume when idle.
+                        if (rvCarousel.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                            rvCarousel.removeCallbacks(quotesScrollRunnable)
+                            lastQuotesScrollTime = 0L
+                            quotesScrollAccumulator = 0f
+                            rvCarousel.postOnAnimation(quotesScrollRunnable)
+                        }
+                    }
+                }
+                false
+            }
+
+            // Pause on drag/fling (ensure it doesn't fight with user)
+            rvCarousel?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        // Resume auto-scroll when settling finishes
+                        recyclerView.removeCallbacks(quotesScrollRunnable)
+                        lastQuotesScrollTime = 0L
+                        quotesScrollAccumulator = 0f
+                        recyclerView.postOnAnimation(quotesScrollRunnable)
+                    } else {
+                        // Stop auto-scroll while dragging or flinging
+                        recyclerView.removeCallbacks(quotesScrollRunnable)
+                    }
+                }
+            })
+        }
+
+        // Setup See All
+        val tvSeeAll = keyQuotesLayout?.findViewById<TextView>(R.id.tv_see_all)
+        tvSeeAll?.setOnClickListener {
+            showQuotesBottomSheet(quotes)
+        }
+        
+        // Menu buttons are now part of the layout to match design
+        // keyQuotesLayout?.findViewById<View>(R.id.iv_menu)?.visibility = View.GONE 
+    }
+
+    private fun showQuotesBottomSheet(quotes: List<QuoteEntry>) {
+        val sheet = QuotesBottomSheetFragment.newInstance(quotes)
+        sheet.setOnQuoteClickListener { quote ->
+             if (!quote.sourceURL.isNullOrEmpty()) {
+                 val (icon, name) = getArticleInfo(quote.sourceURL)
+                 openArticleLink(quote.sourceURL, icon, name)
+             } else {
+                 ToastUtils.showShortToast(this, getString(R.string.article_unavailable))
+             }
+        }
+        sheet.show(supportFragmentManager, "QuotesBottomSheet")
+    }
 
     private fun setupTimelineStatic() {
         // Info button
@@ -584,10 +940,15 @@ class NewsDetailActivity : BaseActivity() {
     }
 
     private class TimelineAdapter(
-        private val isProUser: Boolean,
+        private var isProUser: Boolean,
         private val onItemClick: (TimelineArticle) -> Unit
     ) : RecyclerView.Adapter<TimelineAdapter.VH>() {
         private val items = mutableListOf<TimelineArticle>()
+
+        fun updateProStatus(isPro: Boolean) {
+            isProUser = isPro
+            notifyDataSetChanged()
+        }
 
         fun submitList(list: List<TimelineArticle>) {
             items.clear()
@@ -656,7 +1017,36 @@ class NewsDetailActivity : BaseActivity() {
         val items = applyInitialSort(data.articles)
         // Update sort indicator to show initial state
         updateSortIndicator()
-        listRv.adapter = object : com.zhy.adapter.recyclerview.CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO>(
+        publisherArticlesAdapter = createPublisherAdapter(items)
+        listRv.adapter = publisherArticlesAdapter
+        listRv.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                super.getItemOffsets(outRect, view, parent, state)
+                val pos = parent.getChildAdapterPosition(view)
+                // Add top divider for all but the first, left aligned with text by adding left margin of 52dp (40 icon + 12 spacing)
+                if (pos > 0) {
+                    outRect.top = 1
+                }
+            }
+
+            override fun onDraw(c: android.graphics.Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                val paint = android.graphics.Paint().apply { color = getColor(R.color.line_color); strokeWidth = resources.displayMetrics.density }
+                val left = parent.paddingLeft // Start at icon position (aligned with RecyclerView padding)
+                val right = parent.width - parent.paddingRight
+                for (i in 0 until parent.childCount) {
+                    val child = parent.getChildAt(i)
+                    val pos = parent.getChildAdapterPosition(child)
+                    if (pos > 0) {
+                        val y = child.top.toFloat()
+                        c.drawLine(left.toFloat(), y, right.toFloat(), y, paint)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun createPublisherAdapter(items: List<ArticleDetailEntry.DataDTO.ArticlesDTO>): com.zhy.adapter.recyclerview.CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO> {
+        return object : com.zhy.adapter.recyclerview.CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO>(
             this, R.layout.item_publisher_article, items
         ) {
             override fun convert(holder: com.zhy.adapter.recyclerview.base.ViewHolder, t: ArticleDetailEntry.DataDTO.ArticlesDTO, position: Int) {
@@ -665,56 +1055,56 @@ class NewsDetailActivity : BaseActivity() {
                 val biasTv = holder.getView<TextView>(R.id.article_publisher_bias)
                 val biasLockIcon = holder.getView<ImageView>(R.id.article_publisher_bias_lock)
                 val titleTv = holder.getView<TextView>(R.id.article_title)
-                
+
                 Glide.with(this@NewsDetailActivity).load(t.publisherIcon).error(R.drawable.ic_image_not_supported_24).into(iconIv)
                 nameTv.text = if (t.publisherName.isNullOrEmpty()) getString(R.string.about) else t.publisherName
-                
+
                 // Unified Publisher Info BottomSheet listener
                 val showPublisherInfo = View.OnClickListener {
-                     if (t.publisherID != null) {
+                    if (t.publisherID != null) {
                         showPublisherInfoBottomSheet(
                             t.publisherID!!,
                             t.publisherName ?: "",
                             t.publisherIcon ?: "",
                             t.publisherStance?.tag // Pass tag regardless of settings, Fragment handles visibility
                         )
-                     }
+                    }
                 }
-                
+
                 // Always enable click on Icon and Name, with debounce
                 iconIv.setOnDebounceClickListener { showPublisherInfo.onClick(it) }
                 nameTv.setOnDebounceClickListener { showPublisherInfo.onClick(it) }
-                
+
                 // Setup publisher bias tag
                 val reportPatternsEnabled = SharedPreferenceUtils.getBoolean(this@NewsDetailActivity, "report_patterns_enabled")
                 val hasStance = t.publisherStance != null && !t.publisherStance.tag.isNullOrEmpty()
-                
-                // Show if report patterns enabled OR if user is free (upsell opportunity)
-                if ((reportPatternsEnabled || !isProUser) && hasStance) {
+
+                // Show if report patterns enabled OR if user is free (upsell opportunity) OR if tutorial is active
+                if ((reportPatternsEnabled || !isProUser || isTemporaryTutorialExpansionActive) && hasStance) {
                     biasTv.visibility = View.VISIBLE
-                    
-                    if (!isProUser) {
-                        // Free users: Show blurred "Preview" text with liberal/progressive styling
+
+                    if (!isProUser && !isTemporaryTutorialExpansionActive) {
+                        // Free users (not in tutorial): Show blurred "Preview" text with liberal/progressive styling
                         biasTv.text = getString(R.string.preview)
                         biasTv.setTextColor(getColor(R.color.publisher_bias_progressive_text))
                         biasTv.setBackgroundResource(R.drawable.publisher_bias_tag_progressive_background)
                         biasTv.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
                         biasTv.paint.maskFilter = BlurMaskFilter(8f, BlurMaskFilter.Blur.NORMAL)
                         biasLockIcon.visibility = View.VISIBLE
-                        
+
                         // Click listener for upsell
                         val showUpsell = View.OnClickListener { showSubscriptionSheet() }
                         biasTv.setOnDebounceClickListener { showUpsell.onClick(it) }
                         biasLockIcon.setOnDebounceClickListener { showUpsell.onClick(it) }
                     } else {
-                        // Pro users: Show actual bias tag
-                        biasTv.text = getPublisherBiasText(t.publisherStance.tag)
+                        // Pro users OR users in tutorial: Show actual bias tag
+                        biasTv.text = getPublisherBiasText(t.publisherStance!!.tag)
                         biasTv.setTextColor(getPublisherBiasTextColor(t.publisherStance.tag))
                         biasTv.setBackgroundResource(getPublisherBiasBackground(t.publisherStance.tag))
                         biasTv.setLayerType(View.LAYER_TYPE_HARDWARE, null)
                         biasTv.paint.maskFilter = null
                         biasLockIcon.visibility = View.GONE
-                        
+
                         // Show Publisher Info BottomSheet on Bias Tag click (reuse unified listener)
                         biasTv.setOnDebounceClickListener { showPublisherInfo.onClick(it) }
                         biasLockIcon.setOnClickListener(null)
@@ -724,7 +1114,7 @@ class NewsDetailActivity : BaseActivity() {
                     biasTv.visibility = View.GONE
                     biasLockIcon.visibility = View.GONE
                 }
-                
+
                 val title = t.title
                 titleTv.text = when {
                     !title.isNullOrEmpty() -> title
@@ -747,30 +1137,24 @@ class NewsDetailActivity : BaseActivity() {
                 }
             }
         }
-        listRv.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                super.getItemOffsets(outRect, view, parent, state)
-                val pos = parent.getChildAdapterPosition(view)
-                // Add top divider for all but the first, left aligned with text by adding left margin of 52dp (40 icon + 12 spacing)
-                if (pos > 0) {
-                    outRect.top = 1
-                }
-            }
+    }
 
-            override fun onDraw(c: android.graphics.Canvas, parent: RecyclerView, state: RecyclerView.State) {
-                val paint = android.graphics.Paint().apply { color = getColor(R.color.line_color); strokeWidth = resources.displayMetrics.density }
-                val left = parent.paddingLeft + (resources.displayMetrics.density * (40 + 12)).toInt()
-                val right = parent.width - parent.paddingRight
-                for (i in 0 until parent.childCount) {
-                    val child = parent.getChildAt(i)
-                    val pos = parent.getChildAdapterPosition(child)
-                    if (pos > 0) {
-                        val y = child.top.toFloat()
-                        c.drawLine(left.toFloat(), y, right.toFloat(), y, paint)
-                    }
-                }
-            }
-        })
+    /**
+     * Get article info (icon, name) by URL
+     */
+    private fun getArticleInfo(url: String): Pair<String?, String?> {
+        val entry = mArticleDetailEntry ?: return null to null
+        
+        // Check articles list
+        entry.articles?.find { it.articleURL == url }?.let {
+            return it.publisherIcon to it.publisherName
+        }
+        
+        // Check related articles (though they might lack icon/name, checking just in case)
+        // RelatedArticlesDTO doesn't have publisherIcon/Name based on our check, but let's check definition if needed.
+        // Assuming primary source is in articles list.
+        
+        return null to null
     }
 
     /**
@@ -1644,69 +2028,8 @@ class NewsDetailActivity : BaseActivity() {
             val sortedArticles = getSortedArticles(originalArticles!!, currentSortOption, isAscending)
             
             // Create new adapter with sorted data
-            listRv.adapter = object : com.zhy.adapter.recyclerview.CommonAdapter<ArticleDetailEntry.DataDTO.ArticlesDTO>(
-                this, R.layout.item_publisher_article, sortedArticles
-            ) {
-                override fun convert(holder: com.zhy.adapter.recyclerview.base.ViewHolder, t: ArticleDetailEntry.DataDTO.ArticlesDTO, position: Int) {
-                    val iconIv = holder.getView<ImageView>(R.id.article_publisher_icon)
-                    val nameTv = holder.getView<TextView>(R.id.article_publisher_name)
-                    val biasTv = holder.getView<TextView>(R.id.article_publisher_bias)
-                    val titleTv = holder.getView<TextView>(R.id.article_title)
-                    
-                    Glide.with(this@NewsDetailActivity).load(t.publisherIcon).error(R.drawable.ic_image_not_supported_24).into(iconIv)
-                    nameTv.text = if (t.publisherName.isNullOrEmpty()) getString(R.string.about) else t.publisherName
-                    
-                    // Setup publisher bias tag - only show if report patterns is enabled
-                    val reportPatternsEnabled = SharedPreferenceUtils.getBoolean(this@NewsDetailActivity, "report_patterns_enabled")
-                    val hasStance = t.publisherStance != null && !t.publisherStance.tag.isNullOrEmpty()
-                    
-                    if ((reportPatternsEnabled || !isProUser) && hasStance) {
-                        biasTv.visibility = View.VISIBLE
-                        
-                        if (!isProUser) {
-                            // Free users: Show blurred "Preview" text with liberal/progressive styling
-                            biasTv.text = getString(R.string.preview)
-                            biasTv.setTextColor(getColor(R.color.publisher_bias_progressive_text))
-                            biasTv.setBackgroundResource(R.drawable.publisher_bias_tag_progressive_background)
-                            biasTv.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-                            biasTv.paint.maskFilter = BlurMaskFilter(8f, BlurMaskFilter.Blur.NORMAL)
-                            // Make it clickable to show subscription sheet
-                            biasTv.setOnClickListener {
-                                showSubscriptionSheet()
-                            }
-                        } else {
-                            // Pro users: Show actual bias tag
-                            biasTv.text = getPublisherBiasText(t.publisherStance.tag)
-                            biasTv.setTextColor(getPublisherBiasTextColor(t.publisherStance.tag))
-                            biasTv.setBackgroundResource(getPublisherBiasBackground(t.publisherStance.tag))
-                            biasTv.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-                            biasTv.paint.maskFilter = null
-                            biasTv.setOnClickListener(null)
-                        }
-                    } else {
-                        biasTv.visibility = View.GONE
-                    }
-                    
-                    val title = t.title
-                    titleTv.text = when {
-                        !title.isNullOrEmpty() -> title
-                        !t.description.isNullOrEmpty() -> t.description
-                        else -> getString(R.string.details)
-                    }
-                    holder.convertView.setOnClickListener {
-                        val linkRaw = when {
-                            !t.articleURL.isNullOrEmpty() -> t.articleURL
-                            !mArticleDetailEntry?.articleURL.isNullOrEmpty() -> mArticleDetailEntry?.articleURL
-                            !mArticleDetailEntry?.shareURL.isNullOrEmpty() -> mArticleDetailEntry?.shareURL
-                            else -> ""
-                        }
-                        val link = ensureHttpUrl(linkRaw ?: "")
-                        if (link.isNotEmpty()) {
-                            openArticleLink(link, t.publisherIcon, t.publisherName)
-                        }
-                    }
-                }
-            }
+            publisherArticlesAdapter = createPublisherAdapter(sortedArticles)
+            listRv.adapter = publisherArticlesAdapter
         }
     }
     
@@ -1746,15 +2069,133 @@ class NewsDetailActivity : BaseActivity() {
     private fun setupCardControls() {
         // Setup chevron buttons for collapse/expand
         setupChevronButton("sentiment", R.id.sentiment_chevron_btn, R.id.sentiment_content_container)
+        setupChevronButton("key_quotes", R.id.iv_chevron, R.id.key_quotes_content_container) {
+            // Refresh Key Quotes carousel on expansion to fix layout issues
+            val keyQuotesLayout = findViewById<View>(R.id.key_quotes_layout)
+            val rvCarousel = keyQuotesLayout?.findViewById<RecyclerView>(R.id.rv_quotes_carousel)
+            rvCarousel?.adapter?.notifyDataSetChanged()
+            rvCarousel?.requestLayout()
+        }
         setupChevronButton("publisher", R.id.publisher_chevron_btn, R.id.publisher_content_container)
         setupSubjectivityChevronButton()
         setupChevronButton("timeline", R.id.timeline_chevron_btn, R.id.timeline_content_container)
         
         // Setup menu buttons for drag and drop
         setupMenuButton("sentiment", R.id.sentiment_menu_btn, R.id.sentiment_card)
+        setupMenuButton("key_quotes", R.id.iv_menu, R.id.key_quotes_layout)
         setupMenuButton("publisher", R.id.publisher_menu_btn, R.id.publisher_card)
         setupSubjectivityMenuButton()
         setupMenuButton("timeline", R.id.timeline_menu_btn, R.id.timeline_container)
+        
+        // Setup Related News controls
+        setupRelatedNewsControls()
+
+        // Setup Key Quotes info button
+        findViewById<View>(R.id.key_quotes_layout)?.findViewById<View>(R.id.iv_info)?.setOnClickListener { view ->
+            showKeyQuotesInfoPopup(view)
+        }
+    }
+
+    private fun showKeyQuotesInfoPopup(anchor: View) {
+        val content = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(16f).toInt(), dp(20f).toInt(), dp(16f).toInt(), dp(20f).toInt())
+            
+            val rawText = getString(R.string.key_quotes_description)
+            val parts = rawText.split("\n")
+            val mainBody = parts.getOrElse(0) { "" }
+            val linkLine = parts.getOrElse(1) { "" }
+
+            addView(TextView(this@NewsDetailActivity).apply {
+                text = mainBody
+                setTextColor(ContextCompat.getColor(this@NewsDetailActivity, R.color.colorTextDeep))
+                textSize = 16f
+            })
+            
+            if (linkLine.isNotEmpty()) {
+                val linkTextView = TextView(this@NewsDetailActivity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        topMargin = dp(12f).toInt()
+                    }
+
+                    val linkText = getString(R.string.our_webpage)
+                    val spannable = android.text.SpannableString(linkLine)
+                    val start = linkLine.indexOf(linkText)
+                    if (start >= 0) {
+                        val end = start + linkText.length
+                        spannable.setSpan(object : android.text.style.ClickableSpan() {
+                            override fun onClick(widget: View) {
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(getString(R.string.example_website)))
+                                    startActivity(intent)
+                                } catch (_: Exception) {}
+                            }
+
+                            override fun updateDrawState(ds: android.text.TextPaint) {
+                                super.updateDrawState(ds)
+                                ds.color = ContextCompat.getColor(this@NewsDetailActivity, R.color.brand_primary)
+                            }
+                        }, start, end, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    text = spannable
+                    setTextColor(ContextCompat.getColor(this@NewsDetailActivity, R.color.colorTextSmall))
+                    textSize = 14f
+                    movementMethod = android.text.method.LinkMovementMethod.getInstance()
+                    highlightColor = android.graphics.Color.TRANSPARENT
+                }
+                addView(linkTextView)
+            }
+        }
+        showInfoPopup(anchor, content)
+    }
+    
+    /**
+     * Refresh the visibility of all cards based on current collapsed state.
+     * Used to restore UI after tutorial expansion is finished.
+     */
+    private fun refreshCardVisibility() {
+        // Update visibility for standard cards
+        val cards = listOf(
+            Triple("sentiment", R.id.sentiment_chevron_btn, R.id.sentiment_content_container),
+            Triple("key_quotes", R.id.iv_chevron, R.id.key_quotes_content_container),
+            Triple("publisher", R.id.publisher_chevron_btn, R.id.publisher_content_container),
+            Triple("timeline", R.id.timeline_chevron_btn, R.id.timeline_content_container)
+        )
+        
+        cards.forEach { (cardId, chevronId, containerId) ->
+            val chevronBtn = findViewById<ImageView>(chevronId)
+            val container = findViewById<View>(containerId)
+            val isCollapsed = cardCollapsedState[cardId] ?: false
+            
+            if (chevronBtn != null && container != null) {
+                updateChevronIcon(chevronBtn, isCollapsed)
+                container.visibility = if (isCollapsed) View.GONE else View.VISIBLE
+                updateBlockerForCard(cardId, isCollapsed)
+            }
+        }
+        
+        // Update subjectivity card (has its own custom view/logic)
+        val subjectivityView = findViewById<SubjectivityScoreView>(R.id.subjectivity_score)
+        val subChevronBtn = subjectivityView?.findViewById<ImageView>(R.id.chevron_btn)
+        val subContainer = subjectivityView?.findViewById<LinearLayout>(R.id.content_container)
+        if (subChevronBtn != null && subContainer != null) {
+            val isCollapsed = cardCollapsedState["subjectivity"] ?: false
+            updateChevronIcon(subChevronBtn, isCollapsed)
+            subContainer.visibility = if (isCollapsed) View.GONE else View.VISIBLE
+            updateBlockerForCard("subjectivity", isCollapsed)
+        }
+        
+        // Related news
+        val relatedNewsCard = findViewById<View>(R.id.related_news_card)
+        val relatedNewsContent = findViewById<View>(R.id.related_news_view)
+        if (relatedNewsCard != null && relatedNewsContent != null) {
+            val isCollapsed = cardCollapsedState["related"] ?: false
+            relatedNewsContent.visibility = if (isCollapsed) View.GONE else View.VISIBLE
+        }
     }
     
     
@@ -1765,9 +2206,11 @@ class NewsDetailActivity : BaseActivity() {
         
         val cardViews = mapOf(
             "sentiment" to findViewById<View>(R.id.sentiment_card),
+            "key_quotes" to findViewById<View>(R.id.key_quotes_layout),
             "publisher" to findViewById<View>(R.id.publisher_card),
-            "subjectivity" to findViewById<View>(R.id.subjectivity_card),
-            "timeline" to findViewById<View>(R.id.timeline_container)
+            "subjectivity" to (findViewById<View>(R.id.subjectivity_score)?.parent as? View ?: findViewById<View>(R.id.subjectivity_card)),
+            "timeline" to findViewById<View>(R.id.timeline_container),
+            "related" to findViewById<View>(R.id.related_news_card)
         )
         
         // Find current positions
@@ -1865,7 +2308,12 @@ class NewsDetailActivity : BaseActivity() {
         }
     }
     
-    private fun setupChevronButton(cardId: String, chevronBtnId: Int, contentContainerId: Int) {
+    private fun setupChevronButton(
+        cardId: String, 
+        chevronBtnId: Int, 
+        contentContainerId: Int,
+        onExpand: (() -> Unit)? = null
+    ) {
         val chevronBtn = findViewById<ImageView>(chevronBtnId)
         val contentContainer = findViewById<View>(contentContainerId)
         
@@ -1891,7 +2339,7 @@ class NewsDetailActivity : BaseActivity() {
                 } else {
                     // When expanding, show blocker immediately BEFORE animation
                     updateBlockerForCard(cardId, false)
-                    expandView(contentContainer)
+                    expandView(contentContainer, onExpand)
                 }
                 updateChevronIcon(chevronBtn, newCollapsedState)
             }
@@ -1911,8 +2359,8 @@ class NewsDetailActivity : BaseActivity() {
         
         val blocker = findViewById<FrameLayout>(blockerId)
         if (blocker != null) {
-            // Hide blocker if collapsed OR if user is Pro
-            blocker.visibility = if (isCollapsed || isProUser) View.GONE else View.VISIBLE
+            // Hide blocker if collapsed OR if user is Pro OR if we are in temporary tutorial expansion mode
+            blocker.visibility = if (isCollapsed || isProUser || isTemporaryTutorialExpansionActive) View.GONE else View.VISIBLE
         }
     }
     
@@ -2072,7 +2520,7 @@ class NewsDetailActivity : BaseActivity() {
     }
     
     private fun updateChevronIcon(chevronBtn: ImageView, isCollapsed: Boolean) {
-        val iconRes = if (isCollapsed) R.drawable.ic_chevron_up_24 else R.drawable.ic_chevron_down_24
+        val iconRes = if (isCollapsed) R.drawable.ic_chevron_down_24 else R.drawable.ic_chevron_up_24
         chevronBtn.setImageResource(iconRes)
         chevronBtn.setColorFilter(ContextCompat.getColor(this, R.color.colorTextMiddle))
     }
@@ -2090,12 +2538,18 @@ class NewsDetailActivity : BaseActivity() {
         animator.addUpdateListener { animation ->
             val height = animation.animatedValue as Int
             view.layoutParams.height = height
+            
+            // Fade out as it collapses
+            val progress = (height.toFloat() / initialHeight.toFloat()).coerceIn(0f, 1f)
+            view.alpha = progress
+            
             view.requestLayout()
         }
         animator.addListener(object : android.animation.AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: android.animation.Animator) {
                 view.visibility = View.GONE
                 view.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                view.alpha = 1f // Reset alpha for next time
             }
         })
         animator.start()
@@ -2130,26 +2584,57 @@ class NewsDetailActivity : BaseActivity() {
         animator.start()
     }
     
-    private fun expandView(view: View) {
+    private fun expandView(view: View, onEnd: (() -> Unit)? = null) {
         view.visibility = View.VISIBLE
-        view.measure(
-            View.MeasureSpec.makeMeasureSpec((view.parent as View).width, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        )
+        
+        val parent = view.parent as View
+        
+        // Measure the view with the parent's width and unspecified height
+        val availableWidth = if (parent.width > 0) parent.width else {
+            val screenWidth = resources.displayMetrics.widthPixels
+            val cardMargins = dp(24f).toInt()
+            val parentPadding = parent.paddingLeft + parent.paddingRight
+            (screenWidth - cardMargins - parentPadding).coerceAtLeast(1)
+        }
+        
+        val widthSpec = View.MeasureSpec.makeMeasureSpec(availableWidth, View.MeasureSpec.EXACTLY)
+        val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        
+        // Ensure child views are laid out even if currently GONE or height 0
+        view.measure(widthSpec, heightSpec)
+        
         val targetHeight = view.measuredHeight
         
+        // Defensive check: if height is still 0 but we have children, force a layout pass
+        val finalTargetHeight = if (targetHeight <= 0 && view is ViewGroup && view.childCount > 0) {
+            // This is a last resort if standard measurement fails
+            dp(200f).toInt() // Assume a reasonable default if multiple sections exist
+        } else {
+            targetHeight
+        }
+        
         view.layoutParams.height = 0
-        val animator = android.animation.ValueAnimator.ofInt(0, targetHeight)
-        animator.duration = 300
+        view.alpha = 0f // Start transparent
+        
+        val animator = android.animation.ValueAnimator.ofInt(0, finalTargetHeight)
+        animator.duration = 400 // Slightly longer for fade to be noticeable
         animator.interpolator = easeInOutQuart
         animator.addUpdateListener { animation ->
             val height = animation.animatedValue as Int
             view.layoutParams.height = height
+            
+            // Fade in as it expands
+            val progress = (height.toFloat() / finalTargetHeight.toFloat()).coerceIn(0f, 1f)
+            view.alpha = progress
+            
             view.requestLayout()
         }
         animator.addListener(object : android.animation.AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: android.animation.Animator) {
                 view.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                view.alpha = 1f // Ensure fully opaque
+                view.requestLayout()
+                onEnd?.invoke()
             }
         })
         animator.start()
@@ -2160,6 +2645,11 @@ class NewsDetailActivity : BaseActivity() {
             mViewBinding.sentimentCard.viewTreeObserver.takeIf { observer -> observer.isAlive }?.removeOnPreDrawListener(it)
         }
         sentimentCardPreDrawListener = null
+        
+        // Stop quotes auto-scroll
+        quotesRecyclerView?.removeCallbacks(quotesScrollRunnable)
+        quotesRecyclerView = null
+        
         super.onDestroy()
     }
     
@@ -2177,8 +2667,23 @@ class NewsDetailActivity : BaseActivity() {
     }
     
     private fun loadCardCollapsedStates() {
+        // Initialize the in-memory flag if not already set
+        // It's active if tutorials were just reset AND the News Detail tutorial hasn't been shown yet
+        val tutorialsJustReset = SharedPreferenceUtils.getBoolean(this, "tutorials_just_reset")
+        val newsDetailTutorialShown = com.searcher.zonenews.utils.TutorialManager.hasTutorialBeenShown(
+            this, 
+            com.searcher.zonenews.utils.TutorialManager.TUTORIAL_NEWS_DETAIL
+        )
+        isTemporaryTutorialExpansionActive = tutorialsJustReset && !newsDetailTutorialShown
+
         cardIds.forEach { cardId ->
-            val isCollapsed = SharedPreferenceUtils.getBoolean(this, "news_detail_card_collapsed_$cardId")
+            var isCollapsed = SharedPreferenceUtils.getBoolean(this, "news_detail_card_collapsed_$cardId")
+            
+            // Temporarily expand all cards if the tutorial expansion flag is active
+            if (isTemporaryTutorialExpansionActive) {
+                isCollapsed = false
+            }
+            
             cardCollapsedState[cardId] = isCollapsed
         }
     }
@@ -2187,10 +2692,77 @@ class NewsDetailActivity : BaseActivity() {
         SharedPreferenceUtils.saveBoolean(this, "news_detail_card_collapsed_$cardId", isCollapsed)
     }
     
+    private fun setupRelatedNewsControls() {
+        val relatedNewsView = findViewById<RelatedNewsView>(R.id.related_news_view) ?: return
+        val cardView = findViewById<View>(R.id.related_news_card) ?: return
+        
+        // Setup Chevron (Collapse/Expand)
+        val chevronBtn = relatedNewsView.chevronBtn
+        val contentContainer = relatedNewsView.contentContainer
+        
+        if (chevronBtn is ImageView && contentContainer != null) {
+            val isCollapsed = cardCollapsedState["related"] ?: false
+            updateChevronIcon(chevronBtn, isCollapsed)
+            contentContainer.visibility = if (isCollapsed) View.GONE else View.VISIBLE
+            
+            chevronBtn.setOnClickListener {
+                val currentlyCollapsed = cardCollapsedState["related"] ?: false
+                val newCollapsedState = !currentlyCollapsed
+                cardCollapsedState["related"] = newCollapsedState
+                saveCardCollapsedState("related", newCollapsedState)
+                
+                if (newCollapsedState) {
+                    collapseView(contentContainer)
+                } else {
+                    expandView(contentContainer) {
+                         // After expansion, we can refresh to ensure smooth scrolling
+                         relatedNewsView.refresh()
+                    }
+                }
+                updateChevronIcon(chevronBtn, newCollapsedState)
+            }
+        }
+        
+        // Setup Menu (Drag and Reorder)
+        val menuBtn = relatedNewsView.menuBtn
+        
+        if (menuBtn is ImageView) {
+            var isDragging = false
+            
+            menuBtn.setOnLongClickListener { view ->
+                isDragging = true
+                menuBtn.setColorFilter(ContextCompat.getColor(this, R.color.brand_primary))
+                
+                // Make card fully transparent to prevent judder
+                cardView.alpha = 0f
+                
+                val shadowBuilder = createTopRightDragShadow(cardView, menuBtn)
+                val item = android.content.ClipData.Item("related")
+                val dragData = android.content.ClipData("related", arrayOf("text/plain"), item)
+                cardView.startDragAndDrop(dragData, shadowBuilder, cardView, 0)
+                
+                true
+            }
+            
+            cardView.setOnDragListener(createDragListener("related", menuBtn) { isDragging = false })
+        }
+    }
+
     private fun applyCardOrder() {
-        val savedOrder = SharedPreferenceUtils.getString(this, "news_detail_card_order")
-        val order = if (savedOrder.isNotEmpty()) {
-            savedOrder.split(",")
+        val savedOrderStr = SharedPreferenceUtils.getString(this, "news_detail_card_order")
+        val order = if (savedOrderStr.isNotEmpty()) {
+            val savedList = savedOrderStr.split(",").filter { it.isNotEmpty() }.toMutableList()
+            
+            // Check for any new cards in defaultCardOrder that are missing from savedList
+            val missingCards = defaultCardOrder.filter { !savedList.contains(it) }
+            
+            if (missingCards.isNotEmpty()) {
+                // Append missing cards to the end
+                savedList.addAll(missingCards)
+                // Save the updated complete list
+                saveCardOrder(savedList)
+            }
+            savedList
         } else {
             saveCardOrder(defaultCardOrder)
             defaultCardOrder
@@ -2199,4 +2771,394 @@ class NewsDetailActivity : BaseActivity() {
         applyCardOrderToViews(order)
     }
 
+    /**
+     * Show tutorial overlay if it hasn't been shown yet
+     */
+    private fun showTutorialIfNeeded() {
+        // Check if tutorial has already been shown
+        val accountId = com.searcher.zonenews.utils.SharedPreferenceUtils.getString(this, "current_account_id")
+        if (com.searcher.zonenews.utils.TutorialManager.hasTutorialBeenShown(
+                this, 
+                com.searcher.zonenews.utils.TutorialManager.TUTORIAL_NEWS_DETAIL,
+                accountId
+            )) {
+            return
+        }
+        
+        // Flag clearing will happen in the completion listener to ensure consistency during tutorial run
+        
+        // Create tutorial steps
+        val steps = listOf(
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "detail_settings",
+                message = getString(R.string.tutorial_detail_summary_settings),
+                hasHighlight = true,
+                scrollPosition = 0
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "detail_distribution",
+                message = getString(R.string.tutorial_detail_media_distribution),
+                hasHighlight = true,
+                scrollPosition = 400
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "detail_subjectivity",
+                message = getString(R.string.tutorial_detail_subjectivity),
+                hasHighlight = true,
+                scrollPosition = 600
+            ),
+            com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep(
+                id = "detail_article",
+                message = getString(R.string.tutorial_detail_article_card),
+                hasHighlight = true,
+                scrollPosition = 1200
+            )
+        )
+        
+        // Create overlay and add to root view
+        val rootView = findViewById<FrameLayout>(android.R.id.content) as ViewGroup
+        val overlay = com.searcher.zonenews.selfview.TutorialOverlayView(this)
+        overlay.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        
+        overlay.setTutorialSteps(steps)
+        overlay.setOnTutorialCompleteListener {
+            com.searcher.zonenews.utils.TutorialManager.markTutorialAsShown(
+                this,
+                com.searcher.zonenews.utils.TutorialManager.TUTORIAL_NEWS_DETAIL,
+                accountId
+            )
+
+            // Restore normal state after tutorial is completed
+            SharedPreferenceUtils.saveBoolean(this@NewsDetailActivity, "tutorials_just_reset", false)
+            
+            // Reload states (this will handle clearing isTemporaryTutorialExpansionActive internally)
+            loadCardCollapsedStates()
+            
+            // Refresh blockers and adapter to show blurred state for free users
+            updatePremiumBlockerVisibility()
+            publisherArticlesAdapter?.notifyDataSetChanged()
+            
+            // Revert cards to their actual collapsed/expanded state
+            refreshCardVisibility()
+            
+            // Re-initialize blur setup to ensure it captures the restored card states correctly
+            setupBlockerBlur()
+        }
+        
+        rootView.addView(overlay)
+        
+        // Get NestedScrollView for scrolling
+        val scrollView = mViewBinding.newsDetailScrollView
+        
+        // Get target view function
+        val getTargetView: (com.searcher.zonenews.selfview.TutorialOverlayView.TutorialStep) -> View? = { step ->
+            when (step.id) {
+                "detail_settings" -> mViewBinding.settingsButtonLayout
+                "detail_distribution" -> findViewById(R.id.publisher_card)
+                "detail_subjectivity" -> findViewById(R.id.subjectivity_card)
+                "detail_article" -> {
+                    // Get the first article in publisher articles list
+                    val recyclerView = findViewById<RecyclerView>(R.id.publisher_articles_list)
+                    val layoutManager = recyclerView?.layoutManager as? LinearLayoutManager
+                    layoutManager?.findViewByPosition(0)
+                }
+                else -> null
+            }
+        }
+        
+        // Set up click listener that advances with proper callback
+        overlay.setOnClickListener {
+            overlay.advanceWithCallback(scrollView, getTargetView)
+        }
+        
+        // Start the tutorial
+        overlay.start(scrollView, getTargetView)
+    }
+
+    // ==================== Rearrange Mode ====================
+    
+    private fun enterRearrangeMode() {
+        if (isRearrangeMode) return
+        isRearrangeMode = true
+        
+        // Save current card order so we can restore on cancel
+        val savedOrderStr = SharedPreferenceUtils.getString(this, "news_detail_card_order")
+        savedCardOrderBeforeRearrange = if (savedOrderStr.isNotEmpty()) {
+            savedOrderStr.split(",").filter { it.isNotEmpty() }
+        } else {
+            defaultCardOrder
+        }
+        
+        // Show overlay and action bar
+        // findViewById<View>(R.id.rearrange_dim_overlay)?.visibility = View.VISIBLE
+        findViewById<View>(R.id.rearrange_action_bar)?.visibility = View.VISIBLE
+        
+        // Hide floating bar
+        findViewById<View>(R.id.newsDetailBottomCard)?.visibility = View.GONE
+        
+        // Enable rearrange mode on Related News view
+        val relatedNewsView = findViewById<RelatedNewsView>(R.id.related_news_view)
+        relatedNewsView?.setRearrangeMode(true)
+        // Ensure the card container is also visible
+        if (relatedNewsView?.visibility == View.VISIBLE) {
+            findViewById<View>(R.id.related_news_card)?.visibility = View.VISIBLE
+        }
+        
+        // Get the scroll view
+        val scrollView = findViewById<androidx.core.widget.NestedScrollView>(R.id.newsDetailScrollView)
+        
+        // Raise all card views above the dim overlay so they aren't dimmed
+        val cardViews = getOrderedCardViews()
+        /* 
+        cardViews.forEach { (_, view) ->
+            if (view != null && view.visibility == View.VISIBLE) {
+                view.elevation = 9f
+            }
+        }
+        */
+        
+        // Save current collapsed states, then collapse all cards that are expanded
+        preRearrangeCollapsedState.clear()
+        val contentContainers = getCardContentContainers()
+        contentContainers.forEach { (cardId, container) ->
+            val wasCollapsed = cardCollapsedState[cardId] ?: false
+            preRearrangeCollapsedState[cardId] = wasCollapsed
+            if (!wasCollapsed && container != null) {
+                // Instantly collapse (no animation for speed)
+                container.visibility = View.GONE
+                // Update chevron icon
+                getChevronForCard(cardId)?.let { updateChevronIcon(it, true) }
+            }
+        }
+        
+        // Show all menu buttons with flashing animation
+        val menuButtons = getMenuButtons()
+        menuButtonFlashAnimators.clear()
+        menuButtons.forEach { btn ->
+            btn.visibility = View.VISIBLE
+            // Create a gradual flashing pulse animation
+            val animator = android.animation.ObjectAnimator.ofFloat(btn, "alpha", 0.3f, 1.0f)
+            animator.duration = 800
+            animator.repeatCount = android.animation.ObjectAnimator.INFINITE
+            animator.repeatMode = android.animation.ObjectAnimator.REVERSE
+            animator.start()
+            menuButtonFlashAnimators.add(animator)
+        }
+        
+        // Disable scrolling - REMOVED per user request
+        // scrollView?.setOnTouchListener { _, _ -> true }
+        
+        // Scroll so the first card is below the action bar
+        scrollView?.post {
+            var firstCardTop = Int.MAX_VALUE
+            cardViews.forEach { (_, view) ->
+                if (view != null && view.visibility == View.VISIBLE) {
+                    firstCardTop = minOf(firstCardTop, view.top)
+                }
+            }
+            
+            if (firstCardTop != Int.MAX_VALUE) {
+                // Calculate action bar height (48dp) + extra padding (24dp) in pixels to offset the scroll
+                val density = resources.displayMetrics.density
+                val actionBarHeight = (48 * density).toInt()
+                val extraPadding = (24 * density).toInt()
+                
+                // Scroll to position such that the card starts below the action bar with some padding
+                // We subtract (action bar height + padding) from the card's top position
+                scrollView.smoothScrollTo(0, maxOf(0, firstCardTop - actionBarHeight - extraPadding))
+            }
+        }
+        
+        // Show toast
+        ToastUtils.showShortToast(this, getString(R.string.rearrange_mode_toast))
+    }
+    
+    private fun exitRearrangeMode(save: Boolean) {
+        if (!isRearrangeMode) return
+        isRearrangeMode = false
+        
+        // Stop all flashing animations
+        menuButtonFlashAnimators.forEach { it.cancel() }
+        menuButtonFlashAnimators.clear()
+        
+        // Hide menu buttons and restore alpha
+        val menuButtons = getMenuButtons()
+        menuButtons.forEach { btn ->
+            btn.alpha = 1f
+            btn.visibility = View.GONE
+        }
+        
+        // Restore card elevation
+        val cardViews = getOrderedCardViews()
+        /*
+        cardViews.forEach { (_, view) ->
+            if (view != null) {
+                view.elevation = 0f
+            }
+        }
+        */
+        
+        // Restore card collapsed states — only expand cards that were expanded before rearrange
+        val contentContainers = getCardContentContainers()
+        contentContainers.forEach { (cardId, container) ->
+            val wasCollapsedBefore = preRearrangeCollapsedState[cardId] ?: false
+            if (!wasCollapsedBefore && container != null) {
+                // Re-expand this card (it was expanded before entering rearrange mode)
+                container.visibility = View.VISIBLE
+                container.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                container.alpha = 1f
+                container.requestLayout()
+                // Restore chevron icon
+                getChevronForCard(cardId)?.let { updateChevronIcon(it, false) }
+            }
+        }
+        preRearrangeCollapsedState.clear()
+        
+        // Hide overlay and action bar
+        // findViewById<View>(R.id.rearrange_dim_overlay)?.visibility = View.GONE
+        findViewById<View>(R.id.rearrange_action_bar)?.visibility = View.GONE
+        
+        // Show floating bar
+        findViewById<View>(R.id.newsDetailBottomCard)?.visibility = View.VISIBLE
+        
+        // Re-enable scrolling - REMOVED since we don't disable it anymore
+        // val scrollView = findViewById<androidx.core.widget.NestedScrollView>(R.id.newsDetailScrollView)
+        // scrollView?.setOnTouchListener(null)
+        
+        if (save) {
+            // Save the current order (already applied via drag and drop)
+            val currentOrder = getCurrentCardOrderFromViews()
+            saveCardOrder(currentOrder)
+        } else {
+            // Restore original order
+            savedCardOrderBeforeRearrange?.let { order ->
+                applyCardOrderToViews(order)
+                saveCardOrder(order)
+            }
+        }
+        
+        savedCardOrderBeforeRearrange = null
+        
+        // Disable rearrange mode on Related News view
+        findViewById<RelatedNewsView>(R.id.related_news_view)?.setRearrangeMode(false)
+        // If related news has no content, the view will hide itself, but we should also check the card visibility
+        // related_news_view.setRearrangeMode(false) will hide itself if empty.
+        // We might need to sync the card visibility.
+        val relatedNewsCard = findViewById<View>(R.id.related_news_card)
+        val relatedNewsView = findViewById<RelatedNewsView>(R.id.related_news_view)
+        if (relatedNewsView?.visibility != View.VISIBLE) {
+             relatedNewsCard?.visibility = View.GONE
+        }
+    }
+    
+    private fun getCardContentContainers(): List<Pair<String, View?>> {
+        val subjectivityView = findViewById<SubjectivityScoreView>(R.id.subjectivity_score)
+        return listOf(
+            "sentiment" to findViewById<View>(R.id.sentiment_content_container),
+            "key_quotes" to findViewById<View>(R.id.key_quotes_layout)?.findViewById<View>(R.id.key_quotes_content_container),
+            "publisher" to findViewById<View>(R.id.publisher_content_container),
+            "subjectivity" to subjectivityView?.findViewById<View>(R.id.content_container),
+            "timeline" to findViewById<View>(R.id.timeline_content_container),
+            "related" to findViewById<RelatedNewsView>(R.id.related_news_view)?.contentContainer
+        )
+    }
+    
+    private fun getChevronForCard(cardId: String): ImageView? {
+        return when (cardId) {
+            "sentiment" -> findViewById(R.id.sentiment_chevron_btn)
+            "key_quotes" -> findViewById<View>(R.id.key_quotes_layout)?.findViewById(R.id.iv_chevron)
+            "publisher" -> findViewById(R.id.publisher_chevron_btn)
+            "subjectivity" -> findViewById<SubjectivityScoreView>(R.id.subjectivity_score)?.findViewById(R.id.chevron_btn)
+            "timeline" -> findViewById(R.id.timeline_chevron_btn)
+            "related" -> {
+                val relatedNewsView = findViewById<RelatedNewsView>(R.id.related_news_view)
+                relatedNewsView?.chevronBtn as? ImageView
+            }
+            else -> null
+        }
+    }
+    
+    private fun getMenuButtons(): List<ImageView> {
+        val buttons = mutableListOf<ImageView>()
+        
+        // Sentiment card menu button
+        findViewById<ImageView>(R.id.sentiment_menu_btn)?.let { buttons.add(it) }
+        
+        // Key Quotes menu button (inside included layout)
+        val keyQuotesLayout = findViewById<View>(R.id.key_quotes_layout)
+        keyQuotesLayout?.findViewById<ImageView>(R.id.iv_menu)?.let { buttons.add(it) }
+        
+        // Publisher card menu button
+        findViewById<ImageView>(R.id.publisher_menu_btn)?.let { buttons.add(it) }
+        
+        // Subjectivity menu button (inside SubjectivityScoreView)
+        val subjectivityView = findViewById<SubjectivityScoreView>(R.id.subjectivity_score)
+        subjectivityView?.findViewById<ImageView>(R.id.menu_btn)?.let { buttons.add(it) }
+        
+        // Timeline menu button
+        findViewById<ImageView>(R.id.timeline_menu_btn)?.let { buttons.add(it) }
+        
+        // Related News menu button
+        val relatedNewsView = findViewById<RelatedNewsView>(R.id.related_news_view)
+        relatedNewsView?.menuBtn?.let { 
+            if (it is ImageView) buttons.add(it) 
+        }
+        
+        return buttons
+    }
+    
+    private fun getOrderedCardViews(): List<Pair<String, View?>> {
+        return listOf(
+            "sentiment" to findViewById<View>(R.id.sentiment_card),
+            "key_quotes" to findViewById<View>(R.id.key_quotes_layout),
+            "publisher" to findViewById<View>(R.id.publisher_card),
+            "subjectivity" to findViewById<View>(R.id.subjectivity_card),
+            "timeline" to findViewById<View>(R.id.timeline_container),
+            "related" to findViewById<View>(R.id.related_news_card)
+        )
+    }
+    
+    private fun getCurrentCardOrderFromViews(): List<String> {
+        val scrollView = findViewById<androidx.core.widget.NestedScrollView>(R.id.newsDetailScrollView)
+        val cardsContainer = scrollView?.getChildAt(0) as? LinearLayout ?: return defaultCardOrder
+        
+        val cardViewMap = mapOf(
+            R.id.sentiment_card to "sentiment",
+            R.id.key_quotes_layout to "key_quotes",
+            R.id.publisher_card to "publisher",
+            R.id.subjectivity_card to "subjectivity",
+            R.id.timeline_container to "timeline",
+            R.id.related_news_card to "related"
+        )
+        
+        val order = mutableListOf<String>()
+        for (i in 0 until cardsContainer.childCount) {
+            val child = cardsContainer.getChildAt(i)
+            val childId = child.id
+            cardViewMap[childId]?.let { order.add(it) }
+            // Also check if the child is the subjectivity parent
+            if (child is android.view.ViewGroup) {
+                for (j in 0 until child.childCount) {
+                    val subChild = child.getChildAt(j)
+                    if (subChild.id == R.id.subjectivity_score && !order.contains("subjectivity")) {
+                        order.add("subjectivity")
+                    }
+                }
+            }
+        }
+        
+        // Ensure all cards are in the list
+        defaultCardOrder.forEach { cardId ->
+            if (!order.contains(cardId)) {
+                order.add(cardId)
+            }
+        }
+        
+        return order
+    }
+
 }
+

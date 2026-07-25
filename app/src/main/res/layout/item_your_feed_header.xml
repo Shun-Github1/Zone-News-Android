@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+
 
     <!-- Currently sorted by indicator -->
     <LinearLayout
         android:id="@+id/sort_indicator_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp">
         
@@ -25,15 +29,15 @@
         <LinearLayout
             android:id="@+id/sort_chip"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="26dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/tag_chip_background"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/tag_chip_background_transparent"
             android:paddingLeft="8dp"
             android:paddingRight="12dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp">
             
             <ImageView
                 android:id="@+id/sort_info_icon"
@@ -55,7 +59,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Active tags indicator -->
     <LinearLayout
         android:id="@+id/active_tags_container"
         android:layout_width="match_parent"
@@ -63,15 +66,41 @@
         android:orientation="vertical"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp">
-        
-        <TextView
-            android:id="@+id/active_tags_label_tv"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/active_tags"
-            android:textColor="@color/colorTextMiddle"
-            android:textSize="14sp"
-            android:fontFamily="@font/inter_regular" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+        
+            <TextView
+                android:id="@+id/active_tags_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/active_tags"
+                android:textColor="@color/colorTextMiddle"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_regular" />
+
+            <LinearLayout
+                android:id="@+id/manage_tags_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:background="@drawable/tag_chip_background_transparent"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_chevron_right_24"
+                    android:tint="@color/colorTextDeep" />
+            </LinearLayout>
+        </LinearLayout>
             
         <HorizontalScrollView
             android:id="@+id/active_tags_scroll_view"
@@ -81,6 +110,7 @@
             android:scrollbars="none"
             android:overScrollMode="never"
             android:fillViewport="false"
+            android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingTop="0dp"
             android:paddingBottom="0dp">
@@ -91,10 +121,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp">
                 <!-- Chips added dynamically -->
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
+
+    <!-- Divider matching news cards style -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/divider_color" />
+
 </LinearLayout>

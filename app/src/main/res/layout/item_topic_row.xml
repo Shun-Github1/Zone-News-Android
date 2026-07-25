@@ -19,8 +19,8 @@
         <!-- Topic Icon -->
         <ImageView
             android:id="@+id/topic_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/ic_security_24"
             android:contentDescription="@null"
             android:layout_marginEnd="16dp" />
@@ -46,12 +46,13 @@
 
     </LinearLayout>
 
-    <!-- Divider - starts with text (icon width 24dp + margin 16dp + padding 20dp = 60dp) -->
+    <!-- Divider - starts with text (icon width 20dp + margin 16dp + padding 20dp = 56dp) -->
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/divider_color" />
 
 </LinearLayout>

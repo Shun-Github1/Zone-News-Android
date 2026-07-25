@@ -132,7 +132,7 @@
                     android:id="@+id/progress_track"
                     android:layout_width="0dp"
                     android:layout_height="6dp"
-                    android:background="@drawable/bg_progress_track_transparent"
+                    android:background="@drawable/bg_sentiment_track"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

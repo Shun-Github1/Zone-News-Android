@@ -339,6 +339,20 @@ object WidgetDataProvider {
     }
     
     /**
+     * Clear cached widget data (useful on language change)
+     */
+    fun clearCache() {
+        try {
+            val mmkv = MMKV.defaultMMKV()
+            mmkv.removeValueForKey(WIDGET_CACHE_KEY_LIST)
+            mmkv.removeValueForKey(WIDGET_CACHE_TIMESTAMP_KEY)
+            Log.d(TAG, "Cleared article cache")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error clearing cache", e)
+        }
+    }
+    
+    /**
      * Force refresh data from API and update widgets
      */
     suspend fun refreshWidgetData(context: Context) {
@@ -347,7 +361,6 @@ object WidgetDataProvider {
             updateFromHomeData(context, articles)
         }
     }
-
 
     /**
      * Get backend language code based on app preference

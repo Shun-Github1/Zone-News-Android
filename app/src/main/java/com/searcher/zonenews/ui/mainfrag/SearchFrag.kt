@@ -548,6 +548,7 @@ class SearchFrag : BaseFragment() {
                 holder.convertView.setOnClickListener {
                     val intent = Intent(mContext, NewsDetailActivity::class.java)
                     intent.putExtra(getString(R.string.id_key), t.articleID)
+                    intent.putExtra("source_fragment", "search")
                     startActivity(intent)
                 }
                 
@@ -593,6 +594,7 @@ class SearchFrag : BaseFragment() {
                 holder.convertView.setOnClickListener {
                     val intent = Intent(mContext, NewsDetailActivity::class.java)
                     intent.putExtra(getString(R.string.id_key), t.articleID)
+                    intent.putExtra("source_fragment", "search")
                     startActivity(intent)
                 }
                 
@@ -986,10 +988,8 @@ class SearchFrag : BaseFragment() {
     private fun shareArticle(article: SearchListEntry.DataDTO.ArticlesDTO) {
         val shareText = buildString {
             append(article.title)
-            if (!article.articleURL.isNullOrEmpty()) {
-                append("\n\n")
-                append(article.articleURL)
-            }
+            append("\n\n")
+            append("https://zonenews.io/article/${article.articleID}")
         }
         
         val shareIntent = Intent(Intent.ACTION_SEND)

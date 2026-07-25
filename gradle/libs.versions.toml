@@ -1,5 +1,5 @@
 [versions]
-agp = "8.12.3"
+agp = "8.13.2"
 androidxLifecycleViewmodelKtx = "2.6.2"
 androidxLifecycleRuntimeKtxVersion = "2.6.2"
 googleHiltAndroid = "2.56.2"
@@ -77,6 +77,7 @@ com-kongzue-dialogx-dialogx4 = { module = "com.kongzue.dialogx:DialogX", version
 smartrefreshlayout = { module = "com.scwang.smartrefresh:SmartRefreshLayout", version.ref = "smartrefreshlayout" }
 com-scwang-smartrefresh-smartrefreshheader2 = { module = "com.scwang.smartrefresh:SmartRefreshHeader", version.ref = "scwangSmartrefreshheaderVersion" }
 glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide" }
+glide-recyclerview-integration = { module = "com.github.bumptech.glide:recyclerview-integration", version.ref = "glide" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

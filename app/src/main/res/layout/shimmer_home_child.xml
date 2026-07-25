@@ -10,12 +10,55 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Banner Placeholder -->
-        <View
+        <!-- Shimmer Banner Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#E0E0E0"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+            
+            <!-- Image Area -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="#F0F0F0" />
+            
+            <!-- Title & Desc Area -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="12dp">
+                
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:background="#F0F0F0" />
+                
+                <View
+                    android:layout_width="220dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="6dp"
+                    android:background="#F0F0F0" />
+                    
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#F0F0F0" />
+            </LinearLayout>
+            
+            <!-- Indicator Area -->
+            <View
+                android:layout_width="80dp"
+                android:layout_height="6dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="#F0F0F0" />
+                
+        </LinearLayout>
 
         <!-- List Items Placeholders -->
         <include layout="@layout/item_news_shimmer" />

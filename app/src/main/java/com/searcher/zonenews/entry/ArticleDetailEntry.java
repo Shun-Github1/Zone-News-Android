@@ -8,8 +8,7 @@ import java.util.List;
  * @CreateTime 2025年07月04日 17:21:35
  */
 
-public class ArticleDetailEntry  {
-
+public class ArticleDetailEntry {
 
     private Integer code;
     private DataDTO data;
@@ -310,6 +309,7 @@ public class ArticleDetailEntry  {
             private Integer bias;
             private Integer mediaSignificance;
             private Integer publisherID;
+
             public String getArticleURL() {
                 return articleURL;
             }
@@ -423,6 +423,15 @@ public class ArticleDetailEntry  {
             private String region;
             private String sector;
             private String title;
+            private List<RelatedTopicDTO> topics;
+
+            public List<RelatedTopicDTO> getTopics() {
+                return topics;
+            }
+
+            public void setTopics(List<RelatedTopicDTO> topics) {
+                this.topics = topics;
+            }
 
             public String getArticleID() {
                 return articleID;
@@ -587,6 +596,16 @@ public class ArticleDetailEntry  {
             public void setTag(String tag) {
                 this.tag = tag;
             }
+        }
+
+        private List<QuoteEntry> quotes;
+
+        public List<QuoteEntry> getQuotes() {
+            return quotes;
+        }
+
+        public void setQuotes(List<QuoteEntry> quotes) {
+            this.quotes = quotes;
         }
     }
 }

@@ -36,6 +36,9 @@ public class PublisherArticlesSortPopupWindow extends BasePopupWindow {
         setContentView(R.layout.publisher_articles_sort_popup);
         setBlurBackgroundEnable(false);
 
+        // Prevent BasePopupWindow from constraining popup height to available space
+        setFitSize(false);
+
         initView();
     }
 
@@ -130,22 +133,38 @@ public class PublisherArticlesSortPopupWindow extends BasePopupWindow {
 
     @Override
     public void showPopupWindow(View anchorView) {
-        // Use fixed width from layout (240dp) like NewsDetailSettingsPopupWindow does
         float density = anchorView.getContext().getResources().getDisplayMetrics().density;
         int popupWidth = (int) (240 * density);
         int anchorWidth = anchorView.getWidth();
         int anchorHeight = anchorView.getHeight();
 
-        // Align popup's right edge with button's right edge
-        // BasePopupWindow by default aligns left edges, so we move right by
-        // (anchorWidth - popupWidth)
+        // Align right edges
         setOffsetX(anchorWidth - popupWidth);
 
-        // Align popup's top edge with button's top edge
-        // BasePopupWindow by default aligns bottom of popup with bottom of anchor
-        // We need to move it up by the height of the anchor to align tops
-        // Negative value moves up
-        setOffsetY(-anchorHeight);
+        // Get anchor position on screen
+        int[] anchorLocation = new int[2];
+        anchorView.getLocationOnScreen(anchorLocation);
+        int anchorTop = anchorLocation[1];
+        int anchorBottom = anchorTop + anchorHeight;
+
+        // Get screen height
+        int screenHeight = anchorView.getContext().getResources().getDisplayMetrics().heightPixels;
+        int screenMidpoint = screenHeight / 2;
+
+        // Measure popup height
+        View contentView = getContentView();
+        contentView.measure(
+                android.view.View.MeasureSpec.makeMeasureSpec(popupWidth, android.view.View.MeasureSpec.AT_MOST),
+                android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED));
+        int popupHeight = contentView.getMeasuredHeight();
+
+        if (anchorBottom > screenMidpoint) {
+            // Button is below midpoint: align popup bottom with button bottom (overlap)
+            setOffsetY(-popupHeight);
+        } else {
+            // Button is above midpoint: align popup top with button top
+            setOffsetY(-anchorHeight);
+        }
 
         super.showPopupWindow(anchorView);
     }

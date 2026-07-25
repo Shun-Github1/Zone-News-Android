@@ -31,10 +31,13 @@ public class NewsDetailSettingsPopupWindow extends BasePopupWindow {
         super(context);
         setContentView(R.layout.news_detail_settings_popup);
         this.callback = callback;
-        
+
         // Remove background dimming
         setBlurBackgroundEnable(false);
-        
+
+        // Prevent BasePopupWindow from constraining popup height to available space
+        setFitSize(false);
+
         initView();
     }
 
@@ -49,7 +52,7 @@ public class NewsDetailSettingsPopupWindow extends BasePopupWindow {
 
     private void initView() {
         View content = getContentView();
-        
+
         // Set up options
         LinearLayout optionStraightforward = content.findViewById(R.id.option_straightforward);
         LinearLayout optionNuanced = content.findViewById(R.id.option_nuanced);
@@ -59,57 +62,69 @@ public class NewsDetailSettingsPopupWindow extends BasePopupWindow {
 
         // Set click listeners
         optionStraightforward.setOnClickListener(v -> {
-            if (callback != null) callback.onOptionSelected(SettingOption.STRAIGHTFORWARD);
+            if (callback != null)
+                callback.onOptionSelected(SettingOption.STRAIGHTFORWARD);
             dismiss();
         });
 
         optionNuanced.setOnClickListener(v -> {
-            if (callback != null) callback.onOptionSelected(SettingOption.NUANCED);
+            if (callback != null)
+                callback.onOptionSelected(SettingOption.NUANCED);
             dismiss();
         });
 
         optionEnglish.setOnClickListener(v -> {
-            if (callback != null) callback.onOptionSelected(SettingOption.ENGLISH);
+            if (callback != null)
+                callback.onOptionSelected(SettingOption.ENGLISH);
             dismiss();
         });
 
         optionTraditionalChinese.setOnClickListener(v -> {
-            if (callback != null) callback.onOptionSelected(SettingOption.TRADITIONAL_CHINESE);
+            if (callback != null)
+                callback.onOptionSelected(SettingOption.TRADITIONAL_CHINESE);
             dismiss();
         });
 
         optionSimplifiedChinese.setOnClickListener(v -> {
-            if (callback != null) callback.onOptionSelected(SettingOption.SIMPLIFIED_CHINESE);
+            if (callback != null)
+                callback.onOptionSelected(SettingOption.SIMPLIFIED_CHINESE);
             dismiss();
         });
-        
+
         // Update selection display
         updateLanguageSelection();
     }
 
     private void updateLanguageSelection() {
         View content = getContentView();
-        if (content == null) return;
-        
+        if (content == null)
+            return;
+
         ImageView checkEnglish = content.findViewById(R.id.check_english);
         ImageView checkTraditionalChinese = content.findViewById(R.id.check_traditional_chinese);
         ImageView checkSimplifiedChinese = content.findViewById(R.id.check_simplified_chinese);
-        
+
         // Hide all checkmarks first
-        if (checkEnglish != null) checkEnglish.setVisibility(View.GONE);
-        if (checkTraditionalChinese != null) checkTraditionalChinese.setVisibility(View.GONE);
-        if (checkSimplifiedChinese != null) checkSimplifiedChinese.setVisibility(View.GONE);
-        
+        if (checkEnglish != null)
+            checkEnglish.setVisibility(View.GONE);
+        if (checkTraditionalChinese != null)
+            checkTraditionalChinese.setVisibility(View.GONE);
+        if (checkSimplifiedChinese != null)
+            checkSimplifiedChinese.setVisibility(View.GONE);
+
         // Show checkmark for selected language
         switch (currentLanguageOption) {
             case ENGLISH:
-                if (checkEnglish != null) checkEnglish.setVisibility(View.VISIBLE);
+                if (checkEnglish != null)
+                    checkEnglish.setVisibility(View.VISIBLE);
                 break;
             case TRADITIONAL_CHINESE:
-                if (checkTraditionalChinese != null) checkTraditionalChinese.setVisibility(View.VISIBLE);
+                if (checkTraditionalChinese != null)
+                    checkTraditionalChinese.setVisibility(View.VISIBLE);
                 break;
             case SIMPLIFIED_CHINESE:
-                if (checkSimplifiedChinese != null) checkSimplifiedChinese.setVisibility(View.VISIBLE);
+                if (checkSimplifiedChinese != null)
+                    checkSimplifiedChinese.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -134,23 +149,42 @@ public class NewsDetailSettingsPopupWindow extends BasePopupWindow {
     public void showPopupWindow(View anchorView) {
         // Update language selection before showing
         updateLanguageSelection();
-        
-        // Align popup's top-right corner with button's top-right corner (overlap entirely)
-        // BasePopupWindow by default aligns bottom of popup with bottom of anchor
-        // We need to move it up by the height of the anchor to align tops
+
         float density = anchorView.getContext().getResources().getDisplayMetrics().density;
         int anchorHeight = anchorView.getHeight();
         int popupWidth = (int) (240 * density);
         int anchorWidth = anchorView.getWidth();
-        
-        // Offset Y: move up by anchor height to align tops (overlap)
-        // Negative value moves up
-        setOffsetY(-anchorHeight);
-        
-        // Offset X: align right edges by moving left by (popupWidth - anchorWidth)
-        // If popup is wider than anchor, move left. If anchor is wider, move right.
+
+        // Align right edges
         setOffsetX(anchorWidth - popupWidth);
-        
+
+        // Get anchor position on screen
+        int[] anchorLocation = new int[2];
+        anchorView.getLocationOnScreen(anchorLocation);
+        int anchorTop = anchorLocation[1];
+        int anchorBottom = anchorTop + anchorHeight;
+
+        // Get screen height
+        int screenHeight = anchorView.getContext().getResources().getDisplayMetrics().heightPixels;
+        int screenMidpoint = screenHeight / 2;
+
+        // Measure popup height
+        View contentView = getContentView();
+        contentView.measure(
+                android.view.View.MeasureSpec.makeMeasureSpec(popupWidth, android.view.View.MeasureSpec.AT_MOST),
+                android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED));
+        int popupHeight = contentView.getMeasuredHeight();
+
+        if (anchorBottom > screenMidpoint) {
+            // Button is below midpoint: align popup bottom with button bottom (overlap)
+            // BasePopupWindow default: popup top at anchor bottom
+            // Move up by popupHeight so popup bottom = anchor bottom
+            setOffsetY(-popupHeight);
+        } else {
+            // Button is above midpoint: align popup top with button top
+            setOffsetY(-anchorHeight);
+        }
+
         super.showPopupWindow(anchorView);
     }
 }

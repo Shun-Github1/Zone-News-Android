@@ -18,14 +18,14 @@ import java.util.concurrent.TimeUnit
 class MyAppGlideModule : AppGlideModule() {
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {
-        // Best Practice: Configure memory and disk cache limits
-        // 20MB memory cache (adjust based on app needs)
-        val memoryCacheSizeBytes = 1024 * 1024 * 20L
+        // High-performance caching for premium user experience
+        // Increase memory cache to 128MB to keep more images instantly available
+        val memoryCacheSizeBytes = 1024 * 1024 * 128L
         builder.setMemoryCache(LruResourceCache(memoryCacheSizeBytes))
 
-        // 100MB disk cache
-        val diskCacheSizeBytes = 1024 * 1024 * 100L
-        builder.setDiskCache(InternalCacheDiskCacheFactory(context, "image_cache", diskCacheSizeBytes))
+        // Increase disk cache to 500MB for long-term persistence across app sessions
+        val diskCacheSizeBytes = 1024 * 1024 * 500L
+        builder.setDiskCache(InternalCacheDiskCacheFactory(context, "premium_image_cache", diskCacheSizeBytes))
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {

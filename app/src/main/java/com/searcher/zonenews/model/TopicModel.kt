@@ -127,6 +127,36 @@ class TopicModel @Inject constructor(
         }
     }
 
+    /**
+     * Optimistically update the user's followed topics list in memory.
+     * This allows multiple components (Feed, Popup, etc.) to stay in sync instantly.
+     */
+    fun updateMyTopicsOptimistically(type: String, topicTag: String, displayName: String? = null) {
+        val currentEntry = _myTopicsEntry.value ?: return
+        val currentData = currentEntry.data ?: return
+        val currentTopics = currentData.topics?.toMutableList() ?: mutableListOf()
+        
+        if (type == com.searcher.zonenews.utils.Constants.TYPE_TOPIC_ADD) {
+            if (!currentTopics.any { it.tag.equals(topicTag, ignoreCase = true) }) {
+                // Lookup localized displayName from cached all-topics list if not provided
+                val resolvedDisplayName = displayName 
+                    ?: _topicListEntry.value?.data?.topics
+                        ?.find { it.tag.equals(topicTag, ignoreCase = true) }?.displayName
+                    ?: topicTag
+                val newTopic = TopicListEntry.TopicDTO().apply {
+                    tag = topicTag
+                    this.displayName = resolvedDisplayName
+                }
+                currentTopics.add(newTopic)
+            }
+        } else if (type == com.searcher.zonenews.utils.Constants.TYPE_TOPIC_DELETE) {
+            currentTopics.removeAll { it.tag.equals(topicTag, ignoreCase = true) }
+        }
+        
+        currentData.topics = currentTopics
+        _myTopicsEntry.value = currentEntry
+    }
+
     fun getTrendingTopics() {
         // Fetches ALL topics for "All" tab using /profile/listtopics (no limits, like regions)
         // This is separate from /feed/trending-topics which is limited

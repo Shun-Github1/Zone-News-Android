@@ -3,5 +3,6 @@
     <dimen name="low_txt">13sp</dimen>
     <dimen name="medium_txt">15sp</dimen>
     <dimen name="recap_header_bottom_margin">28dp</dimen>
+    <dimen name="publisher_icon_stroke_width">1dp</dimen>
 
 </resources>

@@ -18,11 +18,11 @@ class SentimentMeterView @JvmOverloads constructor(
 	defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val edgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = dp(1f)
+        strokeWidth = dp(12f)
         strokeCap = Paint.Cap.BUTT
-        color = ContextCompat.getColor(context, R.color.colorTextSmall)
+        color = ContextCompat.getColor(context, R.color.sentiment_track_bg)
     }
 
 	private val positivePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -118,20 +118,10 @@ class SentimentMeterView @JvmOverloads constructor(
 		val right = centerX + radius
 		val bottom = centerY + radius
 
-		// Transparent track with only light gray edges (inner and outer), no rounded caps
-		val halfBand = positivePaint.strokeWidth / 2f
-		// Outer edge
-		canvas.drawArc(left - halfBand, top - halfBand, right + halfBand, bottom + halfBand, 180f, 180f, false, edgePaint)
-        // Inner edge
-        canvas.drawArc(left + halfBand, top + halfBand, right - halfBand, bottom - halfBand, 180f, 180f, false, edgePaint)
-        // Zero divider at top center bridging inner and outer edges
-        canvas.drawLine(centerX, top - halfBand, centerX, top + halfBand, edgePaint)
-		// Close the band at the base with short straight edges only spanning the band thickness
-		val yBase = centerY
-		// Left base connector
-		canvas.drawLine(centerX - (radius + halfBand), yBase, centerX - (radius - halfBand), yBase, edgePaint)
-		// Right base connector
-		canvas.drawLine(centerX + (radius - halfBand), yBase, centerX + (radius + halfBand), yBase, edgePaint)
+		// Draw the background track (solid grey)
+		canvas.drawArc(left, top, right, bottom, 180f, 180f, false, trackPaint)
+
+        // Zero divider at top center (optional, but might be good to keep for reference? User said "remove frame", implies cleaner look. Let's remove the divider too for now/make it simple solid track)
 
 		// Sentiment arc with rounded caps from top center to left/right according to value magnitude
 		val sentiment = animatedSentiment.toDouble()

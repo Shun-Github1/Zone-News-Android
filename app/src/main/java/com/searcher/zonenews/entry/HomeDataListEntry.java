@@ -69,6 +69,7 @@ public class HomeDataListEntry {
             private String region;
             private String sector;
             private String title;
+            private List<TopicsDTO> topics;
 
             public String getArticleID() {
                 return articleID;
@@ -150,6 +151,14 @@ public class HomeDataListEntry {
                 this.title = title;
             }
 
+            public List<TopicsDTO> getTopics() {
+                return topics;
+            }
+
+            public void setTopics(List<TopicsDTO> topics) {
+                this.topics = topics;
+            }
+
             public static class CoverageDTO {
                 private Double centric;
                 private Double progressive;
@@ -189,6 +198,27 @@ public class HomeDataListEntry {
 
                 public void setSubjectivity(Double subjectivity) {
                     this.subjectivity = subjectivity;
+                }
+            }
+
+            public static class TopicsDTO {
+                private String displayName;
+                private String tag;
+
+                public String getDisplayName() {
+                    return displayName;
+                }
+
+                public void setDisplayName(String displayName) {
+                    this.displayName = displayName;
+                }
+
+                public String getTag() {
+                    return tag;
+                }
+
+                public void setTag(String tag) {
+                    this.tag = tag;
                 }
             }
         }

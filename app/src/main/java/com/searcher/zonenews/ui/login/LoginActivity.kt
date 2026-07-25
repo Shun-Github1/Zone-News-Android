@@ -59,6 +59,7 @@ class LoginActivity : BaseActivity() {
     private lateinit var callbackManager: CallbackManager
     private val loginModel: LoginModel by viewModels()
     private var isManualLogin = false // Track if current login attempt is manual (username/password)
+    private var lastLoginAccount: String? = null // Track the account identifier for the current login attempt (email or username)
     
     companion object {
         private const val RC_SIGN_IN = 9001
@@ -274,6 +275,7 @@ class LoginActivity : BaseActivity() {
         
         // All username/password logins go through the backend API
         // The backend handles authentication and returns JWT cookies
+        lastLoginAccount = username
         loginModel.loginApp(username, password)
     }
 
@@ -301,6 +303,11 @@ class LoginActivity : BaseActivity() {
                     token?.let {
                         SharedPreferenceUtils.saveString(mContext,"token", it)
                     }
+                }
+                
+                // Save current account ID for tutorial tracking using commit() to ensure it's persisted before MainActivity starts
+                lastLoginAccount?.let { accountId ->
+                    SharedPreferenceUtils.saveStringCommit(mContext, "current_account_id", accountId)
                 }
                 // Mark as third-party login if Firebase auth is active
                 if (auth.currentUser != null) {
@@ -468,6 +475,7 @@ class LoginActivity : BaseActivity() {
                     if (firebaseIdToken != null) {
                         // Mark as Firebase login (not manual)
                         isManualLogin = false
+                        lastLoginAccount = user.email
                         loginModel.loginWithFirebase(firebaseIdToken)
                     } else {
                         SystemDialogUtils.dismissLoadingDialog()

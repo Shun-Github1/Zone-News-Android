@@ -31,6 +31,8 @@ class MediaPublisherInfoBottomSheetFragment : BottomSheetDialogFragment() {
     private var initialIcon: String? = null
     private var initialBiasTag: String? = null
     private var isProUser: Boolean = false
+    private lateinit var myModel: com.searcher.zonenews.model.MyModel
+
 
     companion object {
         private const val ARG_PUBLISHER_ID = "arg_publisher_id"
@@ -117,12 +119,11 @@ class MediaPublisherInfoBottomSheetFragment : BottomSheetDialogFragment() {
         
         // Use activity scoped ViewModel to share data/state if needed, or just standard fetching
         // Assuming NewsDetailActivity has the Hilt ViewModel we need
-        // If Model is simpler, we can just get it from provider. 
-        // Note: NewsDetailModel is Activity-scoped usually in this app structure? 
         // Let's safe-cast parent activity's ViewModel or create new if unrelated.
         // Given implementation in NewsDetailActivity uses `newsDetailModel` via delegation or injection, 
         // we should probably grab the Activity's ViewModel instance to share caching.
         newsDetailModel = ViewModelProvider(requireActivity())[NewsDetailModel::class.java]
+        myModel = ViewModelProvider(requireActivity())[com.searcher.zonenews.model.MyModel::class.java]
 
         setupInitialViews()
         setupObservers()
@@ -236,6 +237,12 @@ class MediaPublisherInfoBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun setupObservers() {
         newsDetailModel.publisherInfoEntry.observe(viewLifecycleOwner) { entry ->
+            // Filter stale data from activity-scoped ViewModel
+            // If the ID in the received data doesn't match our current publisherId, it's from a previous session
+            if (entry?.data?.id != null && entry.data.id != publisherId) {
+                return@observe
+            }
+            
             binding.shimmerViewContainer.stopShimmer()
             binding.shimmerViewContainer.visibility = View.GONE
             binding.contentLayout.visibility = View.VISIBLE
@@ -245,6 +252,22 @@ class MediaPublisherInfoBottomSheetFragment : BottomSheetDialogFragment() {
             } else {
                 // Handle error or empty state
                 // Keep initial data visible at least
+            }
+        }
+        
+        // Observe Pro status dynamically
+        myModel.myEntry.observe(viewLifecycleOwner) { response ->
+            if (response != null && response.code == com.searcher.zonenews.utils.Constants.SUCCESS_CODE) {
+                val newProStatus = response.data?.isPro == true
+                if (newProStatus != isProUser) {
+                    isProUser = newProStatus
+                    // Re-run setup to update UI state (paywall/masks)
+                    setupInitialViews()
+                    // If we have data, re-bind it to refresh any dependent UI
+                    newsDetailModel.publisherInfoEntry.value?.data?.let {
+                        if (it.id == publisherId) bindData(it) 
+                    }
+                }
             }
         }
     }

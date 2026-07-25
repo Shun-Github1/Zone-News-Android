@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="quote_open">「</string>
+    <string name="quote_close">」</string>
     <string name="app_name">Zone 新闻</string>
 
         <string name="today">今日</string>
@@ -9,7 +11,7 @@
     <string name="person_recommend">个人</string>
         <string name="my">帐户</string>
     <string name="discover">发现</string>
-    <string name="liberal">开放</string>
+    <string name="liberal">偏开放</string>
         <string name="conservative">偏保守</string>
     <string name="preview">预览</string>
         <string name="media_distribution">媒体分布</string>
@@ -197,6 +199,25 @@
     <string name="placeholder_text">占位符</string>
     <string name="close">关闭</string>
     <string name="no_data_message">暂无相关数据</string>
+    <string name="key_quotes_title">关键引语</string>
+    <string name="key_quotes_see_all">查看全部</string>
+
+    <!-- Quote Categories -->
+    <string name="quote_category_academic">学术</string>
+    <string name="quote_category_administrative">行政</string>
+    <string name="quote_category_charity">慈善</string>
+    <string name="quote_category_corporate">企业</string>
+    <string name="quote_category_education">教育</string>
+    <string name="quote_category_emergency">紧急服务</string>
+    <string name="quote_category_entertainment">娱乐</string>
+    <string name="quote_category_finance">金融</string>
+    <string name="quote_category_legal">法律</string>
+    <string name="quote_category_media">媒体</string>
+    <string name="quote_category_medical">医疗专业</string>
+    <string name="quote_category_military">军事</string>
+    <string name="quote_category_other">其他</string>
+    <string name="quote_category_political">政治</string>
+    <string name="quote_category_sports">体育</string>
     <string name="english">English</string>
     <string name="traditional_chinese">繁體中文</string>
     <string name="simplified_chinese">简体中文</string>
@@ -212,10 +233,10 @@
     <string name="search">搜索</string>
     <string name="found_results">找到 0 个与 \"\" 相关的结果</string>
     <string name="found_results_format">找到 %1$d 个与 \"%2$s\" 相关的结果</string>
-    <string name="tag">标签</string>
+    <string name="tag">主题</string>
     <string name="currently_sorted_by">当前排序方式</string>
         <string name="latest_sort">时间</string>
-        <string name="active_tags">关注主题</string>
+        <string name="active_tags">关注</string>
     <string name="submit_feedback">提交反馈</string>
     <string name="submit">提交</string>
     <string name="low_objectivity">客观性低</string>
@@ -234,6 +255,11 @@
     <string name="fragment_my">我的</string>
     <string name="fragment_search">搜索</string>
     <string name="feedback_bottom_sheet">反馈底部表单</string>
+    <string name="edit_mode">重排页面</string>
+    <string name="rearrange_mode_toast">卡片已暂时收起</string>
+    <string name="rearrange_success">已保存更改</string>
+    <string name="rearrange_done">确认更改</string>
+    <string name="rearrange_cancel">取消</string>
     <string name="reading_history">阅读历史</string>
     <string name="add_success_log">添加成功</string>
     <string name="add_failed_log">添加失败</string>
@@ -254,7 +280,7 @@
     <string name="empty_string">""</string>
     <string name="text_plain">text/plain</string>
     <string name="http_prefix">https://</string>
-    <string name="example_website">https://www.example.com</string>
+    <string name="example_website">https://zonenews.io/user-guide</string>
     <string name="null_string">null</string>
     <string name="url_key">url</string>
     <string name="type_key">type</string>
@@ -292,14 +318,14 @@
     <string name="feature_ai_context_desc">每则新闻事件的完整背景信息</string>
         <string name="feature_article_list">文章列表</string>
     <string name="feature_article_list_desc">完整文章列表，支持排序功能</string>
-    <string name="feature_custom_tags">自定义标签</string>
-    <string name="feature_custom_tags_desc">通过自定义新闻标签追踪感兴趣的主题</string>
+    <string name="feature_custom_tags">自定义主题</string>
+    <string name="feature_custom_tags_desc">通过自定义主题追踪感兴趣的新闻</string>
     <string name="feature_in_app_browser">内置浏览器</string>
     <string name="feature_in_app_browser_desc">以您选择的语言在应用内阅读完整文章</string>
-        <string name="feature_levity_mode">轻松模式</string>
+        <string name="feature_levity_mode">正向模式</string>
     <string name="feature_levity_mode_desc">仅显示正面新闻</string>
-    <string name="feature_media_bias_tags">媒体偏见与立场标签</string>
-    <string name="feature_media_bias_tags_desc">媒体标签助您轻松评估潜在偏见</string>
+    <string name="feature_media_bias_tags">媒体偏见与立场主题</string>
+    <string name="feature_media_bias_tags_desc">媒体主题助您轻松评估潜在偏见</string>
     <string name="feature_media_distribution">媒体分布</string>
     <string name="feature_media_distribution_desc">了解不同媒体对重要事件的多样观点</string>
         <string name="feature_media_sentiment">媒体情绪</string>
@@ -316,7 +342,7 @@
     <string name="feature_timeline_desc">事件前后的相关新闻时间轴</string>
 
     <string name="feature_your_feed">个人动态</string>
-    <string name="feature_your_feed_desc">结合固定与自定义标签的个性化新闻推送</string>
+    <string name="feature_your_feed_desc">结合固定与自定义主题的个性化新闻推送</string>
     <string name="contact_us">联系我们</string>
     <string name="contact_email">support@znews.com</string>
     <string name="contact_website">www.znews.com</string>
@@ -333,7 +359,7 @@
         <string name="subjectivity_score">主观性数值</string>
         <string name="publisher_articles">文章一览</string>
     <string name="centric">中立</string>
-    <string name="progressive">开放</string>
+    <string name="progressive">偏开放</string>
     <string name="publisher_name">媒体名称</string>
     <string name="media_significance">媒体重要性</string>
     <string name="publisher_bias">媒体立场</string>
@@ -380,10 +406,10 @@
     <!-- Pro/Premium Features -->
     <string name="account_pro_upgrade_title">升级到专业版</string>
         <string name="account_pro_upgrade_subtitle">解锁高级功能</string>
-        <string name="account_pro_active_title">Zone News 专业版</string>
+        <string name="account_pro_active_title">Zone 新闻 专业版</string>
         <string name="account_pro_active_subtitle">管理你的订阅</string>
         <string name="account_menu_report_patterns_upgrade">升级解锁报道模式</string>
-    <string name="levity_mode_upgrade">升级以解锁轻松模式</string>
+    <string name="levity_mode_upgrade">升级以解锁正向模式</string>
     <string name="trending">热门度</string>
     <string name="topic_business">商业</string>
     <string name="topic_entertainment">娱乐</string>
@@ -410,7 +436,7 @@
     <string name="account_menu_notifications_subtitle">管理通知偏好设置</string>
     <string name="account_menu_notifications_breaking_news_title">突发新闻</string>
     <string name="account_menu_notifications_breaking_news_subtitle">接收突发新闻提醒</string>
-    <string name="account_menu_notifications_follows_topics_title">关注主题</string>
+    <string name="account_menu_notifications_follows_topics_title">关注</string>
     <string name="account_menu_notifications_follows_topics_subtitle">接收您关注主题的通知</string>
     <string name="account_menu_media_region_subtitle">根据地区选择新闻媒体</string>
     <string name="region_updated_success">地区已更新</string>
@@ -448,10 +474,10 @@
     <string name="account_menu_logout_confirmation_message">确定要退出登录吗？</string>
     <string name="account_menu_logout_confirmation_confirm">退出登录</string>
     <string name="account_menu_logout_confirmation_cancel">取消</string>
-    <string name="account_pro_status_title">Zone News 专业版</string>
+    <string name="account_pro_status_title">Zone 新闻 专业版</string>
     <string name="account_pro_status_subtitle">管理你的订阅</string>
     <string name="subscription_title">升级到专业版</string>
-    <string name="subscription_pro_active">Zone News 专业版</string>
+    <string name="subscription_pro_active">Zone 新闻 专业版</string>
     <string name="subscription_expires">到期时间</string>
     <string name="subscription_plan_price">HK$18/月</string>
     <string name="subscription_features_title">专业版功能</string>
@@ -509,14 +535,29 @@
     <string name="account_menu_show_tips_title">提示</string>
     <string name="account_menu_media_region_title">媒体地区</string>
     <string name="account_menu_article_opening_method_title">文章跳转</string>
-    <string name="subscription_plan_title">Zone News 专业版</string>
+    <string name="subscription_plan_title">Zone 新闻 专业版</string>
     <string name="subscription_plan_billing">按月计费</string>
+    <string name="subscription_plan_billing_yearly">按年计费</string>
 
     <string name="delete_account">删除帐户</string>
     <string name="delete_account_confirmation_title">删除帐户</string>
     <string name="delete_account_confirmation_message">您确定要删除您的帐户吗？此操作无法撤销，所有数据将被永久删除。</string>
     <string name="delete_account_confirm">删除帐户</string>
     <string name="delete_account_success">帐户已成功删除</string>
+
+    <!-- Subscription Strings -->
+    <string name="subscription_plan_monthly">按月</string>
+    <string name="subscription_plan_yearly">按年</string>
+    <string name="subscription_restore_loading">正在恢复购买...</string>
+    <string name="subscription_price_period_format">%1$s / %2$s</string>
+
+    <string name="billing_error_purchase_failed">购买失败：%1$s</string>
+    <string name="billing_error_acknowledge_failed">确认失败：%1$s</string>
+    <string name="billing_error_verification_failed">验证失败</string>
+    <string name="billing_error_network">网络错误</string>
+    <string name="billing_error_unknown">未知错误</string>
+    <string name="billing_error_no_subscriptions">未找到有效的订阅</string>
+    <string name="billing_error_restore_failed">恢复失败：%1$s</string>
 
     <!-- Missing Popup and Time Strings -->
     <string name="levity_mode_coming_soon">正向模式即将推出！</string>
@@ -574,4 +615,80 @@
     <string name="conglomerate">所属集团</string>
     <string name="controller">控制人</string>
     <string name="visit_website">浏览网站</string>
+    <!-- Levity Strings -->
+    <string name="levity_mode_title">正向模式</string>
+    <string name="levity_exit_dialog_title">离开正向模式？</string>
+    <string name="levity_exit_dialog_message">返回常规新闻流？</string>
+    <string name="levity_exit_dialog_stay">留下</string>
+    <string name="levity_exit_dialog_leave">离开</string>
+    <string name="levity_refresh">刷新</string>
+    <string name="levity_coming_soon_title">即将推出！</string>
+    <string name="levity_coming_soon_message">此功能即将推出！</string>
+    <string name="levity_loading_message">正在寻找积极新闻...</string>
+    <string name="levity_empty_title">暂无积极新闻</string>
+    <string name="levity_empty_subtitle">请稍后再来查看令人振奋的故事！</string>
+    <string name="levity_error_failed">加载积极新闻失败。请重试。</string>
+    <string name="levity_detail_loading">正在加载正能量...</string>
+    <string name="levity_positive_vibes">正能量</string>
+    <string name="levity_summary">摘要</string>
+    <string name="levity_why_it_matters">为什么重要</string>
+    <string name="levity_timeline_footer">持续发展的积极故事的一部分</string>
+    <string name="sentiment_uplifting">令人振奋</string>
+    <string name="levity_sentiment_positive">积极</string>
+    <string name="sentiment_hopeful">充满希望</string>
+    <string name="sentiment_desc_uplifting">这个故事散发着快乐和乐观！✨</string>
+    <string name="sentiment_desc_positive">一则令人振奋和充满希望的新闻。😊</string>
+    <string name="sentiment_desc_hopeful">值得庆祝的积极进展。🌟</string>
+    <string name="levity_button">正向模式</string>
+    <string name="levity_enter_mode_a11y">进入正向模式</string>
+    <string name="levity_enter_dialog_title">进入正向模式？</string>
+    <string name="levity_enter_dialog_message">享受更轻松、积极的新闻体验。</string>
+    <string name="levity_enter_dialog_confirm">进入</string>
+    <string name="levity_view_only_positive_hint">仅查看积极、令人振奋的新闻</string>
+    <string name="levity_upgrade_hint">升级至 Pro 版以访问正向模式</string>
+    
+    <!-- Tag News popup -->
+    <string name="follow">关注</string>
+    <string name="unfollow">取消关注</string>
+    <string name="no_tag_news">未找到有关新闻</string>
+    <string name="no_tag_news_subtitle">该主题目前尚无文章。</string>
+
+    <!-- Tutorial System -->
+    <string name="tutorial_tap_to_continue">点按任意位置继续</string>
+    <string name="continue_text">继续</string>
+    
+    <!-- Welcome Poster -->
+    <string name="tutorial_home_welcome">欢迎来到您的全新一站式新闻平台！让我们来了解一下主要功能。</string>
+    
+    <!-- Homepage Tutorial Steps -->
+    <string name="tutorial_home_step1_title">欢迎来到 Zone News</string>
+    <string name="tutorial_home_step1_message">首页是您的默认新闻流，为您呈现来自全球的突发与相关新闻。</string>
+    <string name="tutorial_home_step1">每一行显示一则新闻。点击阅读详情，左右滑动浏览更多。</string>
+    <string name="tutorial_home_sentiment_bar">此条显示媒体对该事件的整体情绪指数，依据正面与负面措辞的比例计算得出。</string>
+    
+    <string name="tutorial_personal_step1_message">这是您的个性化新闻流。滑动浏览为您精选的内容。</string>
+    <!-- Personal Page (Your Feed) Tutorial Steps -->
+    <string name="tutorial_personal_active_tags">这些是你正在关注的标签。点击标签筛选新闻，点击箭头管理已关注的标签。</string>
+    <string name="tutorial_personal_recap">点按「回顾」以获取根据您兴趣定制的今日热门故事摘要。</string>
+    <string name="tutorial_personal_levity">点击此处进入“正向模式”，浏览正面、鼓舞人心的新闻。</string>
+    <string name="tutorial_home_levity_button">点击此处进入“正向模式”，浏览正面、鼓舞人心的新闻。</string>
+    
+    <!-- News Detail Page Tutorial Steps -->
+    <string name="tutorial_detail_summary_settings">点击设置按钮，自定义文章摘要的显示方式。</string>
+    <string name="tutorial_detail_sentiment_meter">此条显示媒体对该事件的整体情绪指数，依据正面与负面措辞的比例计算得出。</string>
+    <string name="tutorial_detail_media_distribution">媒体分布图显示有哪些媒体正在报道此事，及其政治立场倾向。</string>
+    <string name="tutorial_detail_subjectivity">此评分代表媒体对此事件报导的整体主观程度：分数越高，所用语言越带有情感色彩。</string>
+    <string name="tutorial_detail_article_card">点击任意文章卡片，阅读该媒体的完整报道。</string>
+    
+    <!-- Tutorial completed messages -->
+    <string name="tutorial_complete">教程完成！尽情探索 Zone 新闻 吧。</string>
+    <string name="tutorial_skip">跳过教程</string>
+    
+    <!-- Show Tips Again functionality -->
+    <string name="tips_reset_success">教程提示将在每个页面重新显示。</string>
+    <string name="tips_reset_dialog_title">重新显示提示</string>
+    <string name="tips_reset_dialog_message">这会暂时还原部分设置。</string>
+    <string name="tips_reset_dialog_confirm">显示提示</string>
+    <string name="tips_reset_dialog_cancel">取消</string>
+    <string name="article_unavailable">无法查看文章</string>
 </resources>

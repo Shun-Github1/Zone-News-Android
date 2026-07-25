@@ -21,7 +21,10 @@ import com.searcher.zonenews.entry.HomeDataListEntry
 import com.searcher.zonenews.ui.newsdetail.NewsDetailActivity
 import com.searcher.zonenews.utils.CalculateUtil
 import com.searcher.zonenews.utils.Utils
+import com.searcher.zonenews.utils.ImageCacheManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
 import com.zhpan.bannerview.BannerViewPager
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
@@ -33,7 +36,20 @@ class NewsAdapter(
     var isTodayTab: Boolean,
     private val onShareArticle: (HomeDataListEntry.DataDTO.ArticlesDTO) -> Unit,
     private val onBannerClick: ((HomeDataListEntry.DataDTO.HeadlinesDTO) -> Unit)? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ListPreloader.PreloadModelProvider<HomeDataListEntry.DataDTO.ArticlesDTO> {
+
+    override fun getPreloadItems(position: Int): List<HomeDataListEntry.DataDTO.ArticlesDTO> {
+        val articlePosition = getArticlePosition(position)
+        return if (articlePosition >= 0 && articlePosition < newsList.size) {
+            listOf(newsList[articlePosition])
+        } else {
+            emptyList()
+        }
+    }
+
+    override fun getPreloadRequestBuilder(item: HomeDataListEntry.DataDTO.ArticlesDTO): RequestBuilder<*>? {
+        return Glide.with(context).asBitmap().load(item.pictureURL)
+    }
 
     // Cache density to avoid repeated calculations
     private val density = context.resources.displayMetrics.density
@@ -161,19 +177,16 @@ class NewsAdapter(
     }
 
     /**
-     * Animate sentiment bar from startWidth to endWidth over 720ms with LinearInterpolator
+     * Animate sentiment bar using GPU-accelerated transformations (Scale/Translation)
+     * This avoids expensive layout passes and ensures buttery-smooth scrolling.
      */
     private fun animateSentimentBar(
         highlightView: View,
         halfWidth: Int,
-        score: Double,
-        startWidth: Float,
-        endWidth: Float
+        score: Double
     ) {
-        // Cancel any previous animations
-        highlightView.clearAnimation()
-        
-        val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+        // Cancel any previous animations and reset state
+        highlightView.animate().cancel()
         
         // Clamp score between -1.0 and 1.0
         val clampedScore = when {
@@ -182,41 +195,29 @@ class NewsAdapter(
             else -> score
         }
         
-        // View should be GONE with width=1px from previous step
-        // Change from GONE to INVISIBLE, keeping width at 1px initially
-        highlightView.visibility = View.INVISIBLE
-        lp.width = startWidth.toInt()  // Start from 1px (or whatever startWidth is)
-        lp.marginStart = halfWidth
-        highlightView.layoutParams = lp
+        val absScore = kotlin.math.abs(clampedScore).toFloat()
         
-        // Post to ensure layout is complete before starting animation
-        highlightView.post {
-            // Make visible and start animation from 1px to target width
-            highlightView.visibility = View.VISIBLE
-            
-            // Animate using ValueAnimator over 720ms with LinearInterpolator (provides smooth counting effect)
-            ValueAnimator.ofFloat(startWidth, endWidth).apply {
-                duration = 720L
-                interpolator = LinearInterpolator()
-                addUpdateListener { animator ->
-                    val animatedValue = animator.animatedValue as Float
-                    val animatedDistance = animatedValue.toInt()
-                    
-                    if (animatedDistance > 0) {
-                        lp.width = animatedDistance
-                        // For positive: marginStart = half (extends right from center)
-                        // For negative: marginStart = half - distance (extends left from center)
-                        lp.marginStart = if (clampedScore > 0) {
-                            halfWidth
-                        } else {
-                            halfWidth - animatedDistance
-                        }
-                        highlightView.layoutParams = lp
-                    }
-                }
-                start()
-            }
+        // Setup initial state for GPU transformation
+        highlightView.visibility = View.VISIBLE
+        highlightView.alpha = 0f // Start invisible for a smooth fade-in
+        
+        // Setup pivot and translation based on sentiment direction
+        if (clampedScore >= 0) {
+            highlightView.pivotX = 0f // Center point is left edge of view
+            highlightView.translationX = 0f // Stay in right half
+        } else {
+            highlightView.pivotX = halfWidth.toFloat() // Center point is right edge of view
+            highlightView.translationX = -halfWidth.toFloat() // Move right-half view to left-half position
         }
+
+        // Animate Scale and Alpha simultaneously (GPU handles this, zero UI lag)
+        highlightView.scaleX = 0f // Start from zero width
+        highlightView.animate()
+            .scaleX(absScore)
+            .alpha(1f)
+            .setDuration(450) // Slightly faster for snappier feel
+            .setInterpolator(LinearInterpolator())
+            .start()
     }
 
     inner class NormalCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -249,13 +250,14 @@ class NewsAdapter(
                 )
             }
             // IMMEDIATELY reset sentiment bar to prevent flash from recycled views
-            // Use View.GONE instead of INVISIBLE to prevent any layout space allocation
-            // and set width to 1px (not 0) to avoid MATCH_CONSTRAINT behavior
-            highlightView.clearAnimation()
-            highlightView.visibility = View.GONE
+            highlightView.animate().cancel()
+            highlightView.visibility = View.INVISIBLE
+            highlightView.scaleX = 0f
+            highlightView.translationX = 0f
+            highlightView.alpha = 0f
+            
             val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
-            lpReset.width = 1  // Use 1px instead of 0 to avoid ConstraintLayout MATCH_CONSTRAINT behavior
-            lpReset.marginStart = 0
+            lpReset.width = 0 // Base width will be set to half in the post block
             highlightView.layoutParams = lpReset
             
             placeTv.text = article.region
@@ -282,9 +284,34 @@ class NewsAdapter(
                 tagTv.text = article.sector
             }
             titleTv.text = article.title
-            Glide.with(context).load(article.pictureURL)
+            // Use manual persistent cache for instant appearance
+            val cachedBitmap = ImageCacheManager.get(article.pictureURL)
+            if (cachedBitmap != null) {
+                newsIv.setImageBitmap(cachedBitmap)
+            }
+            
+            Glide.with(context).asBitmap().load(article.pictureURL)
                 .placeholder(R.drawable.ic_image_not_supported_24)
                 .error(R.drawable.ic_image_not_supported_24)
+                .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.Bitmap> {
+                    override fun onLoadFailed(
+                        e: com.bumptech.glide.load.engine.GlideException?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        isFirstResource: Boolean
+                    ): Boolean = false
+                    
+                    override fun onResourceReady(
+                        resource: android.graphics.Bitmap?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        resource?.let { ImageCacheManager.put(article.pictureURL, it) }
+                        return false
+                    }
+                })
                 .into(newsIv)
 
             // Format date using backend date string directly
@@ -292,37 +319,27 @@ class NewsAdapter(
             
             countTv.text = context.getString(R.string.reports_count, article.nSources)
             
-            // Set up sentiment progress bar with animation
+            // Set up sentiment progress bar with optimized GPU animation
             trackView.post {
                 val totalWidth = trackView.width
                 val half = totalWidth / 2
-                val score = sentimentScore  // Use score directly like YourFeedAdapter
-                val targetDistance = (abs(score) * half).toInt()
-                val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                val score = sentimentScore
                 
-                if (targetDistance <= 0) {
-                    // Keep view GONE for zero distance
-                    highlightView.visibility = View.GONE
-                    lp.width = 1
-                    lp.marginStart = half
-                    highlightView.layoutParams = lp
-                } else {
-                    // Ensure view is GONE and width is 1px before setting up animation
-                    highlightView.clearAnimation()
-                    highlightView.visibility = View.GONE
-                    lp.width = 1  // Use 1px to avoid MATCH_CONSTRAINT, will animate from here
-                    lp.marginStart = half
+                // Set the highlightView's layout width to exactly half (the max it can be)
+                val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                lp.width = half
+                lp.marginStart = half
+                highlightView.layoutParams = lp
+                
+                if (kotlin.math.abs(score) > 0.01) {
                     highlightView.setBackgroundResource(
                         if (score > 0.1) R.drawable.bg_progress_positive 
                         else if (score < -0.1) R.drawable.bg_progress_negative
                         else R.drawable.bg_progress_neutral
                     )
-                    highlightView.layoutParams = lp
-                    
-                    // Wait one frame to ensure GONE state is applied
-                    highlightView.post {
-                        animateSentimentBar(highlightView, half, score, 1f, targetDistance.toFloat())
-                    }
+                    animateSentimentBar(highlightView, half, score)
+                } else {
+                    highlightView.visibility = View.INVISIBLE
                 }
             }
 
@@ -387,13 +404,14 @@ class NewsAdapter(
                 )
             }
             // IMMEDIATELY reset sentiment bar state to prevent flash from recycled views
-            // Use View.GONE instead of INVISIBLE to prevent any layout space allocation
-            // and set width to 1px (not 0) to avoid MATCH_CONSTRAINT behavior
+            highlightView.animate().cancel()
+            highlightView.visibility = View.INVISIBLE
+            highlightView.scaleX = 0f
+            highlightView.translationX = 0f
+            highlightView.alpha = 0f
+            
             val lpReset = highlightView.layoutParams as ConstraintLayout.LayoutParams
-            highlightView.clearAnimation()
-            highlightView.visibility = View.GONE
-            lpReset.width = 1  // Use 1px instead of 0 to avoid ConstraintLayout MATCH_CONSTRAINT behavior
-            lpReset.marginStart = 0
+            lpReset.width = 0 // Base width will be set to half in the post block
             highlightView.layoutParams = lpReset
             
             placeTv.text = article.region
@@ -420,9 +438,34 @@ class NewsAdapter(
                 tagTv.text = article.sector
             }
             titleTv.text = article.title
-            Glide.with(context).load(article.pictureURL)
+            // Use manual persistent cache for instant appearance
+            val cachedBitmap = ImageCacheManager.get(article.pictureURL)
+            if (cachedBitmap != null) {
+                featuredImage.setImageBitmap(cachedBitmap)
+            }
+            
+            Glide.with(context).asBitmap().load(article.pictureURL)
                 .placeholder(R.drawable.ic_image_not_supported_24)
                 .error(R.drawable.ic_image_not_supported_24)
+                .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.Bitmap> {
+                    override fun onLoadFailed(
+                        e: com.bumptech.glide.load.engine.GlideException?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        isFirstResource: Boolean
+                    ): Boolean = false
+                    
+                    override fun onResourceReady(
+                        resource: android.graphics.Bitmap?,
+                        model: Any?,
+                        target: com.bumptech.glide.request.target.Target<android.graphics.Bitmap>?,
+                        dataSource: com.bumptech.glide.load.DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        resource?.let { ImageCacheManager.put(article.pictureURL, it) }
+                        return false
+                    }
+                })
                 .into(featuredImage)
 
             // Format date using backend date string directly
@@ -430,37 +473,27 @@ class NewsAdapter(
             
             countTv.text = context.getString(R.string.reports_count, article.nSources)
             
-            // Set up sentiment progress bar with animation
+            // Set up sentiment progress bar with optimized GPU animation
             trackView.post {
                 val totalWidth = trackView.width
                 val half = totalWidth / 2
-                val score = sentimentScore  // Use score directly like YourFeedAdapter
-                val targetDistance = (abs(score) * half).toInt()
-                val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                val score = sentimentScore
                 
-                if (targetDistance <= 0) {
-                    // Keep view GONE for zero distance
-                    highlightView.visibility = View.GONE
-                    lp.width = 1
-                    lp.marginStart = half
-                    highlightView.layoutParams = lp
-                } else {
-                    // Ensure view is GONE and width is 1px before setting up animation
-                    highlightView.clearAnimation()
-                    highlightView.visibility = View.GONE
-                    lp.width = 1  // Use 1px to avoid MATCH_CONSTRAINT, will animate from here
-                    lp.marginStart = half
+                // Set the highlightView's layout width to exactly half (the max it can be)
+                val lp = highlightView.layoutParams as ConstraintLayout.LayoutParams
+                lp.width = half
+                lp.marginStart = half
+                highlightView.layoutParams = lp
+                
+                if (kotlin.math.abs(score) > 0.01) {
                     highlightView.setBackgroundResource(
                         if (score > 0.1) R.drawable.bg_progress_positive 
                         else if (score < -0.1) R.drawable.bg_progress_negative
                         else R.drawable.bg_progress_neutral
                     )
-                    highlightView.layoutParams = lp
-                    
-                    // Wait one frame to ensure GONE state is applied
-                    highlightView.post {
-                        animateSentimentBar(highlightView, half, score, 1f, targetDistance.toFloat())
-                    }
+                    animateSentimentBar(highlightView, half, score)
+                } else {
+                    highlightView.visibility = View.INVISIBLE
                 }
             }
 
@@ -606,10 +639,8 @@ class NewsAdapter(
         private fun shareHeadline(context: android.content.Context, headline: HomeDataListEntry.DataDTO.HeadlinesDTO) {
             val shareText = buildString {
                 append(headline.title)
-                if (!headline.articleURL.isNullOrEmpty()) {
-                    append("\n\n")
-                    append(headline.articleURL)
-                }
+                append("\n\n")
+                append("https://zonenews.io/article/${headline.articleID}")
             }
             
             val shareIntent = Intent(Intent.ACTION_SEND)

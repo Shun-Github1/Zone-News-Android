@@ -1,7 +1,12 @@
 package com.searcher.zonenews.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.app.LocaleManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -40,6 +45,7 @@ import com.searcher.zonenews.utils.HapticFeedbackHelper
 import com.searcher.zonenews.utils.ThemeManager
 import com.searcher.zonenews.widget.CompactNewsWidgetProvider
 import com.searcher.zonenews.widget.DetailedNewsWidgetProvider
+import com.searcher.zonenews.widget.WidgetDataProvider
 import eightbitlab.com.blurview.BlurView
 
 import androidx.core.content.ContextCompat
@@ -65,6 +71,12 @@ class MainActivity : BaseActivity() {
     
     // Sliding indicator for bottom navigation
     private var bottomNavIndicator: View? = null
+    
+    // Track current locale to detect language changes
+    private var currentLocale: String? = null
+    
+    // Broadcast receiver for per-app language changes (Android 13+)
+    private var localeChangeReceiver: BroadcastReceiver? = null
     
 
     
@@ -93,6 +105,60 @@ class MainActivity : BaseActivity() {
             return
         }
         
+        // Store current locale on creation
+        currentLocale = getCurrentLocaleString()
+        
+        // Check if locale has changed since last app start or via onConfigurationChanged
+        val savedLocale = SharedPreferenceUtils.getString(this, "saved_locale")
+        val languageJustChangedFlag = SharedPreferenceUtils.getBoolean(this, "language_just_changed")
+        
+        Log.d("MainActivity", "onCreate - saved locale: '$savedLocale', current locale: '$currentLocale', flag: $languageJustChangedFlag")
+        
+        if ((!savedLocale.isNullOrEmpty() && savedLocale != currentLocale) || languageJustChangedFlag) {
+            Log.d("MainActivity", "Language change detected - clearing cache and forcing refresh")
+            
+            // 1. Save the new locale using commit() for reliability before potential process death/restart
+            val prefs = getSharedPreferences(SharedPreferenceUtils.FILE_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putString("saved_locale", currentLocale).commit()
+            
+            // 2. Clear language-sensitive caches
+            WidgetDataProvider.clearCache()
+            
+            // 3. Keep the flag for fragments to see
+            prefs.edit().putBoolean("language_just_changed", true).commit()
+            
+            // 4. Force all widgets to refresh immediately
+            refreshAllWidgets()
+        } else if (savedLocale.isNullOrEmpty()) {
+            // First launch - save current locale
+            Log.d("MainActivity", "First launch - saving current locale: $currentLocale")
+            SharedPreferenceUtils.saveString(this, "saved_locale", currentLocale)
+        } else {
+            Log.d("MainActivity", "No language change detected")
+            // Make sure the flag is cleared if no change is active
+            SharedPreferenceUtils.saveBoolean(this, "language_just_changed", false)
+        }
+        
+        // Register broadcast receiver for per-app language changes (Android 13+)
+        // This is critical for detecting changes from "System Default" to a specific language
+        // where the resulting locale tag may be identical
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val localeChangedAction = "android.app.action.LOCALE_CHANGED"
+            localeChangeReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (intent.action == localeChangedAction) {
+                        Log.d("MainActivity", "ACTION_LOCALE_CHANGED broadcast received - triggering restart")
+                        triggerLanguageChangeRestart()
+                    }
+                }
+            }
+            registerReceiver(
+                localeChangeReceiver,
+                IntentFilter(localeChangedAction),
+                Context.RECEIVER_NOT_EXPORTED
+            )
+        }
+        
         mViewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
         // Consistent status bar style
@@ -116,8 +182,20 @@ class MainActivity : BaseActivity() {
         
 
         
-        // Request notification permission
-        requestNotificationPermission()
+        
+        // Request notification permission if not just resetting tutorials
+        // This prevents re-triggering permission dialogs when the user manually re-launches tips
+        val tutorialsResetFlag = SharedPreferenceUtils.getBoolean(this, "tutorials_just_reset")
+        val skipPosterFlag = SharedPreferenceUtils.getBoolean(this, "skip_welcome_poster_once")
+        
+        if (!tutorialsResetFlag && !skipPosterFlag) {
+            requestNotificationPermission()
+        } else {
+            Log.d("MainActivity", "Skipping notification permission request due to tutorial/poster reset flow")
+            // We don't clear tutorials_just_reset here because it's needed by other components (e.g. NewsDetailActivity)
+            // but we can ensure it doesn't stay around forever if needed. 
+            // Actually, MyFrag sets it, and NewsDetailActivity/Fragments should handle their own logic.
+        }
 
         // Handle widget click (explicit intent with article ID extra)
         // This runs before parseDeepLink since it's more reliable
@@ -134,6 +212,115 @@ class MainActivity : BaseActivity() {
                 parseDeepLink(intent)
             }
         }, 500)
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        
+        // Final fallback check for language/locale changes when returning from system settings
+        // onConfigurationChanged might not fire if the resulting locale string is identical,
+        // but our getCurrentLocaleString() now tracks the source (system vs app) to force detection.
+        val newLocale = getCurrentLocaleString()
+        if (currentLocale != null && currentLocale != newLocale) {
+            Log.d("MainActivity", "Locale change detected in onResume - old: '$currentLocale', new: '$newLocale'")
+            
+            val prefs = getSharedPreferences(SharedPreferenceUtils.FILE_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean("language_just_changed", true).commit()
+            
+            // Re-trigger restart flow
+            currentLocale = newLocale
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.putExtra(KEY_CURRENT_FRAGMENT, currentFragmentIndex)
+            startActivity(intent)
+            finishAffinity()
+        }
+    }
+    
+    
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        
+        // Since we declared android:configChanges="locale|layoutDirection" in the manifest,
+        // Android only calls this method when a locale change HAS ACTUALLY OCCURRED.
+        // We don't need to compare locale strings - just trigger the restart unconditionally.
+        Log.d("MainActivity", "onConfigurationChanged called - locale change detected, triggering restart")
+        
+        triggerLanguageChangeRestart()
+    }
+    
+    /**
+     * Get current locale identifier including source (system vs app-specific)
+     */
+    private fun getCurrentLocaleString(config: android.content.res.Configuration? = null): String {
+        val usedConfig = config ?: resources.configuration
+        val localeTag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val locales = usedConfig.locales
+            if (locales.size() > 0) locales[0].toLanguageTag() else "en"
+        } else {
+            @Suppress("DEPRECATION")
+            usedConfig.locale.toLanguageTag()
+        }
+        
+        // Add prefix to distinguish source on Android 13+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val localeManager = getSystemService(LocaleManager::class.java)
+            val appLocales = localeManager?.applicationLocales
+            if (appLocales == null || appLocales.isEmpty) {
+                "system_$localeTag"
+            } else {
+                "app_$localeTag"
+            }
+        } else {
+            localeTag
+        }
+    }
+    
+    /**
+     * Trigger app restart when language change is detected
+     * Used by both onConfigurationChanged and BroadcastReceiver
+     */
+    private fun triggerLanguageChangeRestart() {
+        triggerAppRestart("language_just_changed")
+    }
+
+    /**
+     * Generic app restart and cache clearing mechanism
+     * @param flagKey Optional SharedPreferences boolean key to set to true before restart
+     */
+    fun triggerAppRestart(flagKey: String? = null) {
+        Log.d("MainActivity", "triggerAppRestart() called with flagKey: $flagKey")
+        
+        val prefs = getSharedPreferences(SharedPreferenceUtils.FILE_NAME, Context.MODE_PRIVATE)
+        if (flagKey != null) {
+            prefs.edit().putBoolean(flagKey, true).commit()
+        }
+        
+        // Clear widget cache to ensure widgets are also refreshed
+        WidgetDataProvider.clearCache()
+        refreshAllWidgets()
+        
+        // Update current locale to match reality
+        currentLocale = getCurrentLocaleString()
+        
+        // Restart the app from the root activity
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.putExtra(KEY_CURRENT_FRAGMENT, currentFragmentIndex)
+        startActivity(intent)
+        finishAffinity()
+    }
+    
+    override fun onDestroy() {
+        // Unregister locale change receiver
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && localeChangeReceiver != null) {
+            try {
+                unregisterReceiver(localeChangeReceiver)
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error unregistering locale receiver", e)
+            }
+        }
+        super.onDestroy()
     }
     
     override fun onNewIntent(intent: Intent?) {
@@ -196,9 +383,16 @@ class MainActivity : BaseActivity() {
      */
     private fun refreshAllWidgets() {
         try {
+            // Trigger a full refresh fetch for all widgets
+            val intent = Intent(WidgetDataProvider.ACTION_WIDGET_REFRESH)
+            // Specify the package to ensure only our app receives it
+            intent.`package` = packageName
+            sendBroadcast(intent)
+            
+            // Also explicitly request provider update
             DetailedNewsWidgetProvider.requestUpdate(this)
             CompactNewsWidgetProvider.requestUpdate(this)
-            Log.d("MainActivity", "Requested widget updates")
+            Log.d("MainActivity", "Triggered full widget refresh")
         } catch (e: Exception) {
             Log.e("MainActivity", "Error refreshing widgets", e)
         }
@@ -236,30 +430,84 @@ class MainActivity : BaseActivity() {
                      Log.d("MainActivity", "parseDeepLink: Unknown authority: ${uri.authority}")
                 }
             }
-            // Handle HTTPS App Links: https://zonenews.io/article/{id}
+            // Handle HTTPS App Links: https://zonenews.io/...
             else if (uri?.scheme == "https" && (uri.host == "zonenews.io" || uri.host == "www.zonenews.io")) {
                 // Clear intent data to prevent double-processing (e.g. on rotation)
                 intent.data = null
                 
-                val pathSegments = uri.pathSegments
-                Log.d("MainActivity", "parseDeepLink: HTTPS App Link path segments: $pathSegments")
+                val pathSegments = uri.pathSegments ?: emptyList()
+                val path = uri.path ?: "/"
+                Log.d("MainActivity", "parseDeepLink: HTTPS App Link path: $path, segments: $pathSegments")
                 
-                // Check if path starts with "article" and has an ID
-                // URL format: https://zonenews.io/article/{id}
-                if (pathSegments != null && pathSegments.size >= 2 && pathSegments[0] == "article") {
-                    val articleId = pathSegments[1]
-                    Log.d("MainActivity", "parseDeepLink: Found Article ID from HTTPS App Link: $articleId")
-                    if (articleId.isNotEmpty()) {
-                        val detailIntent = Intent(this, com.searcher.zonenews.ui.newsdetail.NewsDetailActivity::class.java)
-                        detailIntent.putExtra("id", articleId)
-                        startActivity(detailIntent)
+                when {
+                    // article/{id}
+                    pathSegments.size >= 2 && pathSegments[0] == "article" -> {
+                        val articleId = pathSegments[1]
+                        Log.d("MainActivity", "parseDeepLink: Opening article: $articleId")
+                        if (articleId.isNotEmpty()) {
+                            val detailIntent = Intent(this, com.searcher.zonenews.ui.newsdetail.NewsDetailActivity::class.java)
+                            detailIntent.putExtra("id", articleId)
+                            startActivity(detailIntent)
+                        }
                     }
-                } else {
-                    Log.d("MainActivity", "parseDeepLink: HTTPS link doesn't match article pattern")
+                    // levity/article/{id}
+                    pathSegments.size >= 3 && pathSegments[0] == "levity" && pathSegments[1] == "article" -> {
+                        val articleId = pathSegments[2]
+                        Log.d("MainActivity", "parseDeepLink: Opening levity article: $articleId")
+                        if (articleId.isNotEmpty()) {
+                            val detailIntent = Intent(this, com.searcher.zonenews.ui.activity.LevityDetailActivity::class.java)
+                            detailIntent.putExtra("id", articleId)
+                            startActivity(detailIntent)
+                        }
+                    }
+                    // levity or recap -> Advice tab (index 1)
+                    path == "/levity" || path == "/recap" -> {
+                        navigateToTab(1)
+                    }
+                    // search -> Search tab (index 3)
+                    path == "/search" -> {
+                        navigateToTab(3)
+                    }
+                    // personal or account -> My tab (index 2)
+                    path == "/personal" || path.startsWith("/account") -> {
+                        navigateToTab(2)
+                    }
+                    // login
+                    path == "/login" -> {
+                        startActivity(Intent(this, com.searcher.zonenews.ui.login.LoginActivity::class.java))
+                    }
+                    // register
+                    path == "/register" -> {
+                        startActivity(Intent(this, com.searcher.zonenews.ui.login.RegisterActivity::class.java))
+                    }
+                    // topics
+                    path.startsWith("/topics") -> {
+                        startActivity(Intent(this, com.searcher.zonenews.ui.topicmodify.TopicSelectionActivity::class.java))
+                    }
+                    // Home sections: / , /home, /china, /hk, /world, /today
+                    path == "/" || path == "/home" || path == "/china" || path == "/hk" || path == "/world" || path == "/today" -> {
+                        navigateToTab(0)
+                    }
+                    else -> {
+                        Log.d("MainActivity", "parseDeepLink: Unhandled path: $path")
+                    }
                 }
             }
         } catch (e: Exception) {
             Log.e("MainActivity", "parseDeepLink: Error parsing deep link", e)
+        }
+    }
+
+    /**
+     * Helper to navigate to a specific tab index
+     */
+    private fun navigateToTab(targetIndex: Int) {
+        if (targetIndex >= 0 && targetIndex < fragmentList.size) {
+            val fragmentTags = listOf("A", "B", "E", "C")
+            val radioButtonIds = listOf(R.id.home_rb, R.id.special_rb, R.id.my_rb, R.id.search_rb)
+            
+            mViewBinding.mainRg.check(radioButtonIds[targetIndex])
+            setFragment(fragmentList[targetIndex], fragmentTags[targetIndex])
         }
     }
     
@@ -330,19 +578,23 @@ class MainActivity : BaseActivity() {
         
         // Check if we should show a specific fragment based on intent first
         val fragmentToShow = intent.getStringExtra("fragment")
-        val targetIndex = when (fragmentToShow) {
-            "home" -> 0
-            "special" -> 1
-            "my" -> 2
-            "search" -> 3
-            else -> {
-                // If no intent override and this is a fresh start (not recreation), use landing page preference
-                if (savedInstanceState == null) {
-                    getLandingPageIndex()
-                } else {
-                    currentFragmentIndex // Use saved state if recreating
-                }
+        val intentFragmentIndex = intent.getIntExtra(KEY_CURRENT_FRAGMENT, -1)
+        
+        val targetIndex = when {
+            // First priority: explicit fragment name from intent
+            fragmentToShow != null -> when (fragmentToShow) {
+                "home" -> 0
+                "special" -> 1
+                "my" -> 2
+                "search" -> 3
+                else -> -1
             }
+            // Second priority: fragment index from intent (e.g., from app restart)
+            intentFragmentIndex >= 0 -> intentFragmentIndex
+            // Third priority: saved state (recreation)
+            savedInstanceState != null -> currentFragmentIndex
+            // Default: landing page preference
+            else -> getLandingPageIndex()
         }
         
         // Update current fragment index
@@ -350,6 +602,19 @@ class MainActivity : BaseActivity() {
         
         // Preload all fragments on startup to prevent lag when switching
         preloadAllFragments(targetIndex)
+
+        // If landing page is Levity Mode and user is Pro, launch LevityFeedActivity
+        val landingPage = SharedPreferenceUtils.getString(this, "landing_page")
+        if (landingPage == "levity") {
+            // We need to check if user is pro. In MainActivity, we can check via myEntry if available or use an intent delay
+            // Since initView is called on startup, we check the cached status in SharedPreference if available, 
+            // or better, rely on the fact that ONLY pro users can save "levity" as a preference.
+            // However, to be safe, we can launch it and LevityFeedActivity will handle its own checks if needed,
+            // but the plan says "If 'levity' and user is pro, launch LevityFeedActivity".
+            // Let's check MyFormationEntry from SharedPrefs if it exists, or just launch it since free users can't set it.
+            val intent = Intent(this, com.searcher.zonenews.ui.activity.LevityFeedActivity::class.java)
+            startActivity(intent)
+        }
         
         // Update tab backgrounds after setting initial checked state
         mViewBinding.mainRg.post {

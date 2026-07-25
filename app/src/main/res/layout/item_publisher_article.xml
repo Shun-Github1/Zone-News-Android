@@ -8,26 +8,25 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/article_publisher_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_image_not_supported_24"
         android:background="@color/media_icon_circle_bg"
+        android:padding="2dp"
         android:layout_marginEnd="12dp"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
-        app:strokeColor="@color/divider_color"
-        app:strokeWidth="1dp"/>
+        app:strokeColor="@color/publisher_icon_stroke_color"
+        app:strokeWidth="@dimen/publisher_icon_stroke_width"/>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             
             <TextView
                 android:id="@+id/article_publisher_name"
@@ -36,12 +35,24 @@
                 android:textColor="@color/colorTextMiddle"
                 android:textSize="14sp"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:ellipsize="end"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bias_container"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
                 
             <FrameLayout
+                android:id="@+id/bias_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/article_publisher_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
                 <TextView
                     android:id="@+id/article_publisher_bias"
                     android:layout_width="wrap_content"
@@ -62,7 +73,7 @@
                     android:contentDescription="@null"
                     android:visibility="gone"/>
             </FrameLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
             android:id="@+id/article_title"
             android:layout_width="wrap_content"
@@ -77,7 +88,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_arrow_regular_right"
+        android:src="@drawable/ic_chevron_right_24"
         android:tint="@color/colorTextSmall"/>
 
 </LinearLayout>

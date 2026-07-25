@@ -37,7 +37,9 @@ class HomeModel @Inject constructor(
                     val apiTag = convertTabNameToApiTag(tag)
                     // Request pageSize items as requested (removed 20 minimum override to improve performance)
                     val size = pageSize
-                    homeRepository.queryHomeData(apiTag, pageNo, size, languageManager.getCurrentLanguageCode())
+                    val langCode = languageManager.getCurrentLanguageCode()
+                    android.util.Log.d("HomeModel", "Fetching home data - tag: $apiTag, page: $pageNo, size: $size, lang: $langCode")
+                    homeRepository.queryHomeData(apiTag, pageNo, size, langCode)
                 }
             }
             if (result.isSuccess) {
@@ -46,6 +48,52 @@ class HomeModel @Inject constructor(
                 }
                 val data = result.getOrNull()!!
                 _homeDataList.value = data
+            } else {
+                val homeDataListEntry = HomeDataListEntry()
+                homeDataListEntry.code = 500
+                homeDataListEntry.msg = getString(R.string.server_error_message)
+                _homeDataList.value = homeDataListEntry
+            }
+        }
+    }
+    
+    /**
+     * Get home data by topic tag (for Tag News popup).
+     * Unlike getHomeDataList, this passes the tag directly without conversion.
+     */
+    fun getDataByTopicTag(topicTag: String, pageNo: Int, pageSize: Int) {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                runCatching {
+                    // Pass topic tag AS IS (no lowercase conversion)
+                    // Server might be case-sensitive or expecting the exact ID
+                    val langCode = languageManager.getCurrentLanguageCode()
+                    android.util.Log.d("HomeModel", "Fetching by topic tag - tag: $topicTag, page: $pageNo, size: $pageSize, lang: $langCode")
+                    homeRepository.queryFeedByTopic(topicTag, pageNo, pageSize, langCode)
+                }
+            }
+            if (result.isSuccess) {
+                val data = result.getOrNull()
+                if (data == null) {
+                    return@launch
+                }
+                
+                // CRITICAL: Check if response contains headlines. 
+                // If requested topic has headlines, it's likely a server-side fallback to the generic "Today" feed.
+                // User wants NO articles (empty state) instead of generic feed in this case.
+                val hasHeadlines = !data.data?.headlines.isNullOrEmpty()
+                
+                if (hasHeadlines) {
+                    android.util.Log.w("HomeModel", "Received headlines for topic request '$topicTag', assuming server fallback to generic feed. Returning empty.")
+                    val emptyEntry = HomeDataListEntry()
+                    emptyEntry.code = 200
+                    val dataDTO = HomeDataListEntry.DataDTO()
+                    dataDTO.articles = ArrayList()
+                    emptyEntry.data = dataDTO
+                    _homeDataList.value = emptyEntry
+                } else {
+                    _homeDataList.value = data
+                }
             } else {
                 val homeDataListEntry = HomeDataListEntry()
                 homeDataListEntry.code = 500

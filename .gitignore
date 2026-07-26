@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# Read-only iOS reference for the parity port (see IOS_PARITY_PLAN.md).
+# ~4.2GB including Xcode build output, with several files over GitHub's 100MB limit.
+/Newsletter_iOS copy/

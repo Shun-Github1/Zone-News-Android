@@ -7,19 +7,25 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+// Release signing credentials are read from keystore.properties, which is gitignored.
+// Copy keystore.properties.example to get started. Without that file, release builds are
+// left unsigned rather than failing, so a clean checkout can always run assembleDebug.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def hasReleaseKeystore = keystorePropertiesFile.exists()
+def keystoreProperties = new Properties()
+if (hasReleaseKeystore) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
 android {
     signingConfigs {
-        debug {
-            storeFile file('C:\\Users\\ShunKwok\\Downloads\\Keystore')
-            storePassword '123456'
-            keyAlias 'key0'
-            keyPassword '123456'
-        }
-        release {
-            storeFile file('C:\\Users\\ShunKwok\\Downloads\\Keystore')
-            storePassword '123456'
-            keyAlias 'key0'
-            keyPassword '123456'
+        if (hasReleaseKeystore) {
+            release {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
         }
     }
     namespace = 'com.searcher.zonenews'
@@ -33,14 +39,16 @@ android {
         versionName = "1.2.9"
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "arm64-v8a", "x86_64"
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig = signingConfigs.release
     }
 
     buildTypes {
         release {
+            if (hasReleaseKeystore) {
+                signingConfig = signingConfigs.release
+            }
             minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -156,15 +164,27 @@ dependencies {
 }
 //    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
-// Task to print debug key hashes
+// Task to print debug key hashes.
+// Values are resolved at configuration time so the task body stays configuration-cache safe.
+def debugSigning = android.signingConfigs.debug
+def debugKeystoreFile = debugSigning.storeFile ?: new File(System.getProperty('user.home'), '.android/debug.keystore')
+def debugKeystorePassword = debugSigning.storePassword ?: 'android'
+def debugKeyAlias = debugSigning.keyAlias ?: 'androiddebugkey'
+def debugKeyPassword = debugSigning.keyPassword ?: 'android'
+
 task printDebugKeyHashes {
     doLast {
-        def signingConfig = android.signingConfigs.debug
-        def keystoreFile = signingConfig.storeFile
-        def keystorePassword = signingConfig.storePassword
-        def keyAlias = signingConfig.keyAlias
-        def keyPassword = signingConfig.keyPassword
-        
+        def keystoreFile = debugKeystoreFile
+        def keystorePassword = debugKeystorePassword
+        def keyAlias = debugKeyAlias
+        def keyPassword = debugKeyPassword
+
+        if (!keystoreFile.exists()) {
+            println "Debug keystore not found at ${keystoreFile.absolutePath}."
+            println "Run ./gradlew assembleDebug once to have AGP generate it, then retry."
+            return
+        }
+
         println "\n=========================================="
         println "DEBUG KEY HASHES"
         println "=========================================="
